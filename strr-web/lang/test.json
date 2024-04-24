@@ -1,0 +1,18 @@
+{
+    "header" :{
+      "title": "***",
+      "buttons": {
+        "createAccount": "***"
+      }
+    },
+    "footer": {
+      "link": {
+        "home": "***",
+        "disclaimer": "***",
+        "privacy": "***",
+        "accessibility": "***",
+        "copyright": "***"
+      }
+    }
+  }
+  

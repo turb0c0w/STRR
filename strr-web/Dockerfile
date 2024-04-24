@@ -13,4 +13,4 @@ RUN pnpm build
 #runtime stage
 FROM nginx:1.25
 
-COPY --from=build /web/strr-main-app/.output/public /usr/share/nginx/html/
+COPY --from=build /web/.output/public /usr/share/nginx/html/
