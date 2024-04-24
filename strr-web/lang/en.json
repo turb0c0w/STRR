@@ -1,0 +1,17 @@
+{
+  "header" :{
+    "title": "STRR",
+    "buttons": {
+      "createAccount": "Create Account"
+    }
+  },
+  "footer": {
+    "link": {
+      "home": "Home",
+      "disclaimer": "Disclaimer",
+      "privacy": "Privacy",
+      "accessibility": "Accessibility",
+      "copyright": "Copyright"
+    }
+  }
+}

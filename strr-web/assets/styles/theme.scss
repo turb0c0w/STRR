@@ -79,4 +79,10 @@ body {
   font-size: 1rem;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+html, body {
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
