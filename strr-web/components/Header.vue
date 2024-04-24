@@ -66,10 +66,10 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { useBcrosAuth } from '~/composables/useBcrosAuth'
 import { useBcrosNavigate } from '~/composables/useBcrosNavigate'
 import { useBcrosAccount } from '~/stores/account'
-import { useBcrosKeycloak } from '../stores/keycloak';
-import { useBcrosAuth } from '../composables/useBcrosAuth';
+import { useBcrosKeycloak } from '~/stores/keycloak'
 
 const props = defineProps<{ personMode?: boolean }>()
 
@@ -84,7 +84,7 @@ const {
   goToTransactions
 } = useBcrosNavigate()
 // account / user
-const account = useBcrosAccount();
+const account = useBcrosAccount()
 const { currentAccount, currentAccountName, userFullName, userAccounts } = storeToRefs(account)
 // kc / auth
 const keycloak = useBcrosKeycloak()
