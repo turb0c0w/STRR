@@ -1,0 +1,217 @@
+{
+  "labels": {
+    "addIndividual": "Add an Individual",
+    "editIndividual": "Edit an Individual",
+    "beneficialOwnershipAssessment": "Assessment of Individual Significance",
+    "control": "Control",
+    "citizenships": "Citizenship(s)",
+    "current": "Current",
+    "details": "Details",
+    "directors": "Directors",
+    "externalInfluence": {
+      "noExternalInfluence": "There is {boldStart}no written agreement{boldEnd} involving influence of, or by, this individual and another individual regarding control of the business.",
+      "canInfluence": "A written agreement {boldStart}allows this individual{boldEnd} to direct or influence another individual’s decision making",
+      "canBeInfluenced": "A written agreement {boldStart}allows another individual{boldEnd} to direct or influence this individual’s decision making",
+      "title": "External Influence"
+    },
+    "name": "Name",
+    "other": "Other",
+    "shares": "Shares",
+    "sharesAndVotes": "Control of Shares and Votes",
+    "significanceDates": "Significance Dates",
+    "significantIndividuals": "Significant Individuals",
+    "significantIndividualChangeDate": "Significant Individual Filing Effective Date",
+    "lastKnownAddress": "Last Known Address",
+    "citizenshipPermanentResidency": "Citizenship / Permanent Residency",
+    "taxNumber": "Canada Revenue Agency (CRA) Tax Number",
+    "noTaxNumberLabel": "This person does not have a CRA Tax Number",
+    "taxResidency": "Tax Residency",
+    "isTaxResident": "Canada tax resident",
+    "notTaxResident": "Not a Canada tax resident",
+    "controlOfDirectors": "Control of Majority of Directors",
+    "folioNumber": "Folio or Reference Number",
+    "unableToObtainOrConfirmInformation": {
+      "title": "Unable to Obtain or Confirm Information",
+      "checkboxText": "It is not possible to obtain or confirm some information about this individual",
+      "description": "Enter the steps and efforts taken to obtain or confirm the required information about this individual.",
+      "textAreaPlaceholder": "Steps and efforts taken to obtain or confirm required information",
+      "alert": {
+        "important": "Important:",
+        "sentence1": "You MUST complete all required information about this individual that you can obtain and confirm.",
+        "sentence2": "Indicating that it is not possible to obtain or confirm information about an individual constitutes a statement in respect of a material fact."
+      }
+    },
+    "unknown": "Unknown",
+    "certifySection": "Certify"
+  },
+  "buttons": {
+    "addIndividualPerson": {
+      "add": "Add transparency register information manually",
+      "cancel": "Cancel transparent register information"
+    },
+    "cancel": "Cancel",
+    "done": "Done",
+    "remove": "Remove",
+    "edit": "Edit"
+  },
+  "texts": {
+    "externalInfluence": {
+      "text": "Indicate if there is a {boldStart}written agreement{boldEnd} involving influence of, or by, this individual and another individual regarding control of the business."
+    },
+    "note": "Note: ",
+    "addIndividualPerson": "To add a person to the transparency register of this business, enter their name and email address. A request will be sent to the person at their email address and they will have the ability to accept or decline the addition of their information to the transparency register of the business. If they accept, their information will automatically be added to the transparency register. If you don’t want to send an invitation, you can add the person’s transparency information manually.",
+    "beneficialOwnershipAssessmentText1": "Individual significance is determined by the control of of shares and/or votes at general meetings, and control of the right to elect, appoint, or remove directors of the business.",
+    "beneficialOwnershipAssessmentText2": "Complete following assessment to determine this person’s beneficial ownership status.",
+    "dateRange": "{start} to {end}",
+    "folioNumber": {
+      "reviewAndConfirm": {
+        "title": "Folio or Reference Number for this Filing",
+        "description": "Enter the folio or reference number you want to use for this filing for your own tracking purposes. The Business Folio or Reference Number is displayed below (if available). Entering a different value below will not change the Business Folio or Reference Number. Only the number below will appear on the transaction report and receipt for this filing."
+      }
+    },
+    "noCRATaxNumber": "No CRA Tax Number",
+    "sharesAndVotes": {
+      "controlPercentage": "Enter the percentage of shares issued for the business and/or shares entitled to votes at general meetings this individual owns or ultimately controls (or can exercise ultimate effective control over).",
+      "percentageRange": {
+        "lessThan25": "Less than 25% of {sharesOrVotes}",
+        "atLeast25To50": "At least 25% and up to 50% of {sharesOrVotes}",
+        "moreThan50To75": "More than 50% and up to 75% of {sharesOrVotes}",
+        "moreThan75": "More than 75% of {sharesOrVotes}"
+      },
+      "inConcertControl": {
+        "part1": "This individual has shares or votes exercised in concert with ",
+        "tooltip": "other individuals",
+        "tooltipContent": "Other individuals includes groups of individuals acting in concert, spouses, and relatives who live in the same home.",
+        "part2": " and the total combined shares or votes of the group equals 25% or more"
+      },
+      "note1": "All individuals with joint control of 25% or more of the issued shares must be listed as significant individuals.",
+      "typeOfControl": "If this person controls shares or shares entitled to votes, indicate the type(s) of control of the shares and/or votes this person has:",
+      "registeredOwner": "Registered owner",
+      "beneficialOwner": "Beneficial owner (e.g., through a trust)",
+      "indirectControl": "Indirect control (e.g., through another business)",
+      "note2": "If shares in this business are held in trust, you must list the trustees as the registered owner, and you must also list the beneficiaries of the trust as the beneficial owners of the shares.",
+      "note3": "Beneficiaries do not have to be listed in the transparency register if their beneficial interest is conditional on the death of another individual.",
+      "summary": {
+        "beneficial": "Beneficial owner: {sharesAndVotes}",
+        "beneficialindirect": "Beneficial owner and Indirect control: {sharesAndVotes}",
+        "indirect": "Indirect control: {sharesAndVotes}",
+        "registered": "Registered owner: {sharesAndVotes}",
+        "registeredbeneficial": "Registered owner and Beneficial owner: {sharesAndVotes}",
+        "registeredbeneficialindirect": "Registered owner, Beneficial owner, and Indirect control: {sharesAndVotes}",
+        "registeredindirect": "Registered owner and Indirect control: {sharesAndVotes}",
+        "inConcert": "25% or more of shares or votes exercised in concert"
+      }
+    },
+    "controlOfDirectors": {
+      "text": {
+        "part1": "If this individual has control of the right to ",
+        "part2": "elect, appoint, or remove a majority of the company's directors, ",
+        "part3": "indicate the type(s) of control of the right this individual has:"
+      },
+      "directControl": "Direct control",
+      "indirectControl": "Indirect control (through another business)",
+      "significantInfluence": "Significant influence control",
+      "inConcertControl": {
+        "text": "This individual has control of the majority of directors through rights and/or exercised in concert with",
+        "tooltip": "other individuals",
+        "tooltipContent": "Other individuals includes groups of individuals acting in concert, spouses, and relatives who live in the same home."
+      },
+      "note": "All individuals with joint control of the majority of directors must be listed as significant individuals.",
+      "summary": {
+        "direct": "Direct control of the majority of directors",
+        "directindirect": "Direct control and Indirect control of the majority of directors",
+        "directindirectsignificantinfluence": "Direct control, Indirect control, and Significant influence control of the majority of directors",
+        "directsignificantinfluence": "Direct control and Significant influence control of the majority of directors",
+        "indirect": "Indirect control of the majority of directors",
+        "indirectsignificantinfluence": "Indirect control and Significant influence control of the majority of directors",
+        "significantinfluence": "Significant influence control of the majority of directors",
+        "inConcert": "Control of directors exercised in concert"
+      }
+    },
+    "otherReasons": {
+      "description": "Enter any other reason(s) this individual is a significant individual.",
+      "textAreaPlaceholder": "Other reasons for individual significance"
+    },
+    "citizenshipPermanentResidency": "Indicate if this person is a citizen or permanent resident of Canada, or list all of the non-Canadian citizenship(s) of this person. If this person is a Citizen or Permanent resident of Canada, listing of multiple citizenships is not required.",
+    "isCompetent": "I am able to manage my own financial affairs.",
+    "isTaxResident": "Tax Resident of Canada",
+    "isNotTaxResident": "Not a Tax Resident of Canada",
+    "myRegDetails": "Your BC Registries Details are shared with businesses that list you as a beneficial owner.",
+    "significantIndividualChange": "Select the date of your significant individual changes. If you have significant individual changes that occurred on different dates, you will need to perform multiple Significant Individual Change filings — one for each unique date.",
+    "tables": {
+      "emptyTexts": {
+        "individualsSummaryTable": "No significant individuals added yet"
+      }
+    },
+    "taxNumber": "A 9-digit Social Insurance Number (SIN), an Individual Tax Number (ITN), or a Temporary Taxation Number (TTN) is required if this person has one.",
+    "taxResidency": "Indicate if this person is a resident of Canada for Income Tax purposes.",
+    "reviewConfirm": "Review the information in your registration. If you need to change anything, return to the previous step to make the necessary change.",
+    "certify": {
+      "certification": "Certification",
+      "part1": "I, ",
+      "part2": ", certify that I have relevant knowledge of this BC Benefit Company and that I am authorized to make this filing.",
+      "date": "Date: ",
+      "note": "Note: It is an offence to make a false or misleading statement in respect of a material fact in a record submitted to the Corporate Registry for filing. See section 427 of the Business Corporations Act."
+    }
+  },
+  "placeholders": {
+    "dateSelect": {
+      "birthdate": "Select Date",
+      "significantIndividualChange": "Significant Individual Filing Effective Date"
+    },
+    "taxNumber": "CRA Tax Number (SIN, ITN, or TTN)"
+  },
+  "errors": {
+    "validation": {
+      "controlPercentage": {
+        "empty": "Please enter a percentage of shares and/or votes",
+        "specialCharacter": "Numbers only",
+        "invalidPercentage": "Must be between 1 and 100"
+      },
+      "sharesAndVotes": {
+        "required": "Please indicate at least one type of control"
+      },
+      "controlOfDirectors": {
+        "required": "Please indicate at least one type of control"
+      },
+      "birthDate": {
+        "required": "Please enter a birth date"
+      },
+      "citizenship": {
+        "required": "Please indicate citizenship/permanent residency",
+        "otherCountry": "Please select at least one country"
+      },
+      "address": {
+        "country": "Please select a country",
+        "line1": "Address Line 1 is required",
+        "city": "Please enter a city",
+        "region": "Please select a region",
+        "postalCode": "Please enter a postal code"
+      },
+      "taxNumber": {
+        "specialCharacter": "The CRA tax number should not contain special characters",
+        "invalidLength": "The CRA tax number should be 9 digits long",
+        "invalidNumber": "The CRA tax number is invalid",
+        "required": "Please select a CRA Tax Number option"
+      },
+      "taxResidency": {
+        "required": "Please select a Tax Residency option"
+      },
+      "missingInfoReason": {
+        "required": "Please indicate steps taken"
+      },
+      "folioNumber": {
+        "maxLengthExceeded": "The Folio or Reference number should be up to 30 characters",
+        "specialCharacter": "The Folio or Reference number should contain only alpha numeric characters"
+      }
+    }
+  },
+  "pageHeadings": {
+    "myRegDetails": "My BC Registries Details",
+    "significantIndividualChange": "Significant Individual Change"
+  },
+  "sectionHeadings": {
+    "profileDetails": "Your Details",
+    "reviewConfirm": "Review and Confirm"
+  }
+}
