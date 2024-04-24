@@ -4,8 +4,8 @@
   "description": "Short Term Rental Registration UI - Mono repo workspace",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build": "nuxt build",
-    "build:local": "nuxt build",
+    "build": "nuxt generate",
+    "build:local": "nuxt generate",
     "dev": "nuxt dev",
     "cypress:open": "cypress open",
     "generate": "nuxt generate",
