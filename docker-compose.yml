@@ -1,7 +1,19 @@
 version: '3.8'
 
 services:
-  app:
+  webui:
+    build:
+      context: strr-web
+    ports:
+      - "8000:80"
+    env_file:
+      - strr-web/strr-main-app/.env.local
+    networks:
+      - web_tier
+    depends_on:
+          - api
+
+  api:
     build:
       context: strr-api
     ports:
@@ -11,6 +23,8 @@ services:
     networks:
       - web_tier
       - service_tier
+    depends_on:
+          - db
 
   db:
     image: postgres:latest
