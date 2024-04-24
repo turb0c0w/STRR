@@ -1,0 +1,40 @@
+{
+  "name": "strr-layouts",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "pnpm@8.6.12",
+  "description": "Beneficial Ownership Registry UI - Main repo",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "nuxt build",
+    "build:local": "nuxt build",
+    "dev": "nuxt dev",
+    "cypress:open": "cypress open",
+    "generate": "nuxt generate",
+    "lint": "eslint --cache --ext '.ts,.vue' . --max-warnings 0",
+    "lint:fix": "eslint --cache --ext '.ts,.vue' . --max-warnings 0 --fix",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test": "vitest",
+    "test:cov": "vitest run --coverage",
+    "test:e2e": "cypress open",
+    "test:e2e:firefox": "cypress run firefox",
+    "test:e2e:chrome": "cypress run chrome",
+    "start": "nuxt start"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,vue,md}": [
+      "eslint --cache --fix"
+    ]
+  },
+  "devDependencies": {
+    "sass": "^1.68.0"
+  },
+  "dependencies": {
+    "keycloak-js": "^22.0.5"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "name": "strr-main-app",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "pnpm@8.6.12",
+  "description": "Beneficial Ownership Registry UI - Main repo",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "nuxt generate",
+    "build:local": "nuxt build",
+    "dev": "nuxt dev --port=3000",
+    "generate": "nuxt generate",
+    "lint": "eslint --cache --ext '.ts,.vue' . --max-warnings 0",
+    "lint:fix": "eslint --cache --ext '.ts,.vue' . --max-warnings 0 --fix",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test": "vitest",
+    "test:cov": "vitest run --coverage",
+    "test:e2e": "cypress open",
+    "test:e2e:firefox": "cypress run firefox",
+    "test:e2e:chrome": "cypress run chrome",
+    "start": "nuxt start"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,vue,md}": [
+      "eslint --cache --fix"
+    ]
+  },
+  "devDependencies": {
+    "@nuxtjs/i18n": "^8.2.0",
+    "@testing-library/vue": "^8.0.2",
+    "@vitest/coverage-v8": "^1.3.1",
+    "vitest": "1.3.1",
+    "vitest-environment-nuxt": "^1.0.0",
+    "vite": "5.2.0-beta.1"
+  },
+  "dependencies": {
+    "pinia": "^2.1.7"
+  }
+}
