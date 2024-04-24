@@ -49,6 +49,8 @@ api = Api(bp, description="Short Term Rental API", default="Endpoints")
 
 @api.route("/hello", methods=("GET",))
 class HelloWorld(Resource):
+    """HellowWorld endpoint"""
+
     def get(self):
         """
         Handle GET request to the home route.
