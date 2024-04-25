@@ -5,6 +5,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "build": "nuxt generate",
+    "build-check": "nuxt build",
     "build:local": "nuxt generate",
     "dev": "nuxt dev",
     "cypress:open": "cypress open",
