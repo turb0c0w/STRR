@@ -60,7 +60,7 @@ export default defineNuxtConfig({
       btrApiURL: `${process.env.VUE_APP_BTR_API_URL || ''}${process.env.VUE_APP_BTR_API_VERSION || ''}`,
       registryHomeURL: process.env.VUE_APP_REGISTRY_HOME_URL || '',
       appEnv: `${process.env.VUE_APP_POD_NAMESPACE || 'unknown'}`,
-      version: `0.1.0`,
+      version: '0.1.0'
     }
   },
   css: ['~/./assets/scss/global.scss'],
