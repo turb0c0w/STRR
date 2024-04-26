@@ -1,7 +1,7 @@
 <template>
   <footer
     id="bcros-main-footer"
-    class="h-[54px] shrink flex items-center border-t-2 border-bcGovColor-navDivider bg-bcGovColor-footer text-sm"
+    class="h-[54px] flex-[0_0_54px] flex items-center border-t-2 border-bcGovColor-navDivider bg-bcGovColor-footer text-sm"
     data-cy="footer"
   >
     <div class="m-auto px-4 w-full max-w-[1360px]">
