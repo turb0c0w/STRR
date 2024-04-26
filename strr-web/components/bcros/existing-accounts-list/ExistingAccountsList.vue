@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col justify-center bg-white shadow-sm">
-    <div v-for="account in accounts">
-      <div :key="account.id" class="items-center h-[52px] flex flex-row justify-space-between w-full mx-[32px] my-[24px]">
+  <div class="flex flex-col justify-center mb-[32px]">
+    <div v-for="account in accounts" class="bg-white shadow-md">
+      <div :key="account.id" class="items-center h-[52px] flex flex-row justify-space-between mx-[32px] my-[24px] border-b border-bcGovColor-hairlinesOnWhite">
         <div><BcrosLetterIcon letter="E" /></div>
         <div class="grow pl-[20px]">
           <div class="text-[18px] font-bold">
