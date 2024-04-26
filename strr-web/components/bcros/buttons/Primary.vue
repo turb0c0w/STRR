@@ -33,6 +33,6 @@ const { action, color, className, icon, label, loading, text, trailing, variant 
   variant?: ButtonVariant
 }>()
 
-const classWithDefaultSpacing = `${className} text-[16px] px-[28px] py-[10px]`
+const classWithDefaultSpacing = `${className} text-[16px] px-[28px] py-[10px] mobile:grow justify-center`
 
 </script>

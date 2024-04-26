@@ -5,7 +5,7 @@
     :role="flavourRole"
     :data-cy="'alertsMessage:' + flavour"
   >
-    <div class="h-[32px] flex">
+    <div class="flex">
       <div class="">
         <slot name="icon">
           <UIcon

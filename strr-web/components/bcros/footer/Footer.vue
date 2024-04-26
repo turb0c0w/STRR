@@ -1,15 +1,15 @@
 <template>
   <footer
     id="bcros-main-footer"
-    class="h-[54px] flex-[0_0_54px] flex items-center border-t-2 border-bcGovColor-navDivider bg-bcGovColor-footer text-sm"
+    class="h-[54px] flex-[0_0_54px] mobile:flex-[0_0_80px] flex items-center border-t-2 border-bcGovColor-navDivider bg-bcGovColor-footer text-sm"
     data-cy="footer"
   >
     <div class="m-auto px-4 w-full max-w-[1360px]">
       <nav class="flex flex-grow">
         <ul class="p-0 -ml-2 list-none">
-          <li v-for="link in links" :key="link.text" class="inline-block mr-2 pr-2 border-r border-blue-200 last:mr-0 last:border-r-0">
+          <li v-for="link in links" :key="link.text" class="inline-block mr-2 mobile:border-none pr-2 border-r border-blue-200 last:mr-0 last:border-r-0">
             <a
-              class="block py-1 px-2 text-white text-[15px] hover:underline"
+              class="block py-1 px-2 text-white text-[15px] mobile:text-[13px] hover:underline"
               :href="link.href"
               :target="link.newTab ? '_blank' : '_self'"
             >

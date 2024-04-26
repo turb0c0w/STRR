@@ -25,7 +25,7 @@
           id="bcros-main-header__container__actions__menus"
           class="flex flex-auto justify-end h-full text-white"
         >
-          <div class="hidden mobile:flex">
+          <div class="hidden mobile:flex justify-center items-center">
             <BcrosMobileIcon :icon-path="notificationIcon" alt-text="Notification Icon"/>
             <BcrosMobileIcon :icon-path="hamburgerIcon" alt-text="Menu Icon" />
           </div>

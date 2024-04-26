@@ -1,11 +1,13 @@
 <template>
   <div data-cy="account-page">
-    <BcrosTypographyH1 text="account.title" data-cy="accountPageTitle" />
-    <BcrosAlertsMessage :flavour="alertFlavour">
-      <b>{{ t('general.note') }} </b>{{ t('account.existing-account-warning') }}
-    </BcrosAlertsMessage>
-    <BcrosTypographyH2 text="account.existing-account-section.title" data-cy="accountPageAccountSectionTitle" />
-    <span class="text-[16px] mb-[20px] block">{{ t('account.existing-account-section.sub-title') }}</span>
+    <div class="mobile:px-[8px]">
+      <BcrosTypographyH1 text="account.title" data-cy="accountPageTitle" class="mobile:pb-[20px]" />
+      <BcrosAlertsMessage :flavour="alertFlavour">
+        <b>{{ t('general.note') }} </b>{{ t('account.existing-account-warning') }}
+      </BcrosAlertsMessage>
+      <BcrosTypographyH2 text="account.existing-account-section.title" data-cy="accountPageAccountSectionTitle" />
+      <span class="text-[16px] mb-[20px] block">{{ t('account.existing-account-section.sub-title') }}</span>
+    </div>
     <BcrosExistingAccountsList :accounts="userAccounts" />
   </div>
 </template>
