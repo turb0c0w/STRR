@@ -29,10 +29,10 @@ const mockExistingAccountsData: AccountI[] = [
     address: "123456 Temporary St, Parksville, BC V8V 8V8, Canada"
   },
   {
-    id: 'Existing Account Name 2',
+    id: 'ID',
     accountType: AccountTypeE.BASIC,
     accountStatus: AccountStatusE.ACTIVE,
-    label: 'LABEL',
+    label: 'Existing Account Name 2',
     type: UserSettingsTypeE.ACCOUNT,
     urlpath: 'URLPATH',
     urlorigin: 'URLORIGIN',

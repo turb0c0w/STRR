@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center">
+  <div class="flex flex-col justify-center bg-white shadow-sm">
     <div v-for="account in accounts">
       <div class="items-center h-[52px] flex flex-row justify-space-between w-full mx-[32px] my-[24px]">
         <div><BcrosLetterIcon letter="E"/></div>
