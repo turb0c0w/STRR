@@ -3,6 +3,21 @@
     "title": "STRR",
     "buttons": {
       "createAccount": "Create Account"
+    },
+    "menus": {
+      "headers": {
+        "accountSettings": "Account Settings",
+        "selectLogin": "Select log in method",
+        "switchAccount": "Switch Account"
+      },
+      "labels": {
+        "accountInfo": "Account Info",
+        "createAccount": "Create Account",
+        "editProfile": "Edit Profile",
+        "logOut": "Log Out",
+        "teamMembers": "Team Members",
+        "transactions": "Transactions"
+      }
     }
   },
   "footer": {
@@ -12,6 +27,13 @@
       "privacy": "Privacy",
       "accessibility": "Accessibility",
       "copyright": "Copyright"
+    }
+  },
+  "labels": {
+    "services": {
+      "bcsc": "BC Services Card",
+      "bceid": "BCeID",
+      "idir": "IDIR"
     }
   }
 }

@@ -11,4 +11,14 @@ export interface AccountI {
   type: UserSettingsTypeE.ACCOUNT
   urlpath: string
   urlorigin: string
+  mailingAddress?: AddressI
+}
+
+export interface AddressI {
+  city: string
+  country: string
+  postalCode: string
+  region: string
+  street: string
+  streetAdditional: string
 }
