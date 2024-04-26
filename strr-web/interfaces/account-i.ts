@@ -12,4 +12,14 @@ export interface AccountI {
   urlpath: string
   urlorigin: string
   address: string
+  mailingAddress?: AddressI
+}
+
+export interface AddressI {
+  city: string
+  country: string
+  postalCode: string
+  region: string
+  street: string
+  streetAdditional: string
 }

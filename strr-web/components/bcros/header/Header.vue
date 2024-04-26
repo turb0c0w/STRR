@@ -26,26 +26,26 @@
           class="flex flex-auto justify-end h-full text-white"
         >
           <div v-if="authenticated" class="flex flex-wrap self-center text-sm">
-            <BcrosHeaderMenu data-cy="logged-in-menu" :menu-lists="loggedInMenuOptions">
+            <HeaderMenu data-cy="logged-in-menu" :menu-lists="loggedInMenuOptions">
               <template #menu-button-text>
-                <BcrosHeaderAccountLabel
+                <HeaderAccountLabel
                   :account-name="!personMode ? currentAccountName : ''"
                   :username="userFullName"
                 />
               </template>
               <template #menu-list-header-0>
                 <div class="flex px-4 mb-3">
-                  <BcrosHeaderAccountLabel
+                  <HeaderAccountLabel
                     :avatar-classes="'text-white'"
                     :account-name="!personMode ? currentAccountName : ''"
                     :username="userFullName"
                   />
                 </div>
               </template>
-            </BcrosHeaderMenu>
+            </HeaderMenu>
           </div>
           <div v-else class="flex flex-wrap self-center text-sm h-[36px]">
-            <BcrosHeaderMenu
+            <HeaderMenu
               data-cy="logged-out-menu"
               :menu-button-text="'Log in'"
               :menu-lists="loggedOutMenuOptions"
@@ -73,7 +73,6 @@ import { useBcrosKeycloak } from '~/stores/keycloak'
 
 const props = defineProps<{ personMode?: boolean }>()
 
-const config = useRuntimeConfig()
 const t = useNuxtApp().$i18n.t
 const {
   goToAccountInfo,
@@ -138,7 +137,7 @@ const basicAccountOptions = computed(() => {
     label: t('header.menus.labels.logOut'),
     icon: 'i-mdi-logout-variant',
     action: logout,
-    args: config.public.registryHomeURL
+    args: window.location.href
   })
   return options
 })
