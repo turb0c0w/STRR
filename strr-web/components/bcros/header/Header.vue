@@ -26,26 +26,26 @@
           class="flex flex-auto justify-end h-full text-white"
         >
           <div v-if="authenticated" class="flex flex-wrap self-center text-sm">
-            <HeaderMenu data-cy="logged-in-menu" :menu-lists="loggedInMenuOptions">
+            <BcrosHeaderMenu data-cy="logged-in-menu" :menu-lists="loggedInMenuOptions">
               <template #menu-button-text>
-                <HeaderAccountLabel
+                <BcrosHeaderAccountLabel
                   :account-name="!personMode ? currentAccountName : ''"
                   :username="userFullName"
                 />
               </template>
               <template #menu-list-header-0>
                 <div class="flex px-4 mb-3">
-                  <HeaderAccountLabel
+                  <BcrosHeaderAccountLabel
                     :avatar-classes="'text-white'"
                     :account-name="!personMode ? currentAccountName : ''"
                     :username="userFullName"
                   />
                 </div>
               </template>
-            </HeaderMenu>
+            </BcrosHeaderMenu>
           </div>
           <div v-else class="flex flex-wrap self-center text-sm h-[36px]">
-            <HeaderMenu
+            <BcrosHeaderMenu
               data-cy="logged-out-menu"
               :menu-button-text="'Log in'"
               :menu-lists="loggedOutMenuOptions"

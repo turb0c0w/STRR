@@ -1,7 +1,4 @@
 <template>
-  <div>Welcome!</div>
+  <div data-cy="test-page" />
 </template>
 
-<script setup lang="ts">
-
-</script>

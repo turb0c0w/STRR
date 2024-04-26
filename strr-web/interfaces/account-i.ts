@@ -11,6 +11,7 @@ export interface AccountI {
   type: UserSettingsTypeE.ACCOUNT
   urlpath: string
   urlorigin: string
+  address: string
   mailingAddress?: AddressI
 }
 

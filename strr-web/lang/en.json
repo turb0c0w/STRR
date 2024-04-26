@@ -1,5 +1,15 @@
 {
-  "header" :{
+  "account": {
+    "title": "Existing Account Found",
+    "existing-account-warning": "Note: It looks like you already have an account with BC Registries and Online Services. You can use an existing account to proceed or create a new one.",
+    "existing-account-section": {
+      "title": "Your Existing Accounts",
+      "sub-title": "Select an account below or create a new one",
+      "use-account-button": "Use this account",
+      "create-account-button": "Create account"
+    }
+  },
+  "header": {
     "title": "STRR",
     "buttons": {
       "createAccount": "Create Account"
