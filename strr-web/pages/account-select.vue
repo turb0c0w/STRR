@@ -6,7 +6,7 @@
     </BcrosAlertsMessage>
     <BcrosTypographyH2 text="account.existing-account-section.title" data-cy="accountPageAccountSectionTitle" />
     <span class="text-[16px] mb-[20px] block">{{ t('account.existing-account-section.sub-title') }}</span>
-    <BcrosExistingAccountsList :accounts="userAccounts" />
+    <BcrosExistingAccountsList :accounts="userAccounts"  />
   </div>
 </template>
 
