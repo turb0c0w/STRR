@@ -1,5 +1,6 @@
 {
   "account": {
+    "logIn": "Please Log In",
     "title": "Existing Account Found",
     "existing-account-warning": "It looks like you already have an account with BC Registries and Online Services. You can use an existing account to proceed or create a new one.",
     "existing-account-section": {
