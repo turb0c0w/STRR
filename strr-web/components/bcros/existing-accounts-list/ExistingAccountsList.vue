@@ -9,7 +9,11 @@
               {{ account.label }}
             </div>
             <div class="text-[14px]">
-              {{ account.address ?? '-' }}
+              {{ 
+                account.mailingAddress ? 
+                `${account.mailingAddress.street}, ${account.mailingAddress.city}, ${account.mailingAddress.region} ${account.mailingAddress.postalCode}, ${account.mailingAddress.country}`:
+                '-' 
+              }}
             </div>
           </div>
         </div>
