@@ -20,10 +20,10 @@
           </li>
         </ul>
         <div class="flex flex-auto justify-end">
-          <BcrosTooltip
+          <Tooltip
             id="footer-tooltip"
             class="mt-1"
-            :text="`BTR UI v${appVersion}`"
+            :text="`BTR UI v${version}`"
             :popper="{
               placement: 'left',
               arrow: true
@@ -32,7 +32,7 @@
             <div class="icon-container" role="img" aria-label="information">
               <UIcon class="text-2xl text-white" name="i-mdi-information-outline" />
             </div>
-          </BcrosTooltip>
+          </Tooltip>
         </div>
       </nav>
     </div>
@@ -40,9 +40,9 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{appVersion: string}>()
 
 const t = useNuxtApp().$i18n.t
+const version = useRuntimeConfig().public.version
 
 const links = [
   { text: 'home', href: '/', newTab: false },

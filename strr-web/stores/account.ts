@@ -69,6 +69,26 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     userLastName.value = user.value?.lastName || ''
   }
 
+  /** Get details for an account (org) */
+  async function getAccountDetails (orgId: string) {
+    const apiURL = useRuntimeConfig().public.authApiURL
+    return await axios.get(`${apiURL}/orgs/${orgId}`)
+      .then((response) => {
+        const data = response?.data
+        if (!data) { throw new Error('Invalid AUTH API response') }
+        return data
+      })
+      .catch((error) => {
+        console.warn('Error fetching user account details.')
+        // TODO: TC - add error handling
+        errors.value.push({
+          statusCode: error?.response?.status || StatusCodes.INTERNAL_SERVER_ERROR,
+          message: error?.response?.data?.message,
+          category: ErrorCategoryE.ACCOUNT_LIST
+        })
+      })
+  }
+
   /** Get the user's account list */
   async function getUserAccounts (keycloakGuid: string) {
     const apiURL = useRuntimeConfig().public.authApiURL
@@ -96,6 +116,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     }
     if (user.value?.keycloakGuid) {
       userAccounts.value = await getUserAccounts(user.value?.keycloakGuid) || []
+
       if (userAccounts && userAccounts.value.length > 0) {
         currentAccount.value = userAccounts.value[0]
         if (currentAccountId) {
@@ -104,6 +125,16 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
         }
         sessionStorage.setItem(SessionStorageKeyE.CURRENT_ACCOUNT, JSON.stringify(currentAccount.value))
       }
+
+      // TODO: TC - loading mail addresses into the store here
+      // Is there a better endpoint to use for this, or should we build our own into API instead
+
+      userAccounts.value.forEach(async (account) => {
+        const details = await getAccountDetails(account.id)
+        if (details) {
+          account.mailingAddress = details.mailingAddress
+        }
+      })
     }
   }
 

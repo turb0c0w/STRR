@@ -17,8 +17,9 @@ export const useBcrosNavigate = () => {
   // common redirects
   function goToBcrosHome () { redirect(config.public.registryHomeURL) }
   function goToBcrosLogin (idpHint: string) {
-    /** Redirect to bcros login page given the login type. */
-    window.location.assign(`${config.public.registryHomeURL}signin/${idpHint}`)
+    // using current window location as redirect for now
+    // TODO: TC - review this once test deploy for redirects is complete
+    window.location.assign(`${config.public.authWebURL}signin/${idpHint}/${window.location.href}`)
   }
   function goToEditProfile () { redirect(config.public.authWebURL + 'userprofile') }
   function goToAccountInfo () {
