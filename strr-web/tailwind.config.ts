@@ -71,6 +71,10 @@ export default <Partial<Config>>{
           800: '#343a40',
           900: '#212529'
         },
+        yellow: {
+          50: "#fff8e3",
+          500: "#FCBA19"
+        },
         blue: {
           50: '#e0e7ed',
           100: '#b3c2d1',

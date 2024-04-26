@@ -1,15 +1,15 @@
 <template>
   <footer
     id="bcros-main-footer"
-    class="h-[54px] grow flex items-center border-t-2 border-bcGovColor-navDivider bg-bcGovColor-footer text-sm"
+    class="h-[54px] shrink flex items-center border-t-2 border-bcGovColor-navDivider bg-bcGovColor-footer text-sm"
     data-cy="footer"
   >
     <div class="m-auto px-4 w-full max-w-[1360px]">
       <nav class="flex flex-grow">
         <ul class="p-0 -ml-2 list-none">
-          <li v-for="link in links" :key="link.text" class="inline-block mr-2 pr-2 border-r last:mr-0 last:border-r-0">
+          <li v-for="link in links" :key="link.text" class="inline-block mr-2 pr-2 border-r border-blue-200 last:mr-0 last:border-r-0">
             <a
-              class="block py-1 px-2 text-white hover:underline"
+              class="block py-1 px-2 text-white text-[15px] hover:underline"
               :href="link.href"
               :target="link.newTab ? '_blank' : '_self'"
             >
@@ -19,18 +19,19 @@
             </a>
           </li>
         </ul>
-        <div class="flex flex-auto justify-end">
+        <div class="flex flex-auto justify-end items-center">
+          <i class="text-yellow-500">{{ t(`footer.bcApp`) }}</i>
           <Tooltip
             id="footer-tooltip"
             class="mt-1"
-            :text="`BTR UI v${version}`"
+            :text="`STR UI v${version}`"
             :popper="{
               placement: 'left',
               arrow: true
             }"
           >
-            <div class="icon-container" role="img" aria-label="information">
-              <UIcon class="text-2xl text-white" name="i-mdi-information-outline" />
+            <div class="ml-[15px] icon-container" role="img" aria-label="information">
+              <UIcon class="text-2xl text-blue-200" name="i-mdi-information-outline" />
             </div>
           </Tooltip>
         </div>

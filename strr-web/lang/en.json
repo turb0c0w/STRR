@@ -10,7 +10,7 @@
     }
   },
   "header": {
-    "title": "STRR",
+    "title": "BC Registries and Online Services",
     "buttons": {
       "createAccount": "Create Account"
     },
@@ -31,6 +31,7 @@
     }
   },
   "footer": {
+    "bcApp": "A BC Online Application",
     "link": {
       "home": "Home",
       "disclaimer": "Disclaimer",
