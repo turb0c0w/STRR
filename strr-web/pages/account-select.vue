@@ -2,11 +2,11 @@
   <div data-cy="account-page">
     <BcrosTypographyH1 text="account.title" data-cy="accountPageTitle" />
     <BcrosAlertsMessage :flavour="alertFlavour">
-      {{ t('account.existing-account-warning') }}
+      <b>{{ t('general.note') }} </b>{{ t('account.existing-account-warning') }}
     </BcrosAlertsMessage>
     <BcrosTypographyH2 text="account.existing-account-section.title" data-cy="accountPageAccountSectionTitle" />
     <span class="text-[16px] mb-[20px] block">{{ t('account.existing-account-section.sub-title') }}</span>
-    <BcrosExistingAccountsList :accounts="userAccounts"  />
+    <BcrosExistingAccountsList :accounts="userAccounts" />
   </div>
 </template>
 
@@ -17,6 +17,6 @@ const t = useNuxtApp().$i18n.t
 
 const alertFlavour: AlertsFlavourE = AlertsFlavourE.INFO
 
-const { userAccounts } = useBcrosAccount();
+const { userAccounts } = useBcrosAccount()
 
 </script>

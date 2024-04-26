@@ -24,15 +24,15 @@
     </div>
   </div>
   <div class="flex justify-center">
-      <BcrosButtonsPrimary
-        :action="buttonAction"
-        icon="i-mdi-chevron-right"
-        :label="buttonText"
-        :text="createAccountButtonText"
-        :trailing="true"
-        variant="outline"
-      />
-    </div>
+    <BcrosButtonsPrimary
+      :action="buttonAction"
+      icon="i-mdi-chevron-right"
+      :label="buttonText"
+      :text="createAccountButtonText"
+      :trailing="true"
+      variant="outline"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">

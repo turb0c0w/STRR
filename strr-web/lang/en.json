@@ -1,7 +1,7 @@
 {
   "account": {
     "title": "Existing Account Found",
-    "existing-account-warning": "Note: It looks like you already have an account with BC Registries and Online Services. You can use an existing account to proceed or create a new one.",
+    "existing-account-warning": "It looks like you already have an account with BC Registries and Online Services. You can use an existing account to proceed or create a new one.",
     "existing-account-section": {
       "title": "Your Existing Accounts",
       "sub-title": "Select an account below or create a new one",
@@ -38,6 +38,9 @@
       "accessibility": "Accessibility",
       "copyright": "Copyright"
     }
+  },
+  "general": {
+    "note": "Note: "
   },
   "labels": {
     "services": {
