@@ -1,11 +1,15 @@
 <template>
   <div class="flex flex-col justify-center bg-white shadow-sm">
     <div v-for="account in accounts">
-      <div class="items-center h-[52px] flex flex-row justify-space-between w-full mx-[32px] my-[24px]">
-        <div><BcrosLetterIcon letter="E"/></div>
+      <div :key="account.id" class="items-center h-[52px] flex flex-row justify-space-between w-full mx-[32px] my-[24px]">
+        <div><BcrosLetterIcon letter="E" /></div>
         <div class="grow pl-[20px]">
-          <div class="text-[18px] font-bold">{{ account.label }}</div>
-          <div class="text-[14px]">{{ account.address }}</div>
+          <div class="text-[18px] font-bold">
+            {{ account.label }}
+          </div>
+          <div class="text-[14px]">
+            {{ account.address }}
+          </div>
         </div>
         <div>
           <BcrosButtonsPrimary
@@ -19,7 +23,7 @@
       </div>
     </div>
     <div class="flex justify-center">
-      <BcrosButtonsPrimary 
+      <BcrosButtonsPrimary
         :action="buttonAction"
         icon="i-mdi-chevron-right"
         :label="buttonText"
@@ -32,15 +36,12 @@
 </template>
 
 <script setup lang="ts">
-import LetterIcon from '../letter-icon/LetterIcon.vue';
-import { ButtonVariant } from '@nuxt/ui/dist/runtime/types';
-
 const { accounts } = defineProps<{ accounts: AccountI[] }>()
 const t = useNuxtApp().$i18n.t
 
-const buttonText = t("account.existing-account-section.use-account-button")
-const buttonAction = () => console.log("CLICKED")
+const buttonText = t('account.existing-account-section.use-account-button')
+const buttonAction = () => console.log('CLICKED')
 
-const createAccountButtonText = t("account.existing-account-section.create-account-button")
+const createAccountButtonText = t('account.existing-account-section.create-account-button')
 
 </script>

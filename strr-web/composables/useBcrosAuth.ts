@@ -35,9 +35,9 @@ export const useBcrosAuth = () => {
   /** Setup keycloak / user auth pieces */
   async function setupAuth (kcConfig: KeycloakConfig, currentAccountId?: string) {
     if (!keycloak.kc.authenticated) {
-      console.info('Initializing auth setup...') // eslint-disable-line no-console
+      console.info('Initializing auth setup...')
       // initialize keycloak with user token
-      console.info('Initializing Keycloak...') // eslint-disable-line no-console
+      console.info('Initializing Keycloak...')
       try {
         await keycloak.initKeyCloak(kcConfig)
         if (keycloak.kc.authenticated) {
@@ -45,19 +45,19 @@ export const useBcrosAuth = () => {
           keycloak.syncSessionStorage()
           keycloak.scheduleRefreshToken()
           // set user info
-          console.info('Setting user name...') // eslint-disable-line no-console
+          console.info('Setting user name...')
           await account.setUserName()
           // set account info
-          console.info('Setting user account information...') // eslint-disable-line no-console
+          console.info('Setting user account information...')
           await account.setAccountInfo(currentAccountId)
           // check account status
-          console.info('Checking account status...') // eslint-disable-line no-console
+          console.info('Checking account status...')
           // verify account status
           verifyAccountStatus()
-          console.info('Auth setup complete.') // eslint-disable-line no-console
+          console.info('Auth setup complete.')
         }
       } catch (error) {
-        console.warn('Keycloak initialization failed:', error) // eslint-disable-line no-console
+        console.warn('Keycloak initialization failed:', error)
       }
     }
   }

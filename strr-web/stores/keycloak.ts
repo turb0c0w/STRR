@@ -94,10 +94,10 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
   ) {
     setTimeout(() => {
       if (kc.value?.isTokenExpired(minValidity)) {
-        console.info('Token set to expire soon. Refreshing token...') // eslint-disable-line no-console
+        console.info('Token set to expire soon. Refreshing token...')
         kc.value?.updateToken(minValidity)
         syncSessionStorage()
-        console.info('Token updated.') // eslint-disable-line no-console
+        console.info('Token updated.')
         scheduleRefreshToken(timeout, minValidity)
       }
     }, timeout)

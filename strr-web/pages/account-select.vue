@@ -1,12 +1,12 @@
 <template>
   <div data-cy="account-page">
-    <BcrosTypographyH1 text="account.title" dataCy="accountPageTitle"></BcrosTypographyH1>
+    <BcrosTypographyH1 text="account.title" data-cy="accountPageTitle" />
     <BcrosAlertsMessage :flavour="alertFlavour">
       {{ t('account.existing-account-warning') }}
     </BcrosAlertsMessage>
-    <BcrosTypographyH2 text="account.existing-account-section.title" dataCy="accountPageAccountSectionTitle"></BcrosTypographyH2>
+    <BcrosTypographyH2 text="account.existing-account-section.title" data-cy="accountPageAccountSectionTitle" />
     <span class="text-[16px]">{{ t('account.existing-account-section.sub-title') }}</span>
-    <BcrosExistingAccountsList :accounts="mockExistingAccountsData"></BcrosExistingAccountsList>
+    <BcrosExistingAccountsList :accounts="mockExistingAccountsData" />
   </div>
 </template>
 
@@ -15,7 +15,7 @@ import { AlertsFlavourE } from '#imports'
 
 const t = useNuxtApp().$i18n.t
 
-const alertFlavour: AlertsFlavourE = AlertsFlavourE.INFO;
+const alertFlavour: AlertsFlavourE = AlertsFlavourE.INFO
 
 const mockExistingAccountsData: AccountI[] = [
   {
@@ -26,7 +26,7 @@ const mockExistingAccountsData: AccountI[] = [
     type: UserSettingsTypeE.ACCOUNT,
     urlpath: 'URLPATH',
     urlorigin: 'URLORIGIN',
-    address: "123456 Temporary St, Parksville, BC V8V 8V8, Canada"
+    address: '123456 Temporary St, Parksville, BC V8V 8V8, Canada'
   },
   {
     id: 'ID',
@@ -36,7 +36,7 @@ const mockExistingAccountsData: AccountI[] = [
     type: UserSettingsTypeE.ACCOUNT,
     urlpath: 'URLPATH',
     urlorigin: 'URLORIGIN',
-    address: "123456 Temporary St, Parksville, BC V8V 8V8, Canada"
+    address: '123456 Temporary St, Parksville, BC V8V 8V8, Canada'
   },
   {
     id: 'ID',
@@ -46,9 +46,8 @@ const mockExistingAccountsData: AccountI[] = [
     type: UserSettingsTypeE.ACCOUNT,
     urlpath: 'URLPATH',
     urlorigin: 'URLORIGIN',
-    address: "-"
+    address: '-'
   }
-];
+]
 
 </script>
-

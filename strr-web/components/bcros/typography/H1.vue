@@ -5,6 +5,6 @@
 </template>
 
 <script setup lang="ts">
-  const t = useNuxtApp().$i18n.t
-  const { text, dataCy} = defineProps<{ text: string, dataCy: string }>()
+const t = useNuxtApp().$i18n.t
+const { text, dataCy } = defineProps<{ text: string, dataCy: string }>()
 </script>
