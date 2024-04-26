@@ -24,7 +24,7 @@
                 {{ menuList.header }}
               </h3>
             </slot>
-            <HeaderMenuItem
+            <BcrosHeaderMenuItem
               v-for="menuItem in menuList.items"
               :key="menuItem.label"
               :item-info="menuItem"
