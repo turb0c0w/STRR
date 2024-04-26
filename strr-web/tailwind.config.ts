@@ -3,6 +3,10 @@ import type { Config } from 'tailwindcss'
 export default <Partial<Config>>{
   content: ['*.{html,ts,js,vue}'],
   theme: {
+    screens: {
+      'mobile': { 'max': '1024px' },
+      // => @media (max-width: 1024px) { ... }
+    },
     extend: {
       height: {
         bcrosRow: '46px'

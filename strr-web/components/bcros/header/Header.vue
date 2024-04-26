@@ -8,14 +8,14 @@
       id="bcros-main-header__container"
       class="flex flex-wrap content-center m-auto px-4 h-[68px] w-full max-w-[1360px]"
     >
-      <nav id="bcros-main-header__container__actions" class="flex flex-wrap content-center h-[50px] w-full">
+      <nav id="bcros-main-header__container__actions" class="flex flex-wrap content-center h-[50px] w-full items-center">
         <a id="bcros-main-header__container__actions__home-redirect" class="flex" @click="goToBcrosHome()">
-          <picture>
+          <picture class="mobile:w-[60px] mobile:h-[60px]">
             <source media="(max-width:600px)" srcset="@/assets/images/gov_bc_logo_vert.png">
             <img src="@/assets/images/gov_bc_logo_horiz.png" alt="Government of British Columbia Logo">
           </picture>
           <span
-            class="flex flex-wrap content-center font-bold ml-5 text-white text-lg"
+            class="flex flex-wrap content-center font-bold ml-5 text-white text-lg mobile:ml-[10px] mobile:leading-[20px] mobile:text-[14px] mobile:w-[130px]"
             style="letter-spacing: -.03rem;"
           >
             {{ t('header.title') }}
@@ -25,7 +25,11 @@
           id="bcros-main-header__container__actions__menus"
           class="flex flex-auto justify-end h-full text-white"
         >
-          <div v-if="authenticated" class="flex flex-wrap self-center text-sm">
+          <div class="hidden mobile:flex">
+            <BcrosMobileIcon :icon-path="notificationIcon" alt-text="Notification Icon"/>
+            <BcrosMobileIcon :icon-path="hamburgerIcon" alt-text="Menu Icon" />
+          </div>
+          <div v-if="authenticated" class="flex flex-wrap self-center text-sm mobile:hidden">
             <BcrosHeaderMenu data-cy="logged-in-menu" :menu-lists="loggedInMenuOptions">
               <template #menu-button-text>
                 <BcrosHeaderAccountLabel
@@ -70,6 +74,8 @@ import { useBcrosAuth } from '~/composables/useBcrosAuth'
 import { useBcrosNavigate } from '~/composables/useBcrosNavigate'
 import { useBcrosAccount } from '~/stores/account'
 import { useBcrosKeycloak } from '~/stores/keycloak'
+import notificationIcon from '~/assets/icons/notifications.svg'
+import hamburgerIcon from '~/assets/icons/hamburger.svg'
 
 const props = defineProps<{ personMode?: boolean }>()
 
