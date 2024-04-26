@@ -48,7 +48,7 @@
               </template>
             </BcrosHeaderMenu>
           </div>
-          <div v-else class="flex flex-wrap self-center text-sm h-[36px]">
+          <div v-else class="flex flex-wrap self-center text-sm h-[36px] mobile:hidden">
             <BcrosHeaderMenu
               data-cy="logged-out-menu"
               :menu-button-text="'Log in'"
