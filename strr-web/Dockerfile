@@ -1,5 +1,5 @@
 #build stage
-FROM node:18.17-bullseye-slim AS build
+FROM node:21-alpine AS build
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -13,4 +13,4 @@ RUN pnpm build
 #runtime stage
 FROM nginx:1.25
 
-COPY --from=build /web/strr-main-app/.output/public /usr/share/nginx/html/
+COPY --from=build /web/.output/public /usr/share/nginx/html/

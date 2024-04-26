@@ -63,7 +63,7 @@ class Config:  # pylint: disable=too-few-public-methods
     CSRF_ENABLED = True
     SECRET_KEY = "this-really-needs-to-be-changed"
     PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-    POD_NAMESPACE = os.getenv("POD_NAMESPACE", None)
+    POD_NAMESPACE = os.getenv("DEPLOYMENT_ENV", "production")
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -85,61 +85,58 @@ class Config:  # pylint: disable=too-few-public-methods
     SENTRY_DSN = os.getenv("SENTRY_DSN", None)
 
     # JWT_OIDC Settings
-    JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
-    JWT_OIDC_ALGORITHMS = os.getenv('JWT_OIDC_ALGORITHMS')
-    JWT_OIDC_JWKS_URI = os.getenv('JWT_OIDC_JWKS_URI')
-    JWT_OIDC_ISSUER = os.getenv('JWT_OIDC_ISSUER')
-    JWT_OIDC_AUDIENCE = os.getenv('JWT_OIDC_AUDIENCE')
-    JWT_OIDC_CLIENT_SECRET = os.getenv('JWT_OIDC_CLIENT_SECRET')
-    JWT_OIDC_CACHING_ENABLED = os.getenv('JWT_OIDC_CACHING_ENABLED')
-    JWT_OIDC_TOKEN_URL = os.getenv('JWT_OIDC_TOKEN_URL')
+    JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv("JWT_OIDC_WELL_KNOWN_CONFIG")
+    JWT_OIDC_ALGORITHMS = os.getenv("JWT_OIDC_ALGORITHMS")
+    JWT_OIDC_JWKS_URI = os.getenv("JWT_OIDC_JWKS_URI")
+    JWT_OIDC_ISSUER = os.getenv("JWT_OIDC_ISSUER")
+    JWT_OIDC_AUDIENCE = os.getenv("JWT_OIDC_AUDIENCE")
+    JWT_OIDC_CLIENT_SECRET = os.getenv("JWT_OIDC_CLIENT_SECRET")
+    JWT_OIDC_CACHING_ENABLED = os.getenv("JWT_OIDC_CACHING_ENABLED")
+    JWT_OIDC_TOKEN_URL = os.getenv("JWT_OIDC_TOKEN_URL")
     try:
-        JWT_OIDC_JWKS_CACHE_TIMEOUT = int(os.getenv('JWT_OIDC_JWKS_CACHE_TIMEOUT'))
+        JWT_OIDC_JWKS_CACHE_TIMEOUT = int(os.getenv("JWT_OIDC_JWKS_CACHE_TIMEOUT"))
         if not JWT_OIDC_JWKS_CACHE_TIMEOUT:
             JWT_OIDC_JWKS_CACHE_TIMEOUT = 300
     except (TypeError, ValueError):
         JWT_OIDC_JWKS_CACHE_TIMEOUT = 300
 
-    JWT_OIDC_USERNAME = os.getenv('JWT_OIDC_USERNAME', 'username')
-    JWT_OIDC_FIRSTNAME = os.getenv('JWT_OIDC_FIRSTNAME', 'firstname')
-    JWT_OIDC_LASTNAME = os.getenv('JWT_OIDC_LASTNAME', 'lastname')
+    JWT_OIDC_USERNAME = os.getenv("JWT_OIDC_USERNAME", "username")
+    JWT_OIDC_FIRSTNAME = os.getenv("JWT_OIDC_FIRSTNAME", "firstname")
+    JWT_OIDC_LASTNAME = os.getenv("JWT_OIDC_LASTNAME", "lastname")
 
-    AUTH_SVC_URL = os.getenv('AUTH_API_URL', '') + os.getenv('AUTH_API_VERSION', '')
-    PAYMENT_SVC_URL = os.getenv('PAY_API_URL', '') + os.getenv('PAY_API_VERSION', '')
-    LEGAL_SVC_URL = os.getenv('LEGAL_API_URL', '') + os.getenv('LEGAL_API_VERSION_2', '')
-    BOR_SVC_URL = os.getenv('BOR_API_URL', '') + os.getenv('BOR_API_VERSION', '')
+    AUTH_SVC_URL = os.getenv("AUTH_API_URL", "") + os.getenv("AUTH_API_VERSION", "")
+    PAYMENT_SVC_URL = os.getenv("PAY_API_URL", "") + os.getenv("PAY_API_VERSION", "")
+    LEGAL_SVC_URL = os.getenv("LEGAL_API_URL", "") + os.getenv("LEGAL_API_VERSION_2", "")
+    BOR_SVC_URL = os.getenv("BOR_API_URL", "") + os.getenv("BOR_API_VERSION", "")
 
-    SSO_SVC_TOKEN_URL = os.getenv('KEYCLOAK_AUTH_TOKEN_URL')
-    SVC_ACC_CLIENT_ID = os.getenv('STRR_SERVICE_ACCOUNT_CLIENT_ID')
-    SVC_ACC_CLIENT_SECRET = os.getenv('STRR_SERVICE_ACCOUNT_SECRET')
+    SSO_SVC_TOKEN_URL = os.getenv("KEYCLOAK_AUTH_TOKEN_URL")
+    SVC_ACC_CLIENT_ID = os.getenv("STRR_SERVICE_ACCOUNT_CLIENT_ID")
+    SVC_ACC_CLIENT_SECRET = os.getenv("STRR_SERVICE_ACCOUNT_SECRET")
 
 
 class Production(Config):  # pylint: disable=too-few-public-methods
-    """Production class configuration that should override vars for production.
-    """
+    """Production class configuration that should override vars for production."""
+
     DEBUG = False
     TESTING = False
 
 
 class Sandbox(Config):  # pylint: disable=too-few-public-methods
-    """Sandbox class configuration that should override vars for Sandbox.
-    """
+    """Sandbox class configuration that should override vars for Sandbox."""
 
     DEVELOPMENT = True
     DEBUG = True
 
 
 class Development(Config):  # pylint: disable=too-few-public-methods
-    """Development class configuration that should override vars for Development.
-    """
+    """Development class configuration that should override vars for Development."""
 
     DEVELOPMENT = True
     DEBUG = True
 
 
 class Testing(Config):  # pylint: disable=too-few-public-methods
-    """Testing class configuration that should override vars for Testing.
-    """
+    """Testing class configuration that should override vars for Testing."""
 
     TESTING = True
 
@@ -154,48 +151,48 @@ class Testing(Config):  # pylint: disable=too-few-public-methods
         f"{DATABASE_TEST_HOST}:{DATABASE_TEST_PORT}/{DATABASE_TEST_NAME}"
     )
 
-    AUTH_SVC_URL = 'https://test-auth-svc-url'
-    PAYMENT_SVC_URL = 'https://test-pay-url'
-    LEGAL_SVC_URL = 'https://test-legal-url'
-    BOR_SVC_URL = 'https://test-bor-url'
+    AUTH_SVC_URL = "https://test-auth-svc-url"
+    PAYMENT_SVC_URL = "https://test-pay-url"
+    LEGAL_SVC_URL = "https://test-legal-url"
+    BOR_SVC_URL = "https://test-bor-url"
 
-    SSO_SVC_TOKEN_URL = 'https://test-token-url'
-    SVC_ACC_CLIENT_ID = 'service-account'
-    SVC_ACC_CLIENT_SECRET = 'fake'
+    SSO_SVC_TOKEN_URL = "https://test-token-url"
+    SVC_ACC_CLIENT_ID = "service-account"
+    SVC_ACC_CLIENT_SECRET = "fake"
 
     # JWT OIDC settings
     # JWT_OIDC_TEST_MODE will set jwt_manager to use
     JWT_OIDC_TEST_MODE = True
-    JWT_OIDC_TEST_AUDIENCE = 'example'
-    JWT_OIDC_TEST_ISSUER = 'https://example.localdomain/auth/realms/example'
+    JWT_OIDC_TEST_AUDIENCE = "example"
+    JWT_OIDC_TEST_ISSUER = "https://example.localdomain/auth/realms/example"
     JWT_OIDC_TEST_KEYS = {
-        'keys': [
+        "keys": [
             {
-                'kid': 'flask-jwt-oidc-test-client',
-                'kty': 'RSA',
-                'alg': 'RS256',
-                'use': 'sig',
-                'n': 'AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR',  # noqa: E501
-                'e': 'AQAB'
+                "kid": "flask-jwt-oidc-test-client",
+                "kty": "RSA",
+                "alg": "RS256",
+                "use": "sig",
+                "n": "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",  # noqa: E501
+                "e": "AQAB",
             }
         ]
     }
 
     JWT_OIDC_TEST_PRIVATE_KEY_JWKS = {
-        'keys': [
+        "keys": [
             {
-                'kid': 'flask-jwt-oidc-test-client',
-                'kty': 'RSA',
-                'alg': 'RS256',
-                'use': 'sig',
-                'n': 'AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR',  # noqa: E501
-                'e': 'AQAB',
-                'd': 'C0G3QGI6OQ6tvbCNYGCqq043YI_8MiBl7C5dqbGZmx1ewdJBhMNJPStuckhskURaDwk4-8VBW9SlvcfSJJrnZhgFMjOYSSsBtPGBIMIdM5eSKbenCCjO8Tg0BUh_xa3CHST1W4RQ5rFXadZ9AeNtaGcWj2acmXNO3DVETXAX3x0',  # noqa: E501
-                'p': 'APXcusFMQNHjh6KVD_hOUIw87lvK13WkDEeeuqAydai9Ig9JKEAAfV94W6Aftka7tGgE7ulg1vo3eJoLWJ1zvKM',
-                'q': 'AOjX3OnPJnk0ZFUQBwhduCweRi37I6DAdLTnhDvcPTrrNWuKPg9uGwHjzFCJgKd8KBaDQ0X1rZTZLTqi3peT43s',
-                'dp': 'AN9kBoA5o6_Rl9zeqdsIdWFmv4DB5lEqlEnC7HlAP-3oo3jWFO9KQqArQL1V8w2D4aCd0uJULiC9pCP7aTHvBhc',
-                'dq': 'ANtbSY6njfpPploQsF9sU26U0s7MsuLljM1E8uml8bVJE1mNsiu9MgpUvg39jEu9BtM2tDD7Y51AAIEmIQex1nM',
-                'qi': 'XLE5O360x-MhsdFXx8Vwz4304-MJg-oGSJXCK_ZWYOB_FGXFRTfebxCsSYi0YwJo-oNu96bvZCuMplzRI1liZw'
+                "kid": "flask-jwt-oidc-test-client",
+                "kty": "RSA",
+                "alg": "RS256",
+                "use": "sig",
+                "n": "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",  # noqa: E501
+                "e": "AQAB",
+                "d": "C0G3QGI6OQ6tvbCNYGCqq043YI_8MiBl7C5dqbGZmx1ewdJBhMNJPStuckhskURaDwk4-8VBW9SlvcfSJJrnZhgFMjOYSSsBtPGBIMIdM5eSKbenCCjO8Tg0BUh_xa3CHST1W4RQ5rFXadZ9AeNtaGcWj2acmXNO3DVETXAX3x0",  # noqa: E501
+                "p": "APXcusFMQNHjh6KVD_hOUIw87lvK13WkDEeeuqAydai9Ig9JKEAAfV94W6Aftka7tGgE7ulg1vo3eJoLWJ1zvKM",
+                "q": "AOjX3OnPJnk0ZFUQBwhduCweRi37I6DAdLTnhDvcPTrrNWuKPg9uGwHjzFCJgKd8KBaDQ0X1rZTZLTqi3peT43s",
+                "dp": "AN9kBoA5o6_Rl9zeqdsIdWFmv4DB5lEqlEnC7HlAP-3oo3jWFO9KQqArQL1V8w2D4aCd0uJULiC9pCP7aTHvBhc",
+                "dq": "ANtbSY6njfpPploQsF9sU26U0s7MsuLljM1E8uml8bVJE1mNsiu9MgpUvg39jEu9BtM2tDD7Y51AAIEmIQex1nM",
+                "qi": "XLE5O360x-MhsdFXx8Vwz4304-MJg-oGSJXCK_ZWYOB_FGXFRTfebxCsSYi0YwJo-oNu96bvZCuMplzRI1liZw",
             }
         ]
     }
