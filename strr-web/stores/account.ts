@@ -119,7 +119,6 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     }
     if (user.value?.keycloakGuid) {
       userAccounts.value = await getUserAccounts(user.value?.keycloakGuid) || []
-
       if (userAccounts && userAccounts.value.length > 0) {
         currentAccount.value = userAccounts.value[0]
         if (currentAccountId) {
@@ -130,7 +129,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       }
 
       // TODO: TC - loading mail addresses into the store here
-      // Is there a better endpoint to use for this, or should we build our own into API instead
+      // Is there a better endpoint to use for this, or should we may build our own into STRR API instead
 
       userAccounts.value.forEach(async (account) => {
         const details = await getAccountDetails(account.id)

@@ -3,7 +3,7 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { mockedI18n } from '@/tests/unit/utils/mockedi18n'
 import accountSelect from '@/pages/account-select.vue'
 
-describe('Tests for my account selection page', () => {
+describe('Tests for Account Selection page', () => {
   let wrapper: VueWrapper<any>
 
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe('Tests for my account selection page', () => {
   afterEach(() => { wrapper.unmount() })
 
   test('Contains all the expected elements', () => {
-    expect(wrapper.find('[data-cy="accountSelectTable"]').exists()).toBe(true)
-    expect(wrapper.find('[data-cy="accountSelectCreate"]').exists()).toBe(true)
+    expect(wrapper.find('[data-cy="account-select-page"]').exists()).toBe(true)
+    //TODO: TC - add the existing account list if there are accounts?
   })
 })

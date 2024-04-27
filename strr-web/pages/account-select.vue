@@ -1,5 +1,5 @@
 <template>
-  <div data-cy="account-page">
+  <div data-cy="account-select-page">
     <div v-if="activeUserAccounts.length > 0">
       <div class="mobile:px-[8px]">
         <BcrosTypographyH1 text="account.title" data-cy="accountPageTitle" class="mobile:pb-[20px]" />

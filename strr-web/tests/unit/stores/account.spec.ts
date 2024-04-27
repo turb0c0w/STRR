@@ -64,4 +64,9 @@ describe('Account Store Tests', () => {
     await account.setAccountInfo()
     expect(account.currentAccount).toEqual(testUserSettings[1])
   })
+
+  // TODO: TC - add api calls to use mock data to
+  // - get userAccounts to Account array
+  // - add mailing address to each account 
+
 })

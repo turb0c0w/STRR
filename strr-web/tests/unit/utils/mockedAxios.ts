@@ -1,13 +1,14 @@
 import { vi } from 'vitest'
-import { testOrg, testUserSettings } from './mockedData'
+import { testDetailsForDev1, testDetailsForDev2, testUserSettings } from './mockedData'
 
 const axiosRequestMocks = vi.hoisted(() => ({
   get: vi.fn().mockImplementation((url: string, config?: any) => {
     console.info('Mock is currently not doing anything with config', config)
     // account GET mocks
-    // TODO: TC - what do we need here to test the account details lookup
-    if (url.includes('orgs')) {
-      return new Promise(resolve => resolve({ data: { ...testOrg } }))
+    if (url.includes('orgs/123')) {
+      return new Promise(resolve => resolve({ data: { ...testDetailsForDev1 } }))
+    } else if (url.includes('orgs/124')) {
+      return new Promise(resolve => resolve({ data: { ...testDetailsForDev2 } }))
     } else if (url.includes('settings')) {
       return new Promise(resolve => resolve({ data: [...testUserSettings] }))
     }
