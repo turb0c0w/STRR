@@ -17,6 +17,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   // user info
   const user = computed(() => keycloak.kcUser)
   const userAccounts: Ref<AccountI[]> = ref([])
+  const activeUserAccounts = computed(() => {
+    return userAccounts.value.filter(account => account.accountStatus === AccountStatusE.ACTIVE)
+  })
   const userFirstName: Ref<string> = ref(user.value?.firstName || '-')
   const userLastName: Ref<string> = ref(user.value?.lastName || '')
   const userFullName = computed(() => `${userFirstName.value} ${userLastName.value}`)
@@ -152,6 +155,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     currentAccount,
     currentAccountName,
     userAccounts,
+    activeUserAccounts,
     userFullName,
     errors,
     updateAuthUserInfo,
