@@ -9,27 +9,30 @@ export default defineNuxtRouteMiddleware(async (to) => {
       to.params.currentAccountId as string || to.query.currentAccountId as string
     )
 
-  //   if (process.client && sessionStorage?.getItem('FAKE_LOGIN')) {
-  //     const { kc } = useBcrosKeycloak()
-  //     // set test kc values
-  //     kc.tokenParsed = {
-  //       firstname: 'TestFirst',
-  //       lastname: 'TestLast',
-  //       name: 'TestFirst TestLast',
-  //       username: 'testUsername',
-  //       email: 'testEmail@test.com',
-  //       sub: 'testSub',
-  //       loginSource: 'IDIR',
-  //       realm_access: { roles: ['basic'] }
-  //     }
-  //     kc.authenticated = true
-  //     const account = useBcrosAccount()
-  //     await account.setUserName()
-  //     await account.setAccountInfo()
-  //   }
+    // For e2e testing, leave for now
+    if (process.client && sessionStorage?.getItem('FAKE_LOGIN')) {
+      const { kc } = useBcrosKeycloak()
+      // set test kc values
+      kc.tokenParsed = {
+        firstname: 'TestFirst',
+        lastname: 'TestLast',
+        name: 'TestFirst TestLast',
+        username: 'testUsername',
+        email: 'testEmail@test.com',
+        sub: 'testSub',
+        loginSource: 'IDIR',
+        realm_access: { roles: ['basic'] }
+      }
+      kc.authenticated = true
+      const account = useBcrosAccount()
+      await account.setUserName()
+      await account.setAccountInfo()
+    }
   }
-  // // initialize ldarkly
+
+  // initialize ldarkly
   // useBcrosLaunchdarkly().init()
+
   // remove query params in url added by keycloak
   if (to.query) {
     const params = new URLSearchParams(to.fullPath.split('?')[1])

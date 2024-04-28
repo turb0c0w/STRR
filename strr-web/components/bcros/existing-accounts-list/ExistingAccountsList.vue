@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center mb-[32px]">
+  <div class="flex flex-col justify-center mb-[32px]" data-cy="existing-accounts-list">
     <div v-for="account in accounts" :key="account.id" class="bg-white shadow-md">
       <div
         class="mobile:flex-col items-center pb-[24px] flex flex-row

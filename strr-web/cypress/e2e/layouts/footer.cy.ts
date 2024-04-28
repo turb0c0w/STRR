@@ -1,11 +1,11 @@
 describe('Layout -> Footer', () => {
-  it('shows the footer in business layout', () => {
+  it('shows the footer on Home Page', () => {
     cy.visit('/')
     cy.get('#bcros-main-footer').should('exist')
   })
 
-  it('shows the footer in person layout', () => {
-    cy.visit('/my-registries-details')
+  it('shows the footer on Account Select Page', () => {
+    cy.visit('/account-select')
     cy.get('#bcros-main-footer').should('exist')
   })
 })

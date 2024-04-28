@@ -1,94 +1,76 @@
-import business from '../../fixtures/business.json'
-import contact from '../../fixtures/businessContact.json'
+import accounts from '../../fixtures/accounts.json'
+import noAccounts from '../../fixtures/noAccounts.json'
+import accountDetails from '../../fixtures/accountDetails.json'
 
-describe('Layout -> Business Details', () => {
-  it('shows correct values in business layout (BEN)', () => {
-    // setup intercepts
+describe('Layout -> Account Select (No Active Accounts)', () => {
+  it('shows correct values', () => {
+    // TODO: TC - are these required just to do validation?
+    // setup intercepts 
     cy.intercept(
       'GET',
-      `https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/${business.identifier}?slim=true`,
-      { business }).as('businessDetailsSlim')
+      'https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/users/testSub/settings',
+      accounts)
     cy.intercept(
       'GET',
-      `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/entities/${business.identifier}`,
-      contact).as('businessDetails')
-    cy.visit(`/${business.identifier}/beneficial-owner-change`)
-    cy.wait(['@businessDetailsSlim', '@businessDetails'])
+      `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/orgs/${account.id}`,
+      accountDetails).as('accountDetails')
+      
+    // TODO: TC do we need fake login for this?
 
-    cy.get('#bcros-business-details').should('exist')
-    cy.get('[data-cy=business-details-name]').should('contain.text', business.legalName)
-    cy.get('[data-cy=business-details-name]').should('contain.text', 'BC Benefit Company')
-    cy.get('[data-cy=business-details-info]').get('dt').should('have.length', 4)
-    cy.get('[data-cy=business-details-info]').get('dd').should('have.length', 4)
-    cy.get('[data-cy=business-details-info]').get('dt').eq(0).should('contain.text', 'Business Number')
-    cy.get('[data-cy=business-details-info]').get('dd').eq(0).should('contain.text', business.taxId)
-    cy.get('[data-cy=business-details-info]').get('dt').eq(1).should('contain.text', 'Incorporation Number')
-    cy.get('[data-cy=business-details-info]').get('dd').eq(1).should('contain.text', business.identifier)
-    cy.get('[data-cy=business-details-info]').get('dt').eq(2).should('contain.text', 'Email')
-    cy.get('[data-cy=business-details-info]').get('dd').eq(2).should('contain.text', contact.contacts[0].email)
-    cy.get('[data-cy=business-details-info]').get('dt').eq(3).should('contain.text', 'Phone')
-    cy.get('[data-cy=business-details-info]').get('dd').eq(3).should('contain.text', contact.contacts[0].phone)
+    cy.visit(`/account-select`)
+    cy.wait(['@accounts', '@accountDetails'])
+
+    // TODO: TC - existing-account-list should not exist
+    // Check for other header
+
   })
+})
 
-  it('shows correct values in business layout (CP)', () => {
-    const businessCP = { ...business }
-    businessCP.identifier = 'CP1234567'
-    businessCP.legalType = 'CP'
+
+describe('Layout -> Account Select (No Active Accounts)', () => {
+  it('shows correct values', () => {
     // setup intercepts
     cy.intercept(
       'GET',
-      `https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/${businessCP.identifier}?slim=true`,
-      { business: businessCP }).as('businessDetailsSlim')
+      'https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/users/testSub/settings',
+      accounts)
     cy.intercept(
       'GET',
-      `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/entities/${businessCP.identifier}`,
-      contact).as('businessDetails').as('businessDetailsSlim')
+      `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/orgs/${account.id}`,
+      accountDetails).as('accountDetails')
+      
+    // TODO: TC do we need fake login for this?
 
-    cy.visit(`/${businessCP.identifier}/beneficial-owner-change`)
-    cy.wait(['@businessDetailsSlim', '@businessDetails'])
+    cy.visit(`/account-select`)
+    cy.wait(['@accounts', '@accountDetails'])
 
-    cy.get('[data-cy=business-details-name]').should('contain.text', 'BC Cooperative Association')
-    cy.get('[data-cy=business-details-info]').get('dt').eq(1).should('contain.text', 'Incorporation Number')
-    cy.get('[data-cy=business-details-info]').get('dd').eq(1).should('contain.text', businessCP.identifier)
+    // TODO: TC - existing-account-list should not exist
+    // Check for other header
+
   })
+})
 
-  it('shows correct values in business layout (SP)', () => {
-    const businessSP = { ...business }
-    businessSP.identifier = 'FM1234567'
-    businessSP.legalType = 'SP'
+describe('Layout -> Account Select (Active Accounts)', () => {
+  it('shows correct values', () => {
     // setup intercepts
     cy.intercept(
       'GET',
-      `https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/${businessSP.identifier}?slim=true`,
-      { business: businessSP })
+      'https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/users/testSub/settings',
+      accounts)
     cy.intercept(
       'GET',
-      `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/entities/${businessSP.identifier}`,
-      contact)
-    cy.visit(`/${businessSP.identifier}/beneficial-owner-change`)
-    cy.wait(1000)
-    cy.get('[data-cy=business-details-name]').should('contain.text', 'Sole Proprietorship')
-    cy.get('[data-cy=business-details-info]').get('dt').eq(1).should('contain.text', 'Registration Number')
-    cy.get('[data-cy=business-details-info]').get('dd').eq(1).should('contain.text', businessSP.identifier)
-  })
+      `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/orgs/${account.id}`,
+      accountDetails).as('accountDetails')
 
-  it('shows correct values in business layout (GP)', () => {
-    const businessGP = { ...business }
-    businessGP.identifier = 'FM1234568'
-    businessGP.legalType = 'GP'
-    // setup intercepts
-    cy.intercept(
-      'GET',
-      `https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/${businessGP.identifier}?slim=true`,
-      { business: businessGP })
-    cy.intercept(
-      'GET',
-      `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/entities/${businessGP.identifier}`,
-      contact)
-    cy.visit(`/${businessGP.identifier}/beneficial-owner-change`)
-    cy.wait(1000)
-    cy.get('[data-cy=business-details-name]').should('contain.text', 'BC General Partnership')
-    cy.get('[data-cy=business-details-info]').get('dt').eq(1).should('contain.text', 'Registration Number')
-    cy.get('[data-cy=business-details-info]').get('dd').eq(1).should('contain.text', businessGP.identifier)
+    // TODO: TC do we need fake login for this?
+
+    cy.visit(`/account-select`)
+    cy.wait(['@accounts', '@accountDetails'])
+
+    // TODO: TC - existing-account-list should exist
+    // Check for correct header based on account list, and check for details inside the existing-account-list
+
+    // cy.get('#bcros-business-details').should('exist')
+    // cy.get('[data-cy=business-details-name]').should('contain.text', 'Test')
   })
 })

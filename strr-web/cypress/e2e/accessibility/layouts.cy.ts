@@ -1,66 +1,60 @@
-import business from '../../fixtures/business.json'
-
 describe('accessibility -> Business Layout', () => {
   beforeEach(() => {
     // setup intercepts
-    cy.interceptPostsEntityApi().as('existingSIs')
-    cy.interceptPayFeeApi().as('payFeeApi')
-    cy.interceptBusinessContact().as('businessContact')
-    cy.interceptBusinessSlim().as('businessApiCall')
+    cy.interceptAccounts().as('accounts')
+    cy.interceptNoAccounts().as('noAccounts')
+    cy.interceptAccountDetails().as('accountDetails')
   })
 
-  it('checks business layout passes accessibility (logged out)', () => {
+  it('checks Account Select Page passes accessibility (logged out)', () => {
     sessionStorage.setItem('FAKE_LOGIN', '')
-    cy.visit(`/${business.identifier}/beneficial-owner-change`)
-    cy.wait(['@existingSIs', '@businessApiCall', '@payFeeApi', '@businessContact'])
+    cy.visit(`/account-select`)
     cy.injectAxe()
-    // header only (logged out) 19450
-    cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=header]'] })
-    cy.get('[data-cy=logged-out-menu]').click()
-    cy.wait(250)
-    cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=header]'] })
 
-    // breadcrumb only 19579
-    cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=breadcrumb]'] })
+    // TODO: TC - change to our layout when no account
+    // Click example below
 
-    // business details only
-    cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=business-details]'] })
+    // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=header]'] })
 
-    // fee summary only 19577
-    // pre-form touched
-    cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=pay-fees-widget]'] })
-    // post-form touched
-    cy.get('[data-cy=date-select]').click()
-    cy.wait(250)
-    cy.get('.bcros-date-picker__calendar__day.dp__today').parent().click()
-    cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=pay-fees-widget]'] })
-
-    // filing control buttons only
-    cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=button-control]'] })
-    cy.get('[data-cy=button-control-right-button]').click().then(() => {
-      cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=button-control]'] })
-    })
-
-    // footer only 19455
-    cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=footer]'] })
-
-    // full layout (uncomment once all of the above are passing)
-    // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=business-layout]'] })
   })
 
-  it('checks business layout passes accessibility (logged in)', () => {
+  //
+  it('checks Account Select Page passes accessibility (logged in, no accounts)', () => {
     sessionStorage.setItem('FAKE_LOGIN', 'true')
-    cy.visit(`/${business.identifier}/beneficial-owner-change`)
-    cy.wait(['@existingSIs', '@businessApiCall', '@payFeeApi', '@businessContact'])
+    cy.visit(`/account-select`)
+
+    //TODO: TC - change to our api call for empty return with just settings?
+    cy.wait(['@noAccounts'])
     cy.injectAxe()
 
-    // header only (logged in) 17802
-    cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=header]'] })
-    cy.get('[data-cy=logged-in-menu]').click()
-    cy.wait(250)
-    cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=header]'] })
+    // TODO: TC - check out layout when someone is auth but no accounts
+    // Click example below
 
-    // full layout (uncomment once all of the above are passing)
-    // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=business-layout]'] })
+    // // footer 
+    // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=footer]'] })
+
   })
+
+    //
+    it('checks Account Select Page passes accessibility (logged in, active accounts)', () => {
+      sessionStorage.setItem('FAKE_LOGIN', 'true')
+      cy.visit(`/account-select`)
+  
+      //TODO: TC - change to our api calls
+      cy.wait(['@accounts', '@accountDetails'])
+      cy.injectAxe()
+  
+      // TODO: TC - check out layout when someone is auth and has active accounts
+      // Click example below
+      // Include clicking the two buttons - create and choose - move this to AccountSelect?
+  
+      // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=header]'] })
+      // cy.get('[data-cy=logged-out-menu]').click()
+      // cy.wait(250)
+      // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=header]'] })
+  
+      // // footer 
+      // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=footer]'] })
+  
+    })
 })

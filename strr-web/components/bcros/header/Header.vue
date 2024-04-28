@@ -18,6 +18,7 @@
             <img src="@/assets/images/gov_bc_logo_horiz.png" alt="Government of British Columbia Logo">
           </picture>
           <span
+            data-cy="strr-title"
             class="flex flex-wrap content-center font-bold ml-5 text-white text-lg
             mobile:ml-[10px] mobile:leading-[20px] mobile:text-[14px] mobile:w-[130px]"
             style="letter-spacing: -.03rem;"

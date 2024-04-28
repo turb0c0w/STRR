@@ -9,28 +9,39 @@ Cypress.Commands.add('interceptAccounts', () => {
   })
 })
 
-Cypress.Commands.add('interceptAccountDetails', () => {
-  cy.fixture('accounts').then((details) => {
-    cy.fixture('businessContact').then((contact) => {
-      cy.intercept(
-        'GET',
-        `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/entities/${business.identifier}`,
-        contact)
-    })
+Cypress.Commands.add('interceptNoAccounts', () => {
+  cy.fixture('noAccounts').then((noAccounts) => {
+    cy.intercept(
+      'GET',
+      'https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/users/testSub/settings',
+      noAccounts)
   })
 })
 
-Cypress.Commands.add('visitHomePageWithFakeData', () => {
-  cy.interceptPostsEntityApi().as('existingSIs')
-  cy.interceptPayFeeApi().as('payFeeApi')
-  cy.interceptBusinessContact().as('businessContact')
-  cy.interceptBusinessSlim().as('businessApiCall')
-  cy.visit('/')
-  cy.wait(['@existingSIs', '@businessApiCall', '@payFeeApi', '@businessContact'])
+Cypress.Commands.add('interceptAccountDetails', () => {
+  cy.fixture('accountDetails').then((accountDetails) => {
+    cy.intercept(
+      'GET',
+      'https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/orgs/123',
+      accountDetails)
+  })
 })
 
-Cypress.Commands.add('visitHomePageWithFakeDataAndAxeInject', () => {
-  cy.visitHomePageWithFakeData()
-  cy.injectAxe()
+Cypress.Commands.add('visitAccountSelectWithNoAuth', () => {
+  cy.visit('/account-select')
 })
+
+Cypress.Commands.add('visitAccountSelectAuthWithNoAccounts', () => {
+  cy.interceptAccounts().as('noAccounts')
+  cy.visit('/account-select')
+  cy.wait(['@accounts', '@accountDetails'])
+})
+
+Cypress.Commands.add('visitAccountSelectAuthWithActiveAccounts', () => {
+  cy.interceptAccounts().as('accounts')
+  cy.interceptAccountDetails().as('accountDetails')
+  cy.visit('/account-select')
+  cy.wait(['@accounts', '@accountDetails'])
+})
+
 
