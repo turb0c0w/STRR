@@ -46,39 +46,6 @@ class BaseExceptionE(Exception):
 
 
 @dataclass
-class AuthException(BaseExceptionE):
-    """Authorization/Authentication exception."""
-
-    def __post_init__(self):
-        """Return a valid AuthorizationException."""
-        self.error = f'{self.error}, {self.status_code}'
-        if not self.message:
-            self.message = 'Unauthorized access.'
-        if not self.status_code:
-            self.status_code = HTTPStatus.FORBIDDEN
-
-
-@dataclass
-class BusinessException(BaseExceptionE):
-    """Business rules exception."""
-
-    def __post_init__(self):
-        """Return a valid BusinessException."""
-        if not self.message:
-            self.message = 'Business exception.'
-
-
-@dataclass
-class DatabaseException(BaseExceptionE):
-    """Database insert/update exception."""
-
-    def __post_init__(self):
-        """Return a valid DatabaseException."""
-        self.message = 'Database error while processing request.'
-        self.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
-
-
-@dataclass
 class ExternalServiceException(BaseExceptionE):
     """3rd party service exception."""
 

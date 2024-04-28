@@ -16,12 +16,14 @@
 Test helper functions to load and assert that a JSON payload validates against a defined schema.
 """
 import json
+import logging
 from os import listdir, path
 from typing import Tuple
-
-from jsonschema import Draft7Validator, SchemaError
+from jsonschema import Draft7Validator
 from referencing import Registry, Resource
 from referencing.jsonschema import DRAFT7
+
+logger = logging.getLogger('api')
 
 BASE_URI = 'https://strr.gov.bc.ca/.well_known/schemas'
 
@@ -36,60 +38,41 @@ def _load_json_schema(filename: str):
     relative_path = path.join('schemas', filename)
     absolute_path = path.join(path.dirname(__file__), relative_path)
 
-    with open(absolute_path, 'r') as schema_file:  # pylint: disable=unspecified-encoding
+    with open(absolute_path, 'r', encoding='utf-8') as schema_file:
         schema = json.loads(schema_file.read())
 
         return schema
 
 
-def get_schema_store(validate_schema: bool = False, schema_search_path: str = None) -> dict:
+def get_schema_store(schema_search_path: str) -> dict:
     """Return a schema_store as a dict.
 
     The default returns schema_store of the default schemas found in this package.
     """
-    try:
-        if not schema_search_path:
-            schema_search_path = path.join(path.dirname(__file__), 'strr-bods')
-        schemastore = {}
-        fnames = listdir(schema_search_path)
-        for fname in fnames:
-            fpath = path.join(schema_search_path, fname)
-            if fpath[-5:] == '.json':
-                with open(fpath, 'r') as schema_fd:  # pylint: disable=unspecified-encoding
-                    schema = json.load(schema_fd)
-                    if '$id' in schema:
-                        schemastore[schema['$id']] = schema
+    schemastore = {}
+    fnames = listdir(schema_search_path)
+    for fname in fnames:
+        fpath = path.join(schema_search_path, fname)
+        with open(fpath, 'r', encoding='utf-8') as schema_fd:
+            schema = json.load(schema_fd)
+            if '$id' in schema:
+                schemastore[schema['$id']] = schema
 
-        if validate_schema:
-            for _, schema in schemastore.items():
-                Draft7Validator.check_schema(schema)
+    for _, schema in schemastore.items():
+        Draft7Validator.check_schema(schema)
 
-        return schemastore
-    except (SchemaError, json.JSONDecodeError) as error:
-        # handle schema error
-        raise error
+    return schemastore
 
 
-def validate(json_data: dict,
+def validate(json_data: json,
              schema_id: str,
-             schema_store: dict = None,
-             validate_schema: bool = False,
-             schema_search_path: str = None
              ) -> Tuple[bool, iter]:
     """Load the json file and validate against loaded schema."""
     try:
-        if not schema_search_path:
-            schema_search_path = path.join(path.dirname(__file__), 'strr-bods')
-
-        if not schema_store:
-            schema_store = get_schema_store(validate_schema, schema_search_path)
-
+        schema_search_path = path.join(path.dirname(__file__), 'schemas')
+        schema_store = get_schema_store(schema_search_path)
         schema_uri = f'{BASE_URI}/{schema_id}'
-
         schema = schema_store.get(schema_uri)
-
-        if validate_schema:
-            Draft7Validator.check_schema(schema)
 
         def retrieve_resource(uri):
             contents = schema_store.get(uri)
@@ -100,17 +83,18 @@ def validate(json_data: dict,
             DRAFT7.create_resource(schema)
         )
 
-        validator = Draft7Validator(
-            schema={'$ref': schema_uri},
-            registry=registry,
-            format_checker=Draft7Validator.FORMAT_CHECKER
-        )
+        draft_7_validator = Draft7Validator(schema,
+                                            format_checker=Draft7Validator.FORMAT_CHECKER,
+                                            registry=registry
+                                            )
+        if draft_7_validator \
+                .is_valid(json_data):
+            return True, None
 
-        if not validator.is_valid(json_data):
-            return False, sorted(validator.iter_errors(json_data), key=lambda e: e.path)
+        errors = draft_7_validator \
+            .iter_errors(json_data)
+        return False, errors
 
-        return True, []
-
-    except SchemaError as error:
-        # handle schema error
-        return False, error
+    except Exception as e:
+        logger.error('Invalid schema preventing validation: %s', e)
+        return False, e

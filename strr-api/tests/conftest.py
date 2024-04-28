@@ -151,6 +151,8 @@ def db(app):  # pylint: disable=redefined-outer-name, invalid-name
     Drops all existing tables - Meta follows Postgres FKs
     """
     with app.app_context():
+        drop_test_db(database=app.config.get('DATABASE_TEST_NAME'),
+                     database_uri=app.config.get('SQLALCHEMY_DATABASE_URI'))
 
         create_test_db(database=app.config.get('DATABASE_TEST_NAME'),
                        database_uri=app.config.get('SQLALCHEMY_DATABASE_URI'))
@@ -165,9 +167,6 @@ def db(app):  # pylint: disable=redefined-outer-name, invalid-name
         upgrade()
 
         yield _db
-
-        drop_test_db(database=app.config.get('DATABASE_TEST_NAME'),
-                     database_uri=app.config.get('SQLALCHEMY_DATABASE_URI'))
 
 
 @pytest.fixture(scope='function')
