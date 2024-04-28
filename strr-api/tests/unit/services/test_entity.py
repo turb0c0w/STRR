@@ -32,7 +32,6 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 """Tests to assure the pay service."""
-import pytest
 
 from strr_api.services import EntityService, strr_entity
 
@@ -59,10 +58,11 @@ def test_get_entity(app, jwt, mocker, requests_mock):
     mocker.patch.object(jwt, 'get_token_auth_header', mock_get_token)
     identifier = '12345'
     mocked_response = {'mock': 'response'}
-    legal_api_mock = requests_mock.get(f"{app.config.get('LEGAL_SVC_URL')}/businesses/{identifier}", json=mocked_response)
+    legal_api_mock = requests_mock.get(
+        f"{app.config.get('LEGAL_SVC_URL')}/businesses/{identifier}", json=mocked_response)
 
     strr_entity.init_app(app)
     resp = strr_entity.get_entity(jwt, identifier)
 
-    assert legal_api_mock.called == True
+    assert legal_api_mock.called
     assert resp.json() == mocked_response

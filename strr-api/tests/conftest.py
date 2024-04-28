@@ -27,6 +27,7 @@ from strr_api import jwt as _jwt
 from strr_api.models import db as _db
 from strr_api.config import Testing
 
+
 def create_test_db(user: str = None,
                    password: str = None,
                    database: str = None,
@@ -68,12 +69,13 @@ def create_test_db(user: str = None,
         print(err)  # used in the test suite, so on failure print something
         return False
 
+
 def drop_test_db(user: str = None,
-                   password: str = None,
-                   database: str = None,
-                   host: str = "localhost",
-                   port: int = 1521,
-                   database_uri: str = None) -> bool:
+                 password: str = None,
+                 database: str = None,
+                 host: str = "localhost",
+                 port: int = 1521,
+                 database_uri: str = None) -> bool:
     """Delete the database in our .devcontainer launched postgres DB."""
     if database_uri:
         DATABASE_URI = database_uri
@@ -94,6 +96,7 @@ def drop_test_db(user: str = None,
         with sqlalchemy.create_engine(DATABASE_URI, isolation_level="AUTOCOMMIT").connect() as conn:
             conn.execute(text(close_all))
             conn.execute(text(f"DROP DATABASE {database}"))
+
 
 @contextmanager
 def not_raises(exception):
@@ -155,9 +158,10 @@ def db(app):  # pylint: disable=redefined-outer-name, invalid-name
         sess = _db.session()
         sess.execute(text("SET TIME ZONE 'UTC';"))
 
-        migrate = Migrate(app,
+        Migrate(app,
                 _db,
                 **{'dialect_name': 'postgres'})
+
         upgrade()
 
         yield _db

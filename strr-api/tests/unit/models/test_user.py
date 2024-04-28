@@ -1,10 +1,6 @@
 import datetime
-from unittest import mock
-
 import pytest
-
-from strr_api.config import Testing
-from strr_api.models.user import User, db
+from strr_api.models.user import User
 
 
 @pytest.fixture
@@ -51,7 +47,7 @@ def test_find_by_sub(client, session, sample_user):
     assert result.sub == sample_user.sub
 
 
-def test_create_from_jwt_token(client, session,sample_user):
+def test_create_from_jwt_token(client, session, sample_user):
     sample_token = {
         "iss": "test",
         "sub": f"subTest{datetime.datetime.now().strftime('%Y%m%d%H%M')}",

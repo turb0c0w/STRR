@@ -39,10 +39,10 @@ def create_jwt(jwt_manager: JwtManager,
                roles: list[str] = [],
                username: str = 'test-user',
                email: str = None,
-               firstname: str =None,
+               firstname: str = None,
                lastname: str = None,
-               login_source:str = None,
-               sub:str = None,
+               login_source: str = None,
+               sub: str = None,
                idp_userid: str = None) -> str:
     """Create a jwt bearer token with the correct keys, roles and username."""
     token_header = {
@@ -74,24 +74,24 @@ def create_jwt(jwt_manager: JwtManager,
 def create_header(jwt_manager,
                   roles: list[str] = [],
                   username: str = 'test-user',
-                  firstname: str =None,
+                  firstname: str = None,
                   lastname: str = None,
                   email: str = None,
-                  login_source:str = None,
-                  sub:str = '43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc',
+                  login_source: str = None,
+                  sub: str = '43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc',
                   idp_userid: str = '123',
                   **kwargs):
     """Return a header containing a JWT bearer token."""
     token = create_jwt(jwt_manager,
-                              roles=roles,
-                              username=username,
-                              firstname=firstname,
-                              lastname=lastname,
-                              email=email,
-                              login_source=login_source,
-                              idp_userid=idp_userid,
-                              sub=sub,
-                              )
+                       roles=roles,
+                       username=username,
+                       firstname=firstname,
+                       lastname=lastname,
+                       email=email,
+                       login_source=login_source,
+                       idp_userid=idp_userid,
+                       sub=sub,
+                       )
     headers = {**kwargs, **{'Authorization': 'Bearer ' + token}}
     return headers
 
@@ -102,5 +102,6 @@ def create_header_account(jwt_manager,
                           account_id: str = 'PS12345', **kwargs):
     """Return a header containing a JWT bearer token and an account ID."""
     token = create_jwt(jwt_manager, roles=roles, username=username)
-    headers = {**kwargs, **{'Authorization': 'Bearer ' + token}, **{'Account-Id': account_id}}
+    headers = {**kwargs, **{'Authorization': 'Bearer ' + token},
+               **{'Account-Id': account_id}}
     return headers

@@ -68,7 +68,7 @@ def test_init_strr_pay(app):
         'filingInfo': {'filingTypes': [{'filingTypeCode': 'REGSIGIN'}]}}
 
 
-@pytest.mark.parametrize("test_name, folio, identifier",[
+@pytest.mark.parametrize("test_name, folio, identifier", [
     ('basic', None, None),
     ('folio', '23245dddff44', None),
     ('identifier-corp', None, 'CP1234567'),
@@ -81,7 +81,8 @@ def test_create_invoice(app, jwt, mocker, requests_mock, test_name, folio, ident
         return 'token'
     mocker.patch.object(jwt, 'get_token_auth_header', mock_get_token)
     mock_json = {'id': '1234'}
-    pay_api_mock = requests_mock.post(f"{app.config.get('PAYMENT_SVC_URL')}/payment-requests", json=mock_json)
+    pay_api_mock = requests_mock.post(
+        f"{app.config.get('PAYMENT_SVC_URL')}/payment-requests", json=mock_json)
     strr_pay.init_app(app)
     details = {}
     if folio:
@@ -92,16 +93,20 @@ def test_create_invoice(app, jwt, mocker, requests_mock, test_name, folio, ident
     resp = strr_pay.create_invoice('123', jwt, details)
     assert resp.json() == mock_json
 
-    assert pay_api_mock.called == True
+    assert pay_api_mock.called
     payload = pay_api_mock.request_history[0].json()
-    assert payload.get('filingInfo', {}).get('filingTypes') == [{'filingTypeCode': 'REGSIGIN'}]
+    assert payload.get('filingInfo', {}).get('filingTypes') == [
+        {'filingTypeCode': 'REGSIGIN'}]
     assert payload.get('businessInfo', {}).get('corpType') == 'STRR'
     if folio:
         assert payload.get('filingInfo', {}).get('folioNumber') == folio
     if identifier:
-        assert payload.get('businessInfo', {}).get('businessIdentifier') == identifier
+        assert payload.get('businessInfo', {}).get(
+            'businessIdentifier') == identifier
         assert payload.get('details', [{}])[0].get('value') == identifier
         if identifier[:2] == 'FM':
-            assert payload.get('details', [{}])[0].get('label') == 'Registration Number: '
+            assert payload.get('details', [{}])[0].get(
+                'label') == 'Registration Number: '
         else:
-            assert payload.get('details', [{}])[0].get('label') == 'Incorporation Number: '
+            assert payload.get('details', [{}])[0].get(
+                'label') == 'Incorporation Number: '

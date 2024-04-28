@@ -1,8 +1,4 @@
 import unittest
-from enum import Enum
-from enum import EnumMeta
-from typing import Optional
-
 from strr_api.common.enum import BaseEnum
 
 
@@ -24,7 +20,8 @@ class TestBaseEnum(unittest.TestCase):
 
     def test_get_enum_by_name(self):
         found_name_enum = TestEnum.get_enum_by_name('TEST_NAME')
-        found_non_existent_enum = TestEnum.get_enum_by_name('NON_EXISTENT_NAME')
+        found_non_existent_enum = TestEnum.get_enum_by_name(
+            'NON_EXISTENT_NAME')
 
         self.assertEqual(found_name_enum.TEST_NAME, 'name')
         self.assertEqual(found_non_existent_enum, None)
