@@ -8,34 +8,29 @@ describe('accessibility -> Account Select', () => {
 
   it('checks page passes accessibility', () => {
 
-    // For now, this is an example of passing checks
     cy.checkA11y('[data-cy=page-header]')
-    cy.checkA11y('[data-cy=page-info-text]')
-    cy.checkA11y('[data-cy=add-new-btn]')
 
+    //TODO: TC - change to the account select layout with active accounts, titles etc
 
-    //TODO: TC - change to the account select layout, or use table below
-
-    cy.fixture('individuals').then((testData) => {
-      cy.get('#individual-person-full-name').type(testData.profile1.fullName)
-      cy.get('[data-cy=usePreferredName').check()
-      cy.get('[data-cy=testPercentOfShares]').click()
-      cy.checkA11y('[data-cy=addIndividualPerson]',
-        {
-          rules: {
-            // todo: fixme: nested-interactive should be removed/set to true after resolving it after
-            //  discussion with nuxt-ui team
-            // first ticket for opening discussions: https://github.com/bcgov/entity/issues/19775
-            'nested-interactive': { enabled: false }
-          }
-        }
-      )
-    })
+    // cy.fixture('individuals').then((testData) => {
+    //   cy.get('#individual-person-full-name').type(testData.profile1.fullName)
+    //   cy.get('[data-cy=usePreferredName').check()
+    //   cy.get('[data-cy=testPercentOfShares]').click()
+    //   cy.checkA11y('[data-cy=addIndividualPerson]',
+    //     {
+    //       rules: {
+    //         // todo: fixme: nested-interactive should be removed/set to true after resolving it after
+    //         //  discussion with nuxt-ui team
+    //         // first ticket for opening discussions: https://github.com/bcgov/entity/issues/19775
+    //         'nested-interactive': { enabled: false }
+    //       }
+    //     }
+    //   )
+    // })
 
   })
 
-
-  //TODO - TC - change this to use our table instead?
+  //TODO - TC - change this to use our existing-account-list component instead
   it('checks the summary table passes accessibility', () => {
 
   //   cy.checkA11y('[data-cy=individualsSummaryTable]', { rules: { 'nested-interactive': { enabled: false } } })

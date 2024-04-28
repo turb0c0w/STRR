@@ -7,7 +7,7 @@
       "productSettings": "/account/123/restricted-product",
       "type": "ACCOUNT",
       "urlorigin": "https://dev.bcregistry.ca/business/auth",
-      "urlpath": "/account/1234/settings",
+      "urlpath": "/account/123/settings",
       "mailingAddress": {
         "city": "Victoria",
         "country": "CA",

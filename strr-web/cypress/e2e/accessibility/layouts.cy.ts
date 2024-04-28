@@ -12,7 +12,6 @@ describe('accessibility -> Business Layout', () => {
     cy.injectAxe()
 
     // TODO: TC - change to our layout when no account
-    // Click example below
 
     // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=header]'] })
 
@@ -28,7 +27,7 @@ describe('accessibility -> Business Layout', () => {
     cy.injectAxe()
 
     // TODO: TC - check out layout when someone is auth but no accounts
-    // Click example below
+    // Click example below for only Create button
 
     // // footer 
     // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=footer]'] })
