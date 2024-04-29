@@ -43,5 +43,3 @@ Cypress.Commands.add('visitAccountSelectAuthWithActiveAccounts', () => {
   cy.visit('/account-select')
   cy.wait(['@accounts', '@accountDetails'])
 })
-
-
