@@ -53,88 +53,87 @@ export const testUserSettingsBlank = [
 
 export const existingAccountList = [
   {
-    accountStatus: "ACTIVE",
-    accountType: "PREMIUM",
+    accountStatus: 'ACTIVE',
+    accountType: 'PREMIUM',
     id: 123,
-    label: "Smith Autos",
-    type: "ACCOUNT",
+    label: 'Smith Autos',
+    type: 'ACCOUNT',
     mailingAddress: {
-        city: "Calgary",
-        country: "CA",
-        postalCode: "T3A 5K5",
-        region: "AB",
-        street: "9874 Hidden Valley Dr NW",
-        streetAdditional: ""
+      city: 'Calgary',
+      country: 'CA',
+      postalCode: 'T3A 5K5',
+      region: 'AB',
+      street: '9874 Hidden Valley Dr NW',
+      streetAdditional: ''
     }
   },
   {
-    accountStatus: "ACTIVE",
-    accountType: "PREMIUM",
+    accountStatus: 'ACTIVE',
+    accountType: 'PREMIUM',
     id: 124,
-    label: "Smith Autos 2",
-    type: "ACCOUNT",
+    label: 'Smith Autos 2',
+    type: 'ACCOUNT',
     mailingAddress: {
-        city: "Calgary",
-        country: "CA",
-        postalCode: "T3A 5K5",
-        region: "AB",
-        street: "9874 Hidden Valley Dr NW",
-        streetAdditional: ""
+      city: 'Calgary',
+      country: 'CA',
+      postalCode: 'T3A 5K5',
+      region: 'AB',
+      street: '9874 Hidden Valley Dr NW',
+      streetAdditional: ''
     }
   }
 ]
 
-
 export const testDetailsForDev1 = {
-  accessType: "REGULAR",
-  branchName: "",
-  businessName: "Test Dev 1",
-  businessSize: "0-1",
-  businessType: "BIZAC",
-  created: "2022-01-06T00:11:11+00:00",
-  createdBy: "BCREGTEST HARRIETT FORTY",
+  accessType: 'REGULAR',
+  branchName: '',
+  businessName: 'Test Dev 1',
+  businessSize: '0-1',
+  businessType: 'BIZAC',
+  created: '2022-01-06T00:11:11+00:00',
+  createdBy: 'BCREGTEST HARRIETT FORTY',
   hasApiAccess: false,
   id: 123,
   isBusinessAccount: true,
   mailingAddress: {
-      city: "Victoria",
-      country: "CA",
-      postalCode: "V8V8V8",
-      region: "BC",
-      street: "8888 Smith Street",
-      streetAdditional: "8888 Smith Street"
+    city: 'Victoria',
+    country: 'CA',
+    postalCode: 'V8V8V8',
+    region: 'BC',
+    street: '8888 Smith Street',
+    streetAdditional: '8888 Smith Street'
   },
-  modified: "2022-01-06T00:11:11+00:00",
-  name: "Test Dev 1",
+  modified: '2022-01-06T00:11:11+00:00',
+  name: 'Test Dev 1',
   orgStatus: AccountStatusE.ACTIVE,
-  orgType:  AccountTypeE.PREMIUM,
+  orgType: AccountTypeE.PREMIUM,
   statusCode: AccountStatusE.ACTIVE,
-  uuid: "2b2251d6-679b-4b1d-b997-38edf4eb1904"
+  uuid: '2b2251d6-679b-4b1d-b997-38edf4eb1904'
 }
 
 export const testDetailsForDev2 = {
-  accessType: "REGULAR",
-  branchName: "",
-  businessName: "Test Dev 2",
-  businessSize: "0-1",
-  businessType: "BIZAC",
-  created: "2022-01-06T00:11:11+00:00",
-  createdBy: "BCREGTEST HARRIETT FORTY",
+  accessType: 'REGULAR',
+  branchName: '',
+  businessName: 'Test Dev 2',
+  businessSize: '0-1',
+  businessType: 'BIZAC',
+  created: '2022-01-06T00:11:11+00:00',
+  createdBy: 'BCREGTEST HARRIETT FORTY',
   hasApiAccess: false,
   id: 124,
   isBusinessAccount: true,
   mailingAddress: {
-      city: "Victoria",
-      country: "CA",
-      postalCode: "V8V8V8",
-      region: "BC",
-      street: "9999 Smith Street",
-      streetAdditional: "9999 Smith Street"
+    city: 'Victoria',
+    country: 'CA',
+    postalCode: 'V8V8V8',
+    region: 'BC',
+    street: '9999 Smith Street',
+    streetAdditional: '9999 Smith Street'
   },
-  modified: "2022-01-06T00:11:11+00:00",
-  name: "Test Dev 2",
+  modified: '2022-01-06T00:11:11+00:00',
+  name: 'Test Dev 2',
   orgStatus: AccountStatusE.ACTIVE,
-  orgType:  AccountTypeE.BASIC,
+  orgType: AccountTypeE.BASIC,
   statusCode: AccountStatusE.ACTIVE,
-  uuid: "2b2251d6-679b-4b1d-b997-38edf4eb1904"
+  uuid: '2b2251d6-679b-4b1d-b997-38edf4eb1904'
 }

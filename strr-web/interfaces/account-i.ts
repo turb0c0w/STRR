@@ -2,6 +2,15 @@ import { AccountTypeE } from '~/enums/account-type-e'
 import { AccountStatusE } from '~/enums/account-status-e'
 import { UserSettingsTypeE } from '~/enums/user-settings-type-e'
 
+export interface AddressI {
+  city: string
+  country: string
+  postalCode: string
+  region: string
+  street: string
+  streetAdditional: string
+}
+
 export interface AccountI {
   id: string
   accountType: AccountTypeE
@@ -13,13 +22,4 @@ export interface AccountI {
   urlorigin: string
   address: string
   mailingAddress?: AddressI
-}
-
-export interface AddressI {
-  city: string
-  country: string
-  postalCode: string
-  region: string
-  street: string
-  streetAdditional: string
 }
