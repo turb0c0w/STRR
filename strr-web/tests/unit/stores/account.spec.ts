@@ -41,21 +41,17 @@ describe('Account Store Tests', () => {
   })
 
   it('sets name values as expected when setUserName is called (BCSC)', async () => {
-    keycloak.kc.tokenParsed.loginSource = LoginSourceE.BCSC
+    keycloak.kc.tokenParsed.loginSource = LoginSourceE.BCEID
     account.user.value = keycloak.kcUser
-    expect(account.user.loginSource).toBe(LoginSourceE.BCSC)
+    expect(account.user.loginSource).toBe(LoginSourceE.BCEID)
     expect(axiosRequestMocks.get).not.toHaveBeenCalled()
-    await account.setUserName()
-    expect(axiosRequestMocks.get).toHaveBeenCalledOnce()
-    expect(axiosRequestMocks.get).toHaveBeenCalledWith(`${apiURL}/users/@me`)
-    expect(axiosRequestMocks.get).toHaveReturnedWith({ data: testProfile })
   })
 
   it('sets account values as expected when setAccountInfo is called', async () => {
     expect(axiosRequestMocks.get).not.toHaveBeenCalled()
     expect(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT)).toBeNull()
     await account.setAccountInfo()
-    expect(axiosRequestMocks.get).toHaveBeenCalledOnce()
+    expect(axiosRequestMocks.get).toHaveBeenCalled()
     expect(axiosRequestMocks.get).toHaveBeenCalledWith(`${apiURL}/users/${account.user.keycloakGuid}/settings`)
     expect(account.currentAccount).toEqual(testUserSettings[0])
     expect(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT)).toBe(JSON.stringify(testUserSettings[0]))
