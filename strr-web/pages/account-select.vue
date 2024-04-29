@@ -32,8 +32,8 @@ const query = useRoute().query;
 let userAccounts = activeUserAccounts;
 
 if ('test' in query && query.test === "true") {
-  const testData: AccountI = testAccounts as unknown as AccountI;
-  userAccounts = [ testData ];
+  const testData: AccountI[] = testAccounts as unknown as AccountI[];
+  userAccounts = testData;
 }
 
 
