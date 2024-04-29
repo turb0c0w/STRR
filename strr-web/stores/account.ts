@@ -17,6 +17,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   // user info
   const user = computed(() => keycloak.kcUser)
   const userAccounts: Ref<AccountI[]> = ref([])
+  const activeUserAccounts = computed(() => {
+    return userAccounts.value.filter(account => account.accountStatus === AccountStatusE.ACTIVE)
+  })
   const userFirstName: Ref<string> = ref(user.value?.firstName || '-')
   const userLastName: Ref<string> = ref(user.value?.lastName || '')
   const userFullName = computed(() => `${userFirstName.value} ${userLastName.value}`)
@@ -116,7 +119,6 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     }
     if (user.value?.keycloakGuid) {
       userAccounts.value = await getUserAccounts(user.value?.keycloakGuid) || []
-
       if (userAccounts && userAccounts.value.length > 0) {
         currentAccount.value = userAccounts.value[0]
         if (currentAccountId) {
@@ -127,7 +129,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       }
 
       // TODO: TC - loading mail addresses into the store here
-      // Is there a better endpoint to use for this, or should we build our own into API instead
+      // Is there a better endpoint to use for this, or should we may build our own into STRR API instead
 
       userAccounts.value.forEach(async (account) => {
         const details = await getAccountDetails(account.id)
@@ -152,6 +154,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     currentAccount,
     currentAccountName,
     userAccounts,
+    activeUserAccounts,
     userFullName,
     errors,
     updateAuthUserInfo,

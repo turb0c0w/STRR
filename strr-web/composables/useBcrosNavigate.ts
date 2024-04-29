@@ -14,8 +14,6 @@ export const useBcrosNavigate = () => {
     window.location.assign(redirectURL.href)
   }
 
-  console.log(config.public.authWebURL)
-
   // common redirects
   function goToBcrosHome () { redirect(config.public.registryHomeURL) }
   function goToBcrosLogin (idpHint: string) {
