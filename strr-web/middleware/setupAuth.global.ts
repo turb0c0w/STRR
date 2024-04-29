@@ -3,11 +3,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if ((!to.query.error) && !process.env.VITEST_WORKER_ID) {
     // keycloak redirects with the error param when not logged in (nuxt/keycloak issue)
     //   - removing ^ condition will cause an infinite loop of keycloak redirects when not authenticated
-    const { kcURL, kcRealm, kcClient } = useRuntimeConfig().public
-    await useBcrosAuth().setupAuth(
-      { url: kcURL, realm: kcRealm, clientId: kcClient },
-      to.params.currentAccountId as string || to.query.currentAccountId as string
-    )
+    // const { kcURL, kcRealm, kcClient } = useRuntimeConfig().public
+    // await useBcrosAuth().setupAuth(
+    //   { url: kcURL, realm: kcRealm, clientId: kcClient },
+    //   to.params.currentAccountId as string || to.query.currentAccountId as string
+    // )
 
     // For e2e testing, leave for now
     if (process.client && sessionStorage?.getItem('FAKE_LOGIN')) {
