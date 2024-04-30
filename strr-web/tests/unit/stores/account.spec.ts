@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { axiosRequestMocks, axiosDefaultMock } from '../utils/mockedAxios'
-import { testParsedToken, testProfile, testUserSettings } from '../utils/mockedData'
+import { testParsedToken, testUserSettings } from '../utils/mockedData'
 import { useBcrosAccount } from '@/stores/account'
 import { useBcrosKeycloak } from '@/stores/keycloak'
 

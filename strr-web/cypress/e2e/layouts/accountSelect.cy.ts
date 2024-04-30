@@ -1,5 +1,4 @@
 import accounts from '../../fixtures/accounts.json'
-import noAccounts from '../../fixtures/noAccounts.json'
 import accountDetails from '../../fixtures/accountDetails.json'
 
 describe('Layout -> Account Select (No Active Accounts)', () => {

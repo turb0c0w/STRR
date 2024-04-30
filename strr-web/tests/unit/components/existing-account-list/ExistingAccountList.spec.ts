@@ -1,7 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
 import { BcrosExistingAccountsList } from '#components'
-import { existingAccountList } from '@/tests/unit/utils/mockedData'
 
 describe('Existing Accounts List tests', () => {
   let wrapper: VueWrapper<any>
