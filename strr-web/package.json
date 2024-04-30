@@ -15,7 +15,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "test": "vitest",
-    "test:cov": "vitest run --coverage",
+    "test:cov": "vitest run --coverage && cp ./coverage/cobertura-coverage.xml ./coverage.xml",
     "test:e2e": "cypress open",
     "test:e2e:firefox": "cypress run firefox",
     "test:e2e:chrome": "cypress run chrome",
