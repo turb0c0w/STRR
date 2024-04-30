@@ -3,7 +3,11 @@
     <div
       v-for="(account, index) in accounts"
       :key="account.id"
-      :class="`${index == accounts.length - 1 ? 'rounded-b-[4px]' : ''} ${index == 0 ? 'rounded-t-[4px]' : ''} bg-white shadow-md`"
+      :class="`
+        ${index == accounts.length - 1 ? 'rounded-b-[4px]' : ''}
+        ${index == 0 ? 'rounded-t-[4px]' : ''}
+        bg-white shadow-md
+      `"
     >
       <div
         :class="`${index != accounts.length - 1 ? 'border-b' : ''} mobile:flex-col items-center pb-[24px] flex flex-row
