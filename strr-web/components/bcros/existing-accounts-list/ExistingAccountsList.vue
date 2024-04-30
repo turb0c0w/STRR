@@ -1,6 +1,10 @@
 <template>
   <div class="rounded-lg flex flex-col justify-center mb-[32px]" data-cy="existing-accounts-list">
-    <div v-for="(account, index) in accounts" :key="account.id" :class="`${index == accounts.length - 1 ? 'rounded-b' : ''} ${index == 0 ? 'rounded-t' : ''} bg-white shadow-md`">
+    <div
+      v-for="(account, index) in accounts"
+      :key="account.id"
+      :class="`${index == accounts.length - 1 ? 'rounded-b' : ''} ${index == 0 ? 'rounded-t' : ''} bg-white shadow-md`"
+    >
       <div
         :class="`${index != accounts.length - 1 ? 'border-b' : ''} mobile:flex-col items-center pb-[24px] flex flex-row
         justify-space-between mobile:mx-[8px] mx-[32px] mt-[24px] border-bcGovColor-hairlinesOnWhite`"
