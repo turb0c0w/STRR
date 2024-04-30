@@ -3,18 +3,18 @@ name: STRR API CI
 on:
   pull_request:
     paths:
-      - "api/**"
+      - "strr-api/**"
   workflow_dispatch:
 
 defaults:
   run:
     shell: bash
-    working-directory: ./api
+    working-directory: ./strr-api
 
 jobs:
   strr-api-ci:
     uses: bcgov/bcregistry-sre/.github/workflows/backend-ci.yaml@main
     with:
       app_name: "strr-api"
-      working_directory: "./api"
+      working_directory: "./strr-api"
       codecov_flag: "strrapi"

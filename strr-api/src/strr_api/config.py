@@ -44,8 +44,7 @@ Environment variables are used to store the necessary values for each setting.
 
 import os
 
-from dotenv import find_dotenv
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -140,10 +139,10 @@ class Testing(Config):  # pylint: disable=too-few-public-methods
 
     TESTING = True
 
-    DATABASE_TEST_USERNAME = os.getenv("DATABASE_TEST_USERNAME", "")
-    DATABASE_TEST_PASSWORD = os.getenv("DATABASE_TEST_PASSWORD", "")
-    DATABASE_TEST_NAME = os.getenv("DATABASE_TEST_NAME", "")
-    DATABASE_TEST_HOST = os.getenv("DATABASE_TEST_HOST", "")
+    DATABASE_TEST_USERNAME = os.getenv("DATABASE_TEST_USERNAME", "postgres")
+    DATABASE_TEST_PASSWORD = os.getenv("DATABASE_TEST_PASSWORD", "postgres")
+    DATABASE_TEST_NAME = os.getenv("DATABASE_TEST_NAME", "test")
+    DATABASE_TEST_HOST = os.getenv("DATABASE_TEST_HOST", "localhost")
     DATABASE_TEST_PORT = int(os.getenv("DATABASE_TEST_PORT", "5432"))  # POSTGRESQL
 
     SQLALCHEMY_DATABASE_URI = (

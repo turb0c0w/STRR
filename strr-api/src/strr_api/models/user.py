@@ -41,22 +41,6 @@ from __future__ import annotations
 from flask import current_app
 
 from .db import db
-from ..common.enum import auto
-from ..common.enum import BaseEnum
-
-
-class UserRoles(BaseEnum):
-    """Enum of the roles used across the domain."""
-
-    # pylint: disable=invalid-name
-    admin_edit = auto()
-    basic = auto()
-    bn_edit = auto()
-    colin = auto()
-    public_user = auto()
-    staff = auto()
-    system = auto()
-    # pylint: enable=invalid-name
 
 
 class User(db.Model):

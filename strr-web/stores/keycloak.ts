@@ -38,6 +38,8 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
     sessionStorage.removeItem(SessionStorageKeyE.KEYCLOAK_TOKEN_REFRESH)
     sessionStorage.removeItem(SessionStorageKeyE.KEYCLOAK_TOKEN_ID)
     sessionStorage.removeItem(SessionStorageKeyE.KEYCLOAK_SYNCED)
+    // TODO: TC - investigate if this fix for "not quite logged out redirect issue"
+    sessionStorage.removeItem(SessionStorageKeyE.CURRENT_ACCOUNT)
   }
 
   function syncSessionStorage () {
@@ -94,10 +96,10 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
   ) {
     setTimeout(() => {
       if (kc.value?.isTokenExpired(minValidity)) {
-        console.info('Token set to expire soon. Refreshing token...') // eslint-disable-line no-console
+        console.info('Token set to expire soon. Refreshing token...')
         kc.value?.updateToken(minValidity)
         syncSessionStorage()
-        console.info('Token updated.') // eslint-disable-line no-console
+        console.info('Token updated.')
         scheduleRefreshToken(timeout, minValidity)
       }
     }, timeout)

@@ -17,6 +17,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   // user info
   const user = computed(() => keycloak.kcUser)
   const userAccounts: Ref<AccountI[]> = ref([])
+  const activeUserAccounts = computed(() => {
+    return userAccounts.value.filter(account => account.accountStatus === AccountStatusE.ACTIVE)
+  })
   const userFirstName: Ref<string> = ref(user.value?.firstName || '-')
   const userLastName: Ref<string> = ref(user.value?.lastName || '')
   const userFullName = computed(() => `${userFirstName.value} ${userLastName.value}`)
@@ -69,6 +72,26 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     userLastName.value = user.value?.lastName || ''
   }
 
+  /** Get details for an account (org) */
+  async function getAccountDetails (orgId: string) {
+    const apiURL = useRuntimeConfig().public.authApiURL
+    return await axios.get(`${apiURL}/orgs/${orgId}`)
+      .then((response) => {
+        const data = response?.data
+        if (!data) { throw new Error('Invalid AUTH API response') }
+        return data
+      })
+      .catch((error) => {
+        console.warn('Error fetching user account details.')
+        // TODO: TC - add error handling
+        errors.value.push({
+          statusCode: error?.response?.status || StatusCodes.INTERNAL_SERVER_ERROR,
+          message: error?.response?.data?.message,
+          category: ErrorCategoryE.ACCOUNT_LIST
+        })
+      })
+  }
+
   /** Get the user's account list */
   async function getUserAccounts (keycloakGuid: string) {
     const apiURL = useRuntimeConfig().public.authApiURL
@@ -104,6 +127,16 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
         }
         sessionStorage.setItem(SessionStorageKeyE.CURRENT_ACCOUNT, JSON.stringify(currentAccount.value))
       }
+
+      // TODO: TC - loading mail addresses into the store here
+      // Is there a better endpoint to use for this, or should we may build our own into STRR API instead
+
+      userAccounts.value.forEach(async (account) => {
+        const details = await getAccountDetails(account.id)
+        if (details) {
+          account.mailingAddress = details.mailingAddress
+        }
+      })
     }
   }
 
@@ -121,6 +154,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     currentAccount,
     currentAccountName,
     userAccounts,
+    activeUserAccounts,
     userFullName,
     errors,
     updateAuthUserInfo,

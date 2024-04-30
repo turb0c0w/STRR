@@ -40,7 +40,6 @@ from flask import Flask
 
 from .base import bp as base_endpoint
 from .ops import bp as ops_endpoint
-from .json_schema import bp as json_schema_endpoint
 
 
 def register_endpoints(app: Flask):
@@ -63,9 +62,4 @@ def register_endpoints(app: Flask):
     app.register_blueprint(
         url_prefix="/ops",
         blueprint=ops_endpoint,
-    )
-
-    app.register_blueprint(
-        url_prefix="/json-schemas",
-        blueprint=json_schema_endpoint,
     )
