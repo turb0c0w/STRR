@@ -31,26 +31,29 @@ describe('accessibility -> Account Select', () => {
   // TODO - TC - change this to use our existing-account-list component instead
   it('checks the summary table passes accessibility', () => {
 
-    // cy.checkA11y('[data-cy=individualsSummaryTable]', { rules: { 'nested-interactive': { enabled: false } } })
-    // cy.get('[data-cy=popover-button]').eq(0).click()
-    // cy.wait(100)
-    // cy.checkA11y('[data-cy=summary-table-buttons]', {
-    //   rules: {
-    //     'nested-interactive': { enabled: false },
-    //     'aria-hidden-focus': { enabled: false }
-    //   }
-    // })
+    //   cy.checkA11y('[data-cy=individualsSummaryTable]', { rules: { 'nested-interactive': { enabled: false } } })
 
-    // // close the popover panel
-    // cy.get('[data-cy=popover-button]').eq(0).click()
+    //   cy.get('[data-cy=popover-button]').eq(0).click()
+    //   cy.wait(100)
+    //   cy.checkA11y('[data-cy=summary-table-buttons]', {
+    //     rules: {
+    //       'nested-interactive': { enabled: false },
+    //       'aria-hidden-focus': { enabled: false }
+    //     }
+    //   })
 
-    // // empty table
-    // cy.get('[data-cy=popover-button]').then((buttons) => {
-    //   for (let i = 0; i < buttons.length; i++) {
-    //     cy.get('[data-cy=popover-button]').first().click()
-    //     cy.get('[data-cy=remove-button]').click()
-    //   }
-    // })
-    // cy.checkA11y('[data-cy=individualsSummaryTable]')
+    //   // close the popover panel
+    //   cy.get('[data-cy=popover-button]').eq(0).click()
+
+    //   // empty table
+    //   cy.get('[data-cy=popover-button]').then((buttons) => {
+    //     for (let i = 0; i < buttons.length; i++) {
+    //       cy.get('[data-cy=popover-button]').first().click()
+    //       cy.get('[data-cy=remove-button]').click()
+    //     }
+    //   })
+    //   cy.checkA11y('[data-cy=individualsSummaryTable]')
+    //
+
   })
 })

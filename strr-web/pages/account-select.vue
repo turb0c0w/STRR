@@ -18,8 +18,8 @@
 </template>
 
 <script setup lang="ts">
+import testAccounts from './test-accounts.json'
 import { AccountI, AlertsFlavourE } from '#imports'
-import testAccounts from '@/tests/unit/utils/mockedAccounts.json'
 
 const t = useNuxtApp().$i18n.t
 
