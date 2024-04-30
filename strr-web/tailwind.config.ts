@@ -4,7 +4,7 @@ export default <Partial<Config>>{
   content: ['*.{html,ts,js,vue}'],
   theme: {
     screens: {
-      'mobile': { 'max': '1024px' },
+      mobile: { max: '1024px' }
       // => @media (max-width: 1024px) { ... }
     },
     extend: {
@@ -76,8 +76,8 @@ export default <Partial<Config>>{
           900: '#212529'
         },
         yellow: {
-          50: "#fff8e3",
-          500: "#FCBA19"
+          50: '#fff8e3',
+          500: '#FCBA19'
         },
         blue: {
           50: '#e0e7ed',

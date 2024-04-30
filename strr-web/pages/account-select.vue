@@ -18,8 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import { AccountI, AlertsFlavourE } from '#imports'
 import testAccounts from './test-accounts.json'
+import { AccountI, AlertsFlavourE } from '#imports'
 
 const t = useNuxtApp().$i18n.t
 
@@ -27,15 +27,14 @@ const alertFlavour: AlertsFlavourE = AlertsFlavourE.INFO
 
 const { activeUserAccounts } = useBcrosAccount()
 
-const query = useRoute().query;
+const query = useRoute().query
 
-let userAccounts = activeUserAccounts;
+let userAccounts = activeUserAccounts
 
-if ('test' in query && query.test === "true") {
-  const testData: AccountI[] = testAccounts as unknown as AccountI[];
-  userAccounts = testData;
+if ('test' in query && query.test === 'true') {
+  const testData: AccountI[] = testAccounts as unknown as AccountI[]
+  userAccounts = testData
 }
-
 
 const existingAcccountsTitle = `${t('account.existing-account-section.title')} (${userAccounts.length})`
 

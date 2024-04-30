@@ -5,7 +5,7 @@ import accountDetails from '../../fixtures/accountDetails.json'
 describe('Layout -> Account Select (No Active Accounts)', () => {
   it('shows correct values', () => {
     // TODO: TC - are these required just to do validation?
-    // setup intercepts 
+    // setup intercepts
     cy.intercept(
       'GET',
       'https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/users/testSub/settings',
@@ -14,18 +14,16 @@ describe('Layout -> Account Select (No Active Accounts)', () => {
       'GET',
       `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/orgs/${account.id}`,
       accountDetails).as('accountDetails')
-      
+
     // TODO: TC do we need fake login for this?
 
-    cy.visit(`/account-select`)
+    cy.visit('/account-select')
     cy.wait(['@accounts', '@accountDetails'])
 
     // TODO: TC - existing-account-list should not exist
     // Check for other header
-
   })
 })
-
 
 describe('Layout -> Account Select (No Active Accounts)', () => {
   it('shows correct values', () => {
@@ -38,15 +36,14 @@ describe('Layout -> Account Select (No Active Accounts)', () => {
       'GET',
       `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/orgs/${account.id}`,
       accountDetails).as('accountDetails')
-      
+
     // TODO: TC do we need fake login for this?
 
-    cy.visit(`/account-select`)
+    cy.visit('/account-select')
     cy.wait(['@accounts', '@accountDetails'])
 
     // TODO: TC - existing-account-list should not exist
     // Check for other header
-
   })
 })
 
@@ -64,7 +61,7 @@ describe('Layout -> Account Select (Active Accounts)', () => {
 
     // TODO: TC do we need fake login for this?
 
-    cy.visit(`/account-select`)
+    cy.visit('/account-select')
     cy.wait(['@accounts', '@accountDetails'])
 
     // TODO: TC - existing-account-list should exist

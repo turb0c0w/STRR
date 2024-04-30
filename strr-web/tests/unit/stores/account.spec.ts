@@ -8,7 +8,7 @@ import { useBcrosKeycloak } from '@/stores/keycloak'
 describe('Account Store Tests', () => {
   let account: any
   let keycloak: any
-  //TODO: TC - what is this one, hopefully auth api
+  // TODO: TC - what is this one, hopefully auth api
   let apiURL: string
 
   // axios mocks
@@ -40,7 +40,7 @@ describe('Account Store Tests', () => {
     expect(account.errors).toEqual([])
   })
 
-  it('sets name values as expected when setUserName is called (BCSC)', async () => {
+  it('sets name values as expected when setUserName is called (BCSC)', () => {
     keycloak.kc.tokenParsed.loginSource = LoginSourceE.BCEID
     account.user.value = keycloak.kcUser
     expect(account.user.loginSource).toBe(LoginSourceE.BCEID)
@@ -63,6 +63,5 @@ describe('Account Store Tests', () => {
 
   // TODO: TC - add api calls to use mock data to
   // - get userAccounts to Account array
-  // - add mailing address to each account 
-
+  // - add mailing address to each account
 })

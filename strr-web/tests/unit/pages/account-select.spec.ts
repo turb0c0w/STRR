@@ -13,6 +13,6 @@ describe('Tests for Account Selection page', () => {
 
   test('Contains all the expected elements', () => {
     expect(wrapper.find('[data-cy="account-select-page"]').exists()).toBe(true)
-    //TODO: TC - add the existing account list if there are accounts?
+    // TODO: TC - add the existing account list if there are accounts?
   })
 })
