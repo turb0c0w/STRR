@@ -6,7 +6,7 @@
         <BcrosAlertsMessage :flavour="alertFlavour">
           <b>{{ t('general.note') }} </b>{{ t('account.existing-account-warning') }}
         </BcrosAlertsMessage>
-        <BcrosTypographyH2 :text="existingAcccountsTitle" data-cy="accountPageAccountSectionTitle" />
+        <BcrosTypographyH2 :text="existingAccountsTitle" data-cy="accountPageAccountSectionTitle" />
         <span class="text-[16px] mb-[20px] block">{{ t('account.existing-account-section.sub-title') }}</span>
       </div>
       <BcrosExistingAccountsList :accounts="userAccounts" />
@@ -36,6 +36,6 @@ if ('test' in query && query.test === 'true') {
   userAccounts = testData
 }
 
-const existingAcccountsTitle = `${t('account.existing-account-section.title')} (${userAccounts.length})`
+const existingAccountsTitle = `${t('account.existing-account-section.title')} (${userAccounts.length})`
 
 </script>

@@ -1,15 +1,12 @@
 import { fileURLToPath } from 'node:url'
 import { defineVitestConfig } from '@nuxt/test-utils/config'
-import { configDefaults } from 'vitest/config'
 
 export default defineVitestConfig({
   test: {
     dir: 'tests',
-    // coverage: {
-    //     reportsDirectory: 'coverage',
-    // },
-
     coverage: {
+      enabled: true,
+      reporter: ['text', 'lcov', 'cobertura'],
       exclude: [
         "*.config.ts",
         "enums/*",
@@ -17,6 +14,7 @@ export default defineVitestConfig({
         "*.d.ts",
         ".nuxt/*"
       ],
+      reportsDirectory: 'coverage',
     },
     environment: 'nuxt',
     environmentOptions: {
