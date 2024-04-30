@@ -1,9 +1,17 @@
 <template>
-  <div class="flex flex-col justify-center mb-[32px]" data-cy="existing-accounts-list">
-    <div v-for="account in accounts" :key="account.id" class="bg-white shadow-md">
+  <div class="rounded-lg flex flex-col justify-center mb-[32px]" data-cy="existing-accounts-list">
+    <div
+      v-for="(account, index) in accounts"
+      :key="account.id"
+      :class="`
+        ${index == accounts.length - 1 ? 'rounded-b-[4px]' : ''}
+        ${index == 0 ? 'rounded-t-[4px]' : ''}
+        bg-white shadow-md
+      `"
+    >
       <div
-        class="mobile:flex-col items-center pb-[24px] flex flex-row
-        justify-space-between mobile:mx-[8px] mx-[32px] mt-[24px] border-b border-bcGovColor-hairlinesOnWhite"
+        :class="`${index != accounts.length - 1 ? 'border-b' : ''} mobile:flex-col items-center pb-[24px] flex flex-row
+        justify-space-between mobile:mx-[8px] mx-[32px] mt-[24px] border-bcGovColor-hairlinesOnWhite`"
       >
         <div class="flex grow mobile:justify-between mobile:w-full mobile:mb-[16px]">
           <div><BcrosLetterIcon :letter="account.label.charAt(0)" /></div>
@@ -15,7 +23,7 @@
               {{
                 account.mailingAddress
                   ? `${account.mailingAddress.street}, ${account.mailingAddress.city},
-                    ${account.mailingAddress.region} ${account.mailingAddress.postalCode},
+                    ${account.mailingAddress.region}, ${account.mailingAddress.postalCode},
                     ${account.mailingAddress.country}`
                   : '-'
               }}
