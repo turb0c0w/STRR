@@ -1,11 +1,19 @@
 import pytest
+
 from strr_api.models.user import User
 
 
 @pytest.fixture
 def sample_user():
-    return User(username="testUser", firstname="Test", lastname="User",
-                iss="test", sub="subTest", idp_userid="testUserID", login_source="testLogin")
+    return User(
+        username="testUser",
+        firstname="Test",
+        lastname="User",
+        iss="test",
+        sub="subTest",
+        idp_userid="testUserID",
+        login_source="testLogin",
+    )
 
 
 def test_display_name_with_name(sample_user):
@@ -80,8 +88,8 @@ def test_get_or_create_user_by_jwt():
     }
 
     result = User.get_or_create_user_by_jwt(sample_token)
-    assert result.sub == sample_token['sub']
-    assert result.login_source == sample_token['loginSource']
+    assert result.sub == sample_token["sub"]
+    assert result.login_source == sample_token["loginSource"]
 
 
 def test_get_or_create_user_by_jwt_no_user():
@@ -93,8 +101,8 @@ def test_get_or_create_user_by_jwt_no_user():
     }
 
     result = User.get_or_create_user_by_jwt(sample_token)
-    assert result.sub == sample_token['sub']
-    assert result.login_source == sample_token['loginSource']
+    assert result.sub == sample_token["sub"]
+    assert result.login_source == sample_token["loginSource"]
 
 
 def test_get_or_create_user_by_jwt_exception():

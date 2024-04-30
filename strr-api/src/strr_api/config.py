@@ -44,8 +44,7 @@ Environment variables are used to store the necessary values for each setting.
 
 import os
 
-from dotenv import find_dotenv
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 

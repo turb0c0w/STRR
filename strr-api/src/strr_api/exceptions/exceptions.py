@@ -51,6 +51,6 @@ class ExternalServiceException(BaseExceptionE):
 
     def __post_init__(self):
         """Return a valid ExternalServiceException."""
-        self.message = '3rd party service error while processing request.'
-        self.error = f'{repr(self.error)}, {self.status_code}'
+        self.message = "3rd party service error while processing request."
+        self.error = f"{repr(self.error)}, {self.status_code}"
         self.status_code = HTTPStatus.SERVICE_UNAVAILABLE

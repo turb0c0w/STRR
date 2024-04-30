@@ -35,7 +35,6 @@
 from .db import db  # noqa: I001
 from .user import User
 
-
 __all__ = (
     "db",
     "User",

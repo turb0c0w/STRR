@@ -35,8 +35,12 @@
 from .pay import PayService
 
 PAYMENT_REQUEST_TEMPLATE = {
-    'filingInfo': {'filingTypes': [{'filingTypeCode': 'REGSIGIN'}]},
-    'businessInfo': {'corpType': 'STRR'}
+    "filingInfo": {"filingTypes": [{"filingTypeCode": "REGSIGIN"}]},
+    "businessInfo": {"corpType": "STRR"},
 }
-strr_pay = PayService(default_invoice_payload={'filingInfo': {'filingTypes': [{'filingTypeCode': 'REGSIGIN'}]},
-                                               'businessInfo': {'corpType': 'STRR'}})
+strr_pay = PayService(
+    default_invoice_payload={
+        "filingInfo": {"filingTypes": [{"filingTypeCode": "REGSIGIN"}]},
+        "businessInfo": {"corpType": "STRR"},
+    }
+)

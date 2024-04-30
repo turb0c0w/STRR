@@ -44,8 +44,7 @@ from flask import jsonify
 from werkzeug.exceptions import HTTPException
 from werkzeug.routing import RoutingException
 
-
-logger = logging.getLogger('api')
+logger = logging.getLogger("api")
 
 
 def init_app(app):

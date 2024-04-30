@@ -39,20 +39,23 @@ readiness of the API respectively.
 Health is determined by the ability to execute a simple SELECT 1 query on the connected database.
 """
 from http import HTTPStatus
+
 from flask import Blueprint, current_app
-from sqlalchemy import exc, text
 from flask_restx import Namespace, Resource
+from sqlalchemy import exc, text
+
 from strr_api.models import db
+
 from .base import api
 
 bp = Blueprint("ops", __name__)
-ns = Namespace('ops', description='Ops Endpoints')
+ns = Namespace("ops", description="Ops Endpoints")
 api.add_namespace(ns, path="")
 
 
 @ns.route("/healthz", methods=("GET",))
 class Health(Resource):
-    '''Health check endpoint.'''
+    """Health check endpoint."""
 
     def get(self):
         """
@@ -66,21 +69,21 @@ class Health(Resource):
             A dictionary with the message 'api is down' and the HTTP status code 500 if the database connection fails.
         """
         try:
-            db.session.execute(text('select 1'))
+            db.session.execute(text("select 1"))
         except exc.SQLAlchemyError as db_exception:
-            current_app.logger.error('DB connection pool unhealthy:' + repr(db_exception))
-            return {'message': 'api is down'}, HTTPStatus.INTERNAL_SERVER_ERROR
+            current_app.logger.error("DB connection pool unhealthy:" + repr(db_exception))
+            return {"message": "api is down"}, HTTPStatus.INTERNAL_SERVER_ERROR
         except Exception as default_exception:  # noqa: B902; log error
-            current_app.logger.error('DB connection failed:' + repr(default_exception))
-            return {'message': 'api is down'}, 500
+            current_app.logger.error("DB connection failed:" + repr(default_exception))
+            return {"message": "api is down"}, 500
 
-        return {'message': 'api is healthy'}, HTTPStatus.OK
+        return {"message": "api is healthy"}, HTTPStatus.OK
 
 
 @ns.route("/readyz", methods=("GET",))
 class Ready(Resource):
-    '''Readiness check endpoint.'''
+    """Readiness check endpoint."""
 
     def get(self):
         """Return a JSON object that identifies if the service is setup and ready to work."""
-        return {'message': 'api is ready'}, HTTPStatus.OK
+        return {"message": "api is ready"}, HTTPStatus.OK
