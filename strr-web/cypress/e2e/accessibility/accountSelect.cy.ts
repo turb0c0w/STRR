@@ -45,15 +45,15 @@ describe('accessibility -> Account Select', () => {
     //   // close the popover panel
     //   cy.get('[data-cy=popover-button]').eq(0).click()
 
-  //   // empty table
-  //   cy.get('[data-cy=popover-button]').then((buttons) => {
-  //     for (let i = 0; i < buttons.length; i++) {
-  //       cy.get('[data-cy=popover-button]').first().click()
-  //       cy.get('[data-cy=remove-button]').click()
-  //     }
-  //   })
-  //   cy.checkA11y('[data-cy=individualsSummaryTable]')
-  //
+    //   // empty table
+    //   cy.get('[data-cy=popover-button]').then((buttons) => {
+    //     for (let i = 0; i < buttons.length; i++) {
+    //       cy.get('[data-cy=popover-button]').first().click()
+    //       cy.get('[data-cy=remove-button]').click()
+    //     }
+    //   })
+    //   cy.checkA11y('[data-cy=individualsSummaryTable]')
+    //
 
   })
 })

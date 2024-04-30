@@ -55,5 +55,4 @@ describe('accessibility -> Business Layout', () => {
     // // footer
     // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=footer]'] })
   })
-
 })
