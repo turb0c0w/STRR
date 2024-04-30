@@ -32,15 +32,15 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 """This module wraps helper services used by the API."""
-from .entity import EntityService
-# from .json_schema import SchemaService
 from .pay import PayService
 
 PAYMENT_REQUEST_TEMPLATE = {
-    'filingInfo': {'filingTypes': [{'filingTypeCode': 'REGSIGIN'}]},
-    'businessInfo': {'corpType': 'STRR'}
+    "filingInfo": {"filingTypes": [{"filingTypeCode": "REGSIGIN"}]},
+    "businessInfo": {"corpType": "STRR"},
 }
-strr_pay = PayService(default_invoice_payload={'filingInfo': {'filingTypes': [{'filingTypeCode': 'REGSIGIN'}]},
-                                               'businessInfo': {'corpType': 'STRR'}})
-
-strr_entity = EntityService()
+strr_pay = PayService(
+    default_invoice_payload={
+        "filingInfo": {"filingTypes": [{"filingTypeCode": "REGSIGIN"}]},
+        "businessInfo": {"corpType": "STRR"},
+    }
+)

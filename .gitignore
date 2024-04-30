@@ -156,3 +156,5 @@ htmlcov/
 **/bods_csvs/*
 
 run.sh
+lint.sh
+unit-tests.sh

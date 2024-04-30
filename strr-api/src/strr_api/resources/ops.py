@@ -41,38 +41,49 @@ Health is determined by the ability to execute a simple SELECT 1 query on the co
 from http import HTTPStatus
 
 from flask import Blueprint, current_app
+from flask_restx import Namespace, Resource
 from sqlalchemy import exc, text
 
 from strr_api.models import db
 
+from .base import api
+
 bp = Blueprint("ops", __name__)
+ns = Namespace("ops", description="Ops Endpoints")
+api.add_namespace(ns, path="")
 
 
-@bp.route("/healthz", methods=("GET",))
-def healthy():
-    """
-    Check the health of the API.
+@ns.route("/healthz", methods=("GET",))
+class Health(Resource):
+    """Health check endpoint."""
 
-    This method is used to check the health of the API by testing the database connection.
-    It sends a SELECT 1 query to the database and if it executes successfully, the API is considered healthy.
+    def get(self):
+        """
+        Check the health of the API.
 
-    Returns:
-        A dictionary with the message 'api is healthy' and the HTTP status code 200 if the API is healthy.
-        A dictionary with the message 'api is down' and the HTTP status code 500 if the database connection fails.
-    """
-    try:
-        db.session.execute(text('select 1'))
-    except exc.SQLAlchemyError as db_exception:
-        current_app.logger.error('DB connection pool unhealthy:' + repr(db_exception))
-        return {'message': 'api is down'}, HTTPStatus.INTERNAL_SERVER_ERROR
-    except Exception as default_exception:  # noqa: B902; log error
-        current_app.logger.error('DB connection failed:' + repr(default_exception))
-        return {'message': 'api is down'}, 500
+        This method is used to check the health of the API by testing the database connection.
+        It sends a SELECT 1 query to the database and if it executes successfully, the API is considered healthy.
 
-    return {'message': 'api is healthy'}, HTTPStatus.OK
+        Returns:
+            A dictionary with the message 'api is healthy' and the HTTP status code 200 if the API is healthy.
+            A dictionary with the message 'api is down' and the HTTP status code 500 if the database connection fails.
+        """
+        try:
+            db.session.execute(text("select 1"))
+        except exc.SQLAlchemyError as db_exception:
+            current_app.logger.error("DB connection pool unhealthy:" + repr(db_exception))
+            return {"message": "api is down"}, HTTPStatus.INTERNAL_SERVER_ERROR
+        except Exception as default_exception:  # noqa: B902; log error
+            current_app.logger.error("DB connection failed:" + repr(default_exception))
+            return {"message": "api is down"}, 500
+
+        return {"message": "api is healthy"}, HTTPStatus.OK
 
 
-@bp.route("/readyz", methods=("GET",))
-def ready():
-    """Return a JSON object that identifies if the service is setup and ready to work."""
-    return {'message': 'api is ready'}, HTTPStatus.OK
+@ns.route("/readyz", methods=("GET",))
+class Ready(Resource):
+    """Readiness check endpoint."""
+
+    def get(self):
+        """Return a JSON object that identifies if the service is setup and ready to work."""
+        return {"message": "api is ready"}, HTTPStatus.OK

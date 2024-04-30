@@ -1,21 +1,48 @@
-import datetime
-from unittest import mock
-
 import pytest
 
-from strr_api.config import Testing
-from strr_api.models.user import User, db
+from strr_api.models.user import User
 
 
 @pytest.fixture
 def sample_user():
-    return User(username="testUser", firstname="Test", lastname="User",
-                iss="test", sub="subTest", idp_userid="testUserID", login_source="testLogin")
+    return User(
+        username="testUser",
+        firstname="Test",
+        lastname="User",
+        iss="test",
+        sub="subTest",
+        idp_userid="testUserID",
+        login_source="testLogin",
+    )
 
 
 def test_display_name_with_name(sample_user):
     sample_user.middlename = "Middle"
     assert sample_user.display_name == "Test Middle User"
+
+
+def test_display_name_with_idir_prefix(sample_user):
+    sample_user.firstname = None
+    sample_user.lastname = None
+    sample_user.middlename = None
+    sample_user.username = "idir\\testUser"
+    assert sample_user.display_name == "testUser"
+
+
+def test_display_name_with_idir_suffix(sample_user):
+    sample_user.firstname = None
+    sample_user.lastname = None
+    sample_user.middlename = None
+    sample_user.username = "testUser\\idir"
+    assert sample_user.display_name == "testUser"
+
+
+def test_display_name_with_bcsc_prefix(sample_user):
+    sample_user.firstname = None
+    sample_user.lastname = None
+    sample_user.middlename = None
+    sample_user.username = "bcsc\\testUser"
+    assert sample_user.display_name is None
 
 
 def test_display_name_without_name():
@@ -27,44 +54,64 @@ def test_display_name_without_name():
 def test_find_by_id(client, session, sample_user):
     session.add(sample_user)
     session.commit()
-
     result = User.find_by_id(sample_user.id)
-
     assert result == sample_user
 
 
-def test_find_by_username(client, session, sample_user):
-    # session.add(sample_user)
-    # session.commit()
-
+def test_find_by_username(sample_user):
     result = User.find_by_username(sample_user.username)
-
     assert result.username == sample_user.username
 
 
-def test_find_by_sub(client, session, sample_user):
-    # session.add(sample_user)
-    # session.commit()
-
+def test_find_by_sub(sample_user):
     result = User.find_by_sub(sample_user.sub)
-
     assert result.sub == sample_user.sub
 
 
-def test_create_from_jwt_token(client, session,sample_user):
+def test_find_by_jwt_token_no_idp():
     sample_token = {
         "iss": "test",
-        "sub": f"subTest{datetime.datetime.now().strftime('%Y%m%d%H%M')}",
+        "sub": "subTest",
+        "loginSource": "testLogin",
+    }
+
+    result = User.find_by_jwt_token(sample_token)
+    assert result is None
+
+
+def test_get_or_create_user_by_jwt():
+    sample_token = {
+        "iss": "test",
+        "sub": "subTest",
         "idp_userid": "testUserID",
         "loginSource": "testLogin",
     }
 
-    result = User.create_from_jwt_token(sample_token)
-    assert result.sub == sample_token['sub']
-    assert result.login_source == sample_token['loginSource']
+    result = User.get_or_create_user_by_jwt(sample_token)
+    assert result.sub == sample_token["sub"]
+    assert result.login_source == sample_token["loginSource"]
 
 
-def test_save(client, session, sample_user):
+def test_get_or_create_user_by_jwt_no_user():
+    sample_token = {
+        "iss": "x",
+        "sub": "x",
+        "idp_userid": "x",
+        "loginSource": "x",
+    }
+
+    result = User.get_or_create_user_by_jwt(sample_token)
+    assert result.sub == sample_token["sub"]
+    assert result.login_source == sample_token["loginSource"]
+
+
+def test_get_or_create_user_by_jwt_exception():
+    sample_token = "asd"
+    with pytest.raises(Exception):
+        User.get_or_create_user_by_jwt(sample_token)
+
+
+def test_save(session, sample_user):
     u1 = User.find_by_username(sample_user.username)
     if not u1:
         session.add(sample_user)

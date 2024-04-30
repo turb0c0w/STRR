@@ -1,5 +1,4 @@
 import accounts from '../../fixtures/accounts.json'
-import noAccounts from '../../fixtures/noAccounts.json'
 import accountDetails from '../../fixtures/accountDetails.json'
 
 describe('Layout -> Account Select (No Active Accounts)', () => {
@@ -14,6 +13,7 @@ describe('Layout -> Account Select (No Active Accounts)', () => {
       'GET',
       `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/orgs/${account.id}`,
       accountDetails).as('accountDetails')
+
     // TODO: TC do we need fake login for this?
 
     cy.visit('/account-select')
@@ -35,6 +35,7 @@ describe('Layout -> Account Select (No Active Accounts)', () => {
       'GET',
       `https://auth-api-dev.apps.silver.devops.gov.bc.ca/api/v1/orgs/${account.id}`,
       accountDetails).as('accountDetails')
+
     // TODO: TC do we need fake login for this?
 
     cy.visit('/account-select')

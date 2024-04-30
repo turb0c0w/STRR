@@ -38,7 +38,6 @@ These will get initialized by the application using the models
 from flask_sqlalchemy import SQLAlchemy
 from sql_versioning import versioned_session
 
-
 # by convention in the Flask community these are lower case,
 # whereas pylint wants them upper case
 db = SQLAlchemy()

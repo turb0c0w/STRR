@@ -38,22 +38,20 @@ from contextlib import suppress
 from typing import Union
 
 import ldclient
+from flask import Flask, current_app, has_app_context
 from ldclient import Config, Context, LDClient
 from ldclient.integrations.test_data import TestData
-from flask import current_app
-from flask import has_app_context
-from flask import Flask
 
 import strr_api
 
 
-class Flags():
+class Flags:
     """Wrapper around the feature flag system.
 
     1 client per application.
     """
 
-    COMPONENT_NAME = 'featureflags'
+    COMPONENT_NAME = "featureflags"
 
     def __init__(self, app: Flask = None):
         """Initialize this object."""
@@ -69,10 +67,10 @@ class Flags():
         Provide TD for TestData.
         """
         self.app = app
-        self.sdk_key = app.config.get('LD_SDK_KEY')
+        self.sdk_key = app.config.get("LD_SDK_KEY")
 
         if td:
-            client = LDClient(config=Config('testing', update_processor_class=td))
+            client = LDClient(config=Config("testing", update_processor_class=td))
         elif self.sdk_key:
             ldclient.set_config(Config(self.sdk_key))
             client = ldclient.get()
@@ -84,7 +82,7 @@ class Flags():
                 app.teardown_appcontext(self.teardown)
         except Exception as err:  # noqa: B903
             if app and has_app_context():
-                app.logger.warn('issue registering flag service', err)
+                app.logger.warn("issue registering flag service", err)
 
     def teardown(self, exception):  # pylint: disable=unused-argument,useless-option-value; flask method signature
         """Destroy all objects created by this extension.
@@ -112,22 +110,23 @@ class Flags():
         """Convert User into a Flag user dict."""
         if isinstance(user, strr_api.models.User):
             user_ctx = Context(
-                kind='user',
+                kind="user",
                 key=user.sub,
                 attributes={
-                    'firstName': user.firstname,
-                    'lastName': user.lastname,
-                    'email': user.email,
-                    'loginSource': user.login_source
-                })
+                    "firstName": user.firstname,
+                    "lastName": user.lastname,
+                    "email": user.email,
+                    "loginSource": user.login_source,
+                },
+            )
         return Context(
-            kind='multi',
-            key='',
+            kind="multi",
+            key="",
             allow_empty_key=True,
             multi_contexts=[
-                user_ctx or Context(kind='user', key='anonymous'),
-                Context(kind='org', key=str(account_id) if account_id else 'anonymous'),
-            ]
+                user_ctx or Context(kind="user", key="anonymous"),
+                Context(kind="org", key=str(account_id) if account_id else "anonymous"),
+            ],
         )
 
     @staticmethod
@@ -140,7 +139,7 @@ class Flags():
         try:
             return client.variation(flag, flag_context, None)
         except Exception as err:  # noqa: B902
-            current_app.logger.error(f'Unable to read flags: {repr(err)}', exc_info=True)
+            current_app.logger.error(f"Unable to read flags: {repr(err)}", exc_info=True)
             return None
 
     @staticmethod
