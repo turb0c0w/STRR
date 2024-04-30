@@ -54,5 +54,6 @@ describe('accessibility -> Account Select', () => {
   //   })
   //   cy.checkA11y('[data-cy=individualsSummaryTable]')
   //
+
   })
 })

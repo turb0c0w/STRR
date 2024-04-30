@@ -12,21 +12,23 @@ describe('accessibility -> Business Layout', () => {
     cy.injectAxe()
 
     // TODO: TC - change to our layout when no account
-
     // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=header]'] })
   })
 
-  //
-  it('checks Account Select Page passes accessibility (logged in, no accounts)', () => {
+  it('checks Account Select Page passes accessibility (logged in, active accounts)', () => {
     sessionStorage.setItem('FAKE_LOGIN', 'true')
     cy.visit('/account-select')
 
     // TODO: TC - change to our api call for empty return with just settings?
     cy.wait(['@noAccounts'])
     cy.injectAxe()
+    // TODO: TC - change to our api calls
+    cy.wait(['@accounts', '@accountDetails'])
+    cy.injectAxe()
 
-    // TODO: TC - check out layout when someone is auth but no accounts
-    // Click example below for only Create button
+    // TODO: TC - check out layout when someone is auth and has active accounts
+    // Click example below
+    // Include clicking the two buttons - create and choose - move this to AccountSelect?
 
     // // footer
     // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=footer]'] })
@@ -53,4 +55,5 @@ describe('accessibility -> Business Layout', () => {
     // // footer
     // cy.checkA11y({ exclude: ['[data-cy=owner-change]'], include: ['[data-cy=footer]'] })
   })
+
 })

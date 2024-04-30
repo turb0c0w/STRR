@@ -35,24 +35,30 @@
 
 This module is the API for the Legal Entity system.
 """
+import logging
+import logging.config
 import os
 
+import coloredlogs
 import sentry_sdk
-from flask_cors import CORS
-from sentry_sdk.integrations.flask import FlaskIntegration
 from flask import Flask
+from flask_cors import CORS
+from flask_migrate import Migrate, upgrade
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 from .common.auth import jwt
 from .common.flags import Flags
 from .common.run_version import get_run_version
 from .config import Config, Production
-from .logging import set_log_level_by_flag, setup_logging
 from .models import db
 from .resources import register_endpoints
-from .services import strr_entity, strr_pay
+from .services import strr_pay
 from .translations import babel
 
-setup_logging(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'logging.conf'))  # important to do this first
+# logging.config.fileConfig(fname=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'logging.conf'))
+logging.basicConfig(level=logging.DEBUG)
+coloredlogs.install()
+logger = logging.getLogger("api")
 
 
 def create_app(environment: Config = Production, **kwargs) -> Flask:
@@ -60,22 +66,29 @@ def create_app(environment: Config = Production, **kwargs) -> Flask:
     app = Flask(__name__)
     CORS(app)
     app.config.from_object(environment)
+    app.logger.setLevel(logging.DEBUG)
 
     # Configure Sentry
-    if dsn := app.config.get('SENTRY_DSN', None):
+    if dsn := app.config.get("SENTRY_DSN", None):
         sentry_sdk.init(
             dsn=dsn,
             integrations=[FlaskIntegration()],
-            release=f'strr-api@{get_run_version()}',
+            release=f"strr-api@{get_run_version()}",
             send_default_pii=False,
-            environment=app.config.get('POD_NAMESPACE', 'unknown')
+            environment=app.config.get("POD_NAMESPACE", "unknown"),
         )
 
     db.init_app(app)
+
+    if not app.config.get("TESTING", False):
+        Migrate(app, db)
+        logger.info("Running migration upgrade.")
+        with app.app_context():
+            upgrade(directory="migrations", revision="head", sql=False, tag=None)
+
     strr_pay.init_app(app)
-    strr_entity.init_app(app)
     # td is testData instance passed in to support testing
-    td = kwargs.get('ld_test_data', None)
+    td = kwargs.get("ld_test_data", None)
     Flags().init_app(app, td)
     babel.init_app(app)
     register_endpoints(app)
@@ -83,12 +96,17 @@ def create_app(environment: Config = Production, **kwargs) -> Flask:
 
     @app.before_request
     def before_request():  # pylint: disable=unused-variable
-        set_log_level_by_flag()
+        flag_name = os.getenv("OPS_LOGGER_LEVEL_FLAG", None)
+        if flag_name:
+            flag_value = Flags.value(flag_name)
+            if (level_name := logging.getLevelName(logging.getLogger().level)) and flag_value != level_name:
+                logger.error("Logger level is %s, setting to %s", level_name, flag_value)
+                logging.getLogger().setLevel(level=flag_value)
 
     @app.after_request
     def add_version(response):  # pylint: disable=unused-variable
         version = get_run_version()
-        response.headers['API'] = f'strr-api/{version}'
+        response.headers["API"] = f"strr-api/{version}"
         return response
 
     return app
@@ -96,8 +114,10 @@ def create_app(environment: Config = Production, **kwargs) -> Flask:
 
 def setup_jwt_manager(app, jwt_manager):
     """Use flask app to configure the JWTManager to work for a particular Realm."""
+
     def get_roles(a_dict):
-        return a_dict['realm_access']['roles']  # pragma: no cover
-    app.config['JWT_ROLE_CALLBACK'] = get_roles
+        return a_dict["realm_access"]["roles"]  # pragma: no cover
+
+    app.config["JWT_ROLE_CALLBACK"] = get_roles
 
     jwt_manager.init_app(app)
