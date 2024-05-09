@@ -1,21 +1,23 @@
 <template>
   <div data-cy="create-account-page" class="relative h-full">
-    <div class="w-full h-full flex flex-row mobile:flex-col">
-      <div class="grow pr-[24px] mobile:pr-[0px]">
-        <BcrosTypographyH1 text="create-account.title" data-cy="accountPageTitle" class="mobile:pb-[20px]" />
-        <BcrosStepper :active-step="activeStep" :set-active-step="setActiveStep" :steps="steps" />
+    <div class="w-full h-full flex flex-row mobile:flex-col justify-between">
+      <div class="mobile:px-[8px]">
+        <div class="grow pr-[24px] mobile:pr-[0px]">
+          <BcrosTypographyH1 text="create-account.title" data-cy="accountPageTitle" class="mobile:pb-[20px]" />
+          <BcrosStepper :active-step="activeStep" :set-active-step="setActiveStep" :steps="steps" />
+        </div>
+        <div class="shrink mobile:grow">
+          <BcrosFeeWidget />
+        </div>
       </div>
-      <div class="shrink mobile:grow">
-        <BcrosFeeWidget />
-      </div>
+      <BcrosStepperFooter
+        :key="activeStep"
+        :is-first-step="activeStep.valueOf() == 0"
+        :set-next-step="setNextStep"
+        :set-previous-step="setPreviousStep"
+        :is-last-step="activeStep.valueOf() == steps.length - 1"
+      />
     </div>
-    <BcrosStepperFooter
-      :key="activeStep"
-      :is-first-step="activeStep.valueOf() == 0"
-      :set-next-step="setNextStep"
-      :set-previous-step="setPreviousStep"
-      :is-last-step="activeStep.valueOf() == steps.length - 1"
-    />
   </div>
 </template>
 

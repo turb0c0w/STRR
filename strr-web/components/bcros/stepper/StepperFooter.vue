@@ -1,12 +1,18 @@
 <template>
-  <div class="absolute w-screen left-[-55px] bottom-[-75px] bg-white h-[120px] flex items-center pl-[70px]">
+  <div
+    class="
+      bg-white h-[120px] flex items-center
+      desktop:w-screen desktop:absolute desktop:left-[-55px] desktop:bottom-[-75px] desktop:pl-[70px]
+      mobile:relative mobile:px-[8px]
+    "
+  >
     <BcrosButtonsPrimary
       :text="t('general.back')"
       :action="setPreviousStep"
       icon="i-mdi-chevron-left"
       :trailing="false"
       variant="outline"
-      :class-name="`${isFirstStep ? 'hidden': ''} mr-[20px]`"
+      :class-name="`${isFirstStep ? 'hidden': ''} mr-[20px] mobile:mr-[8px]`"
     />
     <BcrosButtonsPrimary
       :text="isLastStep ? t('general.submit') : t('general.next')"
