@@ -1,11 +1,11 @@
 <template>
   <div data-cy="create-account-page">
     <div class="flex flex-row mobile:flex-col">
-      <div class="grow pr-[24px]">
+      <div class="grow pr-[24px] mobile:pr-[0px]">
         <BcrosTypographyH1 text="create-account.title" data-cy="accountPageTitle" class="mobile:pb-[20px]" />
         <BcrosStepper :steps="steps" />
       </div>
-      <div class="shrink">
+      <div class="shrink mobile:grow">
         <BcrosFeeWidget />
       </div>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div
     data-cy="fee-widget"
-    class="w-[280px] rounded-[4px] font-bold text-black bg-white"
+    class="desktop:w-[280px] mobile:w-full rounded-[4px] font-bold text-black bg-white"
   >
     <div class="px-[15px] py-[10px] pt-[10px] text-white bg-blue-550 rounded-t-[4px] flex flex-row justify-between">
       <p>{{ t("fee-widget.summary") }}</p>
