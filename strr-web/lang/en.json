@@ -1,4 +1,12 @@
 {
+  "create-account": {
+    "step-title": {
+      "contact": "Contact Information",
+      "property": "Property Details",
+      "eligibility": "Determine Edit",
+      "review": "Review and Confirm"
+    }
+  },
   "account": {
     "logIn": "Please Log In",
     "title": "Existing Account Found",
