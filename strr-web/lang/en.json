@@ -6,6 +6,7 @@
     "cad": "CAD"
   },
   "create-account": {
+    "title": "Short-Term Rental Registration",
     "step-title": {
       "contact": "Contact Information",
       "property": "Property Details",
