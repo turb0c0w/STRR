@@ -1,6 +1,5 @@
 <template>
   <div
-    data-cy="stepper-component"
     class="
       rounded-[4px] w-full flex flex-row justify-between bg-white px-[20px] pt-[20px]
       mobile:bg-transparent mobile:px-[0px] mobile:pt-[0px]
@@ -58,12 +57,16 @@
 </template>
 
 <script setup lang="ts">
-const { steps } = defineProps<{ steps: StepI[] }>()
-const activeStep = ref(0)
 
-const setActiveStep = (newStep: number) => {
-  activeStep.value = newStep
-}
+const {
+  steps,
+  activeStep,
+  setActiveStep
+} = defineProps<{
+  steps: StepI[],
+  activeStep: number,
+  setActiveStep:(step: number) => void
+}>()
 
 const t = useNuxtApp().$i18n.t
 

@@ -57,6 +57,8 @@
     }
   },
   "general": {
+    "back": "Back",
+    "next": "Next",
     "note": "Note: "
   },
   "labels": {
