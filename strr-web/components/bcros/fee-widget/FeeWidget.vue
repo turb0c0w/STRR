@@ -5,7 +5,7 @@
   >
     <div class="px-[15px] py-[10px] pt-[10px] text-white bg-blue-550 rounded-t-[4px] flex flex-row justify-between">
       <p>{{ t("fee-widget.summary") }}</p>
-      <div class="mobile:hidden" @click="toggleFolded">
+      <div class="hidden mobile:flex" @click="toggleFolded">
         <img src="/icons/caret.svg" :class="`cursor-pointer transition-all ${folded ? 'rotate-180': ''}`">
       </div>
     </div>
