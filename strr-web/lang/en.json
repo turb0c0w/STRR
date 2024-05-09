@@ -1,4 +1,10 @@
 {
+  "fee-widget": {
+    "summary": "Fee Summary",
+    "registration-fee": "STR Registration Fee",
+    "total": "Total Fees",
+    "cad": "CAD"
+  },
   "create-account": {
     "step-title": {
       "contact": "Contact Information",
