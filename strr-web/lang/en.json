@@ -59,7 +59,8 @@
   "general": {
     "back": "Back",
     "next": "Next",
-    "note": "Note: "
+    "note": "Note: ",
+    "submit": "Submit"
   },
   "labels": {
     "services": {

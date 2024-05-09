@@ -6,12 +6,12 @@
       icon="i-mdi-chevron-left"
       :trailing="false"
       variant="outline"
-      class-name="mr-[20px]"
+      :class-name="`${isFirstStep ? 'hidden': ''} mr-[20px]`"
     />
     <BcrosButtonsPrimary
-      :text="t('general.next')"
+      :text="isLastStep ? t('general.submit') : t('general.next')"
       :action="setNextStep"
-      icon="i-mdi-chevron-right"
+      :icon="isLastStep ? '': 'i-mdi-chevron-right'"
       :trailing="true"
     />
   </div>
@@ -20,9 +20,13 @@
 <script setup lang="ts">
 
 const {
+  isFirstStep,
+  isLastStep,
   setNextStep,
   setPreviousStep
 } = defineProps<{
+  isFirstStep: boolean,
+  isLastStep: boolean,
   setNextStep:() => void,
   setPreviousStep:() => void
 }>()
