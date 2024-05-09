@@ -12,15 +12,28 @@
       `"
     >
       <div
-        :class="`${index == activeStep.valueOf() ? 'border-b-[3px] border-blue-500' : ''} pb-[20px] flex flex-col cursor-pointer`"
+        :class="`
+          ${index == activeStep.valueOf() ? 'border-b-[3px] border-blue-500' : ''}
+          pb-[20px] flex flex-col cursor-pointer
+        `"
         @click="setActiveStep(index)"
       >
         <div class="flex justify-center pt-[7px] ">
-          <div :class="`${index == activeStep.valueOf() ? 'bg-blue-500' : ''} grow-0 shrink outline outline-1 outline-blue-500 px-[15px] py-[15px] rounded-full`">
+          <div
+            :class="`
+              ${index == activeStep.valueOf() ? 'bg-blue-500' : ''}
+              grow-0 shrink outline outline-1 outline-blue-500 px-[15px] py-[15px] rounded-full
+            `"
+          >
             <img :src="`${index == activeStep.valueOf() ? `${step.activeIconPath}`: step.inactiveIconPath}`">
           </div>
         </div>
-        <p :class="`${index == activeStep.valueOf() ? 'font-bold text-black' : 'text-blue-500'} mt-[8px] leading-[20px] text-[14px] max-w-[95px] text-center`">
+        <p
+          :class="`
+            ${index == activeStep.valueOf() ? 'font-bold text-black' : 'text-blue-500'}
+            mt-[8px] leading-[20px] text-[14px] max-w-[95px] text-center
+          `"
+        >
           {{ t(step.label) }}
         </p>
       </div>
@@ -38,7 +51,9 @@
 const { steps } = defineProps<{ steps: StepI[] }>()
 const activeStep = ref(0)
 
-const setActiveStep = (newStep: number) => activeStep.value = newStep
+const setActiveStep = (newStep: number) => {
+  activeStep.value = newStep
+}
 
 const t = useNuxtApp().$i18n.t
 
