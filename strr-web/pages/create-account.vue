@@ -1,7 +1,7 @@
 <template>
   <div data-cy="create-account-page" class="relative h-full">
     <div class="w-full h-full flex flex-row mobile:flex-col justify-between">
-      <div class="mobile:px-[8px]">
+      <div class="mobile:px-[8px] w-full h-full flex flex-row mobile:flex-col justify-between">
         <div class="grow pr-[24px] mobile:pr-[0px]">
           <BcrosTypographyH1 text="create-account.title" data-cy="accountPageTitle" class="mobile:pb-[20px]" />
           <BcrosStepper :active-step="activeStep" :set-active-step="setActiveStep" :steps="steps" />

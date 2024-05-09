@@ -2,7 +2,7 @@
   <footer
     id="bcros-main-footer"
     class="h-[54px] flex-[0_0_54px] mobile:flex-[0_0_80px] flex items-center border-t-2
-    border-bcGovColor-navDivider bg-bcGovColor-footer text-sm"
+    border-bcGovColor-navDivider bg-bcGovColor-footer text-sm mobile:mb-[55px]"
     data-cy="footer"
   >
     <div class="m-auto px-4 w-full max-w-[1360px]">

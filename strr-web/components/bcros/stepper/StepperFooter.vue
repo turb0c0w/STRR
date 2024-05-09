@@ -2,8 +2,8 @@
   <div
     class="
       bg-white h-[120px] flex items-center
-      desktop:w-screen desktop:absolute desktop:left-[-55px] desktop:bottom-[-75px] desktop:pl-[70px]
-      mobile:relative mobile:px-[8px]
+      d:w-screen d:absolute d:left-[-55px] d:bottom-[-75px] d:pl-[70px] d:bottom-[0px]
+      m:relative m:px-[8px]
     "
   >
     <BcrosButtonsPrimary
