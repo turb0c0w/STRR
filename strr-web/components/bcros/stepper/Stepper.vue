@@ -23,11 +23,12 @@
           <div
             :class="`
               ${index == activeStep.valueOf() ? 'bg-blue-500' : ''}
-              grow-0 shrink outline outline-1 outline-blue-500 px-[15px] py-[15px] rounded-full flex justify-center items-center
+              grow-0 shrink outline outline-1 outline-blue-500 px-[15px] py-[15px]
+              rounded-full flex justify-center items-center
               mobile:h-[32px] mobile:w-[32px] mobile:p-[2px]
             `"
           >
-            <img 
+            <img
               :src="`${index == activeStep.valueOf() ? `${step.activeIconPath}`: step.inactiveIconPath}`"
               class="mobile:w-[20px] mobile:h-[20px]"
             >
