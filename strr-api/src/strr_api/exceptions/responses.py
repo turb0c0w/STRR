@@ -1,4 +1,4 @@
-# Copyright © 2023 Province of British Columbia
+# Copyright © 2024 Province of British Columbia
 #
 # Licensed under the BSD 3 Clause License, (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,53 +31,22 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-"""Application Specific Exceptions, to manage api errors."""
-from dataclasses import dataclass
+"""Exception responses."""
 from http import HTTPStatus
+from flask import jsonify, current_app
+from .exceptions import BaseExceptionE, ExternalServiceException
 
 
-@dataclass
-class BaseExceptionE(Exception):
-    """Base exception class for custom exceptions."""
-
-    error: str
-    message: str = None
-    status_code: HTTPStatus = None
+def error_response(
+    message: str = "Bad request", http_status: HTTPStatus = HTTPStatus.BAD_REQUEST, errors: list[dict[str, str]] = None
+):
+    """Build generic request response with errors."""
+    return jsonify({"message": message, "details": errors or []}), http_status
 
 
-@dataclass
-class AuthException(BaseExceptionE):
-    """Authorization/Authentication exception."""
-
-    def __post_init__(self):
-        """Return a valid AuthorizationException."""
-        self.error = f"{self.error}, {self.status_code}"
-        if not self.message:
-            self.message = "Unauthorized access."
-        if not self.status_code:
-            self.status_code = HTTPStatus.FORBIDDEN
-
-
-@dataclass
-class InternalServiceException(BaseExceptionE):
-    """STRR API service exception."""
-
-    def __post_init__(self):
-        """Return a valid InternalServiceException."""
-        if not self.message:
-            self.message = "Something went wrong with the STRR API."
-        self.error = f"{repr(self.error)}, {self.status_code}"
-        if not self.status_code:
-            self.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
-
-
-@dataclass
-class ExternalServiceException(BaseExceptionE):
-    """3rd party service exception."""
-
-    def __post_init__(self):
-        """Return a valid ExternalServiceException."""
-        self.message = "3rd party service error while processing request."
-        self.error = f"{repr(self.error)}, {self.status_code}"
-        if not self.status_code:
-            self.status_code = HTTPStatus.BAD_GATEWAY
+def exception_response(exception: BaseExceptionE):
+    """Build exception error response."""
+    current_app.logger.error(repr(exception))
+    if isinstance(exception, ExternalServiceException):
+        return error_response(exception.message, exception.status_code if exception.status_code > 500 else HTTPStatus.BAD_GATEWAY)
+    return error_response(exception.message, exception.status_code)

@@ -37,48 +37,144 @@ This module provides a simple flask blueprint with a single 'home' route that re
 """
 
 import logging
-
-from flask import Blueprint
-from flask import current_app as app
-from flask import jsonify, request
-from flask_restx import Api, Namespace, Resource, abort
-
+import traceback
+from flask import Blueprint, jsonify, request, current_app, g
+from flask_cors import cross_origin
+from flasgger import swag_from
 from strr_api.schemas import utils as schema_utils
+from strr_api.services import AuthService, strr_pay
+from strr_api.common.auth import jwt
+from strr_api.exceptions import ExternalServiceException, AuthException, InternalServiceException
+from strr_api.exceptions import error_response, exception_response
+from http import HTTPStatus
 
 logger = logging.getLogger("api")
 bp = Blueprint("base", __name__)
-api = Api(bp, description="Short Term Rental API", default="?")
-ns = Namespace("", description="Base Endpoints")
-api.add_namespace(ns, path="")
 
 
-@ns.route("/hello")
-class HelloWorld(Resource):
-    """HellowWorld endpoint"""
+@bp.route("/me", methods=("GET",))
+@swag_from({
+    'security': [{'Bearer': []}]
+})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def me():
+    """
+    Get current user's profile.
+    ---
+    tags:
+      - users
+    responses:
+      200:
+        description:
+      401:
+        description:
+    """
 
-    def get(self):
-        """HTTP GET"""
+    try:
+        token = jwt.get_token_auth_header()
+        profile = AuthService.get_user_profile(token)
+        settings = AuthService.get_user_settings(token, profile["keycloakGuid"])
+        orgs = AuthService.get_user_accounts(token)
+        return jsonify({"profile": profile, "orgs": orgs, "settings": settings}), HTTPStatus.OK
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+    except ExternalServiceException as service_exception:
+        return exception_response(service_exception)
+    except Exception as exception:  # pylint: disable=broad-except
+        print(exception)
+        traceback.print_exc()
+        return exception_response(InternalServiceException())
 
-        print("TESTING-PRINT")
-        logger.info("TESTING-LOGGER")
-        app.logger.info("TESTING-APP-LOGGER")
-        return jsonify(name="world")
+
+@bp.route("/search_accounts", methods=("GET",))
+@cross_origin(origin="*")
+def search_accounts():
+    """
+    search_accounts
+    ---
+    tags:
+      - users
+    responses:
+      200:
+        description:
+      401:
+        description:
+    """
+
+    try:
+        token = AuthService.search_accounts("test")
+        return jsonify({"token": token}), HTTPStatus.OK
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+    except ExternalServiceException as service_exception:
+        return exception_response(service_exception)
+    except Exception as exception:  # pylint: disable=broad-except
+        print(exception)
+        traceback.print_exc()
+        return exception_response(InternalServiceException())
 
 
-@ns.route("/goodbye", methods=("POST",))
-class GoodbyeWorld(Resource):
-    """GoodbyeWorld endpoint"""
+@bp.route("/invoice", methods=("POST",))
+@swag_from({
+    'security': [{'Bearer': []}]
+})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def create_invoice():
+    """
+    Create an invoice.
+    ---
+    tags:
+      - users
+    responses:
+      200:
+        description:
+      401:
+        description:
+    """
+    try:
+        account_id = request.headers.get("Account-Id", None)
+        json = {
+            "folioNumber": 1699,
+            "folioNumber": 1699,
+        }
+        invoice = strr_pay.create_invoice(account_id, jwt, json)
+        return jsonify({"invoice": invoice}), HTTPStatus.CREATED
 
-    def post(self):
-        """HTTP POST"""
+    except AuthException as authException:
+        return exception_response(authException)
+    except ExternalServiceException as service_exception:
+        return exception_response(service_exception)
+    except Exception as exception:  # noqa: B902
+        print(exception)
+        traceback.print_exc()
+        return exception_response(InternalServiceException())
 
-        logger.info("Request data: %s", request.get_json())
-        json_input = request.get_json()
-        logger.info("Request data: %s", json_input)
 
-        valid, errors = schema_utils.validate(json_input, "goodbye")
-        if not valid:
-            logger.warning("Validation errors: %s", errors)
-            abort(400, "Bad request")
+@bp.route("/fee_codes", methods=("GET",))
+@cross_origin(origin="*")
+def fee_codes():
+    """
+    Create an invoice.
+    ---
+    tags:
+      - users
+    responses:
+      200:
+        description:
+      401:
+        description:
+    """
+    try:
+        codes = strr_pay.get_fee_codes()
+        return jsonify(codes)
 
-        return jsonify(name="goodbye")
+    except AuthException as authException:
+        return exception_response(authException)
+    except ExternalServiceException as service_exception:
+        return exception_response(service_exception)
+    except Exception as exception:  # noqa: B902
+        print(exception)
+        traceback.print_exc()
+        return exception_response(InternalServiceException())

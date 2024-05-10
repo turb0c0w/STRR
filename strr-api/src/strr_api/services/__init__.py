@@ -32,7 +32,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 """This module wraps helper services used by the API."""
-from .pay import PayService
+from .payment_service import PayService
+from .auth_service import AuthService
+from .rest_service import RestService
 
 PAYMENT_REQUEST_TEMPLATE = {
     "filingInfo": {"filingTypes": [{"filingTypeCode": "REGSIGIN"}]},

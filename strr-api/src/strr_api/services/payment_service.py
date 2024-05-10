@@ -65,6 +65,31 @@ class PayService:
         self.svc_url = app.config.get("PAYMENT_SVC_URL")
         self.timeout = app.config.get("PAY_API_TIMEOUT", 20)
 
+    def get_fee_codes(self) -> requests.Response:
+        """Get fee codes from the pay-api."""
+        try:
+            # make api call
+            headers = {"Content-Type": "application/json"}
+            resp = requests.get(
+                url=self.svc_url + '/codes/fee_codes', headers=headers, timeout=self.timeout
+            )
+            if resp.status_code not in [HTTPStatus.OK]:
+                error = f"{resp.status_code} - {str(resp.json())}"
+                self.app.logger.debug("Invalid response from pay-api: %s", error)
+                raise ExternalServiceException(error=error, status_code=HTTPStatus.PAYMENT_REQUIRED)
+
+            return resp.json()
+
+        except ExternalServiceException as exc:
+            # pass along
+            raise exc
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as err:
+            self.app.logger.debug("Pay-api connection failure:", repr(err))
+            raise ExternalServiceException(error=repr(err), status_code=HTTPStatus.GATEWAY_TIMEOUT) from err
+        except Exception as err:
+            self.app.logger.debug("Pay-api integration (create invoice) failure:", repr(err))
+            raise ExternalServiceException(error=repr(err), status_code=HTTPStatus.PAYMENT_REQUIRED) from err
+
     def create_invoice(self, account_id: str, user_jwt: JwtManager, details: dict) -> requests.Response:
         """Create the invoice via the pay-api."""
         payload = deepcopy(self.default_invoice_payload)
@@ -80,12 +105,14 @@ class PayService:
         try:
             # make api call
             token = user_jwt.get_token_auth_header()
+
             headers = {"Authorization": "Bearer " + token, "Content-Type": "application/json", "Account-Id": account_id}
             resp = requests.post(
                 url=self.svc_url + "/payment-requests", json=payload, headers=headers, timeout=self.timeout
             )
 
             if resp.status_code not in [HTTPStatus.OK, HTTPStatus.CREATED] or not (resp.json()).get("id", None):
+                print(f'code: {resp.status_code}')
                 error = f"{resp.status_code} - {str(resp.json())}"
                 self.app.logger.debug("Invalid response from pay-api: %s", error)
                 raise ExternalServiceException(error=error, status_code=HTTPStatus.PAYMENT_REQUIRED)
@@ -97,7 +124,7 @@ class PayService:
             raise exc
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as err:
             self.app.logger.debug("Pay-api connection failure:", repr(err))
-            raise ExternalServiceException(error=repr(err), status_code=HTTPStatus.PAYMENT_REQUIRED) from err
+            raise ExternalServiceException(error=repr(err), status_code=HTTPStatus.GATEWAY_TIMEOUT) from err
         except Exception as err:
             self.app.logger.debug("Pay-api integration (create invoice) failure:", repr(err))
             raise ExternalServiceException(error=repr(err), status_code=HTTPStatus.PAYMENT_REQUIRED) from err
