@@ -75,6 +75,7 @@ def health():
         current_app.logger.error("DB connection failed:" + repr(default_exception))
         return {"message": "api is down"}, 500
 
+    current_app.logger.info("/ops/healthz")
     return {"message": "api is healthy"}, HTTPStatus.OK
 
 
@@ -90,4 +91,5 @@ def ready():
       200:
         description:
     """
+    current_app.logger.info("/ops/readyz")
     return {"message": "api is ready"}, HTTPStatus.OK

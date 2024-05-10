@@ -36,8 +36,9 @@ This module is responsible for registering the endpoints.
 
 The register_endpoints function registers the provided blueprints and URL prefixes to the Flask application.
 """
-from flask import Flask
 from flasgger import Swagger
+from flask import Flask
+
 from .base import bp as base_endpoint
 from .ops import bp as ops_endpoint
 
@@ -64,17 +65,13 @@ def register_endpoints(app: Flask):
         blueprint=ops_endpoint,
     )
 
-    app.config['SWAGGER'] = {
-        'title': 'STRR API',
-        'specs_route': '/',
-        'uiversion': 3,
-        'securityDefinitions': {
-            'Bearer': {
-                'type': 'apiKey',
-                'in': 'header',
-                'name': 'Authorization'
-            },
+    app.config["SWAGGER"] = {
+        "title": "STRR API",
+        "specs_route": "/",
+        "uiversion": 3,
+        "securityDefinitions": {
+            "Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"},
         },
-        'security': [{'Bearer': []}]
+        "security": [{"Bearer": []}],
     }
     Swagger(app)

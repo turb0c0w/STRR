@@ -1,0 +1,5 @@
+[run]
+omit =
+    src/strr_api/enums/enum.py
+    src/strr_api/common/enum.py
+    src/strr_api/services/rest_service.py

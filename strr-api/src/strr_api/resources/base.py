@@ -37,25 +37,25 @@ This module provides a simple flask blueprint with a single 'home' route that re
 """
 
 import logging
-import traceback
-from flask import Blueprint, jsonify, request, current_app, g
-from flask_cors import cross_origin
-from flasgger import swag_from
-from strr_api.schemas import utils as schema_utils
-from strr_api.services import AuthService, strr_pay
-from strr_api.common.auth import jwt
-from strr_api.exceptions import ExternalServiceException, AuthException, InternalServiceException
-from strr_api.exceptions import error_response, exception_response
 from http import HTTPStatus
+
+from flasgger import swag_from
+from flask import Blueprint, jsonify, request
+from flask_cors import cross_origin
+
+from strr_api.common.auth import jwt
+from strr_api.exceptions import AuthException, ExternalServiceException, error_response, exception_response
+from strr_api.schemas.utils import validate
+
+# from strr_api.schemas import utils as schema_utils
+from strr_api.services import AuthService, strr_pay
 
 logger = logging.getLogger("api")
 bp = Blueprint("base", __name__)
 
 
 @bp.route("/me", methods=("GET",))
-@swag_from({
-    'security': [{'Bearer': []}]
-})
+@swag_from({"security": [{"Bearer": []}]})
 @cross_origin(origin="*")
 @jwt.requires_auth
 def me():
@@ -70,7 +70,6 @@ def me():
       401:
         description:
     """
-
     try:
         token = jwt.get_token_auth_header()
         profile = AuthService.get_user_profile(token)
@@ -81,82 +80,114 @@ def me():
         return exception_response(auth_exception)
     except ExternalServiceException as service_exception:
         return exception_response(service_exception)
-    except Exception as exception:  # pylint: disable=broad-except
-        print(exception)
-        traceback.print_exc()
-        return exception_response(InternalServiceException())
 
 
-@bp.route("/search_accounts", methods=("GET",))
+@bp.route("/create_account", methods=("POST",))
+@swag_from({"security": [{"Bearer": []}]})
 @cross_origin(origin="*")
-def search_accounts():
+@jwt.requires_auth
+def create_account():
     """
-    search_accounts
+    Create a new account for the user.
     ---
     tags:
       - users
+    parameters:
+          - in: body
+            name: body
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: The name of the new user account.
     responses:
-      200:
+      201:
         description:
       401:
         description:
     """
 
     try:
-        token = AuthService.search_accounts("test")
-        return jsonify({"token": token}), HTTPStatus.OK
+        token = jwt.get_token_auth_header()
+        json_input = request.get_json()
+        [valid, errors] = validate(json_input, "new-account")
+        if not valid:
+            return error_response("Invalid request", HTTPStatus.BAD_REQUEST, errors)
+
+        name = json_input.get("name")
+        new_user_account = AuthService.create_user_account(token, name)
+        return jsonify(new_user_account), HTTPStatus.CREATED
     except AuthException as auth_exception:
         return exception_response(auth_exception)
     except ExternalServiceException as service_exception:
         return exception_response(service_exception)
-    except Exception as exception:  # pylint: disable=broad-except
-        print(exception)
-        traceback.print_exc()
-        return exception_response(InternalServiceException())
 
 
-@bp.route("/invoice", methods=("POST",))
-@swag_from({
-    'security': [{'Bearer': []}]
-})
-@cross_origin(origin="*")
-@jwt.requires_auth
-def create_invoice():
-    """
-    Create an invoice.
-    ---
-    tags:
-      - users
-    responses:
-      200:
-        description:
-      401:
-        description:
-    """
-    try:
-        account_id = request.headers.get("Account-Id", None)
-        json = {
-            "folioNumber": 1699,
-            "folioNumber": 1699,
-        }
-        invoice = strr_pay.create_invoice(account_id, jwt, json)
-        return jsonify({"invoice": invoice}), HTTPStatus.CREATED
+# @bp.route("/search_accounts", methods=("GET",))
+# @cross_origin(origin="*")
+# def search_accounts():
+#     """
+#     search_accounts
+#     ---
+#     tags:
+#       - users
+#     responses:
+#       200:
+#         description:
+#       401:
+#         description:
+#     """
 
-    except AuthException as authException:
-        return exception_response(authException)
-    except ExternalServiceException as service_exception:
-        return exception_response(service_exception)
-    except Exception as exception:  # noqa: B902
-        print(exception)
-        traceback.print_exc()
-        return exception_response(InternalServiceException())
+#     try:
+#         token = AuthService.search_accounts("test")
+#         return jsonify({"token": token}), HTTPStatus.OK
+#     except AuthException as auth_exception:
+#         return exception_response(auth_exception)
+#     except ExternalServiceException as service_exception:
+#         return exception_response(service_exception)
+
+
+# @bp.route("/invoice", methods=("POST",))
+# @swag_from({
+#     'security': [{'Bearer': []}]
+# })
+# @cross_origin(origin="*")
+# @jwt.requires_auth
+# def create_invoice():
+#     """
+#     Create an invoice.
+#     ---
+#     tags:
+#       - users
+#     responses:
+#       200:
+#         description:
+#       401:
+#         description:
+#     """
+#     try:
+#         account_id = request.headers.get("Account-Id", None)
+#         json = {
+#             "folioNumber": 1699,
+#             "folioNumber": 1699,
+#         }
+#         invoice = strr_pay.create_invoice(account_id, jwt, json)
+#         return jsonify({"invoice": invoice}), HTTPStatus.CREATED
+
+#     except AuthException as auth_exception:
+#         return exception_response(auth_exception)
+#     except ExternalServiceException as service_exception:
+#         return exception_response(service_exception)
 
 
 @bp.route("/fee_codes", methods=("GET",))
 @cross_origin(origin="*")
 def fee_codes():
     """
-    Create an invoice.
+    Fetch fee codes from pay-api.
     ---
     tags:
       - users
@@ -167,14 +198,11 @@ def fee_codes():
         description:
     """
     try:
+        AuthService.get_service_client_token()
         codes = strr_pay.get_fee_codes()
         return jsonify(codes)
 
-    except AuthException as authException:
-        return exception_response(authException)
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
     except ExternalServiceException as service_exception:
         return exception_response(service_exception)
-    except Exception as exception:  # noqa: B902
-        print(exception)
-        traceback.print_exc()
-        return exception_response(InternalServiceException())

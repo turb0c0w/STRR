@@ -70,9 +70,7 @@ class PayService:
         try:
             # make api call
             headers = {"Content-Type": "application/json"}
-            resp = requests.get(
-                url=self.svc_url + '/codes/fee_codes', headers=headers, timeout=self.timeout
-            )
+            resp = requests.get(url=self.svc_url + "/codes/fee_codes", headers=headers, timeout=self.timeout)
             if resp.status_code not in [HTTPStatus.OK]:
                 error = f"{resp.status_code} - {str(resp.json())}"
                 self.app.logger.debug("Invalid response from pay-api: %s", error)
@@ -112,7 +110,7 @@ class PayService:
             )
 
             if resp.status_code not in [HTTPStatus.OK, HTTPStatus.CREATED] or not (resp.json()).get("id", None):
-                print(f'code: {resp.status_code}')
+                print(f"code: {resp.status_code}")
                 error = f"{resp.status_code} - {str(resp.json())}"
                 self.app.logger.debug("Invalid response from pay-api: %s", error)
                 raise ExternalServiceException(error=error, status_code=HTTPStatus.PAYMENT_REQUIRED)

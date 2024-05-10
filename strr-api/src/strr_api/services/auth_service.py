@@ -33,22 +33,18 @@
 # POSSIBILITY OF SUCH DAMAGE.
 """Manages Auth service interactions."""
 import requests
-from http import HTTPStatus
 from flask import current_app
 
-from strr_api.exceptions.exceptions import (
-    AuthException,
-    ExternalServiceException,
-    InternalServiceException
-)
 from strr_api.services.rest_service import RestService
-from strr_api.utils.user_context import UserContext, user_context
 
 
 class AuthService:
+    """Service to invoke Rest calls to auth-api."""
 
     @classmethod
     def get_service_client_token(cls):
+        """Get service account client token for cross api calls."""
+
         client_id = current_app.config.get("STRR_SERVICE_ACCOUNT_CLIENT_ID")
         client_secret = current_app.config.get("STRR_SERVICE_ACCOUNT_SECRET")
         token_url = current_app.config.get("KEYCLOAK_AUTH_TOKEN_URL")
@@ -72,39 +68,53 @@ class AuthService:
 
     @classmethod
     def search_accounts(cls, account_name: str):
+        """Search for accounts."""
+
         token = AuthService.get_service_client_token()
-        endpoint = (
-            f"{current_app.config.get('AUTH_SVC_URL')}/orgs?name={account_name.strip()}"
-        )
+        endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/orgs?name={account_name.strip()}"
         accounts = RestService.get(endpoint=endpoint, token=token).json()
         return accounts
 
     @classmethod
-    # @user_context
     def get_user_accounts(cls, bearer_token):
-        # user: UserContext = kwargs["user_context"]
+        """Return accounts for current user."""
+
         endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/users/orgs"
-        user_account_details = RestService.get(
-            endpoint=endpoint, token=bearer_token
-        ).json()
+        user_account_details = RestService.get(endpoint=endpoint, token=bearer_token).json()
         return user_account_details
 
     @classmethod
-    # @user_context
-    def get_user_profile(cls, bearer_token): #**kwargs
-        # user: UserContext = kwargs["user_context"]
+    def get_user_profile(cls, bearer_token):
+        """Return current user profile."""
+
         endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/users/@me"
-        user_account_details = RestService.get(
-            endpoint=endpoint, token=bearer_token
-        ).json()
-        return user_account_details
+        user_profile = RestService.get(endpoint=endpoint, token=bearer_token).json()
+        return user_profile
 
     @classmethod
-    # @user_context
-    def get_user_settings(cls, bearer_token, uuid): #**kwargs
-        # user: UserContext = kwargs["user_context"]
+    def get_user_settings(cls, bearer_token, uuid):
+        """Return a user's settings."""
+
         endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/users/{uuid}/settings"
-        user_account_details = RestService.get(
-            endpoint=endpoint, token=bearer_token
+        user_settings = RestService.get(endpoint=endpoint, token=bearer_token).json()
+        return user_settings
+
+    @classmethod
+    def create_user_account(cls, bearer_token, name):
+        """Create a new user account."""
+
+        endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/orgs"
+        create_account_payload = {
+            "name": name,
+            "accessType": "REGULAR",
+            "typeCode": "BASIC",
+            "productSubscriptions": [{"productCode": "STRR"}],
+            "paymentInfo": {"paymentMethod": "DIRECT_PAY"},
+        }
+        new_user_account = RestService.post(
+            data=create_account_payload,
+            endpoint=endpoint,
+            token=bearer_token,
+            generate_token=False,
         ).json()
-        return user_account_details
+        return new_user_account

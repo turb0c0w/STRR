@@ -33,7 +33,9 @@
 # POSSIBILITY OF SUCH DAMAGE.
 """Exception responses."""
 from http import HTTPStatus
-from flask import jsonify, current_app
+
+from flask import current_app, jsonify
+
 from .exceptions import BaseExceptionE, ExternalServiceException
 
 
@@ -48,5 +50,7 @@ def exception_response(exception: BaseExceptionE):
     """Build exception error response."""
     current_app.logger.error(repr(exception))
     if isinstance(exception, ExternalServiceException):
-        return error_response(exception.message, exception.status_code if exception.status_code > 500 else HTTPStatus.BAD_GATEWAY)
+        return error_response(
+            exception.message, exception.status_code if exception.status_code > 500 else HTTPStatus.BAD_GATEWAY
+        )
     return error_response(exception.message, exception.status_code)

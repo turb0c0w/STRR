@@ -59,19 +59,6 @@ class AuthException(BaseExceptionE):
 
 
 @dataclass
-class InternalServiceException(BaseExceptionE):
-    """STRR API service exception."""
-
-    def __post_init__(self):
-        """Return a valid InternalServiceException."""
-        if not self.message:
-            self.message = "Something went wrong with the STRR API."
-        self.error = f"{repr(self.error)}, {self.status_code}"
-        if not self.status_code:
-            self.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
-
-
-@dataclass
 class ExternalServiceException(BaseExceptionE):
     """3rd party service exception."""
 

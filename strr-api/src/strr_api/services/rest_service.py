@@ -24,15 +24,14 @@ from requests.adapters import HTTPAdapter  # pylint:disable=ungrouped-imports
 from requests.exceptions import ConnectionError as ReqConnectionError
 from requests.exceptions import ConnectTimeout, HTTPError
 from urllib3.util.retry import Retry
+
 from strr_api.exceptions import ExternalServiceException
 
 BEARER = "Bearer"
 CONTENT_TYPE_JSON = "application/json"
 
 
-RETRY_ADAPTER = HTTPAdapter(
-    max_retries=Retry(total=5, backoff_factor=1, status_forcelist=[404])
-)
+RETRY_ADAPTER = HTTPAdapter(max_retries=Retry(total=5, backoff_factor=1, status_forcelist=[404]))
 
 
 class RestService:
@@ -42,14 +41,14 @@ class RestService:
     def _invoke(
         rest_method,
         endpoint,
-        token=None,  # pylint: disable=too-many-arguments
+        token=None,
         auth_header_type=BEARER,
         content_type=CONTENT_TYPE_JSON,
         data=None,
         raise_for_status: bool = True,
         additional_headers: dict = None,
         generate_token: bool = True,
-    ):
+    ):  # pylint: disable=too-many-arguments
         """Invoke different method depending on the input."""
         # just to avoid the duplicate code for PUT and POSt
         current_app.logger.debug(f"<_invoke-{rest_method}")
@@ -57,9 +56,7 @@ class RestService:
         if not token and generate_token:
             token = _get_token()
 
-        headers = RestService._generate_headers(
-            content_type, additional_headers, token, auth_header_type
-        )
+        headers = RestService._generate_headers(content_type, additional_headers, token, auth_header_type)
         if content_type == CONTENT_TYPE_JSON:
             data = json.dumps(data)
 
@@ -82,8 +79,7 @@ class RestService:
             raise ExternalServiceException(exc) from exc
         except HTTPError as exc:
             current_app.logger.error(
-                f"HTTPError on POST {endpoint} with status code "
-                f"{exc.response.status_code if exc.response else ''}"
+                f"HTTPError on POST {endpoint} with status code " f"{exc.response.status_code if exc.response else ''}"
             )
             raise ExternalServiceException(exc, status_code=exc.response.status_code) from exc
         finally:
@@ -102,21 +98,19 @@ class RestService:
                 and "Content-Type" in response.headers
                 and response.headers["Content-Type"] == CONTENT_TYPE_JSON
             ):
-                current_app.logger.info(
-                    f"response : {response.text if response else ''}"
-                )
+                current_app.logger.info(f"response : {response.text if response else ''}")
 
     @staticmethod
     def post(
         endpoint,
-        token=None,  # pylint: disable=too-many-arguments
+        token=None,
         auth_header_type=BEARER,
         content_type=CONTENT_TYPE_JSON,
         data=None,
         raise_for_status: bool = True,
         additional_headers: dict = None,
         generate_token: bool = True,
-    ):
+    ):  # pylint: disable=too-many-arguments
         """POST service."""
         current_app.logger.debug("<post")
         return RestService._invoke(
@@ -134,12 +128,12 @@ class RestService:
     @staticmethod
     def put(
         endpoint,
-        token=None,  # pylint: disable=too-many-arguments
+        token=None,
         auth_header_type=BEARER,
         content_type=CONTENT_TYPE_JSON,
         data=None,
         raise_for_status: bool = True,
-    ):
+    ):  # pylint: disable=too-many-arguments
         """POST service."""
         current_app.logger.debug("<post")
         return RestService._invoke(
@@ -155,14 +149,14 @@ class RestService:
     @staticmethod
     def patch(
         endpoint,
-        token=None,  # pylint: disable=too-many-arguments
+        token=None,
         auth_header_type=BEARER,
         content_type=CONTENT_TYPE_JSON,
         data=None,
         raise_for_status: bool = True,
         additional_headers: dict = None,
         generate_token=True,
-    ):
+    ):  # pylint: disable=too-many-arguments
         """Patch service."""
         current_app.logger.debug("<patch")
         return RestService._invoke(
@@ -180,14 +174,14 @@ class RestService:
     @staticmethod
     def delete(
         endpoint,
-        token=None,  # pylint: disable=too-many-arguments
+        token=None,
         auth_header_type=BEARER,
         content_type=CONTENT_TYPE_JSON,
         data=None,
         raise_for_status: bool = True,
         additional_headers: dict = None,
         generate_token=True,
-    ):
+    ):  # pylint: disable=too-many-arguments
         """Patch service."""
         current_app.logger.debug("<delete")
         return RestService._invoke(
@@ -205,19 +199,17 @@ class RestService:
     @staticmethod
     def get(
         endpoint,
-        token=None,  # pylint: disable=too-many-arguments
+        token=None,
         auth_header_type=BEARER,
         content_type=CONTENT_TYPE_JSON,
         retry_on_failure: bool = False,
         additional_headers: Dict = None,
         skip_404_logging: bool = False,
-    ):
+    ):  # pylint: disable=too-many-arguments
         """GET service."""
         current_app.logger.debug("<GET")
 
-        headers = RestService._generate_headers(
-            content_type, additional_headers, token, auth_header_type
-        )
+        headers = RestService._generate_headers(content_type, additional_headers, token, auth_header_type)
 
         current_app.logger.debug(f"Endpoint : {endpoint}")
         current_app.logger.debug(f"headers : {headers}")
@@ -237,22 +229,17 @@ class RestService:
             current_app.logger.error(exc)
             raise ExternalServiceException(exc) from exc
         except HTTPError as exc:
-            if not (
-                exc.response and exc.response.status_code == 404 and skip_404_logging
-            ):
+            if not (exc.response and exc.response.status_code == 404 and skip_404_logging):
                 current_app.logger.error(
                     f"HTTPError on GET {endpoint} "
                     f"with status code {exc.response.status_code if exc.response else ''}"
                 )
             if response and response.status_code >= 500:
                 raise ExternalServiceException(exc) from exc
-            raise ExternalServiceException(exc, status_code=exc.response.status_code)
+            raise ExternalServiceException(exc, status_code=exc.response.status_code) from exc
         finally:
-            current_app.logger.debug(
-                response.headers if response else "Empty Response Headers"
-            )
-            current_app.logger.info(
-                f"response : {response.text if response else ''}")
+            current_app.logger.debug(response.headers if response else "Empty Response Headers")
+            current_app.logger.info(f"response : {response.text if response else ''}")
 
         current_app.logger.debug(">GET")
         return response
@@ -263,16 +250,10 @@ class RestService:
         return {
             "Content-Type": content_type,
             **(additional_headers if additional_headers else {}),
-            **(
-                {"Authorization": f'{auth_header_type} {token}'} if token else {}
-            ),
+            **({"Authorization": f"{auth_header_type} {token}"} if token else {}),
         }
 
 
 def _get_token() -> str:
-    token: str = (
-        request.headers["Authorization"]
-        if request and "Authorization" in request.headers
-        else None
-    )
-    return token.replace(f'{BEARER} ', "") if token else None
+    token: str = request.headers["Authorization"] if request and "Authorization" in request.headers else None
+    return token.replace(f"{BEARER} ", "") if token else None
