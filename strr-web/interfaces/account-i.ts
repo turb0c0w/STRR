@@ -40,3 +40,43 @@ export interface OrgI {
   statusCode: string
   uuid: string
 }
+
+interface OrgsI {
+  orgs: OrgI[];
+}
+
+export interface ContactI {
+  email: string
+  phone: string
+  phoneExtension: string
+}
+
+interface UserTermsI {
+  isTermsOfUseAccepted: boolean
+  termsOfUseAcceptedVersion: string
+}
+
+interface ProfileI {
+  contacts: ContactI[]
+  created: string
+  firstname: string
+  id: number
+  idpUserid: string
+  keycloakGuid: string
+  lastname: string
+  loginSource: string
+  loginTime: string
+  modified: string
+  modifiedBy: string
+  type: string
+  userStatus: number
+  userTerms: UserTermsI
+  username: string
+  verified: boolean
+}
+
+export interface MeI {
+  orgs: OrgsI
+  profile: ProfileI
+  settings: UserSettingsI[]
+}

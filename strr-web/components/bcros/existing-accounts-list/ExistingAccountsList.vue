@@ -57,15 +57,27 @@
 </template>
 
 <script setup lang="ts">
-import { OrgI } from '~/interfaces/account-i';
+import { useRouter } from 'vue-router'
+import { useFormStore } from '@/stores/strr'
 
 const { accounts } = defineProps<{ accounts:OrgI[] }>()
 const t = useNuxtApp().$i18n.t
-const { goToCreateAccount } = useBcrosNavigate()
+const router = useRouter()
+
+const formStore = useFormStore()
 
 const buttonText = t('account.existing-account-section.use-account-button')
-const createButtonAction = () => goToCreateAccount()
-const chooseButtonAction = (account : OrgI) => alert(`Using Account ID: ${account.name}`)
+
+const createButtonAction = () => {
+  alert('Creating new Account')
+  // TODO: SS - navigate to correct page
+}
+
+const chooseButtonAction = (account: OrgI) => {
+  formStore.setSelectedAccount(account)
+  // TODO: SS - navigate to correct page
+  router.push('/form-test')
+}
 
 const createAccountButtonText = t('account.existing-account-section.create-account-button')
 
