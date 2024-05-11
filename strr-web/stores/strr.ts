@@ -36,7 +36,7 @@ export const useFormStore = defineStore({
     setSecondaryContact (contact: ContactI) {
       this.secondaryContact = contact
     },
-    setQualifications (questions: QuestionsI) {
+    setQuestions (questions: QuestionsI) {
       this.questions = questions
     },
     setSelectedAccount (account: OrgI) {
