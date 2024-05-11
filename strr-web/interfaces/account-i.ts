@@ -13,6 +13,7 @@ export interface AddressI {
 
 export interface AccountI {
   id: string
+  accessType: string
   accountType: AccountTypeE
   accountStatus: AccountStatusE
   additionalLabel?: string
@@ -21,5 +22,21 @@ export interface AccountI {
   urlpath: string
   urlorigin: string
   address: string
-  mailingAddress?: AddressI
+  mailingAddress?: AddressI[]
+}
+
+export interface OrgI {
+  accessType: string
+  branchName: string
+  created: string
+  createdBy: string
+  id: string
+  isBusinessAccount: boolean
+  mailingAddress: AddressI[]
+  modifiedBy: string
+  name: string
+  orgStatus: AccountStatusE
+  orgType: AccountTypeE
+  statusCode: string
+  uuid: string
 }
