@@ -59,9 +59,10 @@
 <script setup lang="ts">
 const { accounts } = defineProps<{ accounts: AccountI[] }>()
 const t = useNuxtApp().$i18n.t
+const { goToCreateAccount } = useBcrosNavigate()
 
 const buttonText = t('account.existing-account-section.use-account-button')
-const createButtonAction = () => alert('Creating new Account')
+const createButtonAction = () => goToCreateAccount()
 const chooseButtonAction = (account : AccountI) => alert(`Using Account ID: ${account.label}`)
 
 const createAccountButtonText = t('account.existing-account-section.create-account-button')
