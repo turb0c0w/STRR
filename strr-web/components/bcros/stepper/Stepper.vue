@@ -6,7 +6,7 @@
     "
   >
     <div
-      v-for="(step, index) in steps"
+      v-for="({ step }, index) in steps"
       :key="step.label"
       :class="`
         ${index == steps.length - 1 ? 'shrink grow-0': 'shrink-0 grow'}
@@ -57,13 +57,14 @@
 </template>
 
 <script setup lang="ts">
+import { FormPageI } from '~/interfaces/form/form-page-i';
 
 const {
   steps,
   activeStep,
   setActiveStep
 } = defineProps<{
-  steps: StepI[],
+  steps: FormPageI[],
   activeStep: number,
   setActiveStep:(step: number) => void
 }>()
