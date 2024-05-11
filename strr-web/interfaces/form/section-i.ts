@@ -1,4 +1,4 @@
-import { FieldI } from "./field"
+import { FieldI } from './field'
 
 export interface SectionI {
   title: string;

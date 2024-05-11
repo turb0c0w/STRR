@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { FormPageI } from '~/interfaces/form/form-page-i';
+import { FormPageI } from '~/interfaces/form/form-page-i'
 
 const {
   steps,

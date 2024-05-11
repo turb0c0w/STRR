@@ -1,5 +1,5 @@
-import { SectionI } from "./section-i"
-import { StepI } from "./step-i"
+import { SectionI } from './section-i'
+import { StepI } from './step-i'
 
 export interface FormPageI {
   step: StepI

@@ -15,8 +15,7 @@
 
 <script setup lang="ts">
 
-const { formContent, title } = defineProps<{
-  formContent: any,
+const { title } = defineProps<{
   title: string
 }>()
 

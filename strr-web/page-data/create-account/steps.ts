@@ -1,5 +1,5 @@
-import { FormPageI } from "~/interfaces/form/form-page-i"
-import { contactInformationPage } from "./contact-page"
+import { contactInformationPage } from './contact-page'
+import { FormPageI } from '~/interfaces/form/form-page-i'
 
 const steps: FormPageI[] = [
   {
@@ -10,9 +10,9 @@ const steps: FormPageI[] = [
       complete: false,
       error: false
     },
-    title: "create-account.contact.title",
-    subtitle: "create-account.contact.subtitle",
-    formTitle: "create-account.contact.primary",
+    title: 'create-account.contact.title',
+    subtitle: 'create-account.contact.subtitle',
+    formTitle: 'create-account.contact.primary',
     sections: contactInformationPage
   },
   {
@@ -23,9 +23,9 @@ const steps: FormPageI[] = [
       complete: false,
       error: false
     },
-    title: "create-account.details.title",
-    subtitle: "create-account.details.subtitle",
-    formTitle: "create-account.details.primary",
+    title: 'create-account.details.title',
+    subtitle: 'create-account.details.subtitle',
+    formTitle: 'create-account.details.primary',
     sections: []
   },
   {
@@ -36,9 +36,9 @@ const steps: FormPageI[] = [
       complete: false,
       error: false
     },
-    title: "create-account.eligibility.title",
-    subtitle: "create-account.eligibility.subtitle",
-    formTitle: "create-account.eligibility.primary",
+    title: 'create-account.eligibility.title',
+    subtitle: 'create-account.eligibility.subtitle',
+    formTitle: 'create-account.eligibility.primary',
     sections: []
   },
   {
@@ -49,9 +49,9 @@ const steps: FormPageI[] = [
       complete: false,
       error: false
     },
-    title: "create-account.confirm.title",
-    subtitle: "create-account.confirm.subtitle",
-    formTitle: "create-account.confirm.primary",
+    title: 'create-account.confirm.title',
+    subtitle: 'create-account.confirm.subtitle',
+    formTitle: 'create-account.confirm.primary',
     sections: []
   }
 ]

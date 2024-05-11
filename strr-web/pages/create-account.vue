@@ -7,7 +7,7 @@
             <BcrosTypographyH1 text="create-account.title" data-cy="accountPageTitle" class="mobile:pb-[20px]" />
             <BcrosStepper :active-step="activeStepIndex" :set-active-step="setActiveStep" :steps="steps" />
           </div>
-          <div class="grow" :key="activeStepIndex">
+          <div :key="activeStepIndex" class="grow">
             <div class="mobile:px-[8px]">
               <BcrosTypographyH2 :text="t(activeStep.title)" class="py-[32px]" />
               <p class="mb-[32px]">
@@ -20,17 +20,17 @@
                   {{ t(activeStep.formTitle) }}
                 </p>
               </div>
-              <div v-for="formSection in activeStep.sections">
+              <div v-for="formSection in activeStep.sections" :key="formSection.title">
                 <div class="ml-[40px]">
-                  <BcrosFormSection :title="formSection.title" form-content="">
-                    <div v-for="fields in formSection.fields">
+                  <BcrosFormSection :title="formSection.title">
+                    <div v-for="field in formSection.fields" :key="field.content">
                       <div class="mb-[16px]">
-                        {{ t(fields.content) }}
+                        {{ t(field.content) }}
                       </div>
                     </div>
                   </BcrosFormSection>
                 </div>
-              </div>  
+              </div>
             </div>
           </div>
         </div>
@@ -50,24 +50,23 @@
 </template>
 
 <script setup lang="ts">
-import { FormPageI } from '~/interfaces/form/form-page-i'
 import steps from '../page-data/create-account/steps'
+import { FormPageI } from '~/interfaces/form/form-page-i'
 const activeStepIndex: Ref<number> = ref(0)
-const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value]);
+const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 
 const t = useNuxtApp().$i18n.t
-const { kcUser } = useBcrosKeycloak()
 
 const setActiveStep = (newStep: number) => {
   activeStepIndex.value = newStep
-  activeStep.value = steps[activeStepIndex.value];
+  activeStep.value = steps[activeStepIndex.value]
 }
 
 const setNextStep = () => {
   if (activeStepIndex.value < steps.length - 1) {
     const nextStep = activeStepIndex.value + 1
     activeStepIndex.value = nextStep
-    activeStep.value = steps[activeStepIndex.value];
+    activeStep.value = steps[activeStepIndex.value]
   }
 }
 
@@ -75,7 +74,7 @@ const setPreviousStep = () => {
   if (activeStepIndex.value > 0) {
     const nextStep = activeStepIndex.value - 1
     activeStepIndex.value = nextStep
-    activeStep.value = steps[activeStepIndex.value];
+    activeStep.value = steps[activeStepIndex.value]
   }
 }
 

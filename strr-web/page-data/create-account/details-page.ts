@@ -1,17 +1,17 @@
-import { SectionI } from "~/interfaces/form/section-i"
+import { SectionI } from '~/interfaces/form/section-i'
 
 export const contactInformationPage: SectionI[] = [
   {
-    title: "create-account.contact.your-name",
+    title: 'create-account.contact.your-name',
     fields: [
       {
         static: true,
-        content: "create-account.contact.primary"
+        content: 'create-account.contact.primary'
       },
       {
         static: true,
-        content: "create-account.contact.disclaimer"
+        content: 'create-account.contact.disclaimer'
       }
     ]
-  },
+  }
 ]
