@@ -21,6 +21,12 @@ export default defineNuxtConfig({
           content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, ' +
           'user-scalable=0, initial-scale=1'
         }
+      ],
+      link: [
+        { rel: 'stylesheet', href: '/css/addresscomplete-2.30.min.css' }
+      ],
+      script: [
+        { src: '/js/addresscomplete-2.30.min.js', type: 'text/javascript', defer: true }
       ]
     }
   },
