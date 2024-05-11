@@ -14,17 +14,17 @@
         justify-space-between mobile:mx-[8px] mx-[32px] mt-[24px] border-bcGovColor-hairlinesOnWhite`"
       >
         <div class="flex grow mobile:justify-between mobile:w-full mobile:mb-[16px]">
-          <div><BcrosLetterIcon :letter="account.label.charAt(0)" /></div>
+          <div><BcrosLetterIcon :letter="account.name.charAt(0)" /></div>
           <div class="grow pl-[20px]">
             <div class="text-[18px] font-bold">
-              {{ account.label }}
+              {{ account.name }}
             </div>
             <div class="text-[14px]">
               {{
-                account.mailingAddress
-                  ? `${account.mailingAddress.street}, ${account.mailingAddress.city},
-                    ${account.mailingAddress.region}, ${account.mailingAddress.postalCode},
-                    ${account.mailingAddress.country}`
+                account.mailingAddress && account.mailingAddress[0]
+                  ? `${account.mailingAddress[0].street}, ${account.mailingAddress[0].city},
+                    ${account.mailingAddress[0].region} ${account.mailingAddress[0].postalCode},
+                    ${account.mailingAddress[0].country}`
                   : '-'
               }}
             </div>
@@ -57,13 +57,15 @@
 </template>
 
 <script setup lang="ts">
-const { accounts } = defineProps<{ accounts: AccountI[] }>()
+import { OrgI } from '~/interfaces/account-i';
+
+const { accounts } = defineProps<{ accounts:OrgI[] }>()
 const t = useNuxtApp().$i18n.t
 const { goToCreateAccount } = useBcrosNavigate()
 
 const buttonText = t('account.existing-account-section.use-account-button')
 const createButtonAction = () => goToCreateAccount()
-const chooseButtonAction = (account : AccountI) => alert(`Using Account ID: ${account.label}`)
+const chooseButtonAction = (account : OrgI) => alert(`Using Account ID: ${account.name}`)
 
 const createAccountButtonText = t('account.existing-account-section.create-account-button')
 
