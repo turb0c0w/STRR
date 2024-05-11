@@ -26,6 +26,6 @@ const alertFlavour: AlertsFlavourE = AlertsFlavourE.INFO
 
 const { userOrgs } = useBcrosAccount()
 
-const existingAcccountsTitle = `${t('account.existing-account-section.title')} (${userOrgs.length})`
+const existingAccountsTitle = `${t('account.existing-account-section.title')} (${userOrgs.length})`
 
 </script>

@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { defineStore } from 'pinia'
-import { AccountI } from '~/interfaces/account-i'
+import { AccountI, MeI } from '~/interfaces/account-i'
 import { ErrorCategoryE } from '~/enums/error-category-e'
 import { ErrorI } from '~/interfaces/error-i'
 import { KCUserI } from '~/interfaces/kc-user-i'
@@ -73,6 +73,26 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     userLastName.value = user.value?.lastName || ''
   }
 
+  /** Get me object for this user from STRR api */
+  // TODO: TC - move this to an STRR store
+  async function getMe () {
+    const apiURL = useRuntimeConfig().public.strrApiURL
+    return await axios.get(`${apiURL}/me`)
+      .then((response) => {
+        const data = response?.data as MeI
+        if (!data) { throw new Error('Invalid STRR API response') }
+        return data as MeI
+      })
+      .catch((error) => {
+        console.warn('Error fetching me object.')
+        errors.value.push({
+          statusCode: error?.response?.status || StatusCodes.INTERNAL_SERVER_ERROR,
+          message: error?.response?.data?.message,
+          category: ErrorCategoryE.ME
+        })
+      })
+  }
+
   /** Get orgs for this user */
   async function getOrgDetails () {
     const apiURL = useRuntimeConfig().public.authApiURL
@@ -128,7 +148,14 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
         sessionStorage.setItem(SessionStorageKeyE.CURRENT_ACCOUNT, JSON.stringify(currentAccount.value))
       }
 
-      // TODO: TC - Using better endpoint, or should we may build our own into STRR API instead
+      // retrieve and use the orgs from the STRR api
+      // TODO: TC - clean up nested orgs/orgs and move this call elsewhere?
+      const me = await getMe()
+      if (me && me.orgs) {
+        userOrgs.value = me.orgs.orgs || []
+      }
+
+      // TODO: TC - this is temporary to make dev work easy when no local/dev api, will remove
       userOrgs.value = await getOrgDetails() || []
     }
   }
