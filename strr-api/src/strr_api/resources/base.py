@@ -72,10 +72,12 @@ def me():
     """
     try:
         token = jwt.get_token_auth_header()
+        response = AuthService.get_user_accounts(token)
         profile = AuthService.get_user_profile(token)
         settings = AuthService.get_user_settings(token, profile["keycloakGuid"])
-        orgs = AuthService.get_user_accounts(token)
-        return jsonify({"profile": profile, "orgs": orgs, "settings": settings}), HTTPStatus.OK
+        response["profile"] = profile
+        response["settings"] = settings
+        return jsonify(response), HTTPStatus.OK
     except AuthException as auth_exception:
         return exception_response(auth_exception)
     except ExternalServiceException as service_exception:
@@ -118,12 +120,14 @@ def create_account():
             return error_response("Invalid request", HTTPStatus.BAD_REQUEST, errors)
 
         name = json_input.get("name")
-        new_user_account = AuthService.create_user_account(token, name)
+        mailingAddress = json_input.get("mailingAddress")
+        new_user_account = AuthService.create_user_account(token, name, mailingAddress)
         return jsonify(new_user_account), HTTPStatus.CREATED
     except AuthException as auth_exception:
         return exception_response(auth_exception)
     except ExternalServiceException as service_exception:
         return exception_response(service_exception)
+
 
 
 # @bp.route("/search_accounts", methods=("GET",))
