@@ -15,6 +15,8 @@
       `"
     >
       <div
+        aria-roledescription="button"
+        tabindex="0"
         :class="`
           ${index == activeStep.valueOf() ? 'border-b-[3px] border-blue-500' : ''}
           pb-[20px] flex flex-col cursor-pointer
