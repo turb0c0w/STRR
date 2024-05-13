@@ -1,6 +1,8 @@
+import { useRouter } from 'vue-router'
 export const useBcrosNavigate = () => {
   const config = useRuntimeConfig()
   const account = useBcrosAccount()
+  const router = useRouter()
 
   /** Redirect to the given URL with necessary BCROS args */
   function redirect (url: string) {
@@ -32,7 +34,7 @@ export const useBcrosNavigate = () => {
     redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/transactions`)
   }
   function goToCreateAccount () {
-    redirect(`${config.public.authWebURL}/create-account`)
+    router.push('/create-account')
   }
   function goToSetupAccount () {
     redirect(config.public.authWebURL + 'setup-account')
