@@ -152,7 +152,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       // TODO: TC - clean up nested orgs/orgs and move this call elsewhere?
       const me = await getMe()
       if (me && me.orgs) {
-        userOrgs.value = me.orgs.orgs || []
+        userOrgs.value = me.orgs || []
       }
 
       // TODO: TC - this is temporary to make dev work easy when no local/dev api, will remove

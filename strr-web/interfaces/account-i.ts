@@ -41,10 +41,6 @@ export interface OrgI {
   uuid: string
 }
 
-interface OrgsI {
-  orgs: OrgI[];
-}
-
 export interface ContactI {
   email: string
   phone: string
@@ -76,7 +72,7 @@ interface ProfileI {
 }
 
 export interface MeI {
-  orgs: OrgsI
+  orgs: OrgI[]
   profile: ProfileI
   settings: UserSettingsI[]
 }
