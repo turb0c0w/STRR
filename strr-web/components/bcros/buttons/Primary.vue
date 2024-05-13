@@ -9,6 +9,7 @@
       :text="text"
       :trailing="trailing"
       :variant="variant"
+      data-cy="button"
       @click="action()"
     >
       {{ text }}

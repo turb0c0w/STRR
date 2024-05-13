@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { testDetailsForDev1, testDetailsForDev2, testUserSettings } from './mockedData'
+import { testDetailsForDev1, testDetailsForDev2, testUserSettings, testMe } from './mockedData'
 
 const axiosRequestMocks = vi.hoisted(() => ({
   get: vi.fn().mockImplementation((url: string, config?: any) => {
@@ -11,6 +11,10 @@ const axiosRequestMocks = vi.hoisted(() => ({
       return new Promise(resolve => resolve({ data: { ...testDetailsForDev2 } }))
     } else if (url.includes('settings')) {
       return new Promise(resolve => resolve({ data: [...testUserSettings] }))
+    } else if (url.includes('me')) {
+      return new Promise(resolve => resolve({ data: { ...testMe } }))
+    } else if (url.includes('users/orgs')) {
+      return new Promise(resolve => resolve({ data: { ...testDetailsForDev1 } }))
     }
   })
 }))
