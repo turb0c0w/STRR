@@ -12,7 +12,8 @@ export default defineVitestConfig({
         "enums/*",
         "interfaces/*",
         "*.d.ts",
-        ".nuxt/*"
+        ".nuxt/*",
+        "public/"
       ],
       reportsDirectory: 'coverage',
     },
