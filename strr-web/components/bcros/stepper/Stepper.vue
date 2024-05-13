@@ -36,6 +36,7 @@
             <img
               :src="`${index == activeStep.valueOf() ? `${step.activeIconPath}`: step.inactiveIconPath}`"
               class="mobile:w-[20px] mobile:h-[20px]"
+              :alt="step.alt"
             >
           </div>
         </div>

@@ -4,4 +4,5 @@ export interface StepI {
   activeIconPath: string;
   complete: boolean;
   error: boolean;
+  alt: string;
 }
