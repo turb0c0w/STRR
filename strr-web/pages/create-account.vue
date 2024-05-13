@@ -24,7 +24,7 @@
                 <div class="ml-[40px]">
                   <BcrosFormSection :title="formSection.title">
                     <div v-for="field in formSection.fields" :key="field.content">
-                      <div class="mb-[16px]">
+                      <div class="mb-[16px] text-[14px] leading-[22px]">
                         {{ t(field.content) }}
                       </div>
                     </div>

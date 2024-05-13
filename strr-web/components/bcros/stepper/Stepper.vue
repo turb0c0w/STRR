@@ -15,6 +15,8 @@
       `"
     >
       <div
+        aria-roledescription="button"
+        tabindex="0"
         :class="`
           ${index == activeStep.valueOf() ? 'border-b-[3px] border-blue-500' : ''}
           pb-[20px] flex flex-col cursor-pointer
@@ -34,6 +36,7 @@
             <img
               :src="`${index == activeStep.valueOf() ? `${step.activeIconPath}`: step.inactiveIconPath}`"
               class="mobile:w-[20px] mobile:h-[20px]"
+              :alt="step.alt"
             >
           </div>
         </div>
