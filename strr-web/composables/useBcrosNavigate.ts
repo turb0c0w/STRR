@@ -32,7 +32,7 @@ export const useBcrosNavigate = () => {
     redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/transactions`)
   }
   function goToCreateAccount () {
-    redirect(config.public.authWebURL + 'choose-authentication-method')
+    redirect(`${config.public.authWebURL}/create-account`)
   }
   function goToSetupAccount () {
     redirect(config.public.authWebURL + 'setup-account')

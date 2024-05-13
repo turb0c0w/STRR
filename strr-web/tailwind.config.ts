@@ -4,8 +4,10 @@ export default <Partial<Config>>{
   content: ['*.{html,ts,js,vue}'],
   theme: {
     screens: {
+      d: { min: '1263px' },
+      m: { max: '1263px' },
+      desktop: { min: '1263px' },
       mobile: { max: '1263px' }
-      // => @media (max-width: 1263px) { ... }
     },
     extend: {
       height: {
@@ -87,6 +89,7 @@ export default <Partial<Config>>{
           350: '#38598a',
           400: '#26527d',
           500: '#1669bb', // '#003366',
+          550: '#003366',
           600: '#002e5e',
           700: '#002753',
           800: '#002049',
