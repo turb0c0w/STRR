@@ -58,8 +58,8 @@ const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 const t = useNuxtApp().$i18n.t
 const { userFullName } = useBcrosAccount()
 
-if (activeStepIndex.value == 0) {
-  activeStep.value.sections[0].fields[0].content = userFullName;
+if (activeStepIndex.value === 0) {
+  activeStep.value.sections[0].fields[0].content = userFullName
 }
 
 const setActiveStep = (newStep: number) => {
