@@ -9,7 +9,7 @@ const steps: FormPageI[] = [
       activeIconPath: '/icons/create-account/add_person_active.svg',
       complete: false,
       error: false,
-      alt: "Add contacts"
+      alt: 'Add contacts'
     },
     title: 'create-account.contact.title',
     subtitle: 'create-account.contact.subtitle',
@@ -23,7 +23,7 @@ const steps: FormPageI[] = [
       activeIconPath: '/icons/create-account/add_location_active.svg',
       complete: false,
       error: false,
-      alt: "Add properties"
+      alt: 'Add properties'
     },
     title: 'create-account.details.title',
     subtitle: 'create-account.details.subtitle',
@@ -37,7 +37,7 @@ const steps: FormPageI[] = [
       activeIconPath: '/icons/create-account/upload_file_active.svg',
       complete: false,
       error: false,
-      alt: "Upload documents"
+      alt: 'Upload documents'
     },
     title: 'create-account.eligibility.title',
     subtitle: 'create-account.eligibility.subtitle',
@@ -51,7 +51,7 @@ const steps: FormPageI[] = [
       activeIconPath: '/icons/create-account/check_active.svg',
       complete: false,
       error: false,
-      alt: "Check and verify"
+      alt: 'Check and verify'
     },
     title: 'create-account.confirm.title',
     subtitle: 'create-account.confirm.subtitle',
