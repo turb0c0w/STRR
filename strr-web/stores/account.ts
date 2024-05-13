@@ -93,25 +93,6 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       })
   }
 
-  /** Get orgs for this user */
-  async function getOrgDetails () {
-    const apiURL = useRuntimeConfig().public.authApiURL
-    return await axios.get(`${apiURL}/users/orgs`)
-      .then((response) => {
-        const data = response?.data.orgs as OrgI[]
-        if (!data) { throw new Error('Invalid AUTH API response') }
-        return data
-      })
-      .catch((error) => {
-        console.warn('Error fetching user account details.')
-        errors.value.push({
-          statusCode: error?.response?.status || StatusCodes.INTERNAL_SERVER_ERROR,
-          message: error?.response?.data?.message,
-          category: ErrorCategoryE.ACCOUNT_LIST
-        })
-      })
-  }
-
   /** Get the user's account list */
   async function getUserAccounts (keycloakGuid: string) {
     const apiURL = useRuntimeConfig().public.authApiURL
@@ -149,14 +130,11 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       }
 
       // retrieve and use the orgs from the STRR api
-      // TODO: TC - clean up nested orgs/orgs and move this call elsewhere?
+      // TODO: TC - move this call elsewhere?
       const me = await getMe()
       if (me && me.orgs) {
         userOrgs.value = me.orgs || []
       }
-
-      // TODO: TC - this is temporary to make dev work easy when no local/dev api, will remove
-      userOrgs.value = await getOrgDetails() || []
     }
   }
 
