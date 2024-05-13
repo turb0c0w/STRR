@@ -1,4 +1,4 @@
-# Copyright © 2023 Province of British Columbia
+# Copyright © 2024 Province of British Columbia
 #
 # Licensed under the BSD 3 Clause License, (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,47 +31,26 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-"""
-This module is responsible for registering the endpoints.
+"""Exception responses."""
+from http import HTTPStatus
 
-The register_endpoints function registers the provided blueprints and URL prefixes to the Flask application.
-"""
-from flasgger import Swagger
-from flask import Flask
+from flask import current_app, jsonify
 
-from .base import bp as base_endpoint
-from .ops import bp as ops_endpoint
+from .exceptions import BaseExceptionE, ExternalServiceException
 
 
-def register_endpoints(app: Flask):
-    """
-    Register Endpoints
+def error_response(
+    message: str = "Bad request", http_status: HTTPStatus = HTTPStatus.BAD_REQUEST, errors: list[dict[str, str]] = None
+):
+    """Build generic request response with errors."""
+    return jsonify({"message": message, "details": errors or []}), http_status
 
-    Registers the provided blueprints and URL prefixes to the Flask application.
 
-    :param app: The Flask application to register the endpoints to.
-    :type app: Flask
-    """
-    # Allow base route to match with, and without a trailing slash
-    app.url_map.strict_slashes = False
-
-    app.register_blueprint(
-        url_prefix="/",
-        blueprint=base_endpoint,
-    )
-
-    app.register_blueprint(
-        url_prefix="/ops",
-        blueprint=ops_endpoint,
-    )
-
-    app.config["SWAGGER"] = {
-        "title": "STRR API",
-        "specs_route": "/",
-        "uiversion": 3,
-        "securityDefinitions": {
-            "Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"},
-        },
-        "security": [{"Bearer": []}],
-    }
-    Swagger(app)
+def exception_response(exception: BaseExceptionE):
+    """Build exception error response."""
+    current_app.logger.error(repr(exception))
+    if isinstance(exception, ExternalServiceException):
+        return error_response(
+            exception.message, exception.status_code if exception.status_code > 500 else HTTPStatus.BAD_GATEWAY
+        )
+    return error_response(exception.message, exception.status_code)

@@ -65,30 +65,63 @@ def get_schema_store(schema_search_path: str) -> dict:
     return schemastore
 
 
-def validate(
+def validate_schema(
     json_data: json,
     schema_id: str,
 ) -> Tuple[bool, iter]:
     """Load the json file and validate against loaded schema."""
+
+    schema_search_path = path.join(path.dirname(__file__), "schemas")
+    schema_store = get_schema_store(schema_search_path)
+    schema_uri = f"{BASE_URI}/{schema_id}"
+    schema = schema_store.get(schema_uri)
+
+    def retrieve_resource(uri):
+        contents = schema_store.get(uri)
+        return Resource.from_contents(contents)
+
+    registry = Registry(retrieve=retrieve_resource).with_resource(schema_uri, DRAFT7.create_resource(schema))
+
+    validator = Draft7Validator(schema, format_checker=Draft7Validator.FORMAT_CHECKER, registry=registry)
+    if validator.is_valid(json_data):
+        return True, None
+
+    errors = validator.iter_errors(json_data)
+    return False, errors
+
+
+def validate(json_data: dict, schema_name: str) -> [bool, []]:
+    """
+    A method to validate data against a specified schema.
+
+    Parameters:
+        schema_name: A string representing the name of the schema to use for validation.
+        json_data: A dictionary containing the data to be validated.
+
+    Returns:
+        A tuple consisting of a boolean value indicating whether the data is valid or not,
+        and a list of validation errors if any.
+
+    Raises:
+        Exception: If the schema_name parameter is empty.
+    """
+
     try:
-        schema_search_path = path.join(path.dirname(__file__), "schemas")
-        schema_store = get_schema_store(schema_search_path)
-        schema_uri = f"{BASE_URI}/{schema_id}"
-        schema = schema_store.get(schema_uri)
-
-        def retrieve_resource(uri):
-            contents = schema_store.get(uri)
-            return Resource.from_contents(contents)
-
-        registry = Registry(retrieve=retrieve_resource).with_resource(schema_uri, DRAFT7.create_resource(schema))
-
-        draft_7_validator = Draft7Validator(schema, format_checker=Draft7Validator.FORMAT_CHECKER, registry=registry)
-        if draft_7_validator.is_valid(json_data):
-            return True, None
-
-        errors = draft_7_validator.iter_errors(json_data)
-        return False, errors
-
+        is_valid, validation_errors = validate_schema(json_data, schema_name)
+        if not is_valid and validation_errors:
+            errors = []
+            for error in validation_errors:
+                # Serialize the error into a dictionary
+                errors.append(
+                    {
+                        "message": error.message,
+                        "json_path": error.json_path,
+                        "relative_path": list(error.relative_path),
+                        "context": [context.message for context in error.context],
+                    }
+                )
+            return is_valid, errors
     except Exception as e:
-        logger.error("Invalid schema preventing validation: %s", e)
-        return False, e
+        return False, [{"message": str(e)}]
+
+    return is_valid, []
