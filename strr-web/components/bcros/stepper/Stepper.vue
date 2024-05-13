@@ -4,6 +4,7 @@
       rounded-[4px] w-full flex flex-row justify-between bg-white px-[20px] pt-[20px]
       mobile:bg-transparent mobile:px-[0px] mobile:pt-[0px]
     "
+    data-cy="stepper"
   >
     <div
       v-for="({ step }, index) in steps"

@@ -5,6 +5,7 @@
       d:w-screen d:absolute d:left-[-55px] d:bottom-[-75px] d:pl-[70px] d:bottom-[0px]
       m:relative m:px-[8px]
     "
+    data-cy="stepper-footer"
   >
     <BcrosButtonsPrimary
       :text="t('general.back')"
