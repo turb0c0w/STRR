@@ -1,6 +1,7 @@
 <template>
   <div
     data-cy="fee-widget"
+    role="complementary"
     class="
       desktop:w-[280px]
       mobile:w-[calc(100%-8px)] mobile:fixed mobile:bottom-[4px] mobile:mx-[4px] mobile:left-[0px]
