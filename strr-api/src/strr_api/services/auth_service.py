@@ -100,7 +100,7 @@ class AuthService:
         return user_settings
 
     @classmethod
-    def create_user_account(cls, bearer_token, name, mailingAddress):
+    def create_user_account(cls, bearer_token, name, mailing_address):
         """Create a new user account."""
 
         endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/orgs"
@@ -110,7 +110,7 @@ class AuthService:
             "typeCode": "BASIC",
             "productSubscriptions": [{"productCode": "STRR"}],
             "paymentInfo": {"paymentMethod": "DIRECT_PAY"},
-            "mailingAddress": mailingAddress
+            "mailingAddress": mailing_address,
         }
         new_user_account = RestService.post(
             data=create_account_payload,

@@ -36,6 +36,72 @@
 This module provides a simple flask blueprint with a single 'home' route that returns a JSON response.
 """
 
-from flask import Blueprint
+import logging
 
-bp = Blueprint("base", __name__)
+from flask import Blueprint, jsonify
+from flask_cors import cross_origin
+
+from strr_api.exceptions import AuthException, ExternalServiceException, exception_response
+
+# from strr_api.schemas import utils as schema_utils
+from strr_api.services import AuthService, strr_pay
+
+logger = logging.getLogger("api")
+bp = Blueprint("pay", __name__)
+
+# @bp.route("/invoice", methods=("POST",))
+# @swag_from({
+#     'security': [{'Bearer': []}]
+# })
+# @cross_origin(origin="*")
+# @jwt.requires_auth
+# def create_invoice():
+#     """
+#     Create an invoice.
+#     ---
+#     tags:
+#       - users
+#     responses:
+#       200:
+#         description:
+#       401:
+#         description:
+#     """
+#     try:
+#         account_id = request.headers.get("Account-Id", None)
+#         json = {
+#             "folioNumber": 1699,
+#             "folioNumber": 1699,
+#         }
+#         invoice = strr_pay.create_invoice(account_id, jwt, json)
+#         return jsonify({"invoice": invoice}), HTTPStatus.CREATED
+
+#     except AuthException as auth_exception:
+#         return exception_response(auth_exception)
+#     except ExternalServiceException as service_exception:
+#         return exception_response(service_exception)
+
+
+@bp.route("/fee_codes", methods=("GET",))
+@cross_origin(origin="*")
+def fee_codes():
+    """
+    Fetch fee codes from pay-api.
+    ---
+    tags:
+      - pay
+    responses:
+      200:
+        description:
+      401:
+        description:
+    """
+    try:
+        AuthService.get_service_client_token()
+        codes = strr_pay.get_fee_codes()
+        return jsonify(codes)
+
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+    except ExternalServiceException as service_exception:
+        return exception_response(service_exception)
