@@ -30,7 +30,7 @@
             </div>
           </div>
         </div>
-        <div class="mobile:w-full">
+        <div class="mobile:w-full mobile:flex">
           <BcrosButtonsPrimary
             :action="() => chooseButtonAction(account)"
             icon="i-mdi-chevron-right"
