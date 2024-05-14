@@ -27,7 +27,7 @@
       <p class="py-[10px] border-b-[1px] border-bcGovGray-300">
         {{ t("fee-widget.registration-fee") }}
       </p>
-      <div class="py-[10px] flex-row flex justify-between">
+      <div class="py-[10px] flex-row flex justify-between" aria-label="null">
         <p>{{ t("fee-widget.total") }}</p>
         <p class="font-normal text-bcGovGray-700">
           {{ t("fee-widget.cad") }} <b class="text-black">-</b>
