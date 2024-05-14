@@ -68,6 +68,7 @@ const formStore = useFormStore()
 const buttonText = t('account.existing-account-section.use-account-button')
 
 const createButtonAction = () => {
+  formStore.setSelectedAccount({} as OrgI)
   goToCreateAccount()
 }
 
