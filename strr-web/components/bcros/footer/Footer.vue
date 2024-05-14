@@ -45,7 +45,7 @@
         </div>
       </nav>
     </div>
-    <div v-if="extraSpace" :class="`bg-white flex-grow w-full`" />
+    <div v-if="extraSpace" :class="`bg-white mobile:flex-grow mobile:w-full`" />
   </footer>
 </template>
 

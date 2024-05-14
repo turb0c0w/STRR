@@ -6,17 +6,20 @@
       desktop:w-[280px]
       mobile:w-[calc(100%-8px)] mobile:fixed mobile:bottom-[4px] mobile:mx-[4px] mobile:left-[0px]
       rounded-[4px] font-bold text-black bg-white z-10
+      shadow-md
     "
   >
     <div
       :class="`
         ${isMobile && folded ? 'rounded-[4px]' : 'rounded-t-[4px]'}
         px-[15px] py-[10px] pt-[10px] text-white bg-blue-550 rounded-t-[4px] flex flex-row justify-between
+        mobile:cursor-pointer
         `
       "
+      @click="toggleFolded"
     >
       <p>{{ t("fee-widget.summary") }}</p>
-      <div class="hidden mobile:flex" @click="toggleFolded">
+      <div class="hidden mobile:flex">
         <img src="/icons/caret.svg" :class="`cursor-pointer transition-all ${folded ? 'rotate-180': ''}`">
       </div>
     </div>
@@ -40,17 +43,25 @@ import useScreenSize from '../../../composables/useScreenSize'
 
 const t = useNuxtApp().$i18n.t
 const folded = ref(false)
+const isMobile = ref(false)
 
 const toggleFolded = () => {
-  folded.value = !folded.value
+  if (isMobile) {
+    folded.value = !folded.value
+  }
 }
 
 const { width } = useScreenSize()
 
-const isMobile = width.value <= 1263
-
-if (isMobile) {
+if (isMobile.value) {
   folded.value = true
 }
+
+watch(width, () => {
+  isMobile.value = width.value <= 1263
+  if (!isMobile.value && folded) {
+    folded.value = false
+  }
+})
 
 </script>
