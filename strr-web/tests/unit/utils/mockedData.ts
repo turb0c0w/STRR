@@ -137,3 +137,38 @@ export const testDetailsForDev2 = {
   statusCode: AccountStatusE.ACTIVE,
   uuid: '2b2251d6-679b-4b1d-b997-38edf4eb1904'
 }
+
+export const testMe = {
+  orgs: [testDetailsForDev1],
+  profile: {
+    contacts: [{
+      email: '',
+      phone: '',
+      phoneExtension: ''
+    }],
+    created: '',
+    firstname: '',
+    id: 0,
+    idpUserid: '',
+    keycloakGuid: '',
+    lastname: '',
+    loginSource: '',
+    loginTime: '',
+    modified: '',
+    modifiedBy: '',
+    type: '',
+    userStatus: 0,
+    userTerms: {
+      isTermsOfUseAccepted: true,
+      termsOfUseAcceptedVersion: ''
+    },
+    username: '',
+    verified: true
+  },
+  settings: [{
+    id: '',
+    type: UserSettingsTypeE.ACCOUNT,
+    urlpath: '',
+    urlorigin: ''
+  }]
+}

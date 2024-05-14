@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { defineStore } from 'pinia'
-import { AccountI } from '~/interfaces/account-i'
+import { AccountI, MeI } from '~/interfaces/account-i'
 import { ErrorCategoryE } from '~/enums/error-category-e'
 import { ErrorI } from '~/interfaces/error-i'
 import { KCUserI } from '~/interfaces/kc-user-i'
@@ -17,6 +17,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   // user info
   const user = computed(() => keycloak.kcUser)
   const userAccounts: Ref<AccountI[]> = ref([])
+  const userOrgs: Ref<OrgI[]> = ref([])
   const activeUserAccounts = computed(() => {
     return userAccounts.value.filter(account => account.accountStatus === AccountStatusE.ACTIVE)
   })
@@ -72,22 +73,22 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     userLastName.value = user.value?.lastName || ''
   }
 
-  /** Get details for an account (org) */
-  async function getAccountDetails (orgId: string) {
-    const apiURL = useRuntimeConfig().public.authApiURL
-    return await axios.get(`${apiURL}/orgs/${orgId}`)
+  /** Get me object for this user from STRR api */
+  // TODO: TC - move this to an STRR store
+  async function getMe () {
+    const apiURL = useRuntimeConfig().public.strrApiURL
+    return await axios.get(`${apiURL}/account/me`)
       .then((response) => {
-        const data = response?.data
-        if (!data) { throw new Error('Invalid AUTH API response') }
-        return data
+        const data = response?.data as MeI
+        if (!data) { throw new Error('Invalid STRR API response') }
+        return data as MeI
       })
       .catch((error) => {
-        console.warn('Error fetching user account details.')
-        // TODO: TC - add error handling
+        console.warn('Error fetching me object.')
         errors.value.push({
           statusCode: error?.response?.status || StatusCodes.INTERNAL_SERVER_ERROR,
           message: error?.response?.data?.message,
-          category: ErrorCategoryE.ACCOUNT_LIST
+          category: ErrorCategoryE.ME
         })
       })
   }
@@ -128,15 +129,12 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
         sessionStorage.setItem(SessionStorageKeyE.CURRENT_ACCOUNT, JSON.stringify(currentAccount.value))
       }
 
-      // TODO: TC - loading mail addresses into the store here
-      // Is there a better endpoint to use for this, or should we may build our own into STRR API instead
-
-      userAccounts.value.forEach(async (account) => {
-        const details = await getAccountDetails(account.id)
-        if (details) {
-          account.mailingAddress = details.mailingAddress
-        }
-      })
+      // retrieve and use the orgs from the STRR api
+      // TODO: TC - move this call elsewhere?
+      const me = await getMe()
+      if (me && me.orgs) {
+        userOrgs.value = me.orgs || []
+      }
     }
   }
 
@@ -154,6 +152,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     currentAccount,
     currentAccountName,
     userAccounts,
+    userOrgs,
     activeUserAccounts,
     userFullName,
     errors,

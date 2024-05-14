@@ -4,5 +4,6 @@ export enum ErrorCategoryE {
   ENTITY_BASIC = 'entity-basic',
   FEE_INFO = 'fee-info',
   USER_INFO = 'user-info',
-  SIGNIFICANT_INDIVIDUAL = 'significiant-individual'
+  SIGNIFICANT_INDIVIDUAL = 'significiant-individual',
+  ME = 'me'
 }

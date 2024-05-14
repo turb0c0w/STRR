@@ -1,4 +1,37 @@
 {
+  "fee-widget": {
+    "summary": "Fee Summary",
+    "registration-fee": "STR Registration Fee",
+    "total": "Total Fees",
+    "cad": "CAD"
+  },
+  "create-account": {
+    "title": "Short-Term Rental Registration",
+    "step-title": {
+      "contact": "Contact Information",
+      "property": "Property Details",
+      "eligibility": "Principal Residence",
+      "review": "Review and Confirm"
+    },
+    "contact": {
+      "title": "Step 1 - Contact Information",
+      "subtitle": "The primary contact will be contacted first",
+      "primary": "Primary Contact Information",
+      "disclaimer": "This is your legal name as it appears on your BC Services Card.",
+      "your-name": "Your Name"
+    },
+    "details": {
+      "title": "Step 2 - Add Your Short Term Rental Property Details",
+      "subtitle": "Tell us more about the property you plan to offer for short-term rental. If you have other properties you want to register and offer as short-term rentals, we will ask you about them later.",
+      "primary": "Rental Unit Information"
+    },
+    "eligibility": {
+      "title": "Step 3 - Principal Residence "
+    },
+    "confirm": {
+      "title": "Step 4 - Review and Confirm"
+    }
+  },
   "account": {
     "logIn": "Please Log In",
     "title": "Existing Account Found",
@@ -42,7 +75,10 @@
     }
   },
   "general": {
-    "note": "Note: "
+    "back": "Back",
+    "next": "Next",
+    "note": "Note: ",
+    "submit": "Submit"
   },
   "labels": {
     "services": {

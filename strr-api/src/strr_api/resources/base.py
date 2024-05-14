@@ -36,49 +36,6 @@
 This module provides a simple flask blueprint with a single 'home' route that returns a JSON response.
 """
 
-import logging
-
 from flask import Blueprint
-from flask import current_app as app
-from flask import jsonify, request
-from flask_restx import Api, Namespace, Resource, abort
 
-from strr_api.schemas import utils as schema_utils
-
-logger = logging.getLogger("api")
 bp = Blueprint("base", __name__)
-api = Api(bp, description="Short Term Rental API", default="?")
-ns = Namespace("", description="Base Endpoints")
-api.add_namespace(ns, path="")
-
-
-@ns.route("/hello")
-class HelloWorld(Resource):
-    """HellowWorld endpoint"""
-
-    def get(self):
-        """HTTP GET"""
-
-        print("TESTING-PRINT")
-        logger.info("TESTING-LOGGER")
-        app.logger.info("TESTING-APP-LOGGER")
-        return jsonify(name="world")
-
-
-@ns.route("/goodbye", methods=("POST",))
-class GoodbyeWorld(Resource):
-    """GoodbyeWorld endpoint"""
-
-    def post(self):
-        """HTTP POST"""
-
-        logger.info("Request data: %s", request.get_json())
-        json_input = request.get_json()
-        logger.info("Request data: %s", json_input)
-
-        valid, errors = schema_utils.validate(json_input, "goodbye")
-        if not valid:
-            logger.warning("Validation errors: %s", errors)
-            abort(400, "Bad request")
-
-        return jsonify(name="goodbye")
