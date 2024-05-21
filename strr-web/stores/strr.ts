@@ -1,49 +1,46 @@
-import { defineStore } from 'pinia'
-import { FormStateI, QuestionsI } from '~/interfaces/strr-i'
 import { OrgI } from '~/interfaces/account-i'
 
-export const useFormStore = defineStore({
-  id: 'form',
-  state: (): FormStateI => ({
-    primaryContact: {
-      email: '',
-      phone: '',
-      phoneExtension: ''
-    },
-    secondaryContact: {
-      email: '',
-      phone: '',
-      phoneExtension: ''
-    },
-    questions: {
-      primaryResidence: '',
-      whichPlatform: ''
-    },
-    selectedAccount: {} as OrgI
-  }),
-  getters: {
-    hasSecondaryContact (state): boolean {
-      return !!state.secondaryContact?.email
-    },
-    selectedAccountName (state): string {
-      return state.selectedAccount.name || 'No account selected'
-    }
+export const formState = reactive({
+  dateOfBirth: {
+    day: '',
+    month: '',
+    year: ''
   },
-  actions: {
-    setPrimaryContact (contact: ContactI) {
-      this.primaryContact = contact
-    },
-    setSecondaryContact (contact: ContactI) {
-      this.secondaryContact = contact
-    },
-    setQuestions (questions: QuestionsI) {
-      this.questions = questions
-    },
-    setSelectedAccount (account: OrgI) {
-      this.selectedAccount = account
-    },
-    getSelectedAccount (): OrgI {
-      return this.selectedAccount
-    }
-  }
+  primaryContact: {
+    address: '',
+    country: '',
+    addressLineTwo: '',
+    city: '',
+    province: '',
+    postalCode: ''
+  },
+  secondaryContact: {
+    email: '',
+    phone: '',
+    phoneExtension: ''
+  },
+  questions: {
+    primaryResidence: '',
+    whichPlatform: ''
+  },
+  unitDetails: {
+    parcelIdentifier: '',
+    businessLicense: '',
+    propertyType: '',
+    ownershipType: ''
+  },
+  unitAddress: {
+    nickname: '',
+    country: '',
+    address: '',
+    addressLineTwo: '',
+    city: '',
+    province: '',
+    postalCode: ''
+  },
+  listingDetails: {
+    urlOne: '',
+    urlTwo: ''
+  },
+  selectedAccount: {} as OrgI
 })

@@ -5,12 +5,8 @@
     <BcrosTypographyH1 text="Test Form" data-cy="formTestTitle" class="mobile:pb-[20px]" />
     <UForm :schema="schema" :state="address" class="space-y-4" @submit="onSubmit">
       <UFormGroup label="Street" name="street">
-        <UInput
-          v-model="address.street"
-          placeholder="Type your address"
-          @keypress.once="enableAddressComplete()"
-          @click="enableAddressComplete()"
-        />
+        <UInput v-model="address.street" placeholder="Type your address" @keypress.once="enableAddressComplete()"
+          @click="enableAddressComplete()" />
       </UFormGroup>
       <UFormGroup label="City" name="city">
         <UInput v-model="address.city" />
@@ -35,11 +31,10 @@
 
 import type { FormSubmitEvent } from '#ui/types'
 import { z } from 'zod'
-import { useFormStore } from '@/stores/strr'
+import { formState } from '@/stores/strr'
 import { CanadaPostAddressI, CanadaPostResponseAddressI } from '#imports'
 
-const formStore = useFormStore()
-const selectedAccount = computed(() => formStore.getSelectedAccount())
+const { selectedAccount } = formState
 
 // TODO: TC - this probably lives in the store?
 const address = reactive<CanadaPostAddressI>({
@@ -101,7 +96,7 @@ const addressCompletePopulate = (addressComplete: CanadaPostResponseAddressI): v
   address.country = addressComplete.CountryName
 }
 
-function onSubmit (event: FormSubmitEvent<Schema>) {
+function onSubmit(event: FormSubmitEvent<Schema>) {
   alert(JSON.stringify(event.data))
 }
 

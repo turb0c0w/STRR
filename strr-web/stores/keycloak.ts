@@ -77,6 +77,7 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
         syncSessionStorage()
       }
     }
+    forceLogin = true
     const kcOptions: KeycloakInitOptions = {
       onLoad: forceLogin ? 'login-required' : 'check-sso',
       timeSkew: 0,
@@ -86,6 +87,7 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
       pkceMethod: 'S256',
       responseMode: 'query'
     }
+    console.log(JSON.stringify(kcOptions))
     return await kc.value.init(kcOptions)
   }
 

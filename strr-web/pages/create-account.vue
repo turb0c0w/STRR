@@ -14,23 +14,11 @@
                 {{ t(activeStep.subtitle) }}
               </p>
             </div>
-            <div class="h-[1254px] mb-[180px] bg-white rounded-[4px]">
-              <div class="bg-bcGovColor-gray2 rounded-t-[4px]">
-                <p class="px-[40px] py-[15px] font-bold">
-                  {{ t(activeStep.formTitle) }}
-                </p>
-              </div>
-              <div v-for="formSection in activeStep.sections" :key="formSection.title">
-                <div class="ml-[40px]">
-                  <BcrosFormSection :title="formSection.title">
-                    <div v-for="field in formSection.fields" :key="field.content">
-                      <div class="mb-[16px] text-[14px] leading-[22px]">
-                        {{ t(field.content) }}
-                      </div>
-                    </div>
-                  </BcrosFormSection>
-                </div>
-              </div>
+            <div v-if="activeStepIndex === 0" :key="activeStepIndex">
+              <BcrosFormSectionContactInformationForm />
+            </div>
+            <div v-if="activeStepIndex === 1" :key="activeStepIndex">
+              <BcrosFormSectionPropertyForm />
             </div>
           </div>
         </div>
@@ -38,13 +26,9 @@
           <BcrosFeeWidget />
         </div>
       </div>
-      <BcrosStepperFooter
-        :key="activeStepIndex"
-        :is-first-step="activeStepIndex.valueOf() == 0"
-        :set-next-step="setNextStep"
-        :set-previous-step="setPreviousStep"
-        :is-last-step="activeStepIndex.valueOf() == steps.length - 1"
-      />
+      <BcrosStepperFooter :key="activeStepIndex" :is-first-step="activeStepIndex.valueOf() == 0"
+        :set-next-step="setNextStep" :set-previous-step="setPreviousStep"
+        :is-last-step="activeStepIndex.valueOf() == steps.length - 1" />
     </div>
   </div>
 </template>
@@ -52,18 +36,17 @@
 <script setup lang="ts">
 import steps from '../page-data/create-account/steps'
 import { FormPageI } from '~/interfaces/form/form-page-i'
-import { useFormStore } from '@/stores/strr'
+import { formState } from '@/stores/strr'
 const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 
 const t = useNuxtApp().$i18n.t
 const { userFullName } = useBcrosAccount()
-const formStore = useFormStore()
 
 if (activeStepIndex.value === 0) {
   activeStep.value.sections[0].fields[0].content = userFullName
-  if (formStore.selectedAccount.name) {
-    activeStep.value.sections[0].fields[1].content = `SBC Account in Store: ${formStore.selectedAccount.name}`
+  if (formState.selectedAccount.name) {
+    activeStep.value.sections[0].fields[1].content = `SBC Account in Store: ${formState.selectedAccount.name}`
   } else {
     activeStep.value.sections[0].fields[1].content = 'Creating new SBC Account'
   }

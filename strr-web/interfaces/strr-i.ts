@@ -6,6 +6,7 @@ export interface QuestionsI {
 }
 
 export interface FormStateI {
+  dateOfBirth: DateOfBirthI;
   primaryContact: ContactI;
   secondaryContact?: ContactI;
   questions: QuestionsI;
