@@ -16,6 +16,7 @@ class RentalProperty(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     property_manager_id = db.Column(db.Integer, db.ForeignKey('property_managers.id'), nullable=False)
     address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'), nullable=False)
+    nickname = db.Column(db.String, nullable=True)
     parcel_identifier = db.Column(db.String, nullable=True)
     local_business_licence = db.Column(db.String, nullable=True)
     # Enum: portion of principal residence, entire principal residence, secondary suit, accessory dwelling unit, investment property
