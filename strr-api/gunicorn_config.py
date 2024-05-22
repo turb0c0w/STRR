@@ -21,4 +21,4 @@ workers = int(os.environ.get("GUNICORN_PROCESSES", "1"))  # pylint: disable=inva
 threads = int(os.environ.get("GUNICORN_THREADS", "1"))  # pylint: disable=invalid-name
 
 forwarded_allow_ips = "*"  # pylint: disable=invalid-name
-secure_scheme_headers = {"X-Forwarded-Proto": "http"}  # pylint: disable=invalid-name
+secure_scheme_headers = {"X-Forwarded-Proto": "https"}  # pylint: disable=invalid-name
