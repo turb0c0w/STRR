@@ -33,9 +33,14 @@
 # POSSIBILITY OF SUCH DAMAGE.
 """This exports all of the models and schemas used by the application."""
 from .db import db  # noqa: I001
+from .rental import Address, PropertyManager, RentalPlatform, RentalProperty
 from .user import User
 
 __all__ = (
     "db",
     "User",
+    "RentalProperty",
+    "Address",
+    "PropertyManager",
+    "RentalPlatform",
 )
