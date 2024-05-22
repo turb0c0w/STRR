@@ -79,7 +79,7 @@ export const formState: CreateAccountFormStateI = reactive({
     postalCode: ''
   },
   listingDetails: {
-    urlOne: 'aaa',
+    urlOne: '',
     urlTwo: ''
   },
   selectedAccount: {} as OrgI
