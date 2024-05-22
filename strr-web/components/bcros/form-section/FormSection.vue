@@ -5,6 +5,9 @@
         <p class="font-bold">
           {{ t(title) }}
         </p>
+        <p v-if="optional">
+          {{ t('general.optional') }}
+        </p>
       </div>
       <div class="w-full">
         <slot />
@@ -15,8 +18,9 @@
 
 <script setup lang="ts">
 
-const { title } = defineProps<{
-  title: string
+const { title, optional } = defineProps<{
+  title: string,
+  optional?: boolean
 }>()
 
 const t = useNuxtApp().$i18n.t

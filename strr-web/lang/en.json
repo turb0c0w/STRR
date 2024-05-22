@@ -114,7 +114,8 @@
     "back": "Back",
     "next": "Next",
     "note": "Note: ",
-    "submit": "Submit"
+    "submit": "Submit",
+    "optional": "(Optional)"
   },
   "labels": {
     "services": {

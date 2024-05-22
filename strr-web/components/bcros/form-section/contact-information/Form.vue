@@ -46,7 +46,7 @@
           </div>
         </div>
         <UForm :schema="primaryContactSchema" :state="formState">
-          <BcrosFormSectionContactInformationContactInfo :formState="formState.secondaryContact" />
+          <BcrosFormSectionContactInformationContactInfo :formState="formState.secondaryContact" :dobOptional="true" />
           <BcrosFormSectionContactInformationContactDetails :formState="formState.secondaryContact" />
           <BcrosFormSectionContactInformationMailingAddress :formState="formState.secondaryContact" />
         </UForm>

@@ -1,29 +1,29 @@
 <template>
   <div data-cy="form-section-contact-info">
     <BcrosFormSection :title="t('create-account.contact-form.mailingAddress')">
-      <div class="flex flex-row justify-between w-full mb-[40px]">
+      <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="country" class="pr-[16px] flex-grow">
           <UInput v-model="country" :placeholder="t('create-account.contact-form.country')" />
         </UFormGroup>
       </div>
-      <div class="flex flex-row justify-between w-full mb-[40px]">
+      <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="Address" class="pr-[16px] flex-grow">
           <UInput v-model="address" :placeholder="t('create-account.contact-form.address')" />
         </UFormGroup>
       </div>
-      <div class="flex flex-row justify-between w-full mb-[40px]">
+      <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="AddressLineTwo" class="pr-[16px] flex-grow">
           <UInput v-model="addressLineTwo" :placeholder="t('create-account.contact-form.addressLineTwo')" />
         </UFormGroup>
       </div>
-      <div class="flex flex-row justify-between w-full mb-[40px]">
-        <UFormGroup name="city" class="pr-[16px] flex-grow">
+      <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
+        <UFormGroup name="city" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="city" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
-        <UFormGroup name="province" class="pr-[16px] flex-grow">
+        <UFormGroup name="province" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="province" :placeholder="t('create-account.contact-form.province')" />
         </UFormGroup>
-        <UFormGroup name="postalCode" class="pr-[16px] flex-grow">
+        <UFormGroup name="postalCode" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="postalCode" :placeholder="t('create-account.contact-form.postalCode')" />
         </UFormGroup>
       </div>
