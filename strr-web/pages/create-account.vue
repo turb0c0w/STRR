@@ -15,7 +15,7 @@
               </p>
             </div>
             <div v-if="activeStepIndex === 0" :key="activeStepIndex">
-              <BcrosFormSectionContactInformationForm />
+              <BcrosFormSectionContactInformationForm :full-name="userFullName" />
             </div>
             <div v-if="activeStepIndex === 1" :key="activeStepIndex">
               <BcrosFormSectionPropertyForm />

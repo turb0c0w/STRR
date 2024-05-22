@@ -8,7 +8,10 @@
       </div>
       <BcrosFormSection :title="t('create-account.contact.your-name')">
         <div class="mb-[16px] text-[14px] leading-[22px]">
-          {{ t('create-account.contact.primary') }}
+          {{ fullName }}
+        </div>
+        <div class="mb-[16px] text-[14px] leading-[22px]">
+          {{ t('create-account.contact.disclaimer') }}
         </div>
       </BcrosFormSection>
       <UForm :schema="primaryContactSchema" :state="formState">
@@ -54,6 +57,8 @@
 
 <script setup lang="ts">
 import { formState } from '@/stores/strr'
+
+const { fullName } = defineProps<{ fullName: string }>()
 
 const addSecondaryContact = ref(false)
 
