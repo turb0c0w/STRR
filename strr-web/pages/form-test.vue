@@ -5,8 +5,12 @@
     <BcrosTypographyH1 text="Test Form" data-cy="formTestTitle" class="mobile:pb-[20px]" />
     <UForm :schema="schema" :state="address" class="space-y-4" @submit="onSubmit">
       <UFormGroup label="Street" name="street">
-        <UInput v-model="address.street" placeholder="Type your address" @keypress.once="enableAddressComplete()"
-          @click="enableAddressComplete()" />
+        <UInput
+          v-model="address.street"
+          placeholder="Type your address"
+          @keypress.once="enableAddressComplete()"
+          @click="enableAddressComplete()"
+        />
       </UFormGroup>
       <UFormGroup label="City" name="city">
         <UInput v-model="address.city" />
@@ -96,7 +100,7 @@ const addressCompletePopulate = (addressComplete: CanadaPostResponseAddressI): v
   address.country = addressComplete.CountryName
 }
 
-function onSubmit(event: FormSubmitEvent<Schema>) {
+function onSubmit (event: FormSubmitEvent<Schema>) {
   alert(JSON.stringify(event.data))
 }
 

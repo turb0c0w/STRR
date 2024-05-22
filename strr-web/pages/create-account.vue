@@ -26,9 +26,13 @@
           <BcrosFeeWidget />
         </div>
       </div>
-      <BcrosStepperFooter :key="activeStepIndex" :is-first-step="activeStepIndex.valueOf() == 0"
-        :set-next-step="setNextStep" :set-previous-step="setPreviousStep"
-        :is-last-step="activeStepIndex.valueOf() == steps.length - 1" />
+      <BcrosStepperFooter
+        :key="activeStepIndex"
+        :is-first-step="activeStepIndex.valueOf() == 0"
+        :set-next-step="setNextStep"
+        :set-previous-step="setPreviousStep"
+        :is-last-step="activeStepIndex.valueOf() == steps.length - 1"
+      />
     </div>
   </div>
 </template>

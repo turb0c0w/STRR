@@ -1,6 +1,6 @@
 <template>
   <div data-cy="form-section-contact-info">
-    <BcrosFormSection :title="t('create-account.property-form.rentalUnitAddress')" >
+    <BcrosFormSection :title="t('create-account.property-form.rentalUnitAddress')">
       <div class="flex flex-row justify-between w-full mb-[40px]">
         <UFormGroup name="nickname" class="pr-[16px] flex-grow">
           <UInput v-model="nickname" :placeholder="t('create-account.property-form.nickname')" />

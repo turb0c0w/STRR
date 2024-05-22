@@ -19,7 +19,8 @@ logs
 .idea
 
 # Local env files
-.env*
+.env.local
+.env
 *.firebase
 
 # other

@@ -18,7 +18,7 @@
       </UForm>
     </div>
     <div v-if="!addSecondaryContact" class="mb-[180px] mt-[32px]">
-      <BcrosButtonsPrimary :action="toggleAddSecondary" :text="t('create-account.contact.add-secondary')" variant="outline" icon=""/>
+      <BcrosButtonsPrimary :action="toggleAddSecondary" :text="t('create-account.contact.add-secondary')" variant="outline" icon="" />
     </div>
     <div v-else>
       <div class="mb-[180px] bg-white rounded-[4px]">
@@ -31,8 +31,10 @@
             role="button"
             :onclick="toggleAddSecondary"
           >
-            <p class="mr-[4px]">{{ t('create-account.contact.remove') }}</p>
-            <UIcon class="h-[20px] w-[20px]" name="i-mdi-remove" alt="remove icon"/>
+            <p class="mr-[4px]">
+              {{ t('create-account.contact.remove') }}
+            </p>
+            <UIcon class="h-[20px] w-[20px]" name="i-mdi-remove" alt="remove icon" />
           </div>
         </div>
         <UForm :schema="primaryContactSchema" :state="formState">
@@ -49,7 +51,7 @@
 
 const addSecondaryContact = ref(false)
 
-const toggleAddSecondary = () => addSecondaryContact.value = !addSecondaryContact.value;
+const toggleAddSecondary = () => addSecondaryContact.value = !addSecondaryContact.value
 
 const t = useNuxtApp().$i18n.t
 

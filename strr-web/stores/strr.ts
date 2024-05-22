@@ -1,5 +1,5 @@
-import { OrgI } from '~/interfaces/account-i'
 import { z } from 'zod'
+import { OrgI } from '~/interfaces/account-i'
 
 export const primaryContactSchema = z.object({
   preferredName: z.string().optional(),
