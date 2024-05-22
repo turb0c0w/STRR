@@ -18,7 +18,12 @@
       </UForm>
     </div>
     <div v-if="!addSecondaryContact" class="mb-[180px] mt-[32px]">
-      <BcrosButtonsPrimary :action="toggleAddSecondary" :text="t('create-account.contact.add-secondary')" variant="outline" icon="" />
+      <BcrosButtonsPrimary
+        :action="toggleAddSecondary"
+        :text="t('create-account.contact.add-secondary')"
+        variant="outline"
+        icon=""
+      />
     </div>
     <div v-else>
       <div class="mb-[180px] bg-white rounded-[4px]">
@@ -52,15 +57,10 @@ import { formState } from '@/stores/strr'
 
 const addSecondaryContact = ref(false)
 
-const toggleAddSecondary = () => addSecondaryContact.value = !addSecondaryContact.value
+const toggleAddSecondary = () => {
+  addSecondaryContact.value = !addSecondaryContact.value
+}
 
 const t = useNuxtApp().$i18n.t
-
-console.log(formState)
-
-watch(formState, (newValue, oldValue) => {
-  console.log(oldValue)
-  console.log(newValue)
-})
 
 </script>
