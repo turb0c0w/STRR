@@ -48,11 +48,19 @@
 </template>
 
 <script setup lang="ts">
+import { formState } from '@/stores/strr'
 
 const addSecondaryContact = ref(false)
 
 const toggleAddSecondary = () => addSecondaryContact.value = !addSecondaryContact.value
 
 const t = useNuxtApp().$i18n.t
+
+console.log(formState)
+
+watch(formState, (newValue, oldValue) => {
+  console.log(oldValue)
+  console.log(newValue)
+})
 
 </script>

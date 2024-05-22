@@ -12,7 +12,10 @@ export const primaryContactSchema = z.object({
   addressLineTwo: z.string().optional(),
   city: z.string(),
   province: z.string(),
-  postalCode: z.string()
+  postalCode: z.string(),
+  day: z.string(),
+  month: z.string(),
+  year: z.string()
 })
 
 export const formState = reactive({
