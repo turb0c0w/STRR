@@ -1,4 +1,19 @@
 import { OrgI } from '~/interfaces/account-i'
+import { z } from 'zod'
+
+export const primaryContactSchema = z.object({
+  preferredName: z.string().optional(),
+  phoneNumber: z.string(),
+  extension: z.string().optional(),
+  faxNumber: z.string().optional(),
+  emailAddress: z.string(),
+  address: z.string(),
+  country: z.string(),
+  addressLineTwo: z.string().optional(),
+  city: z.string(),
+  province: z.string(),
+  postalCode: z.string()
+})
 
 export const formState = reactive({
   dateOfBirth: {
@@ -7,6 +22,11 @@ export const formState = reactive({
     year: ''
   },
   primaryContact: {
+    preferredName: '',
+    phoneNumber: '',
+    extension: '',
+    faxNumber: '',
+    emailAddress: '',
     address: '',
     country: '',
     addressLineTwo: '',

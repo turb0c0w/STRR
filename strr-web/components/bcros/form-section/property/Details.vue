@@ -1,24 +1,24 @@
 <template>
   <div data-cy="form-section-contact-info">
-    <BcrosFormSection title="Mailing Address">
+    <BcrosFormSection :title="t('create-account.property-form.rentalUnitDetails')" >
       <div class="flex flex-row justify-between w-full mb-[40px]">
         <UFormGroup name="parcelIdentifier" class="pr-[16px] flex-grow">
-          <UInput v-model="parcelIdentifier" placeholder="Parcel Identifier (Optional)" />
+          <UInput v-model="parcelIdentifier" :placeholder="t('create-account.property-form.parcelIdentifier')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px]">
         <UFormGroup name="businessLicense" class="pr-[16px] flex-grow">
-          <UInput v-model="businessLicense" placeholder="Local Government Business Licence (Optional)" />
+          <UInput v-model="businessLicense" :placeholder="t('create-account.property-form.businessLicense')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px]">
         <UFormGroup name="propertyType" class="pr-[16px] flex-grow">
-          <UInput v-model="propertyType" placeholder="Type of Property" />
+          <UInput v-model="propertyType" :placeholder="t('create-account.property-form.propertyType')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px]">
         <UFormGroup name="ownershipType" class="pr-[16px] flex-grow">
-          <UInput v-model="ownershipType" placeholder="Ownership Type" />
+          <UInput v-model="ownershipType" :placeholder="t('create-account.property-form.ownershipType')" />
         </UFormGroup>
       </div>
     </BcrosFormSection>

@@ -1,35 +1,33 @@
 <template>
   <div data-cy="form-section-contact-info">
-    <BcrosFormSection title="Contact Details">
+    <BcrosFormSection :title="t('create-account.contact-form.contactDetails')" >
       <div class="flex flex-row justify-between w-full mb-[40px]">
         <UFormGroup name="preferredName" class="pr-[16px] flex-grow">
-          <UInput v-model="preferredName" placeholder="Preferred name" />
+          <UInput v-model="preferredName" :placeholder="t('create-account.contact-form.preferredName')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px]">
         <UFormGroup name="phoneNumber" class="pr-[16px] flex-grow">
-          <UInput v-model="phoneNumber" placeholder="Phone Number" />
+          <UInput v-model="phoneNumber" :placeholder="t('create-account.contact-form.phoneNumber')"  />
         </UFormGroup>
         <UFormGroup name="extension" class="pr-[16px] flex-grow">
-          <UInput v-model="extension" placeholder="Extension (Optional)" />
+          <UInput v-model="extension" :placeholder="t('create-account.contact-form.extension')"  />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px]">
         <UFormGroup name="faxNumber" class="pr-[16px] flex-grow">
-          <UInput v-model="faxNumber" placeholder="Fax Number (Optional)" />
+          <UInput v-model="faxNumber" :placeholder="t('create-account.contact-form.faxNumber')"  />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px]">
         <UFormGroup name="emailAddress" class="pr-[16px] flex-grow">
-          <UInput v-model="emailAddress" placeholder="Email Address" />
+          <UInput v-model="emailAddress" :placeholder="t('create-account.contact-form.emailAddress')"  />
         </UFormGroup>
       </div>
       <BcrosAlertsMessage :flavour="AlertsFlavourE.INFO" class="mr-[20px]">
         <p>
-          <b>Please note:</b>
-          Email will be default method of communication. Notices sent to your email address will be deemed received on
-          the
-          third day after the email is sent.
+          <b>{{t('create-account.contact-form.bold-warning')}}</b>
+          {{t('create-account.contact-form.warning')}}
         </p>
       </BcrosAlertsMessage>
     </BcrosFormSection>
