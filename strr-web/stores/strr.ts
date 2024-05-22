@@ -18,30 +18,47 @@ export const primaryContactSchema = z.object({
   year: z.string()
 })
 
-export const formState = reactive({
+const primaryContact = {
+  preferredName: '',
+  phoneNumber: '',
+  extension: '',
+  faxNumber: '',
+  emailAddress: '',
+  address: '',
+  country: '',
+  addressLineTwo: '',
+  city: '',
+  province: '',
+  postalCode: '',
   dateOfBirth: {
     day: '',
     month: '',
     year: ''
-  },
-  primaryContact: {
-    preferredName: '',
-    phoneNumber: '',
-    extension: '',
-    faxNumber: '',
-    emailAddress: '',
-    address: '',
-    country: '',
-    addressLineTwo: '',
-    city: '',
-    province: '',
-    postalCode: ''
-  },
-  secondaryContact: {
-    email: '',
-    phone: '',
-    phoneExtension: ''
-  },
+  }
+}
+
+const secondaryContact = {
+  preferredName: '',
+  phoneNumber: '',
+  extension: '',
+  faxNumber: '',
+  emailAddress: '',
+  address: '',
+  country: '',
+  addressLineTwo: '',
+  city: '',
+  province: '',
+  postalCode: '',
+  dateOfBirth: {
+    day: '',
+    month: '',
+    year: ''
+  }
+}
+
+export const formState = reactive({
+  primaryContact,
+  secondaryContact,
   questions: {
     primaryResidence: '',
     whichPlatform: ''

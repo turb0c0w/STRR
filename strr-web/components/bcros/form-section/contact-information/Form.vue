@@ -15,9 +15,9 @@
         </div>
       </BcrosFormSection>
       <UForm :schema="primaryContactSchema" :state="formState">
-        <BcrosFormSectionContactInformationContactInfo :primary="true" />
-        <BcrosFormSectionContactInformationContactDetails :primary="true" />
-        <BcrosFormSectionContactInformationMailingAddress :primary="true" />
+        <BcrosFormSectionContactInformationContactInfo :formState="formState.primaryContact" />
+        <BcrosFormSectionContactInformationContactDetails :formState="formState.primaryContact" />
+        <BcrosFormSectionContactInformationMailingAddress :formState="formState.primaryContact" />
       </UForm>
     </div>
     <div v-if="!addSecondaryContact" class="mb-[180px] mt-[32px]">
@@ -46,9 +46,9 @@
           </div>
         </div>
         <UForm :schema="primaryContactSchema" :state="formState">
-          <BcrosFormSectionContactInformationContactInfo :primary="false" />
-          <BcrosFormSectionContactInformationContactDetails :primary="false" />
-          <BcrosFormSectionContactInformationMailingAddress :primary="false" />
+          <BcrosFormSectionContactInformationContactInfo :formState="formState.secondaryContact" />
+          <BcrosFormSectionContactInformationContactDetails :formState="formState.secondaryContact" />
+          <BcrosFormSectionContactInformationMailingAddress :formState="formState.secondaryContact" />
         </UForm>
       </div>
     </div>

@@ -35,16 +35,14 @@
 </template>
 
 <script setup lang="ts">
-import { formState } from '@/stores/strr'
+const { formState } = defineProps<{ formState: any }>();
 
 const {
-  primaryContact: {
-    preferredName,
-    phoneNumber,
-    extension,
-    faxNumber,
-    emailAddress
-  }
+  preferredName,
+  phoneNumber,
+  extension,
+  faxNumber,
+  emailAddress
 } = formState
 
 const t = useNuxtApp().$i18n.t
