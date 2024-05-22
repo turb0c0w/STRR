@@ -7,6 +7,11 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px]">
+        <UFormGroup name="useMailing" class="pr-[16px] flex-grow">
+          <UCheckbox v-model="useMailing" :label="t('create-account.property-form.useMailing')" />
+        </UFormGroup>
+      </div>
+      <div class="flex flex-row justify-between w-full mb-[40px]">
         <UFormGroup name="country" class="pr-[16px] flex-grow">
           <UInput v-model="country" :placeholder="t('create-account.contact-form.country')" />
         </UFormGroup>
@@ -41,6 +46,7 @@ const { formState } = defineProps<{ formState: any }>();
 
 const {
   unitAddress: {
+    useMailing,
     nickname,
     country,
     address,

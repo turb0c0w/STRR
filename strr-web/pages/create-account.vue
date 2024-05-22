@@ -40,7 +40,6 @@
 <script setup lang="ts">
 import steps from '../page-data/create-account/steps'
 import { FormPageI } from '~/interfaces/form/form-page-i'
-import { formState } from '@/stores/strr'
 const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 

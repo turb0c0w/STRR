@@ -116,6 +116,7 @@ export interface CreateAccountFormStateI {
     ownershipType: string
   },
   unitAddress: {
+    useMailing: boolean,
     nickname: string,
     country: string,
     address: string,
@@ -124,9 +125,6 @@ export interface CreateAccountFormStateI {
     province: string,
     postalCode: string
   },
-  listingDetails: {
-    urlOne: string,
-    urlTwo: string
-  },
+  listingDetails: string[],
   selectedAccount: OrgI
 }

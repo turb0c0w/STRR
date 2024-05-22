@@ -70,6 +70,7 @@ export const formState: CreateAccountFormStateI = reactive({
     ownershipType: ''
   },
   unitAddress: {
+    useMailing: false,
     nickname: '',
     country: '',
     address: '',
@@ -78,9 +79,6 @@ export const formState: CreateAccountFormStateI = reactive({
     province: '',
     postalCode: ''
   },
-  listingDetails: {
-    urlOne: '',
-    urlTwo: ''
-  },
+  listingDetails: [''],
   selectedAccount: {} as OrgI
 })
