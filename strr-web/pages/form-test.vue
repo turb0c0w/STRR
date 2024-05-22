@@ -58,11 +58,10 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '#ui/types'
 import { z } from 'zod'
-import { useFormStore } from '@/stores/strr'
-import { useCanadaPostAddress } from '@/composables/useBcrosCanadaPost'
+import { formState } from '@/stores/strr'
+import { CanadaPostAddressI, CanadaPostResponseAddressI } from '#imports'
 
-const formStore = useFormStore()
-const selectedAccount = computed(() => formStore.getSelectedAccount())
+const { selectedAccount } = formState
 
 const { address: primaryAddress, enableAddressComplete: enablePrimaryAddressComplete } = useCanadaPostAddress()
 const { address: secondaryAddress, enableAddressComplete: enableSecondaryAddressComplete } = useCanadaPostAddress()

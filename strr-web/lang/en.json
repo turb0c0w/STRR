@@ -15,10 +15,45 @@
     },
     "contact": {
       "title": "Step 1 - Contact Information",
-      "subtitle": "The primary contact will be contacted first",
+      "subtitle": "Primary Contact Information",
+      "subtitle-two": "Secondary Contact Information",
       "primary": "Primary Contact Information",
       "disclaimer": "This is your legal name as it appears on your BC Services Card.",
-      "your-name": "Your Name"
+      "your-name": "Your Name",
+      "add-secondary": "Add Another Contact",
+      "remove": "Remove"
+    },
+    "contact-form": {
+      "preferredName": "Preferred Name (Optional)",
+      "phoneNumber": "Phone Number",
+      "extension": "Extension (Optional)",
+      "faxNumber": "Fax Number (Optional)",
+      "emailAddress": "Email Address",
+      "day": "Day",
+      "month": "Month",
+      "year": "Year",
+      "country": "Country",
+      "postalCode": "Postal Code",
+      "city": "City",
+      "province": "Province",
+      "address": "Address",
+      "addressLineTwo": "Address Line 2 (Optional)",
+      "bold-warning": "Please note: ",
+      "warning": "Email will be default method of communication. Notices sent to your email address will be deemed received on the third day after the email is sent.",
+      "dateOfBirth": "Date of Birth",
+      "contactDetails": "Contact Details",
+      "mailingAddress": "Mailing Address"
+    },
+    "property-form": {
+      "nickname": "Nickname (Optional)",
+      "parcelIdentifier": "Parcel Identifier (Optional)",
+      "businessLicense": "Local Government Business License (Optional)",
+      "propertyType": "Type of Property",
+      "ownershipType": "Ownership Type",
+      "useMailing": "Use my mailing address for the rental property address",
+      "rentalUnitDetails": "Rental Unit Details",
+      "internetListingDetails": "Internet Listing Details",
+      "rentalUnitAddress": "Rental Unit Address"
     },
     "details": {
       "title": "Step 2 - Add Your Short Term Rental Property Details",

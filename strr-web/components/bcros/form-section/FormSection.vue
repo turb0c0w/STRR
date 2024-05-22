@@ -1,12 +1,12 @@
 <template>
-  <div data-cy="form-section" class="mt-[40px]">
+  <div data-cy="form-section" class="mt-[40px] ml-[40px]">
     <div class="flex flex-row mobile:flex-col">
       <div class="w-[200px]">
         <p class="font-bold">
           {{ t(title) }}
         </p>
       </div>
-      <div>
+      <div class="w-full">
         <slot />
       </div>
     </div>
