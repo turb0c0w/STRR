@@ -13,31 +13,30 @@ export const useCanadaPostAddress = () => {
     deliveryInstructions: ''
   })
 
-  const createAddressComplete = (pca: any, key: string, element_prefix:string): object => {
+  const createAddressComplete = (pca: any, key: string, elementPrefix:string): object => {
     const fields = [
-      { element: element_prefix + '_street', field: 'Line1', mode: pca.fieldMode.SEARCH },
+      { element: elementPrefix + '_street', field: 'Line1', mode: pca.fieldMode.SEARCH },
       { element: 'CA', field: 'CountryName', mode: pca.fieldMode.COUNTRY }
     ]
-    console.log(fields)
     const options = { key }
     const addressComplete = new pca.Address(fields, options)
     addressComplete.listen('populate', addressCompletePopulate)
     return addressComplete
   }
 
-  const enableAddressComplete = (element_prefix: string): void => {
+  const enableAddressComplete = (elementPrefix: string): void => {
     const config = useRuntimeConfig()
     const pca = (window as any).pca
     const key = config.public.addressCompleteKey
     if (!pca || !key) {
+      // eslint-disable-next-line no-console
       console.log('AddressComplete not initialized due to missing script and/or key')
       return
     }
     if ((window as any).currentAddressComplete) {
-      console.log('destroy');
       (window as any).currentAddressComplete.destroy()
     }
-    (window as any).currentAddressComplete = createAddressComplete(pca, key, element_prefix)
+    (window as any).currentAddressComplete = createAddressComplete(pca, key, elementPrefix)
   }
 
   const addressCompletePopulate = (addressComplete: CanadaPostResponseAddressI): void => {

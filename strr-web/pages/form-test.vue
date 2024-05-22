@@ -4,11 +4,12 @@
     <p>Name: {{ selectedAccount.name }}</p><br>
     <BcrosTypographyH1 text="Test Form" data-cy="formTestTitle" class="mobile:pb-[20px]" />
     <BcrosTypographyH1 text="Primary Address" data-cy="formTestTitle" class="mobile:pb-[20px]" />
-      <UFormGroup label="Primary Street" >
+    <UForm :schema="schema" :state="primaryAddress" class="space-y-4" @submit="onSubmit">
+      <UFormGroup label="Primary Street">
         <UInput
+          id="primary_street"
           v-model="primaryAddress.street"
           placeholder="Type your address"
-          id="primary_street"
           @keypress.once="enablePrimaryAddressComplete('primary')"
           @click="enablePrimaryAddressComplete('primary')"
         />
@@ -27,13 +28,13 @@
       </UFormGroup>
       <BcrosTypographyH1 text="Secondary Address" data-cy="formTestTitle" class="mobile:pb-[20px]" />
       <UFormGroup label="Secondary Street">
-          <UInput
-            v-model="secondaryAddress.street"
-            placeholder="Type your address"
-            id="secondary_street"
-            @keypress.once="enableSecondaryAddressComplete('secondary')"
-            @click="enableSecondaryAddressComplete('secondary')"
-          />
+        <UInput
+          id="secondary_street"
+          v-model="secondaryAddress.street"
+          placeholder="Type your address"
+          @keypress.once="enableSecondaryAddressComplete('secondary')"
+          @click="enableSecondaryAddressComplete('secondary')"
+        />
       </UFormGroup>
       <UFormGroup label="City" name="city">
         <UInput v-model="secondaryAddress.city" />
@@ -50,33 +51,33 @@
       <UButton type="submit">
         Submit
       </UButton>
+    </UForm>
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { FormSubmitEvent } from '#ui/types'
-  import { z } from 'zod'
-  import { useFormStore } from '@/stores/strr'
-  import { useCanadaPostAddress } from '@/composables/useBcrosCanadaPost'
+import type { FormSubmitEvent } from '#ui/types'
+import { z } from 'zod'
+import { useFormStore } from '@/stores/strr'
+import { useCanadaPostAddress } from '@/composables/useBcrosCanadaPost'
 
-  const formStore = useFormStore()
-  const selectedAccount = computed(() => formStore.getSelectedAccount())
+const formStore = useFormStore()
+const selectedAccount = computed(() => formStore.getSelectedAccount())
 
-  const { address: primaryAddress, enableAddressComplete: enablePrimaryAddressComplete } = useCanadaPostAddress()
-  const { address: secondaryAddress, enableAddressComplete: enableSecondaryAddressComplete } = useCanadaPostAddress()
+const { address: primaryAddress, enableAddressComplete: enablePrimaryAddressComplete } = useCanadaPostAddress()
+const { address: secondaryAddress, enableAddressComplete: enableSecondaryAddressComplete } = useCanadaPostAddress()
 
-  const schema = z.object({
-    street: z.string().min(1, 'Street is required'),
-    city: z.string().min(1, 'City is required'),
-    region: z.string().min(1, 'Province/State/Region is required'),
-    country: z.string().min(1, 'Country is required'),
-    postalCode: z.string().min(1, 'Postal code or Zip code is required')
-  })
+const schema = z.object({
+  street: z.string().min(1, 'Street is required'),
+  city: z.string().min(1, 'City is required'),
+  region: z.string().min(1, 'Province/State/Region is required'),
+  country: z.string().min(1, 'Country is required'),
+  postalCode: z.string().min(1, 'Postal code or Zip code is required')
+})
 
-  type Schema = z.output<typeof schema>
+type Schema = z.output<typeof schema>
 
-  function onSubmit (event: FormSubmitEvent<Schema>) {
-    alert(JSON.stringify(event.data))
-  }
-
+function onSubmit (event: FormSubmitEvent<Schema>) {
+  alert(JSON.stringify(event.data))
+}
 </script>
