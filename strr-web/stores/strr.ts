@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { OrgI } from '~/interfaces/account-i'
+import { CreateAccountFormStateI, OrgI } from '~/interfaces/account-i'
 
 export const primaryContactSchema = z.object({
   preferredName: z.string().optional(),
@@ -18,7 +18,7 @@ export const primaryContactSchema = z.object({
   year: z.string()
 })
 
-const primaryContact = {
+const primaryContact: ContactInformationI = {
   preferredName: '',
   phoneNumber: '',
   extension: '',
@@ -37,7 +37,7 @@ const primaryContact = {
   }
 }
 
-const secondaryContact = {
+const secondaryContact: ContactInformationI = {
   preferredName: '',
   phoneNumber: '',
   extension: '',
@@ -56,7 +56,7 @@ const secondaryContact = {
   }
 }
 
-export const formState = reactive({
+export const formState: CreateAccountFormStateI = reactive({
   primaryContact,
   secondaryContact,
   questions: {
@@ -79,7 +79,7 @@ export const formState = reactive({
     postalCode: ''
   },
   listingDetails: {
-    urlOne: '',
+    urlOne: 'aaa',
     urlTwo: ''
   },
   selectedAccount: {} as OrgI

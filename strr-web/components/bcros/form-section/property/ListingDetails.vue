@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { formState } from '@/stores/strr'
+const { formState } = defineProps<{ formState: any }>();
 
 const {
   listingDetails: {

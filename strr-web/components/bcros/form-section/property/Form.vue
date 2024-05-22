@@ -11,9 +11,11 @@
           {{ t('create-account.contact.primary') }}
         </div>
       </BcrosFormSection>
-      <BcrosFormSectionPropertyAddress />
-      <BcrosFormSectionPropertyDetails />
-      <BcrosFormSectionPropertyListingDetails />
+      <UForm :schema="primaryContactSchema" :state="formState">
+        <BcrosFormSectionPropertyAddress :formState="formState" />
+        <BcrosFormSectionPropertyDetails :formState="formState" />
+        <BcrosFormSectionPropertyListingDetails :formState="formState" />
+      </UForm>
     </div>
   </div>
 </template>
