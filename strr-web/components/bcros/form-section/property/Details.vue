@@ -17,7 +17,7 @@
             <UInput
               class="w-full"
               color="white"
-              :label="t('create-account.property-form.propertyType')"
+              :placeholder="t('create-account.property-form.propertyType')"
               trailing-icon="i-heroicons-chevron-down-20-solid"
             />
           </UDropdown>
@@ -29,7 +29,7 @@
             <UInput
               class="w-full"
               color="white"
-              :label="t('create-account.property-form.ownershipType')"
+              :placeholder="t('create-account.property-form.ownershipType')"
               trailing-icon="i-heroicons-chevron-down-20-solid"
             />
           </UDropdown>

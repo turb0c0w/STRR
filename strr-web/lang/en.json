@@ -115,7 +115,19 @@
     "next": "Next",
     "note": "Note: ",
     "submit": "Submit",
-    "optional": "(Optional)"
+    "optional": "(Optional)",
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
   },
   "labels": {
     "services": {

@@ -15,9 +15,9 @@
         </div>
       </BcrosFormSection>
       <UForm :schema="primaryContactSchema" :state="formState">
-        <BcrosFormSectionContactInformationContactInfo :form-state="formState.primaryContact" />
-        <BcrosFormSectionContactInformationContactDetails :form-state="formState.primaryContact" />
-        <BcrosFormSectionContactInformationMailingAddress :form-state="formState.primaryContact" />
+        <BcrosFormSectionContactInformationContactInfo :form-state="formState" />
+        <BcrosFormSectionContactInformationContactDetails :form-state="formState" />
+        <BcrosFormSectionContactInformationMailingAddress :form-state="formState" />
       </UForm>
     </div>
     <div v-if="!addSecondaryContact" class="mb-[180px] mt-[32px]">
@@ -45,13 +45,13 @@
             <UIcon class="h-[20px] w-[20px]" name="i-mdi-remove" alt="remove icon" />
           </div>
         </div>
-        <UForm :schema="primaryContactSchema" :state="formState">
+        <UForm :schema="{}" :state="formState">
           <BcrosFormSectionContactInformationContactInfo
-            :form-state="formState.secondaryContact"
+            :form-state="formState"
             :dob-optional="true"
           />
-          <BcrosFormSectionContactInformationContactDetails :form-state="formState.secondaryContact" />
-          <BcrosFormSectionContactInformationMailingAddress :form-state="formState.secondaryContact" />
+          <BcrosFormSectionContactInformationContactDetails :form-state="formState" />
+          <BcrosFormSectionContactInformationMailingAddress :form-state="formState" />
         </UForm>
       </div>
     </div>
@@ -70,5 +70,9 @@ const toggleAddSecondary = () => {
 }
 
 const t = useNuxtApp().$i18n.t
+
+watch(formState, () => {
+  console.log(formState)
+})
 
 </script>

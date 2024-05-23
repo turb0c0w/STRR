@@ -95,36 +95,60 @@ export interface ContactInformationI {
   city: string,
   province: string,
   postalCode: string,
-  dateOfBirth: {
-    day: string,
-    month: string,
-    year: string
-  }
+  birthDay: string,
+  birthMonth: string,
+  birthYear: string
 }
 
 export interface CreateAccountFormStateI {
-  primaryContact: ContactInformationI,
-  secondaryContact: ContactInformationI,
+  preferredName: string | null,
+  phoneNumber: number | null,
+  extension: string | null,
+  faxNumber: string | null,
+  emailAddress: string | null,
+  address: string | null,
+  country: string | null,
+  addressLineTwo: string | null,
+  city: string | null,
+  province: string | null,
+  postalCode: string | null,
+  birthDay: number | null,
+  birthMonth: string | null,
+  birthYear: number | null,
+  secondaryContactPreferredName: string | null,
+  secondaryContactPhoneNumber: number | null,
+  secondaryContactExtension: string | null,
+  secondaryContactFaxNumber: string | null,
+  secondaryContactEmailAddress: string | null,
+  secondaryContactAddress: string | null,
+  secondaryContactCountry: string | null,
+  secondaryContactAddressLineTwo: string | null,
+  secondaryContactCity: string | null,
+  secondaryContactProvince: string | null,
+  secondaryContactPostalCode: string | null,
+  secondaryContactBirthDay: number | null,
+  secondaryContactBirthMonth: string | null,
+  secondaryContactBirthYear: number | null,
   questions: {
-    primaryResidence: string,
-    whichPlatform: string
+    primaryResidence: string | null,
+    whichPlatform: string | null
   },
   unitDetails: {
-    parcelIdentifier: string,
-    businessLicense: string,
-    propertyType: string,
-    ownershipType: string
+    parcelIdentifier: string | null,
+    businessLicense: string | null,
+    propertyType: string | null,
+    ownershipType: string | null
   },
   unitAddress: {
     useMailing: boolean,
-    nickname: string,
-    country: string,
-    address: string,
-    addressLineTwo: string,
-    city: string,
-    province: string,
-    postalCode: string
+    nickname: string | null,
+    country: string | null,
+    address: string | null,
+    addressLineTwo: string | null,
+    city: string | null,
+    province: string | null,
+    postalCode: string | null
   },
-  listingDetails: string[],
+  listingDetails: string | null[],
   selectedAccount: OrgI
 }

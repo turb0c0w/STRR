@@ -24,7 +24,7 @@
             <UInput
               class="w-full"
               color="white"
-              :label="t('create-account.contact-form.country')"
+              :placeholder="t('create-account.contact-form.country')"
               trailing-icon="i-heroicons-chevron-down-20-solid"
             />
           </UDropdown>
@@ -56,7 +56,7 @@
             <UInput
               class="w-full"
               color="white"
-              :label="t('create-account.contact-form.province')"
+              :placeholder="t('create-account.contact-form.province')"
               trailing-icon="i-heroicons-chevron-down-20-solid"
             />
           </UDropdown>
