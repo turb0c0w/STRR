@@ -1,4 +1,4 @@
-# Copyright © 2024 Province of British Columbia
+# Copyright © 2023 Province of British Columbia
 #
 # Licensed under the BSD 3 Clause License, (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,19 +31,50 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-"""This module wraps helper services used by the API."""
-from .auth_service import AuthService
-from .payment_service import PayService
-from .registration_service import RegistrationService
-from .rest_service import RestService
 
-PAYMENT_REQUEST_TEMPLATE = {
-    "filingInfo": {"filingTypes": [{"filingTypeCode": "REGSIGIN"}]},
-    "businessInfo": {"corpType": "STRR"},
-}
-strr_pay = PayService(
-    default_invoice_payload={
-        "filingInfo": {"filingTypes": [{"filingTypeCode": "REGSIGIN"}]},
-        "businessInfo": {"corpType": "STRR"},
-    }
-)
+"""
+This module provides a simple flask blueprint with a single 'home' route that returns a JSON response.
+"""
+
+import logging
+from http import HTTPStatus
+
+from flasgger import swag_from
+from flask import Blueprint, jsonify
+from flask_cors import cross_origin
+
+from strr_api.common.auth import jwt
+from strr_api.exceptions import AuthException, exception_response
+from strr_api.responses import Registration
+from strr_api.services import RegistrationService
+
+logger = logging.getLogger("api")
+bp = Blueprint("registrations", __name__)
+
+
+@bp.route("", methods=("GET",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def get_registrations():
+    """
+    Get Registrations for current user.
+    ---
+    tags:
+      - registration
+    responses:
+      201:
+        description:
+      401:
+        description:
+    """
+
+    try:
+        token = jwt.get_token_auth_header()
+        registrations = RegistrationService.list_registrations(token)
+        return (
+            jsonify([Registration.from_db(registration).model_dump(mode="json") for registration in registrations]),
+            HTTPStatus.OK,
+        )
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)

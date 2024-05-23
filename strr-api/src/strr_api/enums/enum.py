@@ -65,3 +65,30 @@ class Role(Enum):
     STAFF_CREATE_ACCOUNTS = "create_accounts"
     STAFF_MANAGE_BUSINESS = "manage_business"
     STAFF_SUSPEND_ACCOUNTS = "suspend_accounts"
+
+
+class RegistrationStatus(Enum):
+    """STRR Registration Status."""
+
+    PENDING = "pending"
+    APPROVED = "approved"
+    MORE_INFO_NEEDED = "more info needed"
+    DENIED = "denied"
+
+
+class PropertyType(Enum):
+    """STRR Property Type."""
+
+    PRIMARY = "All or part of primary dwelling"
+    SECONDARY = "Secondary suite"
+    ACCESSORY = "Accessory dwelling unit"
+    FLOAT_HOME = "Float home"
+    OTHER = "Other"
+
+
+class OwnershipType(Enum):
+    """STRR Ownership Type."""
+
+    OWN = "own"
+    RENT = "rent"
+    CO_OWN = "co-own"

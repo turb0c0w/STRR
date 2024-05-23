@@ -37,6 +37,7 @@ This module provides a simple flask blueprint with a single 'home' route that re
 """
 
 import logging
+import re
 from http import HTTPStatus
 
 from flasgger import swag_from
@@ -44,11 +45,13 @@ from flask import Blueprint, jsonify, request
 from flask_cors import cross_origin
 
 from strr_api.common.auth import jwt
-from strr_api.exceptions import AuthException, ExternalServiceException, error_response, exception_response
+from strr_api.exceptions import AuthException, ExternalServiceException, ValidationException, exception_response
+from strr_api.requests import RegistrationRequest
+from strr_api.responses import Registration
 from strr_api.schemas.utils import validate
 
 # from strr_api.schemas import utils as schema_utils
-from strr_api.services import AuthService
+from strr_api.services import AuthService, RegistrationService
 
 logger = logging.getLogger("api")
 bp = Blueprint("account", __name__)
@@ -115,18 +118,80 @@ def create_account():
     try:
         token = jwt.get_token_auth_header()
         json_input = request.get_json()
-        [valid, errors] = validate(json_input, "new-account")
+        [valid, errors] = validate(json_input, "registration")
         if not valid:
-            return error_response("Invalid request", HTTPStatus.BAD_REQUEST, errors)
+            raise ValidationException(message=errors)
 
-        name = json_input.get("name")
-        mailing_address = json_input.get("mailingAddress")
-        new_user_account = AuthService.create_user_account(token, name, mailing_address)
-        return jsonify(new_user_account), HTTPStatus.CREATED
+        registration_request = RegistrationRequest(**json_input)
+        selected_account = registration_request.selectedAccount
+
+        # TODO: link SBC account to User account
+        AuthService.create_user_account(token, selected_account.name, selected_account.mailingAddress)
+
+        # DO POSTAL CODE VALIDATION IF COUNTRY IS CANADA
+        selected_account.mailingAddress.postalCode = validate_and_format_canadian_postal_code(
+            selected_account.mailingAddress.country,
+            selected_account.mailingAddress.region,
+            selected_account.mailingAddress.postalCode,
+        )
+
+        registration_request.registration.unitAddress.postalCode = validate_and_format_canadian_postal_code(
+            registration_request.registration.unitAddress.country,
+            registration_request.registration.unitAddress.province,
+            registration_request.registration.unitAddress.postalCode,
+        )
+
+        if (
+            registration_request.registration.unitAddress.country != "CA"
+            or registration_request.registration.unitAddress.province != "BC"
+        ):
+            raise ValidationException(message="Invalid Rental Unit Address. Location must be in British Columbia.")
+
+        registration_request.registration.primaryContact.mailingAddress.postalCode = (
+            validate_and_format_canadian_postal_code(
+                registration_request.registration.primaryContact.mailingAddress.country,
+                registration_request.registration.primaryContact.mailingAddress.province,
+                registration_request.registration.primaryContact.mailingAddress.postalCode,
+            )
+        )
+
+        if registration_request.registration.secondaryContact:
+            registration_request.registration.secondaryContact.mailingAddress.postalCode = (
+                validate_and_format_canadian_postal_code(
+                    registration_request.registration.secondaryContact.mailingAddress.country,
+                    registration_request.registration.secondaryContact.mailingAddress.province,
+                    registration_request.registration.secondaryContact.mailingAddress.postalCode,
+                )
+            )
+
+        registration = RegistrationService.save_registration(token, registration_request.registration)
+        return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.CREATED
+    except ValidationException as auth_exception:
+        return exception_response(auth_exception)
     except AuthException as auth_exception:
         return exception_response(auth_exception)
     except ExternalServiceException as service_exception:
         return exception_response(service_exception)
+
+
+def validate_and_format_canadian_postal_code(country: str, province: str, postal_code: str):
+    """Validate and format a Canadian postal code."""
+
+    if country == "CA":
+        if province not in ["BC", "AB", "SK", "MB", "ON", "QC", "NB", "PE", "NS", "NL", "YT", "NT", "NU"]:
+            raise ValidationException(
+                message="Invalid province. Must be one of 'BC', 'AB', 'SK', 'MB', 'ON', 'QC', "
+                + "'NB', 'PE', 'NS', 'NL', 'YT', 'NT', 'NU'"
+            )
+
+        regex = r"^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$"
+        match = re.match(regex, postal_code)
+        if match:
+            return postal_code.upper().replace(" ", "")
+        else:
+            raise ValidationException(message="Invalid postal code. Must be in the format 'A1A 1A1' or 'A1A1A1'")
+
+    return postal_code
 
 
 # @bp.route("/search_accounts", methods=("GET",))

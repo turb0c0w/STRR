@@ -76,6 +76,9 @@ def validate_schema(
     schema_uri = f"{BASE_URI}/{schema_id}"
     schema = schema_store.get(schema_uri)
 
+    if schema is None:
+        raise ValueError(f"No schema found for URI {schema_uri}")
+
     def retrieve_resource(uri):
         contents = schema_store.get(uri)
         return Resource.from_contents(contents)
