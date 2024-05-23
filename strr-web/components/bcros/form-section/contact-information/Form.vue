@@ -14,6 +14,7 @@
           {{ t('create-account.contact.disclaimer') }}
         </div>
       </BcrosFormSection>
+      <div class="h-[2px] w-full bg-bcGovGray-300 mx-[40px] mobile:mx-[]" />
       <UForm :schema="primaryContactSchema" :state="formState">
         <BcrosFormSectionContactInformationContactInfo :form-state="formState.primaryContact" />
         <BcrosFormSectionContactInformationContactDetails :form-state="formState.primaryContact" />
