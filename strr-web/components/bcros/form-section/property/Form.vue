@@ -6,14 +6,11 @@
           {{ t('create-account.contact.subtitle') }}
         </p>
       </div>
-      <BcrosFormSection title="Hi">
-        <div class="mb-[16px] text-[14px] leading-[22px]">
-          {{ t('create-account.contact.primary') }}
-        </div>
-      </BcrosFormSection>
-      <BcrosFormSectionPropertyAddress />
-      <BcrosFormSectionPropertyDetails />
-      <BcrosFormSectionPropertyListingDetails />
+      <UForm :schema="primaryContactSchema" :state="formState">
+        <BcrosFormSectionPropertyAddress :form-state="formState" />
+        <BcrosFormSectionPropertyDetails :form-state="formState" />
+        <BcrosFormSectionPropertyListingDetails :form-state="formState" />
+      </UForm>
     </div>
   </div>
 </template>

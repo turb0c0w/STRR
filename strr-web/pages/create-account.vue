@@ -40,21 +40,11 @@
 <script setup lang="ts">
 import steps from '../page-data/create-account/steps'
 import { FormPageI } from '~/interfaces/form/form-page-i'
-import { formState } from '@/stores/strr'
 const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 
 const t = useNuxtApp().$i18n.t
 const { userFullName } = useBcrosAccount()
-
-if (activeStepIndex.value === 0) {
-  activeStep.value.sections[0].fields[0].content = userFullName
-  if (formState.selectedAccount.name) {
-    activeStep.value.sections[0].fields[1].content = `SBC Account in Store: ${formState.selectedAccount.name}`
-  } else {
-    activeStep.value.sections[0].fields[1].content = 'Creating new SBC Account'
-  }
-}
 
 const setActiveStep = (newStep: number) => {
   activeStepIndex.value = newStep

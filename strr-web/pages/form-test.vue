@@ -59,7 +59,6 @@
 import type { FormSubmitEvent } from '#ui/types'
 import { z } from 'zod'
 import { formState } from '@/stores/strr'
-import { CanadaPostAddressI, CanadaPostResponseAddressI } from '#imports'
 
 const { selectedAccount } = formState
 
