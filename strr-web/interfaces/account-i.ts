@@ -82,3 +82,49 @@ export interface MeI {
   profile: ProfileI
   settings: UserSettingsI[]
 }
+
+export interface ContactInformationI {
+  preferredName: string,
+  phoneNumber: string,
+  extension: string,
+  faxNumber: string,
+  emailAddress: string,
+  address: string,
+  country: string,
+  addressLineTwo: string,
+  city: string,
+  province: string,
+  postalCode: string,
+  dateOfBirth: {
+    day: string,
+    month: string,
+    year: string
+  }
+}
+
+export interface CreateAccountFormStateI {
+  primaryContact: ContactInformationI,
+  secondaryContact: ContactInformationI,
+  questions: {
+    primaryResidence: string,
+    whichPlatform: string
+  },
+  unitDetails: {
+    parcelIdentifier: string,
+    businessLicense: string,
+    propertyType: string,
+    ownershipType: string
+  },
+  unitAddress: {
+    useMailing: boolean,
+    nickname: string,
+    country: string,
+    address: string,
+    addressLineTwo: string,
+    city: string,
+    province: string,
+    postalCode: string
+  },
+  listingDetails: string[],
+  selectedAccount: OrgI
+}

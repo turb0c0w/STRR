@@ -21,7 +21,8 @@
       "disclaimer": "This is your legal name as it appears on your BC Services Card.",
       "your-name": "Your Name",
       "add-secondary": "Add Another Contact",
-      "remove": "Remove"
+      "remove": "Remove",
+      "useMailing": "Use my mailing address for the rental property address"
     },
     "contact-form": {
       "preferredName": "Preferred Name (Optional)",
@@ -113,7 +114,8 @@
     "back": "Back",
     "next": "Next",
     "note": "Note: ",
-    "submit": "Submit"
+    "submit": "Submit",
+    "optional": "(Optional)"
   },
   "labels": {
     "services": {

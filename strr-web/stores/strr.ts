@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { OrgI } from '~/interfaces/account-i'
+import { CreateAccountFormStateI, OrgI } from '~/interfaces/account-i'
 
 export const primaryContactSchema = z.object({
   preferredName: z.string().optional(),
@@ -18,30 +18,47 @@ export const primaryContactSchema = z.object({
   year: z.string()
 })
 
-export const formState = reactive({
+const primaryContact: ContactInformationI = {
+  preferredName: '',
+  phoneNumber: '',
+  extension: '',
+  faxNumber: '',
+  emailAddress: '',
+  address: '',
+  country: '',
+  addressLineTwo: '',
+  city: '',
+  province: '',
+  postalCode: '',
   dateOfBirth: {
     day: '',
     month: '',
     year: ''
-  },
-  primaryContact: {
-    preferredName: '',
-    phoneNumber: '',
-    extension: '',
-    faxNumber: '',
-    emailAddress: '',
-    address: '',
-    country: '',
-    addressLineTwo: '',
-    city: '',
-    province: '',
-    postalCode: ''
-  },
-  secondaryContact: {
-    email: '',
-    phone: '',
-    phoneExtension: ''
-  },
+  }
+}
+
+const secondaryContact: ContactInformationI = {
+  preferredName: '',
+  phoneNumber: '',
+  extension: '',
+  faxNumber: '',
+  emailAddress: '',
+  address: '',
+  country: '',
+  addressLineTwo: '',
+  city: '',
+  province: '',
+  postalCode: '',
+  dateOfBirth: {
+    day: '',
+    month: '',
+    year: ''
+  }
+}
+
+export const formState: CreateAccountFormStateI = reactive({
+  primaryContact,
+  secondaryContact,
   questions: {
     primaryResidence: '',
     whichPlatform: ''
@@ -53,6 +70,7 @@ export const formState = reactive({
     ownershipType: ''
   },
   unitAddress: {
+    useMailing: false,
     nickname: '',
     country: '',
     address: '',
@@ -61,9 +79,6 @@ export const formState = reactive({
     province: '',
     postalCode: ''
   },
-  listingDetails: {
-    urlOne: '',
-    urlTwo: ''
-  },
+  listingDetails: [''],
   selectedAccount: {} as OrgI
 })

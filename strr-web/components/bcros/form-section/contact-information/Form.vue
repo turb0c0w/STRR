@@ -6,7 +6,7 @@
           {{ t('create-account.contact.subtitle') }}
         </p>
       </div>
-      <BcrosFormSection :title="t('create-account.contact.your-name')">
+      <BcrosFormSection :title="t('create-account.contact.your-name')" :divider="true">
         <div class="mb-[16px] text-[14px] leading-[22px]">
           {{ fullName }}
         </div>
@@ -15,9 +15,9 @@
         </div>
       </BcrosFormSection>
       <UForm :schema="primaryContactSchema" :state="formState">
-        <BcrosFormSectionContactInformationContactInfo :primary="true" />
-        <BcrosFormSectionContactInformationContactDetails :primary="true" />
-        <BcrosFormSectionContactInformationMailingAddress :primary="true" />
+        <BcrosFormSectionContactInformationContactInfo :form-state="formState.primaryContact" />
+        <BcrosFormSectionContactInformationContactDetails :form-state="formState.primaryContact" />
+        <BcrosFormSectionContactInformationMailingAddress :form-state="formState.primaryContact" />
       </UForm>
     </div>
     <div v-if="!addSecondaryContact" class="mb-[180px] mt-[32px]">
@@ -46,9 +46,12 @@
           </div>
         </div>
         <UForm :schema="primaryContactSchema" :state="formState">
-          <BcrosFormSectionContactInformationContactInfo :primary="false" />
-          <BcrosFormSectionContactInformationContactDetails :primary="false" />
-          <BcrosFormSectionContactInformationMailingAddress :primary="false" />
+          <BcrosFormSectionContactInformationContactInfo
+            :form-state="formState.secondaryContact"
+            :dob-optional="true"
+          />
+          <BcrosFormSectionContactInformationContactDetails :form-state="formState.secondaryContact" />
+          <BcrosFormSectionContactInformationMailingAddress :form-state="formState.secondaryContact" />
         </UForm>
       </div>
     </div>

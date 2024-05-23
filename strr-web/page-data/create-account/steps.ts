@@ -1,4 +1,3 @@
-import { contactInformationPage } from './contact-page'
 import { FormPageI } from '~/interfaces/form/form-page-i'
 
 const steps: FormPageI[] = [
@@ -14,7 +13,7 @@ const steps: FormPageI[] = [
     title: 'create-account.contact.title',
     subtitle: 'create-account.contact.subtitle',
     formTitle: 'create-account.contact.primary',
-    sections: contactInformationPage
+    sections: []
   },
   {
     step: {

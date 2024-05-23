@@ -1,30 +1,30 @@
 <template>
   <div data-cy="form-section-contact-info">
     <BcrosFormSection :title="t('create-account.contact-form.contactDetails')">
-      <div class="flex flex-row justify-between w-full mb-[40px]">
-        <UFormGroup name="preferredName" class="pr-[16px] flex-grow">
+      <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
+        <UFormGroup name="preferredName" class=" flex-grow">
           <UInput v-model="preferredName" :placeholder="t('create-account.contact-form.preferredName')" />
         </UFormGroup>
       </div>
-      <div class="flex flex-row justify-between w-full mb-[40px]">
-        <UFormGroup name="phoneNumber" class="pr-[16px] flex-grow">
+      <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
+        <UFormGroup name="phoneNumber" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="phoneNumber" :placeholder="t('create-account.contact-form.phoneNumber')" />
         </UFormGroup>
-        <UFormGroup name="extension" class="pr-[16px] flex-grow">
+        <UFormGroup name="extension" class="flex-grow">
           <UInput v-model="extension" :placeholder="t('create-account.contact-form.extension')" />
         </UFormGroup>
       </div>
-      <div class="flex flex-row justify-between w-full mb-[40px]">
-        <UFormGroup name="faxNumber" class="pr-[16px] flex-grow">
+      <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
+        <UFormGroup name="faxNumber" class="flex-grow">
           <UInput v-model="faxNumber" :placeholder="t('create-account.contact-form.faxNumber')" />
         </UFormGroup>
       </div>
-      <div class="flex flex-row justify-between w-full mb-[40px]">
-        <UFormGroup name="emailAddress" class="pr-[16px] flex-grow">
+      <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
+        <UFormGroup name="emailAddress" class="flex-grow">
           <UInput v-model="emailAddress" :placeholder="t('create-account.contact-form.emailAddress')" />
         </UFormGroup>
       </div>
-      <BcrosAlertsMessage :flavour="AlertsFlavourE.INFO" class="mr-[20px]">
+      <BcrosAlertsMessage :flavour="AlertsFlavourE.INFO">
         <p>
           <b>{{ t('create-account.contact-form.bold-warning') }}</b>
           {{ t('create-account.contact-form.warning') }}
@@ -35,16 +35,14 @@
 </template>
 
 <script setup lang="ts">
-import { formState } from '@/stores/strr'
+const { formState } = defineProps<{ formState: any }>()
 
 const {
-  primaryContact: {
-    preferredName,
-    phoneNumber,
-    extension,
-    faxNumber,
-    emailAddress
-  }
+  preferredName,
+  phoneNumber,
+  extension,
+  faxNumber,
+  emailAddress
 } = formState
 
 const t = useNuxtApp().$i18n.t
