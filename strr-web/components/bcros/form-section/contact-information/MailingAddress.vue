@@ -2,7 +2,7 @@
   <div data-cy="form-section-contact-info">
     <BcrosFormSection :title="t('create-account.contact-form.mailingAddress')">
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="country" class="pr-[16px] flex-grow">
+        <UFormGroup name="country" class="flex-grow">
           <UDropdown
             v-model="country"
             :items="[]"
@@ -21,12 +21,12 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="Address" class="pr-[16px] flex-grow">
+        <UFormGroup name="Address" class="flex-grow">
           <UInput v-model="address" :placeholder="t('create-account.contact-form.address')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="AddressLineTwo" class="pr-[16px] flex-grow">
+        <UFormGroup name="AddressLineTwo" class="flex-grow">
           <UInput v-model="addressLineTwo" :placeholder="t('create-account.contact-form.addressLineTwo')" />
         </UFormGroup>
       </div>
@@ -51,7 +51,7 @@
             />
           </UDropdown>
         </UFormGroup>
-        <UFormGroup name="postalCode" class="pr-[16px] flex-grow mobile:mb-[16px]">
+        <UFormGroup name="postalCode" class="flex-grow mobile:mb-[16px]">
           <UInput v-model="postalCode" :placeholder="t('create-account.contact-form.postalCode')" />
         </UFormGroup>
       </div>

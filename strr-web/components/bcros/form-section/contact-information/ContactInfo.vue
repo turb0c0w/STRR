@@ -22,7 +22,7 @@
             />
           </UDropdown>
         </UFormGroup>
-        <UFormGroup name="year" class="pr-[16px]">
+        <UFormGroup name="year">
           <UInput v-model="year" :placeholder="t('create-account.contact-form.year')" />
         </UFormGroup>
       </div>

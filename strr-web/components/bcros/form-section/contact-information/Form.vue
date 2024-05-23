@@ -6,7 +6,7 @@
           {{ t('create-account.contact.subtitle') }}
         </p>
       </div>
-      <BcrosFormSection :title="t('create-account.contact.your-name')">
+      <BcrosFormSection :title="t('create-account.contact.your-name')" :divider="true">
         <div class="mb-[16px] text-[14px] leading-[22px]">
           {{ fullName }}
         </div>
@@ -14,7 +14,6 @@
           {{ t('create-account.contact.disclaimer') }}
         </div>
       </BcrosFormSection>
-      <div class="h-[2px] w-full bg-bcGovGray-300 mx-[40px] mobile:mx-[]" />
       <UForm :schema="primaryContactSchema" :state="formState">
         <BcrosFormSectionContactInformationContactInfo :form-state="formState.primaryContact" />
         <BcrosFormSectionContactInformationContactDetails :form-state="formState.primaryContact" />
