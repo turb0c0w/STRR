@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-const { formState } = defineProps<{ formState: any }>();
+const { formState } = defineProps<{ formState: any }>()
 
 const {
   preferredName,

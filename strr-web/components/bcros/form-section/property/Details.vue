@@ -13,10 +13,10 @@
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="propertyType" class="pr-[16px] flex-grow">
-          <UDropdown :items="propertyTypes" v-model="propertyType" class="w-full">
+          <UDropdown v-model="propertyType" :items="propertyTypes" class="w-full">
             <UInput
               class="w-full"
-              color="white" 
+              color="white"
               :label="t('create-account.property-form.propertyType')"
               trailing-icon="i-heroicons-chevron-down-20-solid"
             />
@@ -25,10 +25,10 @@
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="ownershipType" class="pr-[16px] flex-grow">
-          <UDropdown :items="ownershipTypes" v-model="ownershipType" class="w-full">
+          <UDropdown v-model="ownershipType" :items="ownershipTypes" class="w-full">
             <UInput
               class="w-full"
-              color="white" 
+              color="white"
               :label="t('create-account.property-form.ownershipType')"
               trailing-icon="i-heroicons-chevron-down-20-solid"
             />
@@ -40,9 +40,9 @@
 </template>
 
 <script setup lang="ts">
-import { DropdownItem } from '@nuxt/ui/dist/runtime/types';
+import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 
-const { formState } = defineProps<{ formState: any }>();
+const { formState } = defineProps<{ formState: any }>()
 
 const {
   unitDetails: {
@@ -57,21 +57,20 @@ const t = useNuxtApp().$i18n.t
 
 const propertyTypes: DropdownItem[][] = [
   [
-    {label: "Portion of principal residence"},
-    {label: "Entire principal residence"},
-    {label: "Secondary suite"},
-    {label: "Accessory dwelling unit"},
-    {label: "Investment property"}
+    { label: 'Portion of principal residence' },
+    { label: 'Entire principal residence' },
+    { label: 'Secondary suite' },
+    { label: 'Accessory dwelling unit' },
+    { label: 'Investment property' }
   ]
 ]
 
 const ownershipTypes: DropdownItem[][] = [
   [
-    {label: "Rent"},
-    {label: "Own"},
-    {label: "Co-own"}
+    { label: 'Rent' },
+    { label: 'Own' },
+    { label: 'Co-own' }
   ]
 ]
-
 
 </script>

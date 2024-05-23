@@ -7,9 +7,9 @@
         </p>
       </div>
       <UForm :schema="primaryContactSchema" :state="formState">
-        <BcrosFormSectionPropertyAddress :formState="formState" />
-        <BcrosFormSectionPropertyDetails :formState="formState" />
-        <BcrosFormSectionPropertyListingDetails :formState="formState" />
+        <BcrosFormSectionPropertyAddress :form-state="formState" />
+        <BcrosFormSectionPropertyDetails :form-state="formState" />
+        <BcrosFormSectionPropertyListingDetails :form-state="formState" />
       </UForm>
     </div>
   </div>

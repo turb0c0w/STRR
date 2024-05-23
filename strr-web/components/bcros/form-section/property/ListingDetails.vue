@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-const { formState } = defineProps<{ formState: any }>();
+const { formState } = defineProps<{ formState: any }>()
 
 const {
   listingDetails
@@ -46,7 +46,7 @@ const addPlatform = () => {
 }
 
 const removeDetailAtIndex = (index: number) => {
-  console.log("removeDetailAtIndex")
+  console.log('removeDetailAtIndex')
   listingDetails.splice(index, 1)
 }
 
