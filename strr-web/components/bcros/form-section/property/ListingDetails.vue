@@ -1,8 +1,8 @@
 <template>
   <div data-cy="form-section-contact-info">
     <BcrosFormSection :title="t('create-account.property-form.internetListingDetails')" class="pb-[40px]">
-      <div v-for="(listing, index) in listingDetails">
-        <div :key="listing" class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px] items-center">
+      <div v-for="(listing, index) in listingDetails" :key="listing">
+        <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px] items-center">
           <UFormGroup name="urlOne" class="pr-[16px] flex-grow">
             <UInput
               v-model="listingDetails[index]"
@@ -46,7 +46,6 @@ const addPlatform = () => {
 }
 
 const removeDetailAtIndex = (index: number) => {
-  console.log('removeDetailAtIndex')
   listingDetails.splice(index, 1)
 }
 
