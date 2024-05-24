@@ -54,7 +54,15 @@
       "useMailing": "Use my mailing address for the rental property address",
       "rentalUnitDetails": "Rental Unit Details",
       "internetListingDetails": "Internet Listing Details",
-      "rentalUnitAddress": "Rental Unit Address"
+      "rentalUnitAddress": "Rental Unit Address",
+      "primaryDwelling": "All or part of primary dwelling",
+      "secondarySuite": "Secondary suite",
+      "accessory": "Accessory dwelling unit",
+      "float": "Float home",
+      "other": "Other",
+      "rent": "Rent",
+      "own": "Own",
+      "coown": "Co-own"
     },
     "details": {
       "title": "Step 2 - Add Your Short Term Rental Property Details",

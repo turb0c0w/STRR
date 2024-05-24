@@ -63,42 +63,42 @@ const t = useNuxtApp().$i18n.t
 const propertyTypes: DropdownItem[][] = [
   [
     { 
-      label: 'Portion of principal residence',
-      click: () => formState.propertyType = 'Portion of principal residence'
-     },
-    {
-       label: 'Entire principal residence',
-      click: () => formState.propertyType = 'Entire principal residence'
+      label: t('create-account.property-form.primaryDwelling'),
+      click: () => formState.propertyType = t('create-account.property-form.primaryDwelling')
     },
-    {
-       label: 'Secondary suite',
-      click: () => formState.propertyType = 'Secondary suite'
+    { 
+      label: t('create-account.property-form.secondarySuite'),
+      click: () => formState.propertyType = t('create-account.property-form.secondarySuite')
+    }, 
+    { 
+      label: t('create-account.property-form.accessory'),
+      click: () => formState.propertyType = t('create-account.property-form.accessory')
     },
-    {
-       label: 'Accessory dwelling unit',
-      click: () => formState.propertyType = 'Accessory dwelling unit'
+    { 
+      label: t('create-account.property-form.float'),
+      click: () => formState.propertyType = t('create-account.property-form.float')
     },
-    {
-       label: 'Investment property',
-      click: () => formState.propertyType = 'Investment property'
-    }
+    { 
+      label: t('create-account.property-form.other'),
+      click: () => formState.propertyType = t('create-account.property-form.other')
+    },
   ]
 ]
 
 const ownershipTypes: DropdownItem[][] = [
   [
-    {
-      label: 'Rent',
-      click: () => formState.propertyType = 'Rent'
+    { 
+      label: t('create-account.property-form.rent'),
+      click: () => formState.propertyType = t('create-account.property-form.rent')
     },
-    {
-      label: 'Own',
-      click: () => formState.propertyType = 'Own'
+    { 
+      label: t('create-account.property-form.own'),
+      click: () => formState.propertyType = t('create-account.property-form.own')
     },
-    {
-      label: 'Co-own',
-      click: () => formState.propertyType = 'Co-own'
-    }
+    { 
+      label: t('create-account.property-form.other'),
+      click: () => formState.propertyType = t('create-account.property-form.coown')
+    },
   ]
 ]
 
