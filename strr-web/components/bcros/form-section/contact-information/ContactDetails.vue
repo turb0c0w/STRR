@@ -35,9 +35,7 @@
 </template>
 
 <script setup lang="ts">
-const { formState } = defineProps<{ formState: any }>()
-
-const { me } = useBcrosAccount()
+const t = useNuxtApp().$i18n.t
 
 const { 
   preferredName,
@@ -61,12 +59,5 @@ const emit = defineEmits<{
   setFaxNumber: [faxNumber: string]
   setEmailAddress: [emailAddress: string]
 }>()
-
-
-if (me?.profile.contacts) {
-  
-}
-
-const t = useNuxtApp().$i18n.t
 
 </script>

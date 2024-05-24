@@ -91,6 +91,14 @@ const emit = defineEmits<{
   validatePage: [isValid: boolean]
 }>()
 
+const { me } = useBcrosAccount()
+
+if (me?.profile.contacts && me?.profile.contacts.length > 0) {
+  formState.primaryContact.phoneNumber = me?.profile.contacts[0].phone
+  formState.primaryContact.emailAddress = me?.profile.contacts[0].email
+  formState.primaryContact.extension = me?.profile.contacts[0].phoneExtension
+}
+
 const primaryIsValid = ref(false)
 const secondaryIsValid = ref(false)
 const addSecondaryContact = ref(false)
