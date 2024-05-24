@@ -3,6 +3,8 @@ import os
 from http import HTTPStatus
 from unittest.mock import patch
 
+from flask import g
+
 from tests.unit.utils.mocks import (
     empty_json,
     fake_get_token_auth_header,
@@ -11,7 +13,7 @@ from tests.unit.utils.mocks import (
     no_op,
 )
 
-REGISTRATION = "registration"
+REGISTRATION = "registration_new_sbc_account"
 MOCK_ACCOUNT_REQUEST = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), f"../../mocks/json/{REGISTRATION}.json"
 )
@@ -45,6 +47,7 @@ def test_me_401(client):
 @patch("flask_jwt_oidc.JwtManager._validate_token", new=no_op)
 def test_create_account_201(client):
     with open(MOCK_ACCOUNT_REQUEST) as f:
+        g.jwt_oidc_token_info = None
         data = json.load(f)
         rv = client.post("/account", json=data)
         assert rv.status_code == HTTPStatus.CREATED

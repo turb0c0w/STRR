@@ -24,13 +24,36 @@ class SBCMailingAddress:
         self.postalCode = postalCode
         self.country = country
 
+    def to_dict(self):
+        """Convert object to dictionary for json serialization."""
+        return {
+            key: value
+            for key, value in {
+                "street": self.street,
+                "streetAdditional": self.streetAdditional,
+                "city": self.city,
+                "region": self.region,
+                "postalCode": self.postalCode,
+                "country": self.country,
+            }.items()
+            if value is not None
+        }
+
 
 class SelectedAccount:
     """SelectedAccount payload object."""
 
-    def __init__(self, name, mailingAddress):
-        self.name = name
-        self.mailingAddress = SBCMailingAddress(**mailingAddress)
+    def __init__(self, sbc_account_id=None, name=None, mailingAddress=None):
+        self.sbc_account_id = None
+        self.name = None
+        self.mailingAddress = None
+
+        if sbc_account_id:
+            self.sbc_account_id = sbc_account_id
+        if name:
+            self.name = name
+        if mailingAddress:
+            self.mailingAddress = SBCMailingAddress(**mailingAddress)
 
 
 class Registration:

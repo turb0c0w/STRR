@@ -41,12 +41,13 @@ class RegistrationService:
     """Service to save and load regristration details from the database."""
 
     @classmethod
-    def save_registration(cls, token, registration_request: requests.Registration):
+    def save_registration(cls, jwt_oidc_token_info, sbc_account_id, registration_request: requests.Registration):
         """Save STRR property registration to database."""
 
         # TODO: FUTURE SPRINT - handle the other cases where jwt doesn't have the info
-        user = models.User.get_or_create_user_by_jwt(token)
-        user.preferredname = (registration_request.primaryContact.details.preferredName,)
+        user = models.User.get_or_create_user_by_jwt(jwt_oidc_token_info)
+        user.email = registration_request.primaryContact.details.emailAddress
+        user.preferredname = registration_request.primaryContact.details.preferredName
         user.phone_extension = registration_request.primaryContact.details.extension
         user.fax_number = registration_request.primaryContact.details.faxNumber
         user.phone_number = registration_request.primaryContact.details.phoneNumber
@@ -100,6 +101,7 @@ class RegistrationService:
         db.session.refresh(property_manager)
 
         registration = models.Registration(
+            sbc_account_id=sbc_account_id,
             status=RegistrationStatus.PENDING,
             rental_property=models.RentalProperty(
                 property_manager_id=property_manager.id,
@@ -128,9 +130,9 @@ class RegistrationService:
         return registration
 
     @classmethod
-    def list_registrations(cls, token):
+    def list_registrations(cls, jwt_oidc_token_info):
         """List all registrations for current user."""
-        user = models.User.find_by_jwt_token(token)
+        user = models.User.find_by_jwt_token(jwt_oidc_token_info)
         return (
             models.Registration.query.join(
                 models.PropertyManager, models.PropertyManager.id == models.Registration.rental_property_id

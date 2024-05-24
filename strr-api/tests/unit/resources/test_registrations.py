@@ -1,6 +1,8 @@
 from http import HTTPStatus
 from unittest.mock import patch
 
+from flask import g
+
 from tests.unit.utils.mocks import fake_get_token_auth_header, fake_user_from_token, no_op
 
 
@@ -8,6 +10,7 @@ from tests.unit.utils.mocks import fake_get_token_auth_header, fake_user_from_to
 @patch("flask_jwt_oidc.JwtManager.get_token_auth_header", new=fake_get_token_auth_header)
 @patch("flask_jwt_oidc.JwtManager._validate_token", new=no_op)
 def test_registrations_200(client):
+    g.jwt_oidc_token_info = None
     rv = client.get("/registrations")
     assert rv.status_code == HTTPStatus.OK
 

@@ -114,6 +114,9 @@
   "properties": {
     "selectedAccount": {
       "type": "object",
+      "sbc_account_id": {
+        "type": "integer"
+      },
       "name": {
         "description": "Account Name",
         "type": "string"
@@ -157,8 +160,18 @@
           }
         }
       },
-      "required": [
-        "name"
+      "oneOf": [
+        {
+          "required": [
+            "sbc_account_id"
+          ]
+        },
+        {
+          "required": [
+            "name",
+            "mailingAddress"
+          ]
+        }
       ]
     },
     "registration": {

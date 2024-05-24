@@ -20,13 +20,6 @@ class SBCMailingAddress(BaseModel):
     country: str
 
 
-class SelectedAccount(BaseModel):
-    """SelectedAccount response object."""
-
-    name: str
-    mailingAddress: SBCMailingAddress
-
-
 class ListingDetails(BaseModel):
     """ListingDetails response object."""
 
@@ -78,7 +71,7 @@ class ContactDetails(BaseModel):
     phoneNumber: str
     extension: Optional[str] = None
     faxNumber: Optional[str] = None
-    emailAddress: str
+    emailAddress: Optional[str] = None
 
 
 class Contact(BaseModel):
@@ -94,6 +87,7 @@ class Registration(BaseModel):
     """Registration response object."""
 
     id: int
+    sbc_account_id: Optional[int] = None
     submissionDate: datetime
     updatedDate: datetime
     status: str
@@ -108,6 +102,7 @@ class Registration(BaseModel):
         """Return a Registration object from a database model."""
         return cls(
             id=source.id,
+            sbc_account_id=source.sbc_account_id,
             submissionDate=source.submission_date,
             updatedDate=source.updated_date,
             status=source.status.name,

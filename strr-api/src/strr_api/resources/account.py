@@ -41,7 +41,7 @@ import re
 from http import HTTPStatus
 
 from flasgger import swag_from
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, g, jsonify, request
 from flask_cors import cross_origin
 
 from strr_api.common.auth import jwt
@@ -125,15 +125,23 @@ def create_account():
         registration_request = RegistrationRequest(**json_input)
         selected_account = registration_request.selectedAccount
 
-        # TODO: link SBC account to User account
-        AuthService.create_user_account(token, selected_account.name, selected_account.mailingAddress)
+        # SBC Account lookup or creation
+        sbc_account_id = None
+        if selected_account.sbc_account_id:
+            sbc_account_id = selected_account.sbc_account_id
+        else:
+            new_account = AuthService.create_user_account(
+                token, selected_account.name, selected_account.mailingAddress.to_dict()
+            )
+            sbc_account_id = new_account.get("id")
 
         # DO POSTAL CODE VALIDATION IF COUNTRY IS CANADA
-        selected_account.mailingAddress.postalCode = validate_and_format_canadian_postal_code(
-            selected_account.mailingAddress.country,
-            selected_account.mailingAddress.region,
-            selected_account.mailingAddress.postalCode,
-        )
+        if selected_account.mailingAddress:
+            selected_account.mailingAddress.postalCode = validate_and_format_canadian_postal_code(
+                selected_account.mailingAddress.country,
+                selected_account.mailingAddress.region,
+                selected_account.mailingAddress.postalCode,
+            )
 
         registration_request.registration.unitAddress.postalCode = validate_and_format_canadian_postal_code(
             registration_request.registration.unitAddress.country,
@@ -164,7 +172,9 @@ def create_account():
                 )
             )
 
-        registration = RegistrationService.save_registration(token, registration_request.registration)
+        registration = RegistrationService.save_registration(
+            g.jwt_oidc_token_info, sbc_account_id, registration_request.registration
+        )
         return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.CREATED
     except ValidationException as auth_exception:
         return exception_response(auth_exception)

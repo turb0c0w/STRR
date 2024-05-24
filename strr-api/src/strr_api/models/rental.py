@@ -99,6 +99,7 @@ class Registration(db.Model):
     __tablename__ = "registrations"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    sbc_account_id = db.Column(db.Integer, nullable=True)
     rental_property_id = db.Column(db.Integer, db.ForeignKey("rental_properties.id"), nullable=False)
     submission_date = db.Column(db.DateTime, default=datetime.now, nullable=False)
     updated_date = db.Column(db.DateTime, default=datetime.now, nullable=False)

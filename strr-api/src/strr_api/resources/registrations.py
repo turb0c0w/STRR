@@ -40,7 +40,7 @@ import logging
 from http import HTTPStatus
 
 from flasgger import swag_from
-from flask import Blueprint, jsonify
+from flask import Blueprint, g, jsonify
 from flask_cors import cross_origin
 
 from strr_api.common.auth import jwt
@@ -70,8 +70,7 @@ def get_registrations():
     """
 
     try:
-        token = jwt.get_token_auth_header()
-        registrations = RegistrationService.list_registrations(token)
+        registrations = RegistrationService.list_registrations(g.jwt_oidc_token_info)
         return (
             jsonify([Registration.from_db(registration).model_dump(mode="json") for registration in registrations]),
             HTTPStatus.OK,
