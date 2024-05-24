@@ -15,10 +15,15 @@
               </p>
             </div>
             <div v-if="activeStepIndex === 0" :key="activeStepIndex">
-              <BcrosFormSectionContactInformationForm :full-name="userFullName" />
+              <BcrosFormSectionContactInformationForm
+                :on-validate-page="(isValid) => setStepValid(0, isValid)"
+                :full-name="userFullName" 
+              />
             </div>
             <div v-if="activeStepIndex === 1" :key="activeStepIndex">
-              <BcrosFormSectionPropertyForm />
+              <BcrosFormSectionPropertyForm
+                :on-validate-page="(isValid) => setStepValid(1, isValid)"
+              />
             </div>
           </div>
         </div>
@@ -51,11 +56,16 @@ const setActiveStep = (newStep: number) => {
   activeStep.value = steps[activeStepIndex.value]
 }
 
+const setStepValid = (index: number, valid: boolean) => {
+  steps[index].step.isValid = valid;
+}
+
 const setNextStep = () => {
   if (activeStepIndex.value < steps.length - 1) {
     const nextStep = activeStepIndex.value + 1
     activeStepIndex.value = nextStep
     activeStep.value = steps[activeStepIndex.value]
+    steps[activeStepIndex.value - 1].step.complete = true;
   }
 }
 

@@ -7,7 +7,7 @@ const steps: FormPageI[] = [
       inactiveIconPath: '/icons/create-account/add_person.svg',
       activeIconPath: '/icons/create-account/add_person_active.svg',
       complete: false,
-      error: false,
+      isValid: false,
       alt: 'Add contacts'
     },
     title: 'create-account.contact.title',
@@ -21,7 +21,7 @@ const steps: FormPageI[] = [
       inactiveIconPath: '/icons/create-account/add_location.svg',
       activeIconPath: '/icons/create-account/add_location_active.svg',
       complete: false,
-      error: false,
+      isValid: false,
       alt: 'Add properties'
     },
     title: 'create-account.details.title',
@@ -35,7 +35,7 @@ const steps: FormPageI[] = [
       inactiveIconPath: '/icons/create-account/upload_file.svg',
       activeIconPath: '/icons/create-account/upload_file_active.svg',
       complete: false,
-      error: false,
+      isValid: false,
       alt: 'Upload documents'
     },
     title: 'create-account.eligibility.title',
@@ -49,7 +49,7 @@ const steps: FormPageI[] = [
       inactiveIconPath: '/icons/create-account/check.svg',
       activeIconPath: '/icons/create-account/check_active.svg',
       complete: false,
-      error: false,
+      isValid: false,
       alt: 'Check and verify'
     },
     title: 'create-account.confirm.title',

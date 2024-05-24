@@ -19,4 +19,13 @@
 
 const t = useNuxtApp().$i18n.t
 
+const isValid = ref(false);
+
+watch(formState.propertyDetails, () => {
+  isValid.value = propertyDetailsSchema.safeParse(formState.propertyDetails).success;
+})
+
+const emit = defineEmits<{
+  validatePage: [isValid: boolean]
+}>()
 </script>

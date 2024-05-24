@@ -3,6 +3,6 @@ export interface StepI {
   inactiveIconPath: string;
   activeIconPath: string;
   complete: boolean;
-  error: boolean;
+  isValid: boolean;
   alt: string;
 }
