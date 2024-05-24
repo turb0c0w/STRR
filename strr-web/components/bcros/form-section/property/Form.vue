@@ -7,7 +7,7 @@
         </p>
       </div>
       <UForm :schema="propertyDetailsSchema" :state="formState.propertyDetails">
-        <BcrosFormSectionPropertyAddress :form-state="formState.propertyDetails" />
+        <BcrosFormSectionPropertyAddress :form-state="formState.propertyDetails" id="propertyAddress"/>
         <BcrosFormSectionPropertyDetails
           :form-state="formState.propertyDetails"
           :on-change-ownership-type="(ownershipType: string) => changeOwnershipType(ownershipType)"
