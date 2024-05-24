@@ -84,23 +84,6 @@ export interface MeI {
 }
 
 export interface ContactInformationI {
-  preferredName: string,
-  phoneNumber: string,
-  extension: string,
-  faxNumber: string,
-  emailAddress: string,
-  address: string,
-  country: string,
-  addressLineTwo: string,
-  city: string,
-  province: string,
-  postalCode: string,
-  birthDay: string,
-  birthMonth: string,
-  birthYear: string
-}
-
-export interface CreateAccountFormStateI {
   preferredName: string | null,
   phoneNumber: number | null,
   extension: string | null,
@@ -115,31 +98,18 @@ export interface CreateAccountFormStateI {
   birthDay: number | null,
   birthMonth: string | null,
   birthYear: number | null,
-  secondaryContactPreferredName: string | null,
-  secondaryContactPhoneNumber: number | null,
-  secondaryContactExtension: string | null,
-  secondaryContactFaxNumber: string | null,
-  secondaryContactEmailAddress: string | null,
-  secondaryContactAddress: string | null,
-  secondaryContactCountry: string | null,
-  secondaryContactAddressLineTwo: string | null,
-  secondaryContactCity: string | null,
-  secondaryContactProvince: string | null,
-  secondaryContactPostalCode: string | null,
-  secondaryContactBirthDay: number | null,
-  secondaryContactBirthMonth: string | null,
-  secondaryContactBirthYear: number | null,
-  questions: {
+}
+
+export interface CreateAccountFormStateI {
+  primaryContact: ContactInformationI,
+  secondaryContact: ContactInformationI,
+  propertyDetails: {
     primaryResidence: string | null,
-    whichPlatform: string | null
-  },
-  unitDetails: {
+    whichPlatform: string | null,
     parcelIdentifier: string | null,
     businessLicense: string | null,
     propertyType: string | null,
-    ownershipType: string | null
-  },
-  unitAddress: {
+    ownershipType: string | null,
     useMailing: boolean,
     nickname: string | null,
     country: string | null,
@@ -147,8 +117,8 @@ export interface CreateAccountFormStateI {
     addressLineTwo: string | null,
     city: string | null,
     province: string | null,
-    postalCode: string | null
+    postalCode: string | null,
+    listingDetails: string | null[],
   },
-  listingDetails: string | null[],
   selectedAccount: OrgI
 }

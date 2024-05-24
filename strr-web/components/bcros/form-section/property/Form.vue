@@ -6,10 +6,10 @@
           {{ t('create-account.contact.subtitle') }}
         </p>
       </div>
-      <UForm :schema="primaryContactSchema" :state="formState">
-        <BcrosFormSectionPropertyAddress :form-state="formState" />
-        <BcrosFormSectionPropertyDetails :form-state="formState" />
-        <BcrosFormSectionPropertyListingDetails :form-state="formState" />
+      <UForm :schema="propertyDetailsSchema" :state="formState.propertyDetails">
+        <BcrosFormSectionPropertyAddress :form-state="formState.propertyDetails" />
+        <BcrosFormSectionPropertyDetails :form-state="formState.propertyDetails" />
+        <BcrosFormSectionPropertyListingDetails :form-state="formState.propertyDetails" />
       </UForm>
     </div>
   </div>

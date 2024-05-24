@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { CreateAccountFormStateI, OrgI } from '~/interfaces/account-i'
 
-export const primaryContactSchema = z.object({
+export const contactSchema = z.object({
   preferredName: z.string().optional(),
   phoneNumber: z.number({ invalid_type_error: "Phone number must be a number" }),
   extension: z.string().optional(),
@@ -18,11 +18,11 @@ export const primaryContactSchema = z.object({
   birthYear: z.number({ invalid_type_error: "Year must be a number" }).lt(new Date().getFullYear())
 })
 
-export const formState: CreateAccountFormStateI = reactive({
-  preferredName: null,
+const primaryContact: ContactInformationI = {
+  preferredName: '',
   phoneNumber: null,
-  extension: null,
-  faxNumber: null,
+  extension: '',
+  faxNumber: '',
   emailAddress: null,
   address: null,
   country: null,
@@ -32,41 +32,63 @@ export const formState: CreateAccountFormStateI = reactive({
   postalCode: null,
   birthDay: null,
   birthMonth: null,
-  birthYear: null,
-  secondaryContactPreferredName: null,
-  secondaryContactPhoneNumber: null,
-  secondaryContactExtension: null,
-  secondaryContactFaxNumber: null,
-  secondaryContactEmailAddress: null,
-  secondaryContactAddress: null,
-  secondaryContactCountry: null,
-  secondaryContactAddressLineTwo: null,
-  secondaryContactCity: null,
-  secondaryContactProvince: null,
-  secondaryContactPostalCode: null,
-  secondaryContactBirthDay: null,
-  secondaryContactBirthMonth: null,
-  secondaryContactBirthYear: null,
-  questions: {
-    primaryResidence: null,
-    whichPlatform: null
-  },
-  unitDetails: {
+  birthYear: null
+}
+
+const secondaryContact: ContactInformationI = {
+  preferredName: '',
+  phoneNumber: null,
+  extension: '',
+  faxNumber: '',
+  emailAddress: null,
+  address: null,
+  country: null,
+  addressLineTwo: null,
+  city: null,
+  province: null,
+  postalCode: null,
+  birthDay: null,
+  birthMonth: null,
+  birthYear: null
+}
+
+export const propertyDetailsSchema = z.object({
+  parcelIdentifier: z.string(),
+  businessLicense: z.string(),
+  propertyType: z.string(),
+  ownershipType: z.string(),
+  primaryResidence: z.string(),
+  whichPlatform: z.string(),
+  useMailing: z.string(),
+  nickname: z.string(),
+  country: z.string(),
+  address: z.string(),
+  addressLineTwo: z.string(),
+  city: z.string(),
+  province: z.string(),
+  postalCode: z.string(),
+  listingDetails: z.array(z.string())
+})
+
+export const formState: CreateAccountFormStateI = reactive({
+  primaryContact,
+  secondaryContact,
+  propertyDetails: {
     parcelIdentifier: null,
     businessLicense: null,
     propertyType: null,
-    ownershipType: null
-  },
-  unitAddress: {
+    ownershipType: null,
+    primaryResidence: null,
+    whichPlatform: null,
     useMailing: false,
-    nickname: null,
+    nickname: '',
     country: null,
     address: null,
     addressLineTwo: null,
     city: null,
     province: null,
-    postalCode: null
+    postalCode: null,
+    listingDetails: [null],
   },
-  listingDetails: [null],
   selectedAccount: {} as OrgI
 })

@@ -3,18 +3,25 @@
     <BcrosFormSection :title="t('create-account.property-form.rentalUnitDetails')">
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="parcelIdentifier" class="pr-[16px] flex-grow">
-          <UInput v-model="parcelIdentifier" :placeholder="t('create-account.property-form.parcelIdentifier')" />
+          <UInput v-model="formState.parcelIdentifier" :placeholder="t('create-account.property-form.parcelIdentifier')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="businessLicense" class="pr-[16px] flex-grow">
-          <UInput v-model="businessLicense" :placeholder="t('create-account.property-form.businessLicense')" />
+          <UInput v-model="formState.businessLicense" :placeholder="t('create-account.property-form.businessLicense')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="propertyType" class="pr-[16px] flex-grow">
-          <UDropdown v-model="propertyType" :items="propertyTypes" class="w-full">
+          <UDropdown
+            :items="propertyTypes"
+            class="w-full"
+            :popper="{
+              placement: 'bottom-start',
+            }"
+          >
             <UInput
+              v-model="formState.propertyType"
               class="w-full"
               color="white"
               :placeholder="t('create-account.property-form.propertyType')"
@@ -25,8 +32,15 @@
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="ownershipType" class="pr-[16px] flex-grow">
-          <UDropdown v-model="ownershipType" :items="ownershipTypes" class="w-full">
+          <UDropdown
+            :items="ownershipTypes" 
+            class="w-full"
+            :popper="{
+              placement: 'bottom-start',
+            }"
+          >
             <UInput
+              v-model="formState.ownershipType"
               class="w-full"
               color="white"
               :placeholder="t('create-account.property-form.ownershipType')"
@@ -44,32 +58,47 @@ import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 
 const { formState } = defineProps<{ formState: any }>()
 
-const {
-  unitDetails: {
-    parcelIdentifier,
-    businessLicense,
-    propertyType,
-    ownershipType
-  }
-} = formState
-
 const t = useNuxtApp().$i18n.t
 
 const propertyTypes: DropdownItem[][] = [
   [
-    { label: 'Portion of principal residence' },
-    { label: 'Entire principal residence' },
-    { label: 'Secondary suite' },
-    { label: 'Accessory dwelling unit' },
-    { label: 'Investment property' }
+    { 
+      label: 'Portion of principal residence',
+      click: () => formState.propertyType = 'Portion of principal residence'
+     },
+    {
+       label: 'Entire principal residence',
+      click: () => formState.propertyType = 'Entire principal residence'
+    },
+    {
+       label: 'Secondary suite',
+      click: () => formState.propertyType = 'Secondary suite'
+    },
+    {
+       label: 'Accessory dwelling unit',
+      click: () => formState.propertyType = 'Accessory dwelling unit'
+    },
+    {
+       label: 'Investment property',
+      click: () => formState.propertyType = 'Investment property'
+    }
   ]
 ]
 
 const ownershipTypes: DropdownItem[][] = [
   [
-    { label: 'Rent' },
-    { label: 'Own' },
-    { label: 'Co-own' }
+    {
+      label: 'Rent',
+      click: () => formState.propertyType = 'Rent'
+    },
+    {
+      label: 'Own',
+      click: () => formState.propertyType = 'Own'
+    },
+    {
+      label: 'Co-own',
+      click: () => formState.propertyType = 'Co-own'
+    }
   ]
 ]
 
