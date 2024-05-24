@@ -30,7 +30,7 @@
           @set-preferred-name="(preferred: string) => setPreferred(preferred, true)"
           @set-phone-number="(phone: string) => setPhone(phone, true)"
         />
-        <BcrosFormSectionContactInformationMailingAddress :form-state="formState.primaryContact" />
+        <BcrosFormSectionContactInformationMailingAddress :form-state="formState.primaryContact"  id="primaryContactAddress" />
       </UForm>
     </div>
     <div v-if="!addSecondaryContact" class="mb-[180px] mt-[32px]">
@@ -75,7 +75,7 @@
             @set-preferred-name="(preferred: string) => setPreferred(preferred, true)"
             @set-phone-number="(phone: string) => setPhone(phone, true)"
           />
-          <BcrosFormSectionContactInformationMailingAddress :form-state="formState.secondaryContact" />
+          <BcrosFormSectionContactInformationMailingAddress :form-state="formState.secondaryContact" id="secondaryContactAddress"/>
         </UForm>
       </div>
     </div>
