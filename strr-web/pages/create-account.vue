@@ -17,7 +17,7 @@
             <div v-if="activeStepIndex === 0" :key="activeStepIndex">
               <BcrosFormSectionContactInformationForm
                 :on-validate-page="(isValid) => setStepValid(0, isValid)"
-                :full-name="userFullName" 
+                :full-name="userFullName"
               />
             </div>
             <div v-if="activeStepIndex === 1" :key="activeStepIndex">
@@ -57,7 +57,7 @@ const setActiveStep = (newStep: number) => {
 }
 
 const setStepValid = (index: number, valid: boolean) => {
-  steps[index].step.isValid = valid;
+  steps[index].step.isValid = valid
 }
 
 const setNextStep = () => {
@@ -65,7 +65,7 @@ const setNextStep = () => {
     const nextStep = activeStepIndex.value + 1
     activeStepIndex.value = nextStep
     activeStep.value = steps[activeStepIndex.value]
-    steps[activeStepIndex.value - 1].step.complete = true;
+    steps[activeStepIndex.value - 1].step.complete = true
   }
 }
 

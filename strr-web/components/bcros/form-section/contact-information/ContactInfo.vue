@@ -15,11 +15,11 @@
             }"
           >
             <UInput
+              v-model="formState.birthMonth"
               class="w-full"
               color="white"
               trailing-icon="i-heroicons-chevron-down-20-solid"
               :placeholder="t('create-account.contact-form.month')"
-              v-model="formState.birthMonth"
             />
           </UDropdown>
         </UFormGroup>
@@ -42,51 +42,51 @@ const months: DropdownItem[][] = [
   [
     {
       label: t('general.february'),
-      click: () => formState.month = t('general.february')
+      click: () => { formState.month = t('general.february') }
     },
     {
       label: t('general.march'),
-      click: () => formState.month = t('general.march')
+      click: () => { formState.month = t('general.march') }
     },
     {
       label: t('general.january'),
-      click: () => formState.month = t('general.january')
+      click: () => { formState.month = t('general.january') }
     },
     {
       label: t('general.april'),
-      click: () => formState.month = t('general.april')
+      click: () => { formState.month = t('general.april') }
     },
     {
       label: t('general.may'),
-      click: () => formState.month = t('general.may')
+      click: () => { formState.month = t('general.may') }
     },
     {
       label: t('general.june'),
-      click: () => formState.month = t('general.june')
+      click: () => { formState.month = t('general.june') }
     },
     {
       label: t('general.july'),
-      click: () => formState.month = t('general.july')
+      click: () => { formState.month = t('general.july') }
     },
     {
       label: t('general.august'),
-      click: () => formState.month = t('general.august')
+      click: () => { formState.month = t('general.august') }
     },
     {
       label: t('general.september'),
-      click: () => formState.month = t('general.september')
+      click: () => { formState.month = t('general.september') }
     },
     {
       label: t('general.october'),
-      click: () => formState.month = t('general.october')
+      click: () => { formState.month = t('general.october') }
     },
     {
       label: t('general.november'),
-      click: () => formState.month = t('general.november')
+      click: () => { formState.month = t('general.november') }
     },
     {
       label: t('general.december'),
-      click: () => formState.month = t('general.december')   
+      click: () => { formState.month = t('general.december') }
     }
   ]
 ]

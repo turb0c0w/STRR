@@ -3,7 +3,7 @@ import { CreateAccountFormStateI, OrgI } from '~/interfaces/account-i'
 
 export const contactSchema = z.object({
   preferredName: z.string().optional(),
-  phoneNumber: z.number({ invalid_type_error: "Phone number must be a number" }),
+  phoneNumber: z.number({ invalid_type_error: 'Phone number must be a number' }),
   extension: z.string().optional(),
   faxNumber: z.string().optional(),
   emailAddress: z.string(),
@@ -13,9 +13,9 @@ export const contactSchema = z.object({
   city: z.string(),
   province: z.string(),
   postalCode: z.string(),
-  birthDay: z.number({ invalid_type_error: "Day must be a number" }),
+  birthDay: z.number({ invalid_type_error: 'Day must be a number' }),
   birthMonth: z.string(),
-  birthYear: z.number({ invalid_type_error: "Year must be a number" }).lt(new Date().getFullYear())
+  birthYear: z.number({ invalid_type_error: 'Year must be a number' }).lt(new Date().getFullYear())
 })
 
 const primaryContact: ContactInformationI = {
@@ -88,7 +88,7 @@ export const formState: CreateAccountFormStateI = reactive({
     city: null,
     province: null,
     postalCode: null,
-    listingDetails: [null],
+    listingDetails: [null]
   },
   selectedAccount: {} as OrgI
 })

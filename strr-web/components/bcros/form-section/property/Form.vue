@@ -8,7 +8,13 @@
       </div>
       <UForm :schema="propertyDetailsSchema" :state="formState.propertyDetails">
         <BcrosFormSectionPropertyAddress :form-state="formState.propertyDetails" />
-        <BcrosFormSectionPropertyDetails :form-state="formState.propertyDetails" />
+        <BcrosFormSectionPropertyDetails
+          :form-state="formState.propertyDetails"
+          :on-change-ownership-type="(ownershipType: string) => changeOwnershipType(ownershipType)"
+          :on-change-property-type="(propertyType: string) => changePropertyType(propertyType)"
+          :on-change-business-license="(businessLicense: string) => changeBusinessLicense(businessLicense)"
+          :on-change-parcel-identifier="(parcelIdentifier: string) => changeParcelIdentifier(parcelIdentifier)"
+          />
         <BcrosFormSectionPropertyListingDetails :form-state="formState.propertyDetails" />
       </UForm>
     </div>
@@ -19,13 +25,30 @@
 
 const t = useNuxtApp().$i18n.t
 
-const isValid = ref(false);
+const isValid = ref(false)
 
 watch(formState.propertyDetails, () => {
-  isValid.value = propertyDetailsSchema.safeParse(formState.propertyDetails).success;
+  isValid.value = propertyDetailsSchema.safeParse(formState.propertyDetails).success
 })
+
+const changeOwnershipType = (ownershipType: string) => {
+  formState.propertyDetails.ownershipType = ownershipType
+}
+
+const changePropertyType = (propertyType: string) => {
+  formState.propertyDetails.propertyType = propertyType
+}
+
+const changeBusinessLicense = (businessLicense: string) => {
+  formState.propertyDetails.businessLicense = businessLicense
+}
+
+const changeParcelIdentifier = (parcelIdentifier: string) => {
+  formState.propertyDetails.parcelIdentifier = parcelIdentifier
+}
 
 const emit = defineEmits<{
   validatePage: [isValid: boolean]
 }>()
+
 </script>

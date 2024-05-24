@@ -67,8 +67,8 @@ const emit = defineEmits<{
   validatePage: [isValid: boolean]
 }>()
 
-const primaryIsValid = ref(false);
-const secondaryIsValid = ref(false);
+const primaryIsValid = ref(false)
+const secondaryIsValid = ref(false)
 const addSecondaryContact = ref(false)
 
 const toggleAddSecondary = () => {
@@ -78,11 +78,11 @@ const toggleAddSecondary = () => {
 const t = useNuxtApp().$i18n.t
 
 watch(formState.primaryContact, () => {
-  primaryIsValid.value = contactSchema.safeParse(formState.primaryContact).success;
+  primaryIsValid.value = contactSchema.safeParse(formState.primaryContact).success
 })
 
 watch(formState.secondaryContact, () => {
-  secondaryIsValid.value = contactSchema.safeParse(formState.primaryContact).success;
+  secondaryIsValid.value = contactSchema.safeParse(formState.primaryContact).success
 })
 
 </script>
