@@ -15,8 +15,21 @@
         </div>
       </BcrosFormSection>
       <UForm :schema="contactSchema" :state="formState.primaryContact">
-        <BcrosFormSectionContactInformationContactInfo :form-state="formState.primaryContact" />
-        <BcrosFormSectionContactInformationContactDetails :form-state="formState.primaryContact" />
+        <BcrosFormSectionContactInformationContactInfo
+          :form-state="formState.primaryContact"
+        />
+        <BcrosFormSectionContactInformationContactDetails
+          :phone-number="formState.primaryContact.phoneNumber"
+          :preferred-name="formState.primaryContact.preferredName"
+          :extension="formState.primaryContact.extension"
+          :fax-number="formState.primaryContact.faxNumber"
+          :email-address="formState.primaryContact.emailAddress"
+          @set-email-address="(email: string) => setEmail(email, true)"
+          @set-fax-number="(fax: string) => setFax(fax, true)"
+          @set-extension="(extension: string) => setExtension(extension, true)"
+          @set-preferred-name="(preferred: string) => setPreferred(preferred, true)"
+          @set-phone-number="(phone: string) => setPhone(phone, true)"
+        />
         <BcrosFormSectionContactInformationMailingAddress :form-state="formState.primaryContact" />
       </UForm>
     </div>
@@ -50,7 +63,18 @@
             :form-state="formState.secondaryContact"
             :dob-optional="true"
           />
-          <BcrosFormSectionContactInformationContactDetails :form-state="formState.secondaryContact" />
+          <BcrosFormSectionContactInformationContactDetails
+            :phone-number="formState.secondaryContact.phoneNumber"
+            :preferred-name="formState.secondaryContact.preferredName"
+            :extension="formState.secondaryContact.extension"
+            :fax-number="formState.secondaryContact.faxNumber"
+            :email-address="formState.secondaryContact.emailAddress"
+            @set-email-address="(email: string) => setEmail(email, true)"
+            @set-fax-number="(fax: string) => setFax(fax, true)"
+            @set-extension="(extension: string) => setExtension(extension, true)"
+            @set-preferred-name="(preferred: string) => setPreferred(preferred, true)"
+            @set-phone-number="(phone: string) => setPhone(phone, true)"
+          />
           <BcrosFormSectionContactInformationMailingAddress :form-state="formState.secondaryContact" />
         </UForm>
       </div>
@@ -70,6 +94,36 @@ const emit = defineEmits<{
 const primaryIsValid = ref(false)
 const secondaryIsValid = ref(false)
 const addSecondaryContact = ref(false)
+
+const setEmail = (email: string, primary: boolean) => { 
+  primary ? 
+    formState.primaryContact.emailAddress = email :
+    formState.secondaryContact.emailAddress = email
+}
+
+const setFax = (fax: string, primary: boolean) => { 
+  primary ? 
+    formState.primaryContact.faxNumber = fax :
+    formState.secondaryContact.faxNumber = fax
+}
+
+const setExtension = (extension: string, primary: boolean) => { 
+  primary ? 
+    formState.primaryContact.extension = extension :
+    formState.secondaryContact.extension = extension
+}
+
+const setPreferred = (preferred: string, primary: boolean) => { 
+  primary ? 
+    formState.primaryContact.preferredName = preferred :
+    formState.secondaryContact.preferredName = preferred
+}
+
+const setPhone = (phone: string, primary: boolean) => { 
+  primary ? 
+    formState.primaryContact.phoneNumber = phone :
+    formState.secondaryContact.phoneNumber = phone
+}
 
 const toggleAddSecondary = () => {
   addSecondaryContact.value = !addSecondaryContact.value

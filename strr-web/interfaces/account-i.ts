@@ -85,7 +85,7 @@ export interface MeI {
 
 export interface ContactInformationI {
   preferredName: string | null,
-  phoneNumber: number | null,
+  phoneNumber: string | null,
   extension: string | null,
   faxNumber: string | null,
   emailAddress: string | null,
