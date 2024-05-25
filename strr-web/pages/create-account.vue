@@ -44,38 +44,40 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
+import axios from 'axios'
 import steps from '../page-data/create-account/steps'
 import { FormPageI } from '~/interfaces/form/form-page-i'
-import { CreateAccountFormAPII } from '~/interfaces/account-i';
+import { CreateAccountFormAPII } from '~/interfaces/account-i'
 const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 
 const t = useNuxtApp().$i18n.t
 const { currentAccount, userFullName, userFirstName, userLastName } = useBcrosAccount()
 
-const apiURL = useRuntimeConfig().public.authApiURL
+const apiURL = useRuntimeConfig().public.strrApiURL
 
 const submit = async () => {
-    const formData: CreateAccountFormAPII = formStateToApi(
-      formState,
-      userFirstName,
-      userLastName,
-      userFullName,
-      currentAccount.mailingAddress
-    )
-    
-    await axios.post<CreateAccountFormAPII>(`${apiURL}/account`)
-      .then((response) => {
-        const data = response?.data
-        if (!data) { throw new Error('Invalid AUTH API response') }
-        return data
-      })
-      .catch((error: string) => {
-        console.warn('Error creating account.')
-        console.error(error);
-      })
-  }
+  const formData: CreateAccountFormAPII = formStateToApi(
+    formState,
+    userFirstName,
+    userLastName,
+    userFullName,
+    currentAccount.mailingAddress
+  )
+
+  await axios.post<CreateAccountFormAPII>(`${apiURL}/account`, {
+    formData
+  })
+    .then((response) => {
+      const data = response?.data
+      if (!data) { throw new Error('Invalid AUTH API response') }
+      return data
+    })
+    .catch((error: string) => {
+      console.warn('Error creating account.')
+      console.error(error)
+    })
+}
 
 const setActiveStep = (newStep: number) => {
   activeStepIndex.value = newStep

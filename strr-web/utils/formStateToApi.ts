@@ -17,7 +17,7 @@ export const formStateToApi = (
     dataContact.name = {
       firstName,
       lastName
-    };
+    }
     dataContact.dateOfBirth = {
       date: ''
     }
@@ -50,7 +50,7 @@ export const formStateToApi = (
     city: formState.propertyDetails.city ?? '',
     postalCode: formState.propertyDetails.postalCode ?? '',
     province: formState.propertyDetails.province ?? '',
-    country: formState.propertyDetails.country ?? '',
+    country: formState.propertyDetails.country ?? ''
   }
   formData.registration.unitDetails = {
     parcelIdentifier: formState.propertyDetails.parcelIdentifier,
@@ -63,8 +63,7 @@ export const formStateToApi = (
       ...selectedAccountMailingAddress[0]
     }
   }
-  formData.selectedAccount.name = fullName;
-
+  formData.selectedAccount.name = fullName
 
   return formData
 }

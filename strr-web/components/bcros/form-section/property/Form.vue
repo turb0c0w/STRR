@@ -19,19 +19,19 @@
           default-country-iso3="CAN"
         />
         <BcrosFormSectionPropertyDetails
-          :property-types="propertyTypes"
-          :ownership-types="ownershipTypes"
           v-model:property-type="formState.propertyDetails.propertyType"
           v-model:ownership-type="formState.propertyDetails.ownershipType"
           v-model:business-license="formState.propertyDetails.businessLicense"
           v-model:parcel-identifier="formState.propertyDetails.parcelIdentifier"
+          :property-types="propertyTypes"
+          :ownership-types="ownershipTypes"
         />
         <BcrosFormSectionPropertyListingDetails
           v-model:form-state="formState.propertyDetails"
+          v-model:listing-details="formState.propertyDetails.listingDetails"
           :enable-address-complete="enableAddressComplete"
           :add-platform="addPlatform"
           :remove-detail-at-index="removeDetailAtIndex"
-          v-model:listing-details="formState.propertyDetails.listingDetails"
         />
       </UForm>
     </div>

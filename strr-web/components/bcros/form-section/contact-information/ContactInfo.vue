@@ -39,10 +39,10 @@ import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 
 const t = useNuxtApp().$i18n.t
 
-const { 
+const {
   months,
   dobOptional
- } = defineProps<{
+} = defineProps<{
   months: DropdownItem[][],
   dobOptional?: boolean
 }>()

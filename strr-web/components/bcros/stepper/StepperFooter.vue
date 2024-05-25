@@ -18,7 +18,7 @@
     />
     <BcrosButtonsPrimary
       :text="isLastStep ? t('general.submit') : t('general.next')"
-      :action="isLastStep ? submit  : setNextStep"
+      :action="isLastStep ? submit : setNextStep"
       :icon="isLastStep ? '': 'i-mdi-chevron-right'"
       :alt="isLastStep ? '': 'next icon'"
       :trailing="true"
@@ -43,6 +43,5 @@ const {
 }>()
 
 const t = useNuxtApp().$i18n.t
-
 
 </script>

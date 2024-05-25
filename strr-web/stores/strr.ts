@@ -97,10 +97,10 @@ const primaryContactAPI: ContactAPII = {
   name: {
     firstName: '',
     middleName: '',
-    lastName: '',
+    lastName: ''
   },
   dateOfBirth: {
-    date: '',
+    date: ''
   },
   details: {
     preferredName: '',
@@ -115,7 +115,7 @@ const primaryContactAPI: ContactAPII = {
     city: '',
     postalCode: '',
     province: '',
-    country: '',
+    country: ''
   }
 }
 
@@ -123,10 +123,10 @@ const secondaryContactAPI: ContactAPII = {
   name: {
     firstName: '',
     middleName: '',
-    lastName: '',
+    lastName: ''
   },
   dateOfBirth: {
-    date: '',
+    date: ''
   },
   details: {
     preferredName: '',
@@ -141,10 +141,9 @@ const secondaryContactAPI: ContactAPII = {
     city: '',
     postalCode: '',
     province: '',
-    country: '',
+    country: ''
   }
 }
-
 
 export const formDataForAPI: CreateAccountFormAPII = {
   selectedAccount: {
@@ -155,7 +154,7 @@ export const formDataForAPI: CreateAccountFormAPII = {
       city: '',
       postalCode: '',
       region: '',
-      country: '',
+      country: ''
     }
   },
   registration: {
@@ -167,7 +166,7 @@ export const formDataForAPI: CreateAccountFormAPII = {
       city: '',
       postalCode: '',
       province: '',
-      country: '',
+      country: ''
     },
     unitDetails: {
       parcelIdentifier: '',
