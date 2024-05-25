@@ -18,6 +18,7 @@
     "test:cov": "vitest run --coverage && cp ./coverage/cobertura-coverage.xml ./coverage.xml",
     "test:e2e": "npx playwright test",
     "test:login": "npx playwright test tests/login.spec.ts",
+    "test:account-select": "npx playwright test tests/account-select.spec.ts",
     "test:create-account": "npx playwright test tests/create-account.spec.ts",
     "start": "nuxt start"
   },

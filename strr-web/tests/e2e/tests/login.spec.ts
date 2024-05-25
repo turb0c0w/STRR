@@ -17,7 +17,7 @@ test.describe('Login Tests', () => {
     await page.getByRole('button', { name: 'Continue' }).click()
     expect(page.url()).toContain('account-select')
     const h1 = await page.textContent('h1')
-    expect(h1).toBe('Please Log In')
+    expect(h1).toBe('Existing Account Found')
     await page.context().storageState({ path: authFile });
   })
 })
