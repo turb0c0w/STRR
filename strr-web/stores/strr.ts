@@ -3,7 +3,7 @@ import { CreateAccountFormStateI, OrgI } from '~/interfaces/account-i'
 
 export const contactSchema = z.object({
   preferredName: z.string().optional(),
-  phoneNumber: z.number({ invalid_type_error: 'Phone number must be a number' }),
+  phoneNumber: z.string(),
   extension: z.string().optional(),
   faxNumber: z.string().optional(),
   emailAddress: z.string(),
@@ -13,43 +13,43 @@ export const contactSchema = z.object({
   city: z.string(),
   province: z.string(),
   postalCode: z.string(),
-  birthDay: z.number({ invalid_type_error: 'Day must be a number' }),
+  birthDay: z.string(),
   birthMonth: z.string(),
-  birthYear: z.number({ invalid_type_error: 'Year must be a number' }).lt(new Date().getFullYear())
+  birthYear: z.string()
 })
 
 const primaryContact: ContactInformationI = {
   preferredName: '',
-  phoneNumber: null,
+  phoneNumber: undefined,
   extension: '',
   faxNumber: '',
-  emailAddress: null,
-  address: null,
-  country: null,
-  addressLineTwo: null,
-  city: null,
-  province: null,
-  postalCode: null,
-  birthDay: null,
-  birthMonth: null,
-  birthYear: null
+  emailAddress: undefined,
+  address: undefined,
+  country: undefined,
+  addressLineTwo: undefined,
+  city: undefined,
+  province: undefined,
+  postalCode: undefined,
+  birthDay: undefined,
+  birthMonth: undefined,
+  birthYear: undefined
 }
 
 const secondaryContact: ContactInformationI = {
   preferredName: '',
-  phoneNumber: null,
+  phoneNumber: undefined,
   extension: '',
   faxNumber: '',
-  emailAddress: null,
-  address: null,
-  country: null,
-  addressLineTwo: null,
-  city: null,
-  province: null,
-  postalCode: null,
-  birthDay: null,
-  birthMonth: null,
-  birthYear: null
+  emailAddress: undefined,
+  address: undefined,
+  country: undefined,
+  addressLineTwo: undefined,
+  city: undefined,
+  province: undefined,
+  postalCode: undefined,
+  birthDay: undefined,
+  birthMonth: undefined,
+  birthYear: undefined
 }
 
 export const propertyDetailsSchema = z.object({
@@ -74,21 +74,21 @@ export const formState: CreateAccountFormStateI = reactive({
   primaryContact,
   secondaryContact,
   propertyDetails: {
-    parcelIdentifier: null,
-    businessLicense: null,
-    propertyType: null,
-    ownershipType: null,
-    primaryResidence: null,
-    whichPlatform: null,
+    parcelIdentifier: undefined,
+    businessLicense: undefined,
+    propertyType: undefined,
+    ownershipType: undefined,
+    primaryResidence: undefined,
+    whichPlatform: undefined,
     useMailing: false,
     nickname: '',
-    country: null,
-    address: null,
-    addressLineTwo: null,
-    city: null,
-    province: null,
-    postalCode: null,
-    listingDetails: [null]
+    country: undefined,
+    address: undefined,
+    addressLineTwo: undefined,
+    city: undefined,
+    province: undefined,
+    postalCode: undefined,
+    listingDetails: ['']
   },
   selectedAccount: {} as OrgI
 })

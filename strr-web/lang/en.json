@@ -22,7 +22,8 @@
       "your-name": "Your Name",
       "add-secondary": "Add Another Contact",
       "remove": "Remove",
-      "useMailing": "Use my mailing address for the rental property address"
+      "useMailing": "Use my mailing address for the rental property address",
+      "addPlatform": "Add another platform"
     },
     "contact-form": {
       "preferredName": "Preferred Name (Optional)",

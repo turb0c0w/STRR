@@ -7,7 +7,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
-        <UFormGroup name="phoneNumber" class="pr-[16px] flex-grow mobile:mb-[16px]">
+        <UFormGroup name="phoneNumber" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="phoneNumber" :placeholder="t('create-account.contact-form.phoneNumber')" />
         </UFormGroup>
         <UFormGroup name="extension" class="flex-grow">

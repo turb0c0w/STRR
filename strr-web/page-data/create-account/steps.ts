@@ -6,8 +6,8 @@ const steps: FormPageI[] = [
       label: 'create-account.step-title.contact',
       inactiveIconPath: '/icons/create-account/add_person.svg',
       activeIconPath: '/icons/create-account/add_person_active.svg',
-      complete: true,
-      isValid: true,
+      complete: false,
+      isValid: false,
       alt: 'Add contacts'
     },
     title: 'create-account.contact.title',

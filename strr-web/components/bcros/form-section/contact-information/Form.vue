@@ -40,12 +40,13 @@
         />
       </UForm>
     </div>
-    <div v-if="!addSecondaryContact" class="mb-[180px] mt-[32px]">
+    <div v-if="!addSecondaryContact" class="desktop:mb-[180px] mobile:mb-[32px] mt-[32px] mobile:w-full mobile:p-[8px]">
       <BcrosButtonsPrimary
         :action="toggleAddSecondary"
         :text="t('create-account.contact.add-secondary')"
         variant="outline"
         icon=""
+        class-name="mobile:w-full mobile:mx-[0px]"
       />
     </div>
     <div v-else>
@@ -122,12 +123,21 @@ watch(canadaPostAddress, (newAddress) => {
   }
 })
 
-const { me } = useBcrosAccount()
+const { me, currentAccount } = useBcrosAccount()
 
 if (me?.profile.contacts && me?.profile.contacts.length > 0) {
   formState.primaryContact.phoneNumber = me?.profile.contacts[0].phone
   formState.primaryContact.emailAddress = me?.profile.contacts[0].email
   formState.primaryContact.extension = me?.profile.contacts[0].phoneExtension
+}
+
+if (currentAccount.mailingAddress && currentAccount.mailingAddress.length > 0) {
+  formState.primaryContact.country = currentAccount?.mailingAddress[0]?.country
+  formState.primaryContact.city = currentAccount?.mailingAddress[0]?.city
+  formState.primaryContact.postalCode = currentAccount?.mailingAddress[0]?.postalCode
+  formState.primaryContact.province = currentAccount?.mailingAddress[0]?.region
+  formState.primaryContact.address = currentAccount?.mailingAddress[0]?.street
+  formState.primaryContact.addressLineTwo = currentAccount?.mailingAddress[0]?.streetAdditional
 }
 
 const primaryIsValid = ref(false)

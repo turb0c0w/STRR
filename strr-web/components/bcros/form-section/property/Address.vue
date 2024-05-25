@@ -7,7 +7,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="useMailing" class="pr-[16px] flex-grow">
+        <UFormGroup name="useMailing" class="pr-[16px] flex-grow mobile:text-[16px]">
           <UCheckbox v-model="useMailing" :label="t('create-account.property-form.useMailing')" />
         </UFormGroup>
       </div>
@@ -90,9 +90,8 @@ const nickname = defineModel('nickname')
 const {
   id,
   enableAddressComplete,
-  
 } = defineProps<{
   id: string,
-  enableAddressComplete:(id: string) => void,
+  enableAddressComplete:(id: string, countryIso3: string) => void,
 }>()
 </script>

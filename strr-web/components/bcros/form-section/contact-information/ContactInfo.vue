@@ -2,13 +2,13 @@
   <div data-cy="form-section-contact-info">
     <BcrosFormSection :title="t('create-account.contact-form.dateOfBirth')" :optional="dobOptional">
       <div class="flex flex-row justify-between w-full mobile:flex-col">
-        <UFormGroup name="birthDay" class="pr-[16px] flex-grow mobile:mb-[16px]">
+        <UFormGroup name="birthDay" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput
             v-model="day"
             :placeholder="t('create-account.contact-form.day')"
           />
         </UFormGroup>
-        <UFormGroup name="month" class="pr-[16px] flex-grow mobile:mb-[16px]">
+        <UFormGroup name="month" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
           <UDropdown
             :items="months"
             class="w-full"
@@ -39,8 +39,12 @@ import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 
 const t = useNuxtApp().$i18n.t
 
-const { months } = defineProps<{
+const { 
+  months,
+  dobOptional
+ } = defineProps<{
   months: DropdownItem[][],
+  dobOptional?: boolean
 }>()
 
 const day = defineModel('day')

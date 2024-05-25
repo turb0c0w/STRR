@@ -1,12 +1,12 @@
 <template>
   <div
-    class="flex py-[22px] px-[30px] flex-row"
+    class="flex py-[22px] px-[30px] mobile:px-[8px] mobile:py-[22px] flex-row"
     :class="flavourContainerClass"
     :role="flavourRole"
     :data-cy="'alertsMessage:' + flavour"
   >
     <div class="flex">
-      <div class="">
+      <div class="mobile:hidden">
         <slot name="icon">
           <UIcon
             v-if="flavourIcon"
