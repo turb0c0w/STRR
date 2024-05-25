@@ -1,11 +1,11 @@
 <template>
   <div data-cy="form-section-contact-info">
     <BcrosFormSection :title="t('create-account.property-form.internetListingDetails')" class="pb-[40px]">
-      <div v-for="(listing, index) in formState.listingDetails" :key="listing">
+      <div v-for="(listing, index) in listingDetails" :key="listing">
         <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px] items-center">
           <UFormGroup name="urlOne" class="pr-[16px] flex-grow">
             <UInput
-              v-model="formState.listingDetails[index]"
+              v-model="listingDetails[index]"
               :placeholder="`Platform URL ${index > 0 ? index + 1: ''}`"
             />
           </UFormGroup>
@@ -35,15 +35,16 @@
 </template>
 
 <script setup lang="ts">
-const { formState } = defineProps<{ formState: any }>()
+const { 
+  addPlatform,
+  removeDetailAtIndex,
+  listingDetails
+} = defineProps<{
+  addPlatform: () => void,
+  removeDetailAtIndex: (index: number) => void,
+  listingDetails
+}>()
 
-const addPlatform = () => {
-  formState.listingDetails.push('')
-}
-
-const removeDetailAtIndex = (index: number) => {
-  formState.listingDetails.splice(index, 1)
-}
 
 const t = useNuxtApp().$i18n.t
 

@@ -76,21 +76,35 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue'
-const { formState, id } = defineProps<{ formState: any, id : string }>()
-const { address: canadaPostAddress, enableAddressComplete: enableAddressComplete } = useCanadaPostAddress()
-
 const t = useNuxtApp().$i18n.t
 
-watch(canadaPostAddress, (newAddress) => {
-  console.log(newAddress)
-  if (newAddress) {
-    formState.address = newAddress.street
-    formState.addressLineTwo = newAddress.streetAdditional
-    formState.country = newAddress.country
-    formState.city = newAddress.city
-    formState.province = newAddress.region
-    formState.postalCode = newAddress.postalCode
-  }
-})
+const {
+  id,
+  enableAddressComplete,
+  country,
+  address,
+  addressLineTwo,
+  city,
+  province,
+  postalCode
+} = defineProps<{
+  id: string,
+  enableAddressComplete: (id: string) => void,
+  country: string | undefined,
+  address: string | undefined,
+  addressLineTwo: string | undefined,
+  city: string | undefined,
+  province: string | undefined,
+  postalCode: string | undefined,
+}>()
+
+
+const emit = defineEmits<{
+  setCountry: [country: string],
+  setAddress: [address: string],
+  setAddressLineTwo: [addressLineTwo: string],
+  setCity: [city: string],
+  setProvince: [province: string],
+  setPostalCode: [postalCode: string]
+}>()
 </script>
