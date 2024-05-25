@@ -3,25 +3,25 @@
     <BcrosFormSection :title="t('create-account.contact-form.contactDetails')">
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="preferredName" class=" flex-grow">
-          <UInput v-model="preferredName" :placeholder="t('create-account.contact-form.preferredName')" />
+          <UInput :model-value="preferredName" :placeholder="t('create-account.contact-form.preferredName')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
         <UFormGroup name="phoneNumber" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput v-model="phoneNumber" :placeholder="t('create-account.contact-form.phoneNumber')" />
+          <UInput :model-value="phoneNumber" :placeholder="t('create-account.contact-form.phoneNumber')" />
         </UFormGroup>
         <UFormGroup name="extension" class="flex-grow">
-          <UInput v-model="extension" :placeholder="t('create-account.contact-form.extension')" />
+          <UInput :model-value="extension" :placeholder="t('create-account.contact-form.extension')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="faxNumber" class="flex-grow">
-          <UInput v-model="faxNumber" :placeholder="t('create-account.contact-form.faxNumber')" />
+          <UInput :model-value="faxNumber" :placeholder="t('create-account.contact-form.faxNumber')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="emailAddress" class="flex-grow">
-          <UInput v-model="emailAddress" :placeholder="t('create-account.contact-form.emailAddress')" />
+          <UInput :model-value="emailAddress" :placeholder="t('create-account.contact-form.emailAddress')" />
         </UFormGroup>
       </div>
       <BcrosAlertsMessage :flavour="AlertsFlavourE.INFO">
@@ -44,11 +44,11 @@ const {
   faxNumber,
   emailAddress
 } = defineProps<{
-  preferredName: string | null,
-  phoneNumber: string | null,
-  extension: string | null,
-  faxNumber: string | null,
-  emailAddress: string | null
+  preferredName: string | undefined,
+  phoneNumber: string | undefined,
+  extension: string | undefined,
+  faxNumber: string | undefined,
+  emailAddress: string | undefined
 }>()
 
 
