@@ -7,7 +7,7 @@
         </p>
       </div>
       <BcrosFormSection :title="t('create-account.contact.your-name')" :divider="true">
-        <div class="mb-[16px] text-[14px] leading-[22px]">
+        <div class="mb-[16px] text-[14px] leading-[22px]" data-cy="full-name">
           {{ fullName }}
         </div>
         <div class="mb-[16px] text-[14px] leading-[22px]">
