@@ -9,32 +9,28 @@
       <UForm :schema="propertyDetailsSchema" :state="formState.propertyDetails">
         <BcrosFormSectionPropertyAddress
           id="propertyAddress"
-          :country="formState.propertyDetails.country"
-          :address="formState.propertyDetails.address"
-          :addressLineTwo="formState.propertyDetails.addressLineTwo"
-          :city="formState.propertyDetails.city"
-          :province="formState.propertyDetails.province"
-          :postalCode="formState.propertyDetails.postalCode"
+          v-model:country="formState.propertyDetails.country"
+          v-model:address="formState.propertyDetails.address"
+          v-model:address-line-two="formState.propertyDetails.addressLineTwo"
+          v-model:city="formState.propertyDetails.city"
+          v-model:province="formState.propertyDetails.province"
+          v-model:postal-code="formState.propertyDetails.postalCode"
           :enable-address-complete="enableAddressComplete"
         />
         <BcrosFormSectionPropertyDetails
           :property-types="propertyTypes"
           :ownership-types="ownershipTypes"
-          :property-type="formState.propertyDetails.propertyType"
-          :ownership-type="formState.propertyDetails.ownershipType"
-          :business-license="formState.propertyDetails.businessLicense"
-          :parcel-identifier="formState.propertyDetails.parcelIdentifier"
-          :on-change-ownership-type="(ownershipType: string) => setOwnershipType(ownershipType)"
-          :on-change-property-type="(propertyType: string) => setPropertyType(propertyType)"
-          :on-change-business-license="(businessLicense: string) => setBusinessLicense(businessLicense)"
-          :on-change-parcel-identifier="(parcelIdentifier: string) => setParcelIdentifier(parcelIdentifier)"
-          />
+          v-model:property-type="formState.propertyDetails.propertyType"
+          v-model:ownership-type="formState.propertyDetails.ownershipType"
+          v-model:business-license="formState.propertyDetails.businessLicense"
+          v-model:parcel-identifier="formState.propertyDetails.parcelIdentifier"
+        />
         <BcrosFormSectionPropertyListingDetails
-          :form-state="formState.propertyDetails"
+          v-model:form-state="formState.propertyDetails"
           :enable-address-complete="enableAddressComplete"
           :add-platform="addPlatform"
           :remove-detail-at-index="removeDetailAtIndex"
-          :listing-details="formState.propertyDetails.listingDetails"
+          v-model:listing-details="formState.propertyDetails.listingDetails"
         />
       </UForm>
     </div>
@@ -42,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { DropdownItem } from '@nuxt/ui/dist/runtime/types';
+import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 
 const {
   address: canadaPostAddress,
@@ -76,26 +72,9 @@ watch(formState.propertyDetails, () => {
   isValid.value = propertyDetailsSchema.safeParse(formState.propertyDetails).success
 })
 
-const setOwnershipType = (ownershipType: string) => {
-  formState.propertyDetails.ownershipType = ownershipType
-}
-
-const setPropertyType = (propertyType: string) => {
-  formState.propertyDetails.propertyType = propertyType
-}
-
-const setBusinessLicense = (businessLicense: string) => {
-  formState.propertyDetails.businessLicense = businessLicense
-}
-
-const setParcelIdentifier = (parcelIdentifier: string) => {
-  formState.propertyDetails.parcelIdentifier = parcelIdentifier
-}
-
 const emit = defineEmits<{
   validatePage: [isValid: boolean]
 }>()
-
 
 const propertyTypes: DropdownItem[][] = [
   [

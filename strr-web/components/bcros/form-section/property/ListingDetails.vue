@@ -35,16 +35,15 @@
 </template>
 
 <script setup lang="ts">
-const { 
+const {
   addPlatform,
   removeDetailAtIndex,
   listingDetails
 } = defineProps<{
-  addPlatform: () => void,
+  addPlatform:() => void,
   removeDetailAtIndex: (index: number) => void,
-  listingDetails
+  listingDetails: string[]
 }>()
-
 
 const t = useNuxtApp().$i18n.t
 

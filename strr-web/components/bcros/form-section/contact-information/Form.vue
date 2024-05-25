@@ -16,34 +16,26 @@
       </BcrosFormSection>
       <UForm :schema="contactSchema" :state="formState.primaryContact">
         <BcrosFormSectionContactInformationContactInfo
-          :day="formState.primaryContact.birthDay"
-          :month="formState.primaryContact.birthMonth"
-          :year="formState.primaryContact.birthYear"
+          v-model:day="formState.primaryContact.birthDay"
+          v-model:month="formState.primaryContact.birthMonth"
+          v-model:year="formState.primaryContact.birthYear"
           :months="getMonths(true)"
-          @set-day="(day: number) => setDay(day, true)"
-          @set-year="(year: number) => setYear(year, true)"
-
         />
         <BcrosFormSectionContactInformationContactDetails
-          :phone-number="formState.primaryContact.phoneNumber"
-          :preferred-name="formState.primaryContact.preferredName"
-          :extension="formState.primaryContact.extension"
-          :fax-number="formState.primaryContact.faxNumber"
-          :email-address="formState.primaryContact.emailAddress"
-          @set-email-address="(email: string) => setEmail(email, true)"
-          @set-fax-number="(fax: string) => setFax(fax, true)"
-          @set-extension="(extension: string) => setExtension(extension, true)"
-          @set-preferred-name="(preferred: string) => setPreferred(preferred, true)"
-          @set-phone-number="(phone: string) => setPhone(phone, true)"
+          v-model:phone-number="formState.primaryContact.phoneNumber"
+          v-model:preferred-name="formState.primaryContact.preferredName"
+          v-model:extension="formState.primaryContact.extension"
+          v-model:fax-number="formState.primaryContact.faxNumber"
+          v-model:email-address="formState.primaryContact.emailAddress"
         />
         <BcrosFormSectionContactInformationMailingAddress
           id="primaryContactAddress"
-          :country="formState.primaryContact.country"
-          :address="formState.primaryContact.address"
-          :addressLineTwo="formState.primaryContact.addressLineTwo"
-          :city="formState.primaryContact.city"
-          :province="formState.primaryContact.province"
-          :postalCode="formState.primaryContact.postalCode"
+          v-model:country="formState.primaryContact.country"
+          v-model:address="formState.primaryContact.address"
+          v-model:address-line-two="formState.primaryContact.addressLineTwo"
+          v-model:city="formState.primaryContact.city"
+          v-model:province="formState.primaryContact.province"
+          v-model:postal-code="formState.primaryContact.postalCode"
           :enable-address-complete="enableAddressComplete"
         />
       </UForm>
@@ -75,34 +67,27 @@
         </div>
         <UForm :schema="contactSchema" :state="formState.secondaryContact">
           <BcrosFormSectionContactInformationContactInfo
-            :day="formState.primaryContact.birthDay"
-            :month="formState.primaryContact.birthMonth"
-            :year="formState.primaryContact.birthYear"
+            v-model:day="formState.primaryContact.birthDay"
+            v-model:month="formState.primaryContact.birthMonth"
+            v-model:year="formState.primaryContact.birthYear"
             :months="getMonths(true)"
-            @set-day="(day: number) => setDay(day, false)"
-            @set-year="(year: number) => setYear(year, false)"
             :dob-optional="true"
           />
           <BcrosFormSectionContactInformationContactDetails
-            :phone-number="formState.secondaryContact.phoneNumber"
-            :preferred-name="formState.secondaryContact.preferredName"
-            :extension="formState.secondaryContact.extension"
-            :fax-number="formState.secondaryContact.faxNumber"
-            :email-address="formState.secondaryContact.emailAddress"
-            @set-email-address="(email: string) => setEmail(email, false)"
-            @set-fax-number="(fax: string) => setFax(fax, false)"
-            @set-extension="(extension: string) => setExtension(extension, false)"
-            @set-preferred-name="(preferred: string) => setPreferred(preferred, false)"
-            @set-phone-number="(phone: string) => setPhone(phone, false)"
+            v-model:phone-number="formState.secondaryContact.phoneNumber"
+            v-model:preferred-name="formState.secondaryContact.preferredName"
+            v-model:extension="formState.secondaryContact.extension"
+            v-model:fax-number="formState.secondaryContact.faxNumber"
+            v-model:email-address="formState.secondaryContact.emailAddress"
           />
           <BcrosFormSectionContactInformationMailingAddress
             id="secondaryContactAddress"
-            :country="formState.secondaryContact.country"
-            :address="formState.secondaryContact.address"
-            :addressLineTwo="formState.secondaryContact.addressLineTwo"
-            :city="formState.secondaryContact.city"
-            :province="formState.secondaryContact.province"
-            :postalCode="formState.secondaryContact.postalCode"
+            v-model:country="formState.secondaryContact.country"
+            v-model:address="formState.secondaryContact.address"
+            v-model:address-line-two="formState.secondaryContact.addressLineTwo"
+            v-model:city="formState.secondaryContact.city"
+            v-model:province="formState.secondaryContact.province"
+            v-model:postal-code="formState.secondaryContact.postalCode"
             :enable-address-complete="enableAddressComplete"
           />
         </UForm>
@@ -112,12 +97,12 @@
 </template>
 
 <script setup lang="ts">
+import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 import { formState } from '@/stores/strr'
-import { DropdownItem } from '@nuxt/ui/dist/runtime/types';
 
 const { fullName } = defineProps<{ fullName: string }>()
 
-const emit = defineEmits<{
+defineEmits<{
   validatePage: [isValid: boolean]
 }>()
 
@@ -149,48 +134,6 @@ const primaryIsValid = ref(false)
 const secondaryIsValid = ref(false)
 const addSecondaryContact = ref(false)
 
-const setDay = (day: number, primary: boolean) => { 
-  primary
-    ? formState.primaryContact.birthDay = day
-    : formState.secondaryContact.birthDay = day
-}
-
-const setYear = (year: number, primary: boolean) => { 
-  primary
-    ? formState.primaryContact.birthYear = year 
-    : formState.secondaryContact.birthYear = year
-}
-
-const setEmail = (email: string, primary: boolean) => { 
-  primary
-    ? formState.primaryContact.emailAddress = email
-    : formState.secondaryContact.emailAddress = email
-}
-
-const setFax = (fax: string, primary: boolean) => { 
-  primary
-    ? formState.primaryContact.faxNumber = fax
-    : formState.secondaryContact.faxNumber = fax
-}
-
-const setExtension = (extension: string, primary: boolean) => { 
-  primary
-    ? formState.primaryContact.extension = extension
-    : formState.secondaryContact.extension = extension
-}
-
-const setPreferred = (preferred: string, primary: boolean) => { 
-  primary
-    ? formState.primaryContact.preferredName = preferred
-    : formState.secondaryContact.preferredName = preferred
-}
-
-const setPhone = (phone: string, primary: boolean) => { 
-  primary
-    ? formState.primaryContact.phoneNumber = phone
-    : formState.secondaryContact.phoneNumber = phone
-}
-
 const toggleAddSecondary = () => {
   addSecondaryContact.value = !addSecondaryContact.value
 }
@@ -217,18 +160,17 @@ const months: string[] = [
   t('general.september'),
   t('general.october'),
   t('general.november'),
-  t('general.december'),
+  t('general.december')
 ]
 
-
 const getMonths = (primary: boolean): DropdownItem[][] => months.map((month: string) => [{
-    label: month,
-    click: () => { 
-      primary ?
-        formState.primaryContact.birthMonth = month :
-        formState.secondaryContact.birthMonth = month
-    }
-  }]
+  label: month,
+  click: () => {
+    primary
+      ? formState.primaryContact.birthMonth = month
+      : formState.secondaryContact.birthMonth = month
+  }
+}]
 )
 
 </script>

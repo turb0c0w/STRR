@@ -4,7 +4,7 @@
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="country" class="flex-grow">
           <UDropdown
-            :model-value="country"
+            v-model="country"
             :items="[]"
             class="w-full"
             :popper="{
@@ -22,10 +22,10 @@
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="Address" class="flex-grow">
-          <UInput 
+          <UInput
             :id="id"
-            :model-value="address" 
-            :placeholder="t('create-account.contact-form.address')" 
+            v-model="address"
+            :placeholder="t('create-account.contact-form.address')"
             @keypress.once="enableAddressComplete(id)"
             @click="enableAddressComplete(id)"
           />
@@ -33,16 +33,16 @@
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="AddressLineTwo" class="flex-grow">
-          <UInput :model-value="addressLineTwo" :placeholder="t('create-account.contact-form.addressLineTwo')" />
+          <UInput v-model="addressLineTwo" :placeholder="t('create-account.contact-form.addressLineTwo')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
         <UFormGroup name="city" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput :model-value="city" :placeholder="t('create-account.contact-form.city')" />
+          <UInput v-model="city" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
         <UFormGroup name="province" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UDropdown
-            :model-value="province"
+            v-model="province"
             :items="[]"
             class="w-full"
             :popper="{
@@ -58,7 +58,7 @@
           </UDropdown>
         </UFormGroup>
         <UFormGroup name="postalCode" class="flex-grow mobile:mb-[16px]">
-          <UInput :model-value="postalCode" :placeholder="t('create-account.contact-form.postalCode')" />
+          <UInput v-model="postalCode" :placeholder="t('create-account.contact-form.postalCode')" />
         </UFormGroup>
       </div>
     </BcrosFormSection>
@@ -66,37 +66,21 @@
 </template>
 
 <script setup lang="ts">
-
 const t = useNuxtApp().$i18n.t
+
+const country = defineModel('country')
+const address = defineModel('address')
+const addressLineTwo = defineModel('addressLineTwo')
+const city = defineModel('city')
+const province = defineModel('province')
+const postalCode = defineModel('postalCode')
 
 const {
   id,
   enableAddressComplete,
-  country,
-  address,
-  addressLineTwo,
-  city,
-  province,
-  postalCode
 } = defineProps<{
   id: string,
-  enableAddressComplete: (id: string) => void,
-  country: string | undefined,
-  address: string | undefined,
-  addressLineTwo: string | undefined,
-  city: string | undefined,
-  province: string | undefined,
-  postalCode: string | undefined,
-}>()
-
-
-const emit = defineEmits<{
-  setCountry: [country: string],
-  setAddress: [address: string],
-  setAddressLineTwo: [addressLineTwo: string],
-  setCity: [city: string],
-  setProvince: [province: string],
-  setPostalCode: [postalCode: string]
+  enableAddressComplete:(id: string) => void
 }>()
 
 </script>
