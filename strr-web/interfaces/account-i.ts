@@ -118,7 +118,7 @@ export interface CreateAccountFormStateI {
     city: string | undefined,
     province: string | undefined,
     postalCode: string | undefined,
-    listingDetails: string[] | undefined[],
+    listingDetails: string[],
   },
   selectedAccount: OrgI
 }

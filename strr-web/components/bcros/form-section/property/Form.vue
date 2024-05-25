@@ -7,7 +7,16 @@
         </p>
       </div>
       <UForm :schema="propertyDetailsSchema" :state="formState.propertyDetails">
-        <BcrosFormSectionPropertyAddress :form-state="formState.propertyDetails" id="propertyAddress"/>
+        <BcrosFormSectionPropertyAddress
+          id="propertyAddress"
+          :country="formState.propertyDetails.country"
+          :address="formState.propertyDetails.address"
+          :addressLineTwo="formState.propertyDetails.addressLineTwo"
+          :city="formState.propertyDetails.city"
+          :province="formState.propertyDetails.province"
+          :postalCode="formState.propertyDetails.postalCode"
+          :enable-address-complete="enableAddressComplete"
+        />
         <BcrosFormSectionPropertyDetails
           :property-types="propertyTypes"
           :ownership-types="ownershipTypes"
@@ -20,7 +29,13 @@
           :on-change-business-license="(businessLicense: string) => setBusinessLicense(businessLicense)"
           :on-change-parcel-identifier="(parcelIdentifier: string) => setParcelIdentifier(parcelIdentifier)"
           />
-        <BcrosFormSectionPropertyListingDetails :form-state="formState.propertyDetails" />
+        <BcrosFormSectionPropertyListingDetails
+          :form-state="formState.propertyDetails"
+          :enable-address-complete="enableAddressComplete"
+          :add-platform="addPlatform"
+          :remove-detail-at-index="removeDetailAtIndex"
+          :listing-details="formState.propertyDetails.listingDetails"
+        />
       </UForm>
     </div>
   </div>
@@ -29,10 +44,33 @@
 <script setup lang="ts">
 import { DropdownItem } from '@nuxt/ui/dist/runtime/types';
 
+const {
+  address: canadaPostAddress,
+  enableAddressComplete
+} = useCanadaPostAddress()
+
+watch(canadaPostAddress, (newAddress) => {
+  if (newAddress) {
+    formState.propertyDetails.address = newAddress.street
+    formState.propertyDetails.addressLineTwo = newAddress.streetAdditional
+    formState.propertyDetails.country = newAddress.country
+    formState.propertyDetails.city = newAddress.city
+    formState.propertyDetails.province = newAddress.region
+    formState.propertyDetails.postalCode = newAddress.postalCode
+  }
+})
 
 const t = useNuxtApp().$i18n.t
 
 const isValid = ref(false)
+
+const addPlatform = () => {
+  formState.propertyDetails.listingDetails.push('')
+}
+
+const removeDetailAtIndex = (index: number) => {
+  formState.propertyDetails.listingDetails.splice(index, 1)
+}
 
 watch(formState.propertyDetails, () => {
   isValid.value = propertyDetailsSchema.safeParse(formState.propertyDetails).success
