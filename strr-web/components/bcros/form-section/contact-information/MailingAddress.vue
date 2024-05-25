@@ -25,9 +25,9 @@
           <UInput
             :id="id"
             v-model="address"
-            :placeholder="t('create-account.contact-form.address')"
-            @keypress.once="enableAddressComplete(id)"
-            @click="enableAddressComplete(id)"
+            :placeholder="t('create-account.contact-form.address')" 
+            @keypress.once="enableAddressComplete(id, 'CAN')"
+            @click="enableAddressComplete(id, 'CAN')"
           />
         </UFormGroup>
       </div>

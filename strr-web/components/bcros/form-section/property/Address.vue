@@ -35,10 +35,10 @@
           <UInput
             :id="id"
             v-model="address"
-            :placeholder="t('create-account.contact-form.address')"
-            @keypress.once="enableAddressComplete(id)"
-            @click="enableAddressComplete(id)"
-          />
+            :placeholder="t('create-account.contact-form.address')" 
+            @keypress.once="enableAddressComplete(id, 'CAN')"
+            @click="enableAddressComplete(id, 'CAN')"
+            />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
