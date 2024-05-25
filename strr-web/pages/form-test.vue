@@ -10,8 +10,8 @@
           id="primary_street"
           v-model="primaryAddress.street"
           placeholder="Type your address"
-          @keypress.once="enablePrimaryAddressComplete('primary')"
-          @click="enablePrimaryAddressComplete('primary')"
+          @keypress.once="enablePrimaryAddressComplete('primary', 'CAN')"
+          @click="enablePrimaryAddressComplete('primary', 'CAN')"
         />
       </UFormGroup>
       <UFormGroup label="City" name="city">
@@ -32,8 +32,8 @@
           id="secondary_street"
           v-model="secondaryAddress.street"
           placeholder="Type your address"
-          @keypress.once="enableSecondaryAddressComplete('secondary')"
-          @click="enableSecondaryAddressComplete('secondary')"
+          @keypress.once="enableSecondaryAddressComplete('secondary', 'CAN')"
+          @click="enableSecondaryAddressComplete('secondary', 'CAN')"
         />
       </UFormGroup>
       <UFormGroup label="City" name="city">
