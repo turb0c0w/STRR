@@ -3,9 +3,15 @@
     <BcrosFormSection :title="t('create-account.contact-form.mailingAddress')">
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="country" class="flex-grow">
+          <USelect
+            v-model="country"
+            :options="countryItems"
+            option-attribute="name"
+            class="w-full"
+          />
           <UDropdown
             v-model="country"
-            :items="[]"
+            :items="countryItems"
             class="w-full"
             :popper="{
               placement: 'bottom-start',
@@ -25,9 +31,9 @@
           <UInput
             :id="id"
             v-model="address"
-            :placeholder="t('create-account.contact-form.address')" 
-            @keypress.once="enableAddressComplete(id, countryIso3)"
-            @click="enableAddressComplete(id, countryIso3)"
+            :placeholder="t('create-account.contact-form.address')"
+            @keypress.once="addressComplete()"
+            @click="addressComplete()"
           />
         </UFormGroup>
       </div>
@@ -43,7 +49,6 @@
         <UFormGroup name="province" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UDropdown
             v-model="province"
-            :items="[]"
             class="w-full"
             :popper="{
               placement: 'bottom-start',
@@ -66,6 +71,8 @@
 </template>
 
 <script setup lang="ts">
+import { CountryItem } from '@/interfaces/address-i'
+import countries from '@/utils/countries.json'
 const t = useNuxtApp().$i18n.t
 
 const country = defineModel('country')
@@ -74,15 +81,31 @@ const addressLineTwo = defineModel('addressLineTwo')
 const city = defineModel('city')
 const province = defineModel('province')
 const postalCode = defineModel('postalCode')
+const countryItems = ref<CountryItem[]>([])
+
+const addressComplete = () => {
+  if (typeof country.value === 'string') {
+    enableAddressComplete(id, country.value)
+  }
+}
 
 const {
   id,
-  countryIso3,
-  enableAddressComplete,
+  defaultCountryIso3,
+  enableAddressComplete
 } = defineProps<{
   id: string,
-  countryIso3: string, 
+  defaultCountryIso3: string,
   enableAddressComplete:(id: string, countryIso3: string) => void
 }>()
+
+onMounted(() => {
+  countryItems.value = countries.map(country => ({
+    value: country.iso3,
+    name: country.en
+  }))
+})
+
+country.value = defaultCountryIso3
 
 </script>
