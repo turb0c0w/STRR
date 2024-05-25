@@ -122,3 +122,61 @@ export interface CreateAccountFormStateI {
   },
   selectedAccount: OrgI
 }
+
+export interface MailingAddressAPII {
+  address: string,
+  addressLineTwo?: string,
+  city: string,
+  postalCode: string,
+  province: string,
+  country: string,
+}
+
+export interface ContactNameAPII {
+  firstName: string,
+  middleName?: string,
+  lastName: string,
+}
+
+export interface ContactAPII {
+  name: ContactNameAPII,
+  dateOfBirth: {
+    date: string,
+  },
+  details: {
+    preferredName?: string,
+    phoneNumber: string,
+    extension?: string,
+    faxNumber?: string,
+    emailAddress: string
+  },
+  mailingAddress: MailingAddressAPII
+}
+
+export interface SelectedAccountMailingAPII {
+  street: string,
+  streetAdditional: string,
+  city: string,
+  postalCode: string,
+  region: string,
+  country: string,
+}
+
+export interface CreateAccountFormAPII {
+  selectedAccount: {
+    name: string,
+    mailingAddress: SelectedAccountMailingAPII
+  },
+  registration: {
+    primaryContact: ContactAPII,
+    secondaryContact: ContactAPII,
+    unitAddress: MailingAddressAPII,
+    unitDetails: {
+      parcelIdentifier?: string,
+      businessLicense?: string,
+      propertyType: string,
+      ownershipType: string
+    },
+    listingDetails: { url: string }[]
+  }
+}

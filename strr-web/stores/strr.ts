@@ -92,3 +92,89 @@ export const formState: CreateAccountFormStateI = reactive({
   },
   selectedAccount: {} as OrgI
 })
+
+const primaryContactAPI: ContactAPII = {
+  name: {
+    firstName: '',
+    middleName: '',
+    lastName: '',
+  },
+  dateOfBirth: {
+    date: '',
+  },
+  details: {
+    preferredName: '',
+    phoneNumber: '',
+    extension: '',
+    faxNumber: '',
+    emailAddress: ''
+  },
+  mailingAddress: {
+    address: '',
+    addressLineTwo: '',
+    city: '',
+    postalCode: '',
+    province: '',
+    country: '',
+  }
+}
+
+const secondaryContactAPI: ContactAPII = {
+  name: {
+    firstName: '',
+    middleName: '',
+    lastName: '',
+  },
+  dateOfBirth: {
+    date: '',
+  },
+  details: {
+    preferredName: '',
+    phoneNumber: '',
+    extension: '',
+    faxNumber: '',
+    emailAddress: ''
+  },
+  mailingAddress: {
+    address: '',
+    addressLineTwo: '',
+    city: '',
+    postalCode: '',
+    province: '',
+    country: '',
+  }
+}
+
+
+export const formDataForAPI: CreateAccountFormAPII = {
+  selectedAccount: {
+    name: '',
+    mailingAddress: {
+      street: '',
+      streetAdditional: '',
+      city: '',
+      postalCode: '',
+      region: '',
+      country: '',
+    }
+  },
+  registration: {
+    primaryContact: primaryContactAPI,
+    secondaryContact: secondaryContactAPI,
+    unitAddress: {
+      address: '',
+      addressLineTwo: '',
+      city: '',
+      postalCode: '',
+      province: '',
+      country: '',
+    },
+    unitDetails: {
+      parcelIdentifier: '',
+      businessLicense: '',
+      propertyType: '',
+      ownershipType: ''
+    },
+    listingDetails: []
+  }
+}

@@ -30,7 +30,6 @@
         />
         <BcrosFormSectionContactInformationMailingAddress
           id="primaryContactAddress"
-          default-country-iso3="CAN"
           v-model:country="formState.primaryContact.country"
           v-model:address="formState.primaryContact.address"
           v-model:address-line-two="formState.primaryContact.addressLineTwo"
@@ -38,6 +37,7 @@
           v-model:province="formState.primaryContact.province"
           v-model:postal-code="formState.primaryContact.postalCode"
           :enable-address-complete="enableAddressComplete"
+          default-country-iso3="CAN"
         />
       </UForm>
     </div>
@@ -84,7 +84,6 @@
           />
           <BcrosFormSectionContactInformationMailingAddress
             id="secondaryContactAddress"
-            default-country-iso3="CAN"
             v-model:country="formState.secondaryContact.country"
             v-model:address="formState.secondaryContact.address"
             v-model:address-line-two="formState.secondaryContact.addressLineTwo"
@@ -92,6 +91,7 @@
             v-model:province="formState.secondaryContact.province"
             v-model:postal-code="formState.secondaryContact.postalCode"
             :enable-address-complete="enableAddressComplete"
+            default-country-iso3="CAN"
           />
         </UForm>
       </div>

@@ -9,7 +9,6 @@
       <UForm :schema="propertyDetailsSchema" :state="formState.propertyDetails">
         <BcrosFormSectionPropertyAddress
           id="propertyAddress"
-          default-country-iso3="CAN"
           v-model:country="formState.propertyDetails.country"
           v-model:address="formState.propertyDetails.address"
           v-model:address-line-two="formState.propertyDetails.addressLineTwo"
@@ -17,6 +16,7 @@
           v-model:province="formState.propertyDetails.province"
           v-model:postal-code="formState.propertyDetails.postalCode"
           :enable-address-complete="enableAddressComplete"
+          default-country-iso3="CAN"
         />
         <BcrosFormSectionPropertyDetails
           :property-types="propertyTypes"

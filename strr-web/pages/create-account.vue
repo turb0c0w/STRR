@@ -36,6 +36,7 @@
         :is-first-step="activeStepIndex.valueOf() == 0"
         :set-next-step="setNextStep"
         :set-previous-step="setPreviousStep"
+        :submit="submit"
         :is-last-step="activeStepIndex.valueOf() == steps.length - 1"
       />
     </div>
@@ -43,13 +44,38 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios';
 import steps from '../page-data/create-account/steps'
 import { FormPageI } from '~/interfaces/form/form-page-i'
+import { CreateAccountFormAPII } from '~/interfaces/account-i';
 const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 
 const t = useNuxtApp().$i18n.t
-const { userFullName } = useBcrosAccount()
+const { currentAccount, userFullName, userFirstName, userLastName } = useBcrosAccount()
+
+const apiURL = useRuntimeConfig().public.authApiURL
+
+const submit = async () => {
+    const formData: CreateAccountFormAPII = formStateToApi(
+      formState,
+      userFirstName,
+      userLastName,
+      userFullName,
+      currentAccount.mailingAddress
+    )
+    
+    await axios.post<CreateAccountFormAPII>(`${apiURL}/account`)
+      .then((response) => {
+        const data = response?.data
+        if (!data) { throw new Error('Invalid AUTH API response') }
+        return data
+      })
+      .catch((error: string) => {
+        console.warn('Error creating account.')
+        console.error(error);
+      })
+  }
 
 const setActiveStep = (newStep: number) => {
   activeStepIndex.value = newStep
