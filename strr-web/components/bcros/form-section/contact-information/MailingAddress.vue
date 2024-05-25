@@ -26,8 +26,8 @@
             :id="id"
             v-model="address"
             :placeholder="t('create-account.contact-form.address')" 
-            @keypress.once="enableAddressComplete(id, 'CAN')"
-            @click="enableAddressComplete(id, 'CAN')"
+            @keypress.once="enableAddressComplete(id, countryIso3)"
+            @click="enableAddressComplete(id, countryIso3)"
           />
         </UFormGroup>
       </div>
@@ -77,10 +77,12 @@ const postalCode = defineModel('postalCode')
 
 const {
   id,
+  countryIso3,
   enableAddressComplete,
 } = defineProps<{
   id: string,
-  enableAddressComplete:(id: string) => void
+  countryIso3: string, 
+  enableAddressComplete:(id: string, countryIso3: string) => void
 }>()
 
 </script>

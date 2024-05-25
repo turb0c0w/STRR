@@ -30,6 +30,7 @@
         />
         <BcrosFormSectionContactInformationMailingAddress
           id="primaryContactAddress"
+          countryIso3="CAN"
           v-model:country="formState.primaryContact.country"
           v-model:address="formState.primaryContact.address"
           v-model:address-line-two="formState.primaryContact.addressLineTwo"
@@ -83,6 +84,7 @@
           />
           <BcrosFormSectionContactInformationMailingAddress
             id="secondaryContactAddress"
+            countryIso3="CAN"
             v-model:country="formState.secondaryContact.country"
             v-model:address="formState.secondaryContact.address"
             v-model:address-line-two="formState.secondaryContact.addressLineTwo"
