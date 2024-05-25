@@ -21,7 +21,7 @@
             }"
           >
             <UInput
-              :model-value="formState.propertyType"
+              :model-value="propertyType"
               class="w-full"
               color="white"
               :placeholder="t('create-account.property-form.propertyType')"
@@ -40,7 +40,7 @@
             }"
           >
             <UInput
-              :model-value="formState.ownershipType"
+              :model-value="ownershipType"
               class="w-full"
               color="white"
               :placeholder="t('create-account.property-form.ownershipType')"
@@ -56,12 +56,21 @@
 <script setup lang="ts">
 import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 
-const { formState } = defineProps<{ formState: any }>()
-
-const propertyType = ref<string>()
-const ownershipType = ref<string>()
-const businessLicense = ref<string>()
-const parcelIdentifier = ref<string>()
+const {
+  propertyTypes,
+  ownershipTypes,
+  propertyType,
+  ownershipType,
+  businessLicense,
+  parcelIdentifier
+} = defineProps<{ 
+  propertyTypes: DropdownItem[][],
+  ownershipTypes: DropdownItem[][],
+  propertyType: string | undefined,
+  ownershipType: string | undefined,
+  businessLicense: string | undefined,
+  parcelIdentifier: string | undefined,
+}>()
 
 const emit = defineEmits<{
   changePropertyType: [propertyType: string],
@@ -70,56 +79,6 @@ const emit = defineEmits<{
   changeParcelIdentifier: [parcelIdentifier: string],
 }>()
 
-const changeBusinessLicense = (inputBusinessLicense: string) => {
-  businessLicense.value = inputBusinessLicense
-}
-
-const changeParcelIdentifier = (inputParcelIdentifier: string) => {
-  parcelIdentifier.value = inputParcelIdentifier
-}
-
 const t = useNuxtApp().$i18n.t
-
-const propertyTypes: DropdownItem[][] = [
-  [
-    {
-      label: t('create-account.property-form.primaryDwelling'),
-      click: () => { propertyType.value = t('create-account.property-form.primaryDwelling') }
-    },
-    {
-      label: t('create-account.property-form.secondarySuite'),
-      click: () => { propertyType.value = t('create-account.property-form.secondarySuite') }
-    },
-    {
-      label: t('create-account.property-form.accessory'),
-      click: () => { propertyType.value = t('create-account.property-form.accessory') }
-    },
-    {
-      label: t('create-account.property-form.float'),
-      click: () => { propertyType.value = t('create-account.property-form.float') }
-    },
-    {
-      label: t('create-account.property-form.other'),
-      click: () => { propertyType.value = t('create-account.property-form.other') }
-    }
-  ]
-]
-
-const ownershipTypes: DropdownItem[][] = [
-  [
-    {
-      label: t('create-account.property-form.rent'),
-      click: () => { ownershipType.value = t('create-account.property-form.rent') }
-    },
-    {
-      label: t('create-account.property-form.own'),
-      click: () => { ownershipType.value = t('create-account.property-form.own') }
-    },
-    {
-      label: t('create-account.property-form.other'),
-      click: () => { ownershipType.value = t('create-account.property-form.coown') }
-    }
-  ]
-]
 
 </script>

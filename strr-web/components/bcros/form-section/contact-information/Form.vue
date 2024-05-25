@@ -44,6 +44,7 @@
           :city="formState.primaryContact.city"
           :province="formState.primaryContact.province"
           :postalCode="formState.primaryContact.postalCode"
+          :enable-address-complete="enableAddressComplete"
         />
       </UForm>
     </div>
