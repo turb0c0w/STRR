@@ -84,6 +84,7 @@ const postalCode = defineModel('postalCode')
 const countryItems = ref<CountryItem[]>([])
 
 const addressComplete = () => {
+  console.log("addressComplete")
   if (typeof country.value === 'string') {
     enableAddressComplete(id, country.value)
   }
