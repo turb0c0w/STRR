@@ -1,15 +1,15 @@
 import { z } from 'zod'
 import { CreateAccountFormStateI, OrgI } from '~/interfaces/account-i'
 
-const numbersRegex = new RegExp("^[0-9]+$")
+const numbersRegex = new RegExp('^[0-9]+$')
 // matches chars 123456789 ()
-const phoneRegex = new RegExp("^[0-9*#+() ]+$")
+const phoneRegex = new RegExp('^[0-9*#+() ]+$')
 
 export const contactSchema = z.object({
   preferredName: z.string().optional(),
-  phoneNumber: z.string().regex(phoneRegex, { message: "Valid characters are \"() 123457890\" " }),
-  extension: z.string().regex(phoneRegex, { message: "Valid characters are \"() 123457890\" " }).optional(),
-  faxNumber: z.string().regex(phoneRegex, { message: "Valid characters are \"() 123457890\" " }).optional(),
+  phoneNumber: z.string().regex(phoneRegex, { message: 'Valid characters are \"() 123457890\" ' }),
+  extension: z.string().regex(phoneRegex, { message: 'Valid characters are \"() 123457890\" ' }).optional(),
+  faxNumber: z.string().regex(phoneRegex, { message: 'Valid characters are \"() 123457890\" ' }).optional(),
   emailAddress: z.string(),
   address: z.string(),
   country: z.string(),
@@ -17,9 +17,9 @@ export const contactSchema = z.object({
   city: z.string(),
   province: z.string(),
   postalCode: z.string(),
-  birthDay: z.string().regex(numbersRegex, { message: "Must be a number" }),
+  birthDay: z.string().regex(numbersRegex, { message: 'Must be a number' }),
   birthMonth: z.string(),
-  birthYear: z.string().regex(numbersRegex, { message: "Must be a number" }),
+  birthYear: z.string().regex(numbersRegex, { message: 'Must be a number' }),
 })
 
 const primaryContact: ContactInformationI = {
