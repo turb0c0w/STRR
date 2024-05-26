@@ -23,10 +23,10 @@ export default defineNuxtConfig({
         }
       ],
       link: [
-        { rel: 'stylesheet', href: '/css/addresscomplete-2.30.min.css' }
+        { rel: 'stylesheet', href: '/css/addresscomplete-2.50.min.css' }
       ],
       script: [
-        { src: '/js/addresscomplete-2.30.min.js', type: 'text/javascript', defer: true }
+        { src: '/js/addresscomplete-2.50.min.js', type: 'text/javascript', defer: true }
       ]
     }
   },
