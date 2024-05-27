@@ -47,10 +47,11 @@ export const useCanadaPostAddress = () => {
 
   const addressCompletePopulate = (addressComplete: CanadaPostResponseAddressI): void => {
     address.street = addressComplete.Line1 || 'N/A'
+    address.streetAdditional = addressComplete.Line2 || ''
     address.city = addressComplete.City
     address.region = addressComplete.ProvinceCode
     address.postalCode = addressComplete.PostalCode
-    address.country = addressComplete.CountryName
+    address.country = addressComplete.CountryIso3
   }
 
   return {

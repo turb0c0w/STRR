@@ -31,23 +31,8 @@
         <UFormGroup name="city" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="city" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
-        <UFormGroup class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UDropdown
-            v-model="province"
-            class="w-full"
-            :popper="{
-              placement: 'bottom-start',
-            }"
-          >
-            <UInput
-              id="province"
-              class="w-full"
-              name="province"
-              color="white"
-              :placeholder="t('create-account.contact-form.province')"
-              trailing-icon="i-heroicons-chevron-down-20-solid"
-            />
-          </UDropdown>
+        <UFormGroup name="province" class="pr-[16px] flex-grow mobile:mb-[16px]">
+          <UInput v-model="province" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
         <UFormGroup name="postalCode" class="flex-grow mobile:mb-[16px]">
           <UInput v-model="postalCode" :placeholder="t('create-account.contact-form.postalCode')" />
