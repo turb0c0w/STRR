@@ -22,7 +22,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="address" class="pr-[16px] flex-grow">
+        <UFormGroup name="Address" class="pr-[16px] flex-grow">
           <UInput
             :id="id"
             v-model="address"
@@ -54,6 +54,7 @@
 
 <script setup lang="ts">
 import { CountryItem } from '@/interfaces/address-i'
+import countries from '@/utils/countries.json'
 const t = useNuxtApp().$i18n.t
 
 const country = defineModel<string>('country')
@@ -83,5 +84,12 @@ const {
 }>()
 
 country.value = defaultCountryIso3
+
+onMounted(() => {
+  countryItems.value = countries.map(country => ({
+    value: country.iso3,
+    name: country.en
+  }))
+})
 
 </script>
