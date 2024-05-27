@@ -4,8 +4,8 @@
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="preferredName" class=" flex-grow">
           <UInput
-            type="name"
             v-model="preferredName"
+            type="name"
             :placeholder="t('create-account.contact-form.preferredName')"
           />
         </UFormGroup>
@@ -13,8 +13,8 @@
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
         <UFormGroup name="phoneNumber" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput
-            type="tel"
             v-model="phoneNumber"
+            type="tel"
             :placeholder="t('create-account.contact-form.phoneNumber')"
           />
         </UFormGroup>

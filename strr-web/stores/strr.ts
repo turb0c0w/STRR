@@ -4,8 +4,6 @@ import { CreateAccountFormStateI, OrgI } from '~/interfaces/account-i'
 const numbersRegex = /^[0-9]+$/
 // matches chars 123456789 ()
 const phoneRegex = /^[0-9*#+() -]+$/
-console.log(numbersRegex.toString())
-console.log(phoneRegex.toString())
 const phoneError = { message: 'Valid characters are "()- 123457890" ' }
 const requiredPhone = z.string().regex(phoneRegex, phoneError)
 const optionalPhone = z.string().regex(phoneRegex, phoneError).optional()
@@ -25,7 +23,7 @@ export const contactSchema = z.object({
   postalCode: z.string(),
   birthDay: requiredNumber,
   birthMonth: z.string(),
-  birthYear: requiredNumber.refine((year) => Number(year) <= new Date().getFullYear(), "Year must be in the past")
+  birthYear: requiredNumber.refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
 })
 
 const primaryContact: ContactInformationI = {
