@@ -55,12 +55,12 @@ const {
   currentAccount,
   userFullName,
   userFirstName,
-  userLastName,
+  userLastName
 } = useBcrosAccount()
 
 const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryContact.value }
 
-const submit = () => submitCreateAccountForm( 
+const submit = () => submitCreateAccountForm(
   userFirstName,
   userLastName,
   userFullName,

@@ -12,7 +12,7 @@ export const formStateToApi = (
     const dataContact: ContactAPII | undefined = primary
       ? formData.registration.primaryContact
       : formData.registration.secondaryContact
-    if (!dataContact) return;
+    if (!dataContact) { return }
     const stateContact = primary
       ? formState.primaryContact
       : formState.secondaryContact
@@ -20,7 +20,7 @@ export const formStateToApi = (
       firstName,
       lastName
     }
-    dataContact.dateOfBirth = `${stateContact.birthDay}-${stateContact.birthMonth}-${stateContact.birthYear}`
+    dataContact.dateOfBirth = `${stateContact.birthYear}-${stateContact.birthMonth}-${stateContact.birthDay}`
     dataContact.details = {
       preferredName: stateContact.preferredName,
       phoneNumber: stateContact.phoneNumber ?? '',
