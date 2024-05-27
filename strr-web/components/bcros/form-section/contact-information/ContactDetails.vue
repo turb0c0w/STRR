@@ -3,12 +3,20 @@
     <BcrosFormSection :title="t('create-account.contact-form.contactDetails')">
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="preferredName" class=" flex-grow">
-          <UInput v-model="preferredName" :placeholder="t('create-account.contact-form.preferredName')" />
+          <UInput
+            type="name"
+            v-model="preferredName"
+            :placeholder="t('create-account.contact-form.preferredName')"
+          />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
         <UFormGroup name="phoneNumber" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput v-model="phoneNumber" :placeholder="t('create-account.contact-form.phoneNumber')" />
+          <UInput
+            type="tel"
+            v-model="phoneNumber"
+            :placeholder="t('create-account.contact-form.phoneNumber')"
+          />
         </UFormGroup>
         <UFormGroup name="extension" class="flex-grow">
           <UInput v-model="extension" :placeholder="t('create-account.contact-form.extension')" />
@@ -20,7 +28,11 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="emailAddress" class="flex-grow">
+        <UFormGroup
+          type="email"
+          name="emailAddress"
+          class="flex-grow"
+        >
           <UInput v-model="emailAddress" :placeholder="t('create-account.contact-form.emailAddress')" />
         </UFormGroup>
       </div>
