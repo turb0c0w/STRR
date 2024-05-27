@@ -38,7 +38,6 @@
           v-model:postal-code="formState.primaryContact.postalCode"
           :enable-address-complete="enableAddressComplete"
           default-country-iso3="CAN"
-          :on-set-id="(id: string) => setActiveAddressId(id)"
         />
       </UForm>
     </div>
@@ -101,13 +100,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 import { formState } from '@/stores/strr'
+const t = useNuxtApp().$i18n.t
 
-const { fullName } = defineProps<{ fullName: string }>()
-
-const addSecondaryContact = ref(false)
+const {
+  fullName,
+  addSecondaryContact,
+  toggleAddSecondary
+} = defineProps<{
+  fullName: string,
+  addSecondaryContact: boolean
+  toggleAddSecondary: () => void
+}>()
 
 const {
   activeAddressField,
@@ -156,12 +161,6 @@ if (currentAccount && me) {
     formState.primaryContact.addressLineTwo = mailingAddress[0].streetAdditional
   }
 }
-
-const toggleAddSecondary = () => {
-  addSecondaryContact.value = !addSecondaryContact.value
-}
-
-const t = useNuxtApp().$i18n.t
 
 const months: string[] = [
   t('general.january'),

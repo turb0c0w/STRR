@@ -15,7 +15,11 @@
               </p>
             </div>
             <div v-if="activeStepIndex === 0" :key="activeStepIndex">
-              <BcrosFormSectionContactInformationForm :full-name="userFullName" />
+              <BcrosFormSectionContactInformationForm
+                :full-name="userFullName"
+                :add-secondary-contact="addSecondaryContact"
+                :toggle-add-secondary="toggleAddSecondary"
+              />
             </div>
             <div v-if="activeStepIndex === 1" :key="activeStepIndex">
               <BcrosFormSectionPropertyForm />
@@ -43,6 +47,7 @@ import axios from 'axios'
 import steps from '../page-data/create-account/steps'
 import { FormPageI } from '~/interfaces/form/form-page-i'
 import { CreateAccountFormAPII } from '~/interfaces/account-i'
+const addSecondaryContact: Ref<boolean> = ref(false)
 const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 
@@ -50,6 +55,8 @@ const t = useNuxtApp().$i18n.t
 const { currentAccount, userFullName, userFirstName, userLastName } = useBcrosAccount()
 
 const apiURL = useRuntimeConfig().public.strrApiURL
+
+const toggleAddSecondary = () => addSecondaryContact.value = !addSecondaryContact.value
 
 const submit = async () => {
   const formData: CreateAccountFormAPII = formStateToApi(
