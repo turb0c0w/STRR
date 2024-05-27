@@ -4,7 +4,7 @@
       :title="t('create-account.property-form.internetListingDetails')"
       class="desktop:pb-[40px] mobile:pb-[20px]"
     >
-      <div v-for="(listing, index) in listingDetails" :key="listing.url">
+      <div v-for="(listing, index) in listingDetails" :key="index">
         <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px] items-center">
           <UFormGroup name="urlOne" class="desktop:pr-[16px] flex-grow">
             <UInput
