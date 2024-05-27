@@ -145,13 +145,16 @@ if (me?.profile.contacts && me?.profile.contacts.length > 0) {
   formState.primaryContact.extension = me?.profile.contacts[0].phoneExtension
 }
 
-if (currentAccount.mailingAddress && currentAccount.mailingAddress.length > 0) {
-  formState.primaryContact.country = currentAccount?.mailingAddress[0]?.country
-  formState.primaryContact.city = currentAccount?.mailingAddress[0]?.city
-  formState.primaryContact.postalCode = currentAccount?.mailingAddress[0]?.postalCode
-  formState.primaryContact.province = currentAccount?.mailingAddress[0]?.region
-  formState.primaryContact.address = currentAccount?.mailingAddress[0]?.street
-  formState.primaryContact.addressLineTwo = currentAccount?.mailingAddress[0]?.streetAdditional
+if (currentAccount && me) {
+  const mailingAddress = me?.orgs.find(({ id }) => id === currentAccount.id)?.mailingAddress
+  if (mailingAddress) {
+    formState.primaryContact.country = mailingAddress[0].country
+    formState.primaryContact.city = mailingAddress[0].city
+    formState.primaryContact.postalCode = mailingAddress[0].postalCode
+    formState.primaryContact.province = mailingAddress[0].region
+    formState.primaryContact.address = mailingAddress[0].street
+    formState.primaryContact.addressLineTwo = mailingAddress[0].streetAdditional
+  }
 }
 
 const toggleAddSecondary = () => {
