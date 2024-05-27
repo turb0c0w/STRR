@@ -36,7 +36,7 @@
           v-model:province="formState.primaryContact.province"
           v-model:postal-code="formState.primaryContact.postalCode"
           :enable-address-complete="enableAddressComplete"
-          default-country-iso3="CAN"
+          default-country-iso2="CA"
         />
       </UForm>
     </div>
@@ -89,7 +89,7 @@
             v-model:province="formState.secondaryContact.province"
             v-model:postal-code="formState.secondaryContact.postalCode"
             :enable-address-complete="enableAddressComplete"
-            default-country-iso3="CAN"
+            default-country-iso2="CA"
           />
         </UForm>
       </div>

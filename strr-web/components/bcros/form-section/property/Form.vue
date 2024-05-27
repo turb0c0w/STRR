@@ -16,7 +16,7 @@
           v-model:province="formState.propertyDetails.province"
           v-model:postal-code="formState.propertyDetails.postalCode"
           :enable-address-complete="enableAddressComplete"
-          default-country-iso3="CAN"
+          default-country-iso2="CA"
         />
         <BcrosFormSectionPropertyDetails
           v-model:property-type="formState.propertyDetails.propertyType"

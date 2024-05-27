@@ -14,7 +14,7 @@ export const useCanadaPostAddress = () => {
     deliveryInstructions: ''
   })
 
-  const createAddressComplete = (pca: any, key: string, id: string, countryIso3: string): object => {
+  const createAddressComplete = (pca: any, key: string, id: string, countryIso2: string): object => {
     const fields = [
       { element: id, field: 'Line1', mode: pca.fieldMode.SEARCH }
     ]
@@ -23,7 +23,7 @@ export const useCanadaPostAddress = () => {
       showCountry: true
     }
     const countries = {
-      defaultCode: countryIso3
+      defaultCode: countryIso2
     }
     const options = { key, bar, countries }
     const addressComplete = new pca.Address(fields, options)
@@ -31,7 +31,7 @@ export const useCanadaPostAddress = () => {
     return addressComplete
   }
 
-  const enableAddressComplete = (id: string, countryIso3: string): void => {
+  const enableAddressComplete = (id: string, countryIso2: string): void => {
     activeAddressField.value = id
     const config = useRuntimeConfig()
     const pca = (window as any).pca
@@ -44,7 +44,7 @@ export const useCanadaPostAddress = () => {
     if ((window as any).currentAddressComplete) {
       (window as any).currentAddressComplete.destroy()
     }
-    (window as any).currentAddressComplete = createAddressComplete(pca, key, id, countryIso3)
+    (window as any).currentAddressComplete = createAddressComplete(pca, key, id, countryIso2)
   }
 
   const addressCompletePopulate = (addressComplete: CanadaPostResponseAddressI): void => {
@@ -53,7 +53,7 @@ export const useCanadaPostAddress = () => {
     address.city = addressComplete.City
     address.region = addressComplete.ProvinceCode
     address.postalCode = addressComplete.PostalCode
-    address.country = addressComplete.CountryIso3
+    address.country = addressComplete.CountryIso2
   }
 
   return {

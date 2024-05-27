@@ -43,10 +43,9 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
 import steps from '../page-data/create-account/steps'
 import { FormPageI } from '~/interfaces/form/form-page-i'
-import { CreateAccountFormAPII } from '~/interfaces/account-i'
+
 const addSecondaryContact: Ref<boolean> = ref(false)
 const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
@@ -56,36 +55,18 @@ const {
   currentAccount,
   userFullName,
   userFirstName,
-  userLastName
+  userLastName,
 } = useBcrosAccount()
-
-const apiURL = useRuntimeConfig().public.strrApiURL
-const axiosInstance = addAxiosInterceptors(axios.create())
 
 const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryContact.value }
 
-const submit = () => {
-  const formData: CreateAccountFormAPII = formStateToApi(
-    formState,
-    userFirstName,
-    userLastName,
-    userFullName,
-    currentAccount.mailingAddress
-  )
-
-  axiosInstance.post<CreateAccountFormAPII>(`${apiURL}/account`,
-    { ...formData }
-  )
-    .then((response) => {
-      const data = response?.data
-      if (!data) { throw new Error('Invalid AUTH API response') }
-      return data
-    })
-    .catch((error: string) => {
-      console.warn('Error creating account.')
-      console.error(error)
-    })
-}
+const submit = () => submitCreateAccountForm( 
+  userFirstName,
+  userLastName,
+  userFullName,
+  currentAccount.mailingAddress,
+  addSecondaryContact.value
+)
 
 const setActiveStep = (newStep: number) => {
   activeStepIndex.value = newStep

@@ -75,19 +75,19 @@ const addressComplete = () => {
 
 const {
   id,
-  defaultCountryIso3,
+  defaultCountryIso2,
   enableAddressComplete
 } = defineProps<{
   id: string,
-  defaultCountryIso3: string,
-  enableAddressComplete:(id: string, countryIso3: string) => void
+  defaultCountryIso2: string,
+  enableAddressComplete:(id: string, countryIso2: string) => void
 }>()
 
-country.value = defaultCountryIso3
+country.value = defaultCountryIso2
 
 onMounted(() => {
   countryItems.value = countries.map(country => ({
-    value: country.iso3,
+    value: country.iso2,
     name: country.en
   }))
 })

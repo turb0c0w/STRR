@@ -140,9 +140,7 @@ export interface ContactNameAPII {
 
 export interface ContactAPII {
   name: ContactNameAPII,
-  dateOfBirth: {
-    date: string,
-  },
+  dateOfBirth: string,
   details: {
     preferredName?: string,
     phoneNumber: string,
@@ -168,8 +166,8 @@ export interface CreateAccountFormAPII {
     mailingAddress: SelectedAccountMailingAPII
   },
   registration: {
-    primaryContact: ContactAPII,
-    secondaryContact: ContactAPII,
+    primaryContact?: ContactAPII,
+    secondaryContact?: ContactAPII,
     unitAddress: MailingAddressAPII,
     unitDetails: {
       parcelIdentifier?: string,

@@ -3,14 +3,16 @@ export const formStateToApi = (
   firstName: string,
   lastName: string,
   fullName: string,
-  selectedAccountMailingAddress: SelectedAccountMailingAPII[] | undefined
+  selectedAccountMailingAddress: SelectedAccountMailingAPII[] | undefined,
+  addSecondaryContact: boolean
 ): CreateAccountFormAPII => {
   const formData = formDataForAPI
 
   const transformContactData = (primary: boolean) => {
-    const dataContact: ContactAPII = primary
+    const dataContact: ContactAPII | undefined = primary
       ? formData.registration.primaryContact
       : formData.registration.secondaryContact
+    if (!dataContact) return;
     const stateContact = primary
       ? formState.primaryContact
       : formState.secondaryContact
@@ -18,9 +20,7 @@ export const formStateToApi = (
       firstName,
       lastName
     }
-    dataContact.dateOfBirth = {
-      date: `${stateContact.birthDay}-${stateContact.birthMonth}-${stateContact.birthYear}`
-    }
+    dataContact.dateOfBirth = `${stateContact.birthDay}-${stateContact.birthMonth}-${stateContact.birthYear}`
     dataContact.details = {
       preferredName: stateContact.preferredName,
       phoneNumber: stateContact.phoneNumber ?? '',
@@ -41,7 +41,11 @@ export const formStateToApi = (
   }
 
   formData.registration.primaryContact = transformContactData(true)
-  formData.registration.secondaryContact = transformContactData(false)
+  if (addSecondaryContact) {
+    formData.registration.secondaryContact = transformContactData(false)
+  } else {
+    delete formData.registration.secondaryContact
+  }
   formData.registration.listingDetails =
     formState.propertyDetails.listingDetails
   formData.registration.unitAddress = {

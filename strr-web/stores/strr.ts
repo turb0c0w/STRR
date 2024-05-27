@@ -1,5 +1,47 @@
 import { z } from 'zod'
 import { CreateAccountFormStateI, OrgI } from '~/interfaces/account-i'
+import axios from 'axios'
+
+
+const apiURL = useRuntimeConfig().public.strrApiURL
+const axiosInstance = addAxiosInterceptors(axios.create())
+
+export const submitCreateAccountForm = (
+  userFirstName: string,
+  userLastName: string,
+  userFullName: string,
+  mailingAddress: {
+    city: string;
+    country: string;
+    postalCode: string;
+    region: string;
+    street: string;
+    streetAdditional: string;
+  }[] | undefined,
+  addSecondaryContact: boolean
+) => {
+  const formData: CreateAccountFormAPII = formStateToApi(
+    formState,
+    userFirstName,
+    userLastName,
+    userFullName,
+    mailingAddress,
+    addSecondaryContact
+  )
+
+  axiosInstance.post<CreateAccountFormAPII>(`${apiURL}/account`,
+    { ...formData }
+  )
+    .then((response) => {
+      const data = response?.data
+      if (!data) { throw new Error('Invalid AUTH API response') }
+      return data
+    })
+    .catch((error: string) => {
+      console.warn('Error creating account.')
+      console.error(error)
+    })
+}
 
 const numbersRegex = /^[0-9]+$/
 // matches chars 123456789 ()
