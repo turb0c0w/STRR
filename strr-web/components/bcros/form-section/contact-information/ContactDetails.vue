@@ -37,9 +37,9 @@
 <script setup lang="ts">
 const t = useNuxtApp().$i18n.t
 
-const preferredName = defineModel('preferredName')
-const phoneNumber = defineModel('phoneNumber')
-const extension = defineModel('extension')
-const faxNumber = defineModel('faxNumber')
-const emailAddress = defineModel('emailAddress')
+const preferredName = defineModel<string>('preferredName')
+const phoneNumber = defineModel<string>('phoneNumber')
+const extension = defineModel<string>('extension')
+const faxNumber = defineModel<string>('faxNumber')
+const emailAddress = defineModel<string>('emailAddress')
 </script>

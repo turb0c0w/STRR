@@ -75,16 +75,15 @@ import { CountryItem } from '@/interfaces/address-i'
 import countries from '@/utils/countries.json'
 const t = useNuxtApp().$i18n.t
 
-const country = defineModel('country')
-const address = defineModel('address')
-const addressLineTwo = defineModel('addressLineTwo')
-const city = defineModel('city')
-const province = defineModel('province')
-const postalCode = defineModel('postalCode')
+const country = defineModel<string>('country')
+const address = defineModel<string>('address')
+const addressLineTwo = defineModel<string>('addressLineTwo')
+const city = defineModel<string>('city')
+const province = defineModel<string>('province')
+const postalCode = defineModel<string>('postalCode')
 const countryItems = ref<CountryItem[]>([])
 
 const addressComplete = () => {
-  console.log("addressComplete")
   if (typeof country.value === 'string') {
     enableAddressComplete(id, country.value)
   }

@@ -73,7 +73,7 @@ watch(formState.propertyDetails, () => {
   isValid.value = propertyDetailsSchema.safeParse(formState.propertyDetails).success
 })
 
-const emit = defineEmits<{
+defineEmits<{
   validatePage: [isValid: boolean]
 }>()
 

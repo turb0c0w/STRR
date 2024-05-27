@@ -35,7 +35,12 @@
           >
             <div v-if="step.complete">
               <img
-                :src="`${step.isValid ? '/icons/create-account/valid_step.svg': '/icons/create-account/invalid_step.svg' }`"
+                :src="
+                  `${step.isValid
+                    ? '/icons/create-account/valid_step.svg'
+                    : '/icons/create-account/invalid_step.svg'
+                  }`
+                "
                 class="absolute top-[-10px] right-[-10px]"
               >
             </div>

@@ -86,14 +86,14 @@ import { CountryItem } from '@/interfaces/address-i'
 import countries from '@/utils/countries.json'
 const t = useNuxtApp().$i18n.t
 
-const country = defineModel('country')
-const address = defineModel('address')
-const addressLineTwo = defineModel('addressLineTwo')
-const city = defineModel('city')
-const province = defineModel('province')
-const postalCode = defineModel('postalCode')
-const useMailing = defineModel('useMailing')
-const nickname = defineModel('nickname')
+const country = defineModel<string>('country')
+const address = defineModel<string>('address')
+const addressLineTwo = defineModel<string>('addressLineTwo')
+const city = defineModel<string>('city')
+const province = defineModel<string>('province')
+const postalCode = defineModel<string>('postalCode')
+const useMailing = defineModel<string>('useMailing')
+const nickname = defineModel<string>('nickname')
 const countryItems = ref<CountryItem[]>([])
 
 const addressComplete = () => {

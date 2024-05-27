@@ -47,8 +47,8 @@ const {
   dobOptional?: boolean
 }>()
 
-const day = defineModel('day')
-const month = defineModel('month')
-const year = defineModel('year')
+const day = defineModel<string>('day')
+const month = defineModel<string>('month')
+const year = defineModel<string>('year')
 
 </script>

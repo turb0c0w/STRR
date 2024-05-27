@@ -1,6 +1,9 @@
 <template>
   <div data-cy="form-section-contact-info">
-    <BcrosFormSection :title="t('create-account.property-form.internetListingDetails')" class="desktop:pb-[40px] mobile:pb-[20px]">
+    <BcrosFormSection
+      :title="t('create-account.property-form.internetListingDetails')"
+      class="desktop:pb-[40px] mobile:pb-[20px]"
+    >
       <div v-for="(listing, index) in listingDetails" :key="listing">
         <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px] items-center">
           <UFormGroup name="urlOne" class="desktop:pr-[16px] flex-grow">
@@ -10,7 +13,10 @@
             />
           </UFormGroup>
           <div
-            class="flex flex-row desktop:mr-[20px] w-[117px] h-[36px] mobile:w-[106px] items-center justify-center text-[16px] text-blue-500"
+            class="
+              flex flex-row desktop:mr-[20px] w-[117px] h-[36px]
+              mobile:w-[106px] items-center justify-center text-[16px] text-blue-500
+            "
             :role="index > 0 ? 'button': ''"
             :onclick="index > 0 ? () => removeDetailAtIndex(index): null"
           >

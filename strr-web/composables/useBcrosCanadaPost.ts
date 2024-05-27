@@ -13,7 +13,7 @@ export const useCanadaPostAddress = () => {
     deliveryInstructions: ''
   })
 
-  const createAddressComplete = (pca: any, key: string, id : string, countryIso3: string): object => {
+  const createAddressComplete = (pca: any, key: string, id: string, countryIso3: string): object => {
     const fields = [
       { element: id, field: 'Line1', mode: pca.fieldMode.SEARCH }
     ]
