@@ -28,7 +28,7 @@ export const submitCreateAccountForm = (
     addSecondaryContact
   )
 
-  axiosInstance.post<CreateAccountFormAPII>(`${apiURL}/account`,
+  axiosInstance.post<CreateAccountFormAPII>(`${apiURL}/registrations`,
     { ...formData }
   )
     .then((response) => {
@@ -104,21 +104,19 @@ const secondaryContact: ContactInformationI = {
 }
 
 export const propertyDetailsSchema = z.object({
-  parcelIdentifier: optionalOrEmptyString,
-  businessLicense: optionalOrEmptyString,
-  propertyType: z.string(),
-  ownershipType: z.string(),
-  primaryResidence: z.string(),
-  whichPlatform: z.string(),
-  useMailing: z.boolean(),
-  nickname: z.string(),
-  country: z.string(),
   address: z.string(),
-  addressLineTwo: z.string(),
+  addressLineTwo: optionalOrEmptyString,
+  businessLicense: optionalOrEmptyString,
   city: z.string(),
-  province: z.string(),
+  country: z.string(),
+  listingDetails: z.array(z.object({ url: z.string() })),
+  nickname: optionalOrEmptyString,
+  ownershipType: z.string(),
+  parcelIdentifier: optionalOrEmptyString,
   postalCode: z.string(),
-  listingDetails: z.array(z.string())
+  propertyType: z.string(),
+  province: z.string(),
+  useMailing: z.boolean()
 })
 
 export const formState: CreateAccountFormStateI = reactive({
@@ -150,9 +148,7 @@ const primaryContactAPI: ContactAPII = {
     middleName: '',
     lastName: ''
   },
-  dateOfBirth: {
-    date: ''
-  },
+  dateOfBirth: '',
   details: {
     preferredName: '',
     phoneNumber: '',
@@ -176,9 +172,7 @@ const secondaryContactAPI: ContactAPII = {
     middleName: '',
     lastName: ''
   },
-  dateOfBirth: {
-    date: ''
-  },
+  dateOfBirth: '',
   details: {
     preferredName: '',
     phoneNumber: '',
