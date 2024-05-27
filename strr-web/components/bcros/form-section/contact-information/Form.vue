@@ -38,6 +38,7 @@
           v-model:postal-code="formState.primaryContact.postalCode"
           :enable-address-complete="enableAddressComplete"
           default-country-iso3="CAN"
+          :on-set-id="(id: string) => setActiveAddressId(id)"
         />
       </UForm>
     </div>
@@ -108,23 +109,31 @@ const { fullName } = defineProps<{ fullName: string }>()
 
 const addSecondaryContact = ref(false)
 
-defineEmits<{
-  validatePage: [isValid: boolean]
-}>()
-
 const {
+  activeAddressField,
   address: canadaPostAddress,
   enableAddressComplete
 } = useCanadaPostAddress()
 
+const getActiveAddressState = (): ContactInformationI | CreateAccountFormStateI['propertyDetails'] => {
+  if (activeAddressField.value === 'primaryContactAddress') {
+    return formState.primaryContact
+  } else if (activeAddressField.value === 'secondaryContactAddress') {
+    return formState.secondaryContact
+  } else {
+    return formState.propertyDetails
+  }
+}
+
 watch(canadaPostAddress, (newAddress) => {
+  const activeAddressState = getActiveAddressState()
   if (newAddress) {
-    formState.primaryContact.address = newAddress.street
-    formState.primaryContact.addressLineTwo = newAddress.streetAdditional
-    formState.primaryContact.country = newAddress.country
-    formState.primaryContact.city = newAddress.city
-    formState.primaryContact.province = newAddress.region
-    formState.primaryContact.postalCode = newAddress.postalCode
+    activeAddressState.address = newAddress.street
+    activeAddressState.addressLineTwo = newAddress.streetAdditional
+    activeAddressState.country = newAddress.country
+    activeAddressState.city = newAddress.city
+    activeAddressState.province = newAddress.region
+    activeAddressState.postalCode = newAddress.postalCode
   }
 })
 

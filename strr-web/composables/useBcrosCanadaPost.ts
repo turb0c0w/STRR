@@ -3,6 +3,7 @@ import { useRuntimeConfig } from '#app'
 import type { CanadaPostAddressI, CanadaPostResponseAddressI } from '#imports'
 
 export const useCanadaPostAddress = () => {
+  const activeAddressField = ref<string>()
   const address = reactive<CanadaPostAddressI>({
     street: '',
     streetAdditional: '',
@@ -31,6 +32,7 @@ export const useCanadaPostAddress = () => {
   }
 
   const enableAddressComplete = (id: string, countryIso3: string): void => {
+    activeAddressField.value = id
     const config = useRuntimeConfig()
     const pca = (window as any).pca
     const key = config.public.addressCompleteKey
@@ -55,6 +57,7 @@ export const useCanadaPostAddress = () => {
   }
 
   return {
+    activeAddressField,
     address,
     enableAddressComplete
   }

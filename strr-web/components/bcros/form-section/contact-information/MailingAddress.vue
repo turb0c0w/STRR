@@ -78,6 +78,10 @@ onMounted(() => {
   }))
 })
 
+defineEmits<{
+  setId: [id: string]
+}>()
+
 country.value = defaultCountryIso3
 
 </script>
