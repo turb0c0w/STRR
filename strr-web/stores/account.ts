@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import axios from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { defineStore } from 'pinia'
 import { AccountI, MeI } from '~/interfaces/account-i'
@@ -28,12 +28,12 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   // errors
   const errors: Ref<ErrorI[]> = ref([])
   // api request variables
-  const axios = addAxiosInterceptors(Axios.create())
+  const axiosInstance = addAxiosInterceptors(axios.create())
   const apiURL = useRuntimeConfig().public.authApiURL
 
   /** Get user information from AUTH */
-  async function getAuthUserProfile (identifier: string) {
-    return await axios.get<KCUserI | void>(`${apiURL}/users/${identifier}`)
+  async function getAuthUserProfile(identifier: string) {
+    return await axiosInstance.get<KCUserI | void>(`${apiURL}/users/${identifier}`)
       .then((response) => {
         const data = response?.data
         if (!data) { throw new Error('Invalid AUTH API response') }
@@ -50,8 +50,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /** Update user information in AUTH with current token info */
-  async function updateAuthUserInfo () {
-    return await axios.post<KCUserI | void>(`${apiURL}/users`, { isLogin: true })
+  async function updateAuthUserInfo() {
+    return await axiosInstance.post<KCUserI | void>(`${apiURL}/users`, { isLogin: true })
       .then(response => response.data)
       .catch((error) => {
         // not too worried if this errs -- log for ops
@@ -60,7 +60,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /** Set user name information */
-  async function setUserName () {
+  async function setUserName() {
     if (user.value?.loginSource === LoginSourceE.BCEID) {
       // get from auth
       const authUserInfo = await getAuthUserProfile('@me')
@@ -76,9 +76,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   /** Get me object for this user from STRR api */
   // TODO: TC - move this to an STRR store
-  async function getMe () {
+  async function getMe() {
     const apiURL = useRuntimeConfig().public.strrApiURL
-    return await axios.get(`${apiURL}/account/me`)
+    return await axiosInstance.get(`${apiURL}/account/me`)
       .then((response) => {
         const data = response?.data as MeI
         if (!data) { throw new Error('Invalid STRR API response') }
@@ -96,9 +96,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /** Get the user's account list */
-  async function getUserAccounts (keycloakGuid: string) {
+  async function getUserAccounts(keycloakGuid: string) {
     const apiURL = useRuntimeConfig().public.authApiURL
-    return await axios.get<UserSettingsI[]>(`${apiURL}/users/${keycloakGuid}/settings`)
+    return await axiosInstance.get<UserSettingsI[]>(`${apiURL}/users/${keycloakGuid}/settings`)
       .then((response) => {
         const data = response?.data
         if (!data) { throw new Error('Invalid AUTH API response') }
@@ -115,7 +115,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /** Set the user account list and current account */
-  async function setAccountInfo (currentAccountId?: string) {
+  async function setAccountInfo(currentAccountId?: string) {
     if (!currentAccountId) {
       // try getting id from existing session storage
       currentAccountId = JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT) || '{}').id
@@ -141,7 +141,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /** Switch the current account to the given account ID if it exists in the user's account list */
-  function switchCurrentAccount (accountId: string) {
+  function switchCurrentAccount(accountId: string) {
     for (const i in userAccounts.value) {
       if (userAccounts.value[i].id === accountId) {
         currentAccount.value = userAccounts.value[i]
@@ -151,6 +151,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   return {
+    axiosInstance,
     me,
     currentAccount,
     currentAccountName,

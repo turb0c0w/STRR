@@ -1,7 +1,6 @@
 import { AccountTypeE } from '~/enums/account-type-e'
 import { AccountStatusE } from '~/enums/account-status-e'
 import { UserSettingsTypeE } from '~/enums/user-settings-type-e'
-import { DropdownItemWithValueI } from './dropdown-item-with-value-i'
 
 export interface DateOfBirthI {
   day: string

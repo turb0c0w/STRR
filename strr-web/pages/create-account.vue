@@ -52,13 +52,19 @@ const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 
 const t = useNuxtApp().$i18n.t
-const { currentAccount, userFullName, userFirstName, userLastName } = useBcrosAccount()
+const {
+  currentAccount,
+  userFullName,
+  userFirstName,
+  userLastName
+} = useBcrosAccount()
 
 const apiURL = useRuntimeConfig().public.strrApiURL
+const axiosInstance = addAxiosInterceptors(axios.create())
 
 const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryContact.value }
 
-const submit = async () => {
+const submit = () => {
   const formData: CreateAccountFormAPII = formStateToApi(
     formState,
     userFirstName,
@@ -67,7 +73,7 @@ const submit = async () => {
     currentAccount.mailingAddress
   )
 
-  await axios.post<CreateAccountFormAPII>(`${apiURL}/account`, {
+  axiosInstance.post(`${apiURL}/account`, {
     formData
   })
     .then((response) => {
