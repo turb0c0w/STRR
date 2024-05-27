@@ -106,6 +106,8 @@ import { formState } from '@/stores/strr'
 
 const { fullName } = defineProps<{ fullName: string }>()
 
+const addSecondaryContact = ref(false)
+
 defineEmits<{
   validatePage: [isValid: boolean]
 }>()
@@ -143,23 +145,11 @@ if (currentAccount.mailingAddress && currentAccount.mailingAddress.length > 0) {
   formState.primaryContact.addressLineTwo = currentAccount?.mailingAddress[0]?.streetAdditional
 }
 
-const primaryIsValid = ref(false)
-const secondaryIsValid = ref(false)
-const addSecondaryContact = ref(false)
-
 const toggleAddSecondary = () => {
   addSecondaryContact.value = !addSecondaryContact.value
 }
 
 const t = useNuxtApp().$i18n.t
-
-watch(formState.primaryContact, () => {
-  primaryIsValid.value = contactSchema.safeParse(formState.primaryContact).success
-})
-
-watch(formState.secondaryContact, () => {
-  secondaryIsValid.value = contactSchema.safeParse(formState.primaryContact).success
-})
 
 const months: string[] = [
   t('general.january'),

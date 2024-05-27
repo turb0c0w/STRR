@@ -6,23 +6,22 @@ const numbersRegex = /^[0-9]+$/
 const phoneRegex = /^[0-9*#+() -]+$/
 const phoneError = { message: 'Valid characters are "()- 123457890" ' }
 const requiredPhone = z.string().regex(phoneRegex, phoneError)
-const optionalPhone = z.string().regex(phoneRegex, phoneError).optional()
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
 
 export const contactSchema = z.object({
-  preferredName: z.string().optional(),
+  preferredName: z.string().optional().transform(e => e === '' ? undefined : e),
   phoneNumber: requiredPhone,
-  extension: optionalPhone,
-  faxNumber: optionalPhone,
+  extension: z.string().optional().transform(e => e === '' ? undefined : e),
+  faxNumber: z.string().optional().transform(e => e === '' ? undefined : e),
   emailAddress: z.string(),
   address: z.string(),
   country: z.string(),
-  addressLineTwo: z.string().optional(),
+  addressLineTwo: z.string().optional().transform(e => e === '' ? undefined : e),
   city: z.string(),
   province: z.string(),
   postalCode: z.string(),
   birthDay: requiredNumber.refine(day => day.length === 2, 'Day must be two digits'),
-  birthMonth: requiredNumber.refine(month => month.length === 2, 'Day must be two digits'),
+  birthMonth: z.string(),
   birthYear: requiredNumber
     .refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
     .refine(year => year.length === 4, 'Year must be four digits')
