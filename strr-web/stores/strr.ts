@@ -69,7 +69,7 @@ export const propertyDetailsSchema = z.object({
   ownershipType: z.string(),
   primaryResidence: z.string(),
   whichPlatform: z.string(),
-  useMailing: z.string(),
+  useMailing: z.boolean(),
   nickname: z.string(),
   country: z.string(),
   address: z.string(),

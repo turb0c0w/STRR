@@ -19,40 +19,24 @@
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="propertyType" class="pr-[16px] flex-grow">
-          <UDropdown
-            :items="propertyTypes"
+          <USelect
+            v-model="propertyType"
+            :placeholder="t('create-account.property-form.propertyType')"
+            :options="propertyTypes"
+            option-attribute="name"
             class="w-full"
-            :popper="{
-              placement: 'bottom-start',
-            }"
-          >
-            <UInput
-              v-model="propertyType"
-              class="w-full"
-              color="white"
-              :placeholder="t('create-account.property-form.propertyType')"
-              trailing-icon="i-heroicons-chevron-down-20-solid"
-            />
-          </UDropdown>
+          />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="ownershipType" class="pr-[16px] flex-grow">
-          <UDropdown
-            :items="ownershipTypes"
+          <USelect
+            v-model="ownershipType"
+            :placeholder="t('create-account.property-form.ownershipType')"
+            :options="ownershipTypes"
+            option-attribute="name"
             class="w-full"
-            :popper="{
-              placement: 'bottom-start',
-            }"
-          >
-            <UInput
-              v-model="ownershipType"
-              class="w-full"
-              color="white"
-              :placeholder="t('create-account.property-form.ownershipType')"
-              trailing-icon="i-heroicons-chevron-down-20-solid"
-            />
-          </UDropdown>
+          />
         </UFormGroup>
       </div>
     </BcrosFormSection>
@@ -60,7 +44,6 @@
 </template>
 
 <script setup lang="ts">
-import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 
 const t = useNuxtApp().$i18n.t
 
@@ -73,7 +56,7 @@ const {
   propertyTypes,
   ownershipTypes
 } = defineProps<{
-  propertyTypes: DropdownItem[][],
-  ownershipTypes: DropdownItem[][]
+  propertyTypes: string[],
+  ownershipTypes: string[]
 }>()
 </script>

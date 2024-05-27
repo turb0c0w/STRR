@@ -38,8 +38,6 @@
 </template>
 
 <script setup lang="ts">
-import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
-
 const {
   address: canadaPostAddress,
   enableAddressComplete
@@ -76,46 +74,18 @@ defineEmits<{
   validatePage: [isValid: boolean]
 }>()
 
-const propertyTypes: DropdownItem[][] = [
-  [
-    {
-      label: t('create-account.property-form.primaryDwelling'),
-      click: () => { formState.propertyDetails.propertyType = t('create-account.property-form.primaryDwelling') }
-    },
-    {
-      label: t('create-account.property-form.secondarySuite'),
-      click: () => { formState.propertyDetails.propertyType = t('create-account.property-form.secondarySuite') }
-    },
-    {
-      label: t('create-account.property-form.accessory'),
-      click: () => { formState.propertyDetails.propertyType = t('create-account.property-form.accessory') }
-    },
-    {
-      label: t('create-account.property-form.float'),
-      click: () => { formState.propertyDetails.propertyType = t('create-account.property-form.float') }
-    },
-    {
-      label: t('create-account.property-form.other'),
-      click: () => { formState.propertyDetails.propertyType = t('create-account.property-form.other') }
-    }
-  ]
+const propertyTypes: string[] = [
+  t('create-account.property-form.primaryDwelling'),
+  t('create-account.property-form.secondarySuite'),
+  t('create-account.property-form.accessory'),
+  t('create-account.property-form.float'),
+  t('create-account.property-form.other')
 ]
 
-const ownershipTypes: DropdownItem[][] = [
-  [
-    {
-      label: t('create-account.property-form.rent'),
-      click: () => { formState.propertyDetails.ownershipType = t('create-account.property-form.rent') }
-    },
-    {
-      label: t('create-account.property-form.own'),
-      click: () => { formState.propertyDetails.ownershipType = t('create-account.property-form.own') }
-    },
-    {
-      label: t('create-account.property-form.other'),
-      click: () => { formState.propertyDetails.ownershipType = t('create-account.property-form.coown') }
-    }
-  ]
+const ownershipTypes: string[] = [
+  t('create-account.property-form.rent'),
+  t('create-account.property-form.own'),
+  t('create-account.property-form.other')
 ]
 
 </script>

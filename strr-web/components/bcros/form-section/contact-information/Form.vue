@@ -111,7 +111,7 @@ const {
 } = defineProps<{
   fullName: string,
   addSecondaryContact: boolean
-  toggleAddSecondary: () => void
+  toggleAddSecondary:() => void
 }>()
 
 const {

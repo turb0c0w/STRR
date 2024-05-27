@@ -56,7 +56,7 @@ const { currentAccount, userFullName, userFirstName, userLastName } = useBcrosAc
 
 const apiURL = useRuntimeConfig().public.strrApiURL
 
-const toggleAddSecondary = () => addSecondaryContact.value = !addSecondaryContact.value
+const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryContact.value }
 
 const submit = async () => {
   const formData: CreateAccountFormAPII = formStateToApi(
