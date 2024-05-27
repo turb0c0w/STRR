@@ -69,9 +69,9 @@
         </div>
         <UForm :schema="contactSchema" :state="formState.secondaryContact">
           <BcrosFormSectionContactInformationContactInfo
-            v-model:day="formState.primaryContact.birthDay"
-            v-model:month="formState.primaryContact.birthMonth"
-            v-model:year="formState.primaryContact.birthYear"
+            v-model:day="formState.secondaryContact.birthDay"
+            v-model:month="formState.secondaryContact.birthMonth"
+            v-model:year="formState.secondaryContact.birthYear"
             :months="getMonths(true)"
             :dob-optional="true"
           />
