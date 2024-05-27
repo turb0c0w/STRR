@@ -7,16 +7,17 @@ const phoneRegex = /^[0-9*#+() -]+$/
 const phoneError = { message: 'Valid characters are "()- 123457890" ' }
 const requiredPhone = z.string().regex(phoneRegex, phoneError)
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
+const optionalOrEmptyString = z.string().optional().transform(e => e === '' ? undefined : e)
 
 export const contactSchema = z.object({
-  preferredName: z.string().optional().transform(e => e === '' ? undefined : e),
+  preferredName: optionalOrEmptyString,
   phoneNumber: requiredPhone,
-  extension: z.string().optional().transform(e => e === '' ? undefined : e),
-  faxNumber: z.string().optional().transform(e => e === '' ? undefined : e),
+  extension: optionalOrEmptyString,
+  faxNumber: optionalOrEmptyString,
   emailAddress: z.string(),
   address: z.string(),
   country: z.string(),
-  addressLineTwo: z.string().optional().transform(e => e === '' ? undefined : e),
+  addressLineTwo: optionalOrEmptyString,
   city: z.string(),
   province: z.string(),
   postalCode: z.string(),
@@ -62,8 +63,8 @@ const secondaryContact: ContactInformationI = {
 }
 
 export const propertyDetailsSchema = z.object({
-  parcelIdentifier: z.string(),
-  businessLicense: z.string(),
+  parcelIdentifier: optionalOrEmptyString,
+  businessLicense: optionalOrEmptyString,
   propertyType: z.string(),
   ownershipType: z.string(),
   primaryResidence: z.string(),
