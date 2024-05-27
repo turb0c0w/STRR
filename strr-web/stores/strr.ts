@@ -21,9 +21,11 @@ export const contactSchema = z.object({
   city: z.string(),
   province: z.string(),
   postalCode: z.string(),
-  birthDay: requiredNumber,
-  birthMonth: z.string(),
-  birthYear: requiredNumber.refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
+  birthDay: requiredNumber.refine(day => day.length === 2, 'Day must be two digits'),
+  birthMonth: requiredNumber.refine(month => month.length === 2, 'Day must be two digits'),
+  birthYear: requiredNumber
+    .refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
+    .refine(year => year.length === 4, 'Year must be four digits')
 })
 
 const primaryContact: ContactInformationI = {
@@ -90,11 +92,11 @@ export const formState: CreateAccountFormStateI = reactive({
     whichPlatform: undefined,
     useMailing: false,
     nickname: '',
-    country: undefined,
+    country: 'Canada',
     address: undefined,
     addressLineTwo: undefined,
     city: undefined,
-    province: undefined,
+    province: 'BC',
     postalCode: undefined,
     listingDetails: ['']
   },

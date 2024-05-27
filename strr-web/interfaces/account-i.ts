@@ -95,9 +95,9 @@ export interface ContactInformationI {
   city: string | undefined,
   province: string | undefined,
   postalCode: string | undefined,
-  birthDay: number | undefined,
+  birthDay: string | undefined,
   birthMonth: string | undefined,
-  birthYear: number | undefined,
+  birthYear: string | undefined,
 }
 
 export interface CreateAccountFormStateI {

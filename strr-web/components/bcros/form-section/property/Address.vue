@@ -83,7 +83,6 @@
 
 <script setup lang="ts">
 import { CountryItem } from '@/interfaces/address-i'
-import countries from '@/utils/countries.json'
 const t = useNuxtApp().$i18n.t
 
 const country = defineModel<string>('country')
@@ -98,7 +97,7 @@ const countryItems = ref<CountryItem[]>([])
 
 const addressComplete = () => {
   if (typeof country.value === 'string') {
-    enableAddressComplete(id, country.value)
+    enableAddressComplete(id, 'CAN')
   }
 }
 
@@ -111,13 +110,6 @@ const {
   defaultCountryIso3: string,
   enableAddressComplete:(id: string, countryIso3: string) => void
 }>()
-
-onMounted(() => {
-  countryItems.value = countries.map(country => ({
-    value: country.iso3,
-    name: country.en
-  }))
-})
 
 country.value = defaultCountryIso3
 
