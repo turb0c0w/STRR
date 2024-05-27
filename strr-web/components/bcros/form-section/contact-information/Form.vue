@@ -19,7 +19,6 @@
           v-model:day="formState.primaryContact.birthDay"
           v-model:month="formState.primaryContact.birthMonth"
           v-model:year="formState.primaryContact.birthYear"
-          :months="getMonths(true)"
         />
         <BcrosFormSectionContactInformationContactDetails
           v-model:phone-number="formState.primaryContact.phoneNumber"
@@ -72,7 +71,6 @@
             v-model:day="formState.secondaryContact.birthDay"
             v-model:month="formState.secondaryContact.birthMonth"
             v-model:year="formState.secondaryContact.birthYear"
-            :months="getMonths(true)"
             :dob-optional="true"
           />
           <BcrosFormSectionContactInformationContactDetails
@@ -100,7 +98,6 @@
 </template>
 
 <script setup lang="ts">
-import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
 import { formState } from '@/stores/strr'
 const t = useNuxtApp().$i18n.t
 
@@ -161,30 +158,5 @@ if (currentAccount && me) {
     formState.primaryContact.addressLineTwo = mailingAddress[0].streetAdditional
   }
 }
-
-const months: string[] = [
-  t('general.january'),
-  t('general.february'),
-  t('general.march'),
-  t('general.april'),
-  t('general.may'),
-  t('general.june'),
-  t('general.july'),
-  t('general.august'),
-  t('general.september'),
-  t('general.october'),
-  t('general.november'),
-  t('general.december')
-]
-
-const getMonths = (primary: boolean): DropdownItem[][] => months.map((month: string) => [{
-  label: month,
-  click: () => {
-    primary
-      ? formState.primaryContact.birthMonth = month
-      : formState.secondaryContact.birthMonth = month
-  }
-}]
-)
 
 </script>
