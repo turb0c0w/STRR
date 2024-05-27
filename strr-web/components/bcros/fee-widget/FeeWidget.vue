@@ -20,7 +20,11 @@
     >
       <p>{{ t("fee-widget.summary") }}</p>
       <div class="hidden mobile:flex">
-        <img src="/icons/caret.svg" :class="`cursor-pointer transition-all ${folded ? 'rotate-180': ''}`">
+        <img
+          src="/icons/caret.svg"
+          alt="Toggle fee widget shown"
+          :class="`cursor-pointer transition-all ${folded ? 'rotate-180': ''}`"
+        >
       </div>
     </div>
     <div :class="`transition-all ${folded ? 'h-[0px] overflow-hidden p-[0px]': 'px-[15px] pb-[10px] '}`">

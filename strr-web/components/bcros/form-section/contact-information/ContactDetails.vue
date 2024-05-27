@@ -3,25 +3,51 @@
     <BcrosFormSection :title="t('create-account.contact-form.contactDetails')">
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="preferredName" class=" flex-grow">
-          <UInput v-model="preferredName" :placeholder="t('create-account.contact-form.preferredName')" />
+          <UInput
+            v-model="preferredName"
+            type="name"
+            aria-label="preferred name"
+            :placeholder="t('create-account.contact-form.preferredName')"
+          />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
-        <UFormGroup name="phoneNumber" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput v-model="phoneNumber" :placeholder="t('create-account.contact-form.phoneNumber')" />
+        <UFormGroup name="phoneNumber" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
+          <UInput
+            v-model="phoneNumber"
+            type="tel"
+            aria-label="phone number"
+            :placeholder="t('create-account.contact-form.phoneNumber')"
+          />
         </UFormGroup>
         <UFormGroup name="extension" class="flex-grow">
-          <UInput v-model="extension" :placeholder="t('create-account.contact-form.extension')" />
+          <UInput
+            v-model="extension"
+            :placeholder="t('create-account.contact-form.extension')"
+            aria-label="extension"
+          />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="faxNumber" class="flex-grow">
-          <UInput v-model="faxNumber" :placeholder="t('create-account.contact-form.faxNumber')" />
+          <UInput
+            v-model="faxNumber"
+            :placeholder="t('create-account.contact-form.faxNumber')"
+            aria-label="fax number"
+          />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="emailAddress" class="flex-grow">
-          <UInput v-model="emailAddress" :placeholder="t('create-account.contact-form.emailAddress')" />
+        <UFormGroup
+          type="email"
+          name="emailAddress"
+          class="flex-grow"
+        >
+          <UInput
+            v-model="emailAddress"
+            :placeholder="t('create-account.contact-form.emailAddress')"
+            aria-label="email address"
+          />
         </UFormGroup>
       </div>
       <BcrosAlertsMessage :flavour="AlertsFlavourE.INFO">
@@ -35,16 +61,11 @@
 </template>
 
 <script setup lang="ts">
-const { formState } = defineProps<{ formState: any }>()
-
-const {
-  preferredName,
-  phoneNumber,
-  extension,
-  faxNumber,
-  emailAddress
-} = formState
-
 const t = useNuxtApp().$i18n.t
 
+const preferredName = defineModel<string>('preferredName')
+const phoneNumber = defineModel<string>('phoneNumber')
+const extension = defineModel<string>('extension')
+const faxNumber = defineModel<string>('faxNumber')
+const emailAddress = defineModel<string>('emailAddress')
 </script>

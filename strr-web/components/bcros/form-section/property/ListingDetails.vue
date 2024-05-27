@@ -1,16 +1,23 @@
 <template>
   <div data-cy="form-section-contact-info">
-    <BcrosFormSection :title="t('create-account.property-form.internetListingDetails')" class="pb-[40px]">
-      <div v-for="(listing, index) in listingDetails" :key="listing">
+    <BcrosFormSection
+      :title="t('create-account.property-form.internetListingDetails')"
+      class="desktop:pb-[40px] mobile:pb-[20px]"
+    >
+      <div v-for="(listing, index) in listingDetails" :key="index">
         <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px] items-center">
-          <UFormGroup name="urlOne" class="pr-[16px] flex-grow">
+          <UFormGroup name="urlOne" class="desktop:pr-[16px] flex-grow">
             <UInput
-              v-model="listingDetails[index]"
+              v-model="listing.url"
+              aria-label="URL input"
               :placeholder="`Platform URL ${index > 0 ? index + 1: ''}`"
             />
           </UFormGroup>
           <div
-            class="flex flex-row mr-[20px] w-[117px] h-[36px] items-center justify-center text-[16px] text-blue-500"
+            class="
+              flex flex-row desktop:mr-[20px] w-[117px] h-[36px]
+              mobile:w-[106px] items-center justify-center text-[16px] text-blue-500
+            "
             :role="index > 0 ? 'button': ''"
             :onclick="index > 0 ? () => removeDetailAtIndex(index): null"
           >
@@ -25,29 +32,25 @@
       </div>
       <BcrosButtonsPrimary
         :action="addPlatform"
-        :text="t('create-account.contact.add-secondary')"
+        :text="t('create-account.contact.addPlatform')"
         variant="outline"
         icon=""
-        class="mb-[40px]"
+        class-name="mb-[40px] mobile:mb-[20px] mobile:w-full mobile:mx-[0px]"
       />
     </BcrosFormSection>
   </div>
 </template>
 
 <script setup lang="ts">
-const { formState } = defineProps<{ formState: any }>()
-
 const {
-  listingDetails
-} = formState
+  addPlatform,
+  removeDetailAtIndex
+} = defineProps<{
+  addPlatform:() => void,
+  removeDetailAtIndex: (index: number) => void,
+}>()
 
-const addPlatform = () => {
-  listingDetails.push('')
-}
-
-const removeDetailAtIndex = (index: number) => {
-  listingDetails.splice(index, 1)
-}
+const listingDetails = defineModel<{ url: string }[]>('listingDetails')
 
 const t = useNuxtApp().$i18n.t
 

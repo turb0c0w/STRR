@@ -22,7 +22,8 @@
       "your-name": "Your Name",
       "add-secondary": "Add Another Contact",
       "remove": "Remove",
-      "useMailing": "Use my mailing address for the rental property address"
+      "useMailing": "Use my mailing address for the rental property address",
+      "addPlatform": "Add another platform"
     },
     "contact-form": {
       "preferredName": "Preferred Name (Optional)",
@@ -54,7 +55,15 @@
       "useMailing": "Use my mailing address for the rental property address",
       "rentalUnitDetails": "Rental Unit Details",
       "internetListingDetails": "Internet Listing Details",
-      "rentalUnitAddress": "Rental Unit Address"
+      "rentalUnitAddress": "Rental Unit Address",
+      "primaryDwelling": "All or part of primary dwelling",
+      "secondarySuite": "Secondary suite",
+      "accessory": "Accessory dwelling unit",
+      "float": "Float home",
+      "other": "Other",
+      "rent": "Rent",
+      "own": "Own",
+      "coown": "Co-own"
     },
     "details": {
       "title": "Step 2 - Add Your Short Term Rental Property Details",
@@ -115,7 +124,19 @@
     "next": "Next",
     "note": "Note: ",
     "submit": "Submit",
-    "optional": "(Optional)"
+    "optional": "(Optional)",
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
   },
   "labels": {
     "services": {

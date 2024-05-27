@@ -3,36 +3,44 @@
     <BcrosFormSection :title="t('create-account.property-form.rentalUnitDetails')">
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="parcelIdentifier" class="pr-[16px] flex-grow">
-          <UInput v-model="parcelIdentifier" :placeholder="t('create-account.property-form.parcelIdentifier')" />
+          <UInput
+            v-model="parcelIdentifier"
+            aria-label="parcel identifier"
+            :placeholder="t('create-account.property-form.parcelIdentifier')"
+          />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="businessLicense" class="pr-[16px] flex-grow">
-          <UInput v-model="businessLicense" :placeholder="t('create-account.property-form.businessLicense')" />
+          <UInput
+            v-model="businessLicense"
+            aria-label="business license"
+            :placeholder="t('create-account.property-form.businessLicense')"
+          />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="propertyType" class="pr-[16px] flex-grow">
-          <UDropdown v-model="propertyType" :items="propertyTypes" class="w-full">
-            <UInput
-              class="w-full"
-              color="white"
-              :label="t('create-account.property-form.propertyType')"
-              trailing-icon="i-heroicons-chevron-down-20-solid"
-            />
-          </UDropdown>
+          <USelect
+            v-model="propertyType"
+            aria-label="property types"
+            :placeholder="t('create-account.property-form.propertyType')"
+            :options="propertyTypes"
+            option-attribute="name"
+            class="w-full"
+          />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="ownershipType" class="pr-[16px] flex-grow">
-          <UDropdown v-model="ownershipType" :items="ownershipTypes" class="w-full">
-            <UInput
-              class="w-full"
-              color="white"
-              :label="t('create-account.property-form.ownershipType')"
-              trailing-icon="i-heroicons-chevron-down-20-solid"
-            />
-          </UDropdown>
+          <USelect
+            v-model="ownershipType"
+            aria-label="ownership types"
+            :placeholder="t('create-account.property-form.ownershipType')"
+            :options="ownershipTypes"
+            option-attribute="name"
+            class="w-full"
+          />
         </UFormGroup>
       </div>
     </BcrosFormSection>
@@ -40,37 +48,19 @@
 </template>
 
 <script setup lang="ts">
-import { DropdownItem } from '@nuxt/ui/dist/runtime/types'
-
-const { formState } = defineProps<{ formState: any }>()
-
-const {
-  unitDetails: {
-    parcelIdentifier,
-    businessLicense,
-    propertyType,
-    ownershipType
-  }
-} = formState
 
 const t = useNuxtApp().$i18n.t
 
-const propertyTypes: DropdownItem[][] = [
-  [
-    { label: 'Portion of principal residence' },
-    { label: 'Entire principal residence' },
-    { label: 'Secondary suite' },
-    { label: 'Accessory dwelling unit' },
-    { label: 'Investment property' }
-  ]
-]
+const propertyType = defineModel<string>('propertyType')
+const ownershipType = defineModel<string>('ownershipType')
+const businessLicense = defineModel<string>('businessLicense')
+const parcelIdentifier = defineModel<string>('parcelIdentifier')
 
-const ownershipTypes: DropdownItem[][] = [
-  [
-    { label: 'Rent' },
-    { label: 'Own' },
-    { label: 'Co-own' }
-  ]
-]
-
+const {
+  propertyTypes,
+  ownershipTypes
+} = defineProps<{
+  propertyTypes: string[],
+  ownershipTypes: string[]
+}>()
 </script>

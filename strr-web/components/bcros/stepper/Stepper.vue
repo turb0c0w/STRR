@@ -29,10 +29,27 @@
             :class="`
               ${index == activeStep.valueOf() ? 'bg-blue-500' : ''}
               grow-0 shrink outline outline-1 outline-blue-500 px-[15px] py-[15px]
-              rounded-full flex justify-center items-center
+              rounded-full flex justify-center items-center relative
               mobile:h-[32px] mobile:w-[32px] mobile:p-[2px]
             `"
           >
+            <div v-if="step.complete">
+              <img
+                :src="
+                  `${step.isValid
+                    ? '/icons/create-account/valid_step.svg'
+                    : '/icons/create-account/invalid_step.svg'
+                  }`
+                "
+                :alt="
+                  `${step.isValid
+                    ? 'Step successfully validated'
+                    : 'Step did not pass validation'
+                  }`
+                "
+                class="absolute top-[-10px] right-[-10px]"
+              >
+            </div>
             <img
               :src="`${index == activeStep.valueOf() ? `${step.activeIconPath}`: step.inactiveIconPath}`"
               class="mobile:w-[20px] mobile:h-[20px]"

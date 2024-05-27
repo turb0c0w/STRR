@@ -15,7 +15,11 @@
               </p>
             </div>
             <div v-if="activeStepIndex === 0" :key="activeStepIndex">
-              <BcrosFormSectionContactInformationForm :full-name="userFullName" />
+              <BcrosFormSectionContactInformationForm
+                :full-name="userFullName"
+                :add-secondary-contact="addSecondaryContact"
+                :toggle-add-secondary="toggleAddSecondary"
+              />
             </div>
             <div v-if="activeStepIndex === 1" :key="activeStepIndex">
               <BcrosFormSectionPropertyForm />
@@ -31,6 +35,7 @@
         :is-first-step="activeStepIndex.valueOf() == 0"
         :set-next-step="setNextStep"
         :set-previous-step="setPreviousStep"
+        :submit="submit"
         :is-last-step="activeStepIndex.valueOf() == steps.length - 1"
       />
     </div>
@@ -40,22 +45,62 @@
 <script setup lang="ts">
 import steps from '../page-data/create-account/steps'
 import { FormPageI } from '~/interfaces/form/form-page-i'
+
+const addSecondaryContact: Ref<boolean> = ref(false)
 const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 
 const t = useNuxtApp().$i18n.t
-const { userFullName } = useBcrosAccount()
+const {
+  currentAccount,
+  userFullName,
+  userFirstName,
+  userLastName
+} = useBcrosAccount()
+
+const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryContact.value }
+
+const submit = () => submitCreateAccountForm(
+  userFirstName,
+  userLastName,
+  userFullName,
+  currentAccount.mailingAddress,
+  addSecondaryContact.value
+)
 
 const setActiveStep = (newStep: number) => {
   activeStepIndex.value = newStep
   activeStep.value = steps[activeStepIndex.value]
 }
 
+const setStepValid = (index: number, valid: boolean) => {
+  steps[index].step.isValid = valid
+}
+
+watch(formState.primaryContact, () => {
+  if (contactSchema.safeParse(formState.primaryContact).success) {
+    setStepValid(0, true)
+  }
+})
+
+watch(formState.secondaryContact, () => {
+  if (contactSchema.safeParse(formState.secondaryContact).success) {
+    setStepValid(0, true)
+  }
+})
+
+watch(formState.propertyDetails, () => {
+  if (propertyDetailsSchema.safeParse(formState.propertyDetails).success) {
+    setStepValid(1, true)
+  }
+})
+
 const setNextStep = () => {
   if (activeStepIndex.value < steps.length - 1) {
     const nextStep = activeStepIndex.value + 1
     activeStepIndex.value = nextStep
     activeStep.value = steps[activeStepIndex.value]
+    steps[activeStepIndex.value - 1].step.complete = true
   }
 }
 

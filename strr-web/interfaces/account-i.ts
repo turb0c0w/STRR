@@ -84,47 +84,97 @@ export interface MeI {
 }
 
 export interface ContactInformationI {
-  preferredName: string,
-  phoneNumber: string,
-  extension: string,
-  faxNumber: string,
-  emailAddress: string,
-  address: string,
-  country: string,
-  addressLineTwo: string,
-  city: string,
-  province: string,
-  postalCode: string,
-  dateOfBirth: {
-    day: string,
-    month: string,
-    year: string
-  }
+  preferredName: string | undefined,
+  phoneNumber: string | undefined,
+  extension: string | undefined,
+  faxNumber: string | undefined,
+  emailAddress: string | undefined,
+  address: string | undefined,
+  country: string | undefined,
+  addressLineTwo: string | undefined,
+  city: string | undefined,
+  province: string | undefined,
+  postalCode: string | undefined,
+  birthDay: string | undefined,
+  birthMonth: string | undefined,
+  birthYear: string | undefined,
 }
 
 export interface CreateAccountFormStateI {
   primaryContact: ContactInformationI,
   secondaryContact: ContactInformationI,
-  questions: {
-    primaryResidence: string,
-    whichPlatform: string
-  },
-  unitDetails: {
-    parcelIdentifier: string,
-    businessLicense: string,
-    propertyType: string,
-    ownershipType: string
-  },
-  unitAddress: {
+  propertyDetails: {
+    primaryResidence: string | undefined,
+    whichPlatform: string | undefined,
+    parcelIdentifier: string | undefined,
+    businessLicense: string | undefined,
+    propertyType: string | undefined,
+    ownershipType: string | undefined,
     useMailing: boolean,
-    nickname: string,
-    country: string,
-    address: string,
-    addressLineTwo: string,
-    city: string,
-    province: string,
-    postalCode: string
+    nickname: string | undefined,
+    country: string | undefined,
+    address: string | undefined,
+    addressLineTwo: string | undefined,
+    city: string | undefined,
+    province: string | undefined,
+    postalCode: string | undefined,
+    listingDetails: { url: string }[],
   },
-  listingDetails: string[],
   selectedAccount: OrgI
+}
+
+export interface MailingAddressAPII {
+  address: string,
+  addressLineTwo?: string,
+  city: string,
+  postalCode: string,
+  province: string,
+  country: string,
+}
+
+export interface ContactNameAPII {
+  firstName: string,
+  middleName?: string,
+  lastName: string,
+}
+
+export interface ContactAPII {
+  name: ContactNameAPII,
+  dateOfBirth: string,
+  details: {
+    preferredName?: string,
+    phoneNumber: string,
+    extension?: string,
+    faxNumber?: string,
+    emailAddress: string
+  },
+  mailingAddress: MailingAddressAPII
+}
+
+export interface SelectedAccountMailingAPII {
+  street: string,
+  streetAdditional: string,
+  city: string,
+  postalCode: string,
+  region: string,
+  country: string,
+}
+
+export interface CreateAccountFormAPII {
+  selectedAccount: {
+    name: string,
+    mailingAddress: SelectedAccountMailingAPII
+  },
+  registration: {
+    primaryContact?: ContactAPII,
+    secondaryContact?: ContactAPII,
+    unitAddress: MailingAddressAPII,
+    unitDetails: {
+      parcelIdentifier?: string,
+      businessLicense?: string,
+      propertyType: string,
+      ownershipType: string
+    },
+    listingDetails: { url: string }[]
+  }
 }

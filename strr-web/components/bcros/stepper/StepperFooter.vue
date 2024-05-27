@@ -18,7 +18,7 @@
     />
     <BcrosButtonsPrimary
       :text="isLastStep ? t('general.submit') : t('general.next')"
-      :action="setNextStep"
+      :action="isLastStep ? submit : setNextStep"
       :icon="isLastStep ? '': 'i-mdi-chevron-right'"
       :alt="isLastStep ? '': 'next icon'"
       :trailing="true"
@@ -32,11 +32,13 @@ const {
   isFirstStep,
   isLastStep,
   setNextStep,
+  submit,
   setPreviousStep
 } = defineProps<{
   isFirstStep: boolean,
   isLastStep: boolean,
   setNextStep:() => void,
+  submit: () => void,
   setPreviousStep:() => void
 }>()
 

@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import axios from 'axios'
 import { StatusCodes } from 'http-status-codes'
 import { defineStore } from 'pinia'
 import { AccountI, MeI } from '~/interfaces/account-i'
@@ -21,18 +21,19 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   const activeUserAccounts = computed(() => {
     return userAccounts.value.filter(account => account.accountStatus === AccountStatusE.ACTIVE)
   })
+  const me: Ref<MeI | undefined> = ref()
   const userFirstName: Ref<string> = ref(user.value?.firstName || '-')
   const userLastName: Ref<string> = ref(user.value?.lastName || '')
   const userFullName = computed(() => `${userFirstName.value} ${userLastName.value}`)
   // errors
   const errors: Ref<ErrorI[]> = ref([])
   // api request variables
-  const axios = addAxiosInterceptors(Axios.create())
+  const axiosInstance = addAxiosInterceptors(axios.create())
   const apiURL = useRuntimeConfig().public.authApiURL
 
   /** Get user information from AUTH */
   async function getAuthUserProfile (identifier: string) {
-    return await axios.get<KCUserI | void>(`${apiURL}/users/${identifier}`)
+    return await axiosInstance.get<KCUserI | void>(`${apiURL}/users/${identifier}`)
       .then((response) => {
         const data = response?.data
         if (!data) { throw new Error('Invalid AUTH API response') }
@@ -50,7 +51,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   /** Update user information in AUTH with current token info */
   async function updateAuthUserInfo () {
-    return await axios.post<KCUserI | void>(`${apiURL}/users`, { isLogin: true })
+    return await axiosInstance.post<KCUserI | void>(`${apiURL}/users`, { isLogin: true })
       .then(response => response.data)
       .catch((error) => {
         // not too worried if this errs -- log for ops
@@ -77,10 +78,11 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   // TODO: TC - move this to an STRR store
   async function getMe () {
     const apiURL = useRuntimeConfig().public.strrApiURL
-    return await axios.get(`${apiURL}/account/me`)
+    return await axiosInstance.get(`${apiURL}/account/me`)
       .then((response) => {
         const data = response?.data as MeI
         if (!data) { throw new Error('Invalid STRR API response') }
+        me.value = data as MeI
         return data as MeI
       })
       .catch((error) => {
@@ -96,7 +98,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   /** Get the user's account list */
   async function getUserAccounts (keycloakGuid: string) {
     const apiURL = useRuntimeConfig().public.authApiURL
-    return await axios.get<UserSettingsI[]>(`${apiURL}/users/${keycloakGuid}/settings`)
+    return await axiosInstance.get<UserSettingsI[]>(`${apiURL}/users/${keycloakGuid}/settings`)
       .then((response) => {
         const data = response?.data
         if (!data) { throw new Error('Invalid AUTH API response') }
@@ -149,6 +151,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   return {
+    axiosInstance,
+    me,
     currentAccount,
     currentAccountName,
     userAccounts,
@@ -156,6 +160,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     activeUserAccounts,
     userFullName,
     errors,
+    userFirstName,
+    userLastName,
     updateAuthUserInfo,
     setUserName,
     setAccountInfo,

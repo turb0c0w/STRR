@@ -48,3 +48,8 @@ export interface CanadaPostResponseAddressI {
   Label: string
   DataLevel: CanadaPostAddressResponseDataLevelE
 }
+
+export interface CountryItem {
+  value: string;
+  name: string;
+}
