@@ -43,7 +43,7 @@ export const formStateToApi = (
   formData.registration.primaryContact = transformContactData(true)
   formData.registration.secondaryContact = transformContactData(false)
   formData.registration.listingDetails =
-    formState.propertyDetails.listingDetails.map((url: string) => ({ url }))
+    formState.propertyDetails.listingDetails
   formData.registration.unitAddress = {
     address: formState.propertyDetails.address ?? '',
     addressLineTwo: formState.propertyDetails.addressLineTwo,
