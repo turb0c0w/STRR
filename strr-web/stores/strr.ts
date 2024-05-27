@@ -98,7 +98,7 @@ export const formState: CreateAccountFormStateI = reactive({
     city: undefined,
     province: 'BC',
     postalCode: undefined,
-    listingDetails: ['']
+    listingDetails: [{ url: '' }]
   },
   selectedAccount: {} as OrgI
 })

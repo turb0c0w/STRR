@@ -27,7 +27,6 @@
           :ownership-types="ownershipTypes"
         />
         <BcrosFormSectionPropertyListingDetails
-          v-model:form-state="formState.propertyDetails"
           v-model:listing-details="formState.propertyDetails.listingDetails"
           :enable-address-complete="enableAddressComplete"
           :add-platform="addPlatform"
@@ -62,7 +61,7 @@ const t = useNuxtApp().$i18n.t
 const isValid = ref(false)
 
 const addPlatform = () => {
-  formState.propertyDetails.listingDetails.push('')
+  formState.propertyDetails.listingDetails.push({ url: '' })
 }
 
 const removeDetailAtIndex = (index: number) => {

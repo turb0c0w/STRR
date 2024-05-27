@@ -4,11 +4,11 @@
       :title="t('create-account.property-form.internetListingDetails')"
       class="desktop:pb-[40px] mobile:pb-[20px]"
     >
-      <div v-for="(listing, index) in listingDetails" :key="listing">
+      <div v-for="(listing, index) in listingDetails" :key="listing.url">
         <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px] items-center">
           <UFormGroup name="urlOne" class="desktop:pr-[16px] flex-grow">
             <UInput
-              v-model="listingDetails[index]"
+              v-model="listing.url"
               :placeholder="`Platform URL ${index > 0 ? index + 1: ''}`"
             />
           </UFormGroup>
@@ -43,13 +43,13 @@
 <script setup lang="ts">
 const {
   addPlatform,
-  removeDetailAtIndex,
-  listingDetails
+  removeDetailAtIndex
 } = defineProps<{
   addPlatform:() => void,
   removeDetailAtIndex: (index: number) => void,
-  listingDetails: string[]
 }>()
+
+const listingDetails = defineModel<{ url: string }[]>('listingDetails')
 
 const t = useNuxtApp().$i18n.t
 
