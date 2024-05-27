@@ -19,21 +19,6 @@
             option-attribute="name"
             class="w-full"
           />
-          <UDropdown
-            v-model="country"
-            :items="[]"
-            class="w-full"
-            :popper="{
-              placement: 'bottom-start',
-            }"
-          >
-            <UInput
-              class="w-full"
-              color="white"
-              :placeholder="t('create-account.contact-form.country')"
-              trailing-icon="i-heroicons-chevron-down-20-solid"
-            />
-          </UDropdown>
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
@@ -57,21 +42,7 @@
           <UInput v-model="city" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
         <UFormGroup name="province" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UDropdown
-            v-model="province"
-            :items="[]"
-            class="w-full"
-            :popper="{
-              placement: 'bottom-start',
-            }"
-          >
-            <UInput
-              class="w-full"
-              color="white"
-              :placeholder="t('create-account.contact-form.province')"
-              trailing-icon="i-heroicons-chevron-down-20-solid"
-            />
-          </UDropdown>
+          <UInput v-model="province" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
         <UFormGroup name="postalCode" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="postalCode" :placeholder="t('create-account.contact-form.postalCode')" />
