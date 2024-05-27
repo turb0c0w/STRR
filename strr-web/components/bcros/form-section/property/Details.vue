@@ -5,6 +5,7 @@
         <UFormGroup name="parcelIdentifier" class="pr-[16px] flex-grow">
           <UInput
             v-model="parcelIdentifier"
+            aria-label="parcel identifier"
             :placeholder="t('create-account.property-form.parcelIdentifier')"
           />
         </UFormGroup>
@@ -13,6 +14,7 @@
         <UFormGroup name="businessLicense" class="pr-[16px] flex-grow">
           <UInput
             v-model="businessLicense"
+            aria-label="business license"
             :placeholder="t('create-account.property-form.businessLicense')"
           />
         </UFormGroup>
@@ -21,6 +23,7 @@
         <UFormGroup name="propertyType" class="pr-[16px] flex-grow">
           <USelect
             v-model="propertyType"
+            aria-label="property types"
             :placeholder="t('create-account.property-form.propertyType')"
             :options="propertyTypes"
             option-attribute="name"
@@ -32,6 +35,7 @@
         <UFormGroup name="ownershipType" class="pr-[16px] flex-grow">
           <USelect
             v-model="ownershipType"
+            aria-label="ownership types"
             :placeholder="t('create-account.property-form.ownershipType')"
             :options="ownershipTypes"
             option-attribute="name"

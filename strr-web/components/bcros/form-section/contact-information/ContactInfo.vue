@@ -6,6 +6,7 @@
           <UInput
             v-model="day"
             :placeholder="t('create-account.contact-form.day')"
+            aria-label="birth day"
           />
         </UFormGroup>
         <UFormGroup name="month" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
@@ -15,10 +16,11 @@
             :options="getMonths()"
             option-attribute="key"
             class="w-full"
+            aria-label="birth month"
           />
         </UFormGroup>
         <UFormGroup name="birthYear">
-          <UInput v-model="year" :placeholder="t('create-account.contact-form.year')" />
+          <UInput v-model="year" :placeholder="t('create-account.contact-form.year')" aria-label="birth year" />
         </UFormGroup>
       </div>
     </BcrosFormSection>

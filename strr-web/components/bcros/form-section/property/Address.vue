@@ -3,12 +3,16 @@
     <BcrosFormSection :title="t('create-account.property-form.rentalUnitAddress')">
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="nickname" class="pr-[16px] flex-grow">
-          <UInput v-model="nickname" :placeholder="t('create-account.property-form.nickname')" />
+          <UInput v-model="nickname" aria-label="nickname" :placeholder="t('create-account.property-form.nickname')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="useMailing" class="pr-[16px] flex-grow mobile:text-[16px]">
-          <UCheckbox v-model="useMailing" :label="t('create-account.property-form.useMailing')" />
+          <UCheckbox
+            v-model="useMailing"
+            aria-label="use mailing address"
+            :label="t('create-account.property-form.useMailing')"
+          />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
@@ -18,6 +22,7 @@
             :options="countryItems"
             option-attribute="name"
             class="w-full"
+            aria-label="country"
           />
         </UFormGroup>
       </div>
@@ -27,6 +32,7 @@
             :id="id"
             v-model="address"
             :placeholder="t('create-account.contact-form.address')"
+            aria-label="address"
             @keypress.once="addressComplete()"
             @click="addressComplete()"
           />
@@ -34,18 +40,26 @@
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="AddressLineTwo" class="pr-[16px] flex-grow">
-          <UInput v-model="addressLineTwo" :placeholder="t('create-account.contact-form.addressLineTwo')" />
+          <UInput
+            v-model="addressLineTwo"
+            aria-label="address line two"
+            :placeholder="t('create-account.contact-form.addressLineTwo')"
+          />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
         <UFormGroup name="city" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput v-model="city" :placeholder="t('create-account.contact-form.city')" />
+          <UInput v-model="city" aria-label="city" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
         <UFormGroup name="province" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput v-model="province" :placeholder="t('create-account.contact-form.city')" />
+          <UInput v-model="province" aria-label="province" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
         <UFormGroup name="postalCode" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput v-model="postalCode" :placeholder="t('create-account.contact-form.postalCode')" />
+          <UInput
+            v-model="postalCode"
+            aria-label="postal code"
+            :placeholder="t('create-account.contact-form.postalCode')"
+          />
         </UFormGroup>
       </div>
     </BcrosFormSection>

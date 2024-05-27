@@ -5,6 +5,7 @@
         <UFormGroup name="country" class="flex-grow">
           <USelect
             v-model="country"
+            aria-label="country"
             :options="countryItems"
             option-attribute="name"
             class="w-full"
@@ -16,6 +17,7 @@
           <UInput
             :id="id"
             v-model="address"
+            aria-label="address"
             :placeholder="t('create-account.contact-form.address')"
             @keypress.once="addressComplete()"
             @click="addressComplete()"
@@ -24,18 +26,26 @@
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
         <UFormGroup name="AddressLineTwo" class="flex-grow">
-          <UInput v-model="addressLineTwo" :placeholder="t('create-account.contact-form.addressLineTwo')" />
+          <UInput
+            v-model="addressLineTwo"
+            :placeholder="t('create-account.contact-form.addressLineTwo')"
+            aria-label="address line two"
+          />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
         <UFormGroup name="city" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput v-model="city" :placeholder="t('create-account.contact-form.city')" />
+          <UInput v-model="city" :placeholder="t('create-account.contact-form.city')" aria-label="city" />
         </UFormGroup>
         <UFormGroup name="province" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput v-model="province" :placeholder="t('create-account.contact-form.province')" />
+          <UInput v-model="province" :placeholder="t('create-account.contact-form.province')" aria-label="province" />
         </UFormGroup>
         <UFormGroup name="postalCode" class="flex-grow mobile:mb-[16px]">
-          <UInput v-model="postalCode" :placeholder="t('create-account.contact-form.postalCode')" />
+          <UInput
+            v-model="postalCode"
+            :placeholder="t('create-account.contact-form.postalCode')"
+            aria-label="postal code"
+          />
         </UFormGroup>
       </div>
     </BcrosFormSection>

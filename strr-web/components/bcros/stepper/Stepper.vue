@@ -41,6 +41,12 @@
                     : '/icons/create-account/invalid_step.svg'
                   }`
                 "
+                :alt="
+                  `${step.isValid
+                    ? 'Step successfully validated'
+                    : 'Step did not pass validation'
+                  }`
+                "
                 class="absolute top-[-10px] right-[-10px]"
               >
             </div>

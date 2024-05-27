@@ -9,6 +9,7 @@
           <UFormGroup name="urlOne" class="desktop:pr-[16px] flex-grow">
             <UInput
               v-model="listing.url"
+              aria-label="URL input"
               :placeholder="`Platform URL ${index > 0 ? index + 1: ''}`"
             />
           </UFormGroup>
