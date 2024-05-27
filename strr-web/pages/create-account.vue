@@ -90,7 +90,13 @@ watch(formState.primaryContact, () => {
 })
 
 watch(formState.secondaryContact, () => {
-  if (contactSchema.safeParse(formState.primaryContact).success) {
+  if (contactSchema.safeParse(formState.secondaryContact).success) {
+    setStepValid(0, true)
+  }
+})
+
+watch(formState.propertyDetails, () => {
+  if (propertyDetailsSchema.safeParse(formState.propertyDetails).success) {
     setStepValid(1, true)
   }
 })

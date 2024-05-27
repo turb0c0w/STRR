@@ -32,7 +32,7 @@
           <UInput v-model="city" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
         <UFormGroup name="province" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput v-model="province" :placeholder="t('create-account.contact-form.city')" />
+          <UInput v-model="province" :placeholder="t('create-account.contact-form.province')" />
         </UFormGroup>
         <UFormGroup name="postalCode" class="flex-grow mobile:mb-[16px]">
           <UInput v-model="postalCode" :placeholder="t('create-account.contact-form.postalCode')" />
