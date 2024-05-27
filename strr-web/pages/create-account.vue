@@ -73,9 +73,9 @@ const submit = () => {
     currentAccount.mailingAddress
   )
 
-  axiosInstance.post(`${apiURL}/account`, {
-    formData
-  })
+  axiosInstance.post<CreateAccountFormAPII>(`${apiURL}/account`,
+    { ...formData }
+  )
     .then((response) => {
       const data = response?.data
       if (!data) { throw new Error('Invalid AUTH API response') }

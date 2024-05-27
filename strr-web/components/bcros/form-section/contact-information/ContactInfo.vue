@@ -11,6 +11,7 @@
         <UFormGroup name="month" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
           <USelect
             v-model="month"
+            :placeholder="t('create-account.contact-form.month')"
             :options="getMonths()"
             option-attribute="key"
             class="w-full"
