@@ -40,13 +40,16 @@ import logging
 from http import HTTPStatus
 
 from flasgger import swag_from
-from flask import Blueprint, g, jsonify
+from flask import Blueprint, g, jsonify, request
 from flask_cors import cross_origin
 
 from strr_api.common.auth import jwt
-from strr_api.exceptions import AuthException, exception_response
+from strr_api.exceptions import AuthException, ExternalServiceException, ValidationException, exception_response
+from strr_api.requests import RegistrationRequest
 from strr_api.responses import Registration
-from strr_api.services import RegistrationService
+from strr_api.schemas.utils import validate
+from strr_api.services import AuthService, RegistrationService
+from strr_api.validators.RegistrationRequestValidator import validate_registration_request
 
 logger = logging.getLogger("api")
 bp = Blueprint("registrations", __name__)
@@ -77,3 +80,65 @@ def get_registrations():
         )
     except AuthException as auth_exception:
         return exception_response(auth_exception)
+
+
+@bp.route("", methods=("POST",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def create_registration():
+    """
+    Create a STRR registration.
+    ---
+    tags:
+      - registration
+    parameters:
+          - in: body
+            name: body
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: The name of the new user account.
+    responses:
+      201:
+        description:
+      401:
+        description:
+    """
+
+    try:
+        token = jwt.get_token_auth_header()
+        json_input = request.get_json()
+        [valid, errors] = validate(json_input, "registration")
+        if not valid:
+            raise ValidationException(message=errors)
+
+        registration_request = RegistrationRequest(**json_input)
+        selected_account = registration_request.selectedAccount
+
+        # SBC Account lookup or creation
+        sbc_account_id = None
+        if selected_account.sbc_account_id:
+            sbc_account_id = selected_account.sbc_account_id
+        else:
+            new_account = AuthService.create_user_account(
+                token, selected_account.name, selected_account.mailingAddress.to_dict()
+            )
+            sbc_account_id = new_account.get("id")
+
+        validate_registration_request(selected_account, registration_request)
+
+        registration = RegistrationService.save_registration(
+            g.jwt_oidc_token_info, sbc_account_id, registration_request.registration
+        )
+        return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.CREATED
+    except ValidationException as auth_exception:
+        return exception_response(auth_exception)
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+    except ExternalServiceException as service_exception:
+        return exception_response(service_exception)

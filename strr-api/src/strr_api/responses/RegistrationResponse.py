@@ -91,7 +91,7 @@ class Registration(BaseModel):
     submissionDate: datetime
     updatedDate: datetime
     status: str
-    primaryContact: Optional[Contact] = None
+    primaryContact: Contact
     secondaryContact: Optional[Contact] = None
     unitAddress: UnitAddress
     unitDetails: UnitDetails

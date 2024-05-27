@@ -55,7 +55,7 @@ class RegistrationService:
 
         primary_contact = user
         db.session.add(primary_contact)
-        db.session.commit()
+        db.session.flush()
         db.session.refresh(primary_contact)
 
         if registration_request.secondaryContact:
@@ -71,7 +71,7 @@ class RegistrationService:
                 date_of_birth=registration_request.secondaryContact.dateOfBirth,
             )
             db.session.add(secondary_contact)
-            db.session.commit()
+            db.session.flush()
             db.session.refresh(secondary_contact)
 
         property_manager = models.PropertyManager(
@@ -97,7 +97,7 @@ class RegistrationService:
             else None,
         )
         db.session.add(property_manager)
-        db.session.commit()
+        db.session.flush()
         db.session.refresh(property_manager)
 
         registration = models.Registration(
