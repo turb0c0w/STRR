@@ -59,9 +59,11 @@ class SelectedAccount:
 class Registration:
     """Registration payload object."""
 
-    def __init__(self, primaryContact, secondaryContact, unitAddress, unitDetails, listingDetails):
+    def __init__(self, primaryContact, unitAddress, unitDetails, listingDetails, secondaryContact=None):
         self.primaryContact = Contact(**primaryContact)
-        self.secondaryContact = Contact(**secondaryContact)
+        self.secondaryContact = None
+        if secondaryContact:
+            self.secondaryContact = Contact(**secondaryContact)
         self.unitAddress = UnitAddress(**unitAddress)
         self.unitDetails = UnitDetails(**unitDetails)
         self.listingDetails = [ListingDetails(**item) for item in listingDetails]
@@ -77,51 +79,51 @@ class ListingDetails:
 class UnitDetails:
     """UnitDetails payload object."""
 
-    def __init__(self, parcelIdentifier, businessLicense, propertyType, ownershipType):
-        self.parcelIdentifier = parcelIdentifier
-        self.businessLicense = businessLicense
+    def __init__(self, propertyType, ownershipType, parcelIdentifier=None, businessLicense=None):
         self.propertyType = propertyType
         self.ownershipType = ownershipType
+        self.parcelIdentifier = parcelIdentifier
+        self.businessLicense = businessLicense
 
 
 class MailingAddress:
     """MailingAddress payload object."""
 
-    def __init__(self, address, addressLineTwo, city, postalCode, province, country):
+    def __init__(self, address, city, postalCode, province, country, addressLineTwo=None):
         self.address = address
-        self.addressLineTwo = addressLineTwo
         self.city = city
         self.postalCode = postalCode
         self.province = province
         self.country = country
+        self.addressLineTwo = addressLineTwo
 
 
 class UnitAddress(MailingAddress):
     """UnitAddress payload object."""
 
-    def __init__(self, nickname, address, addressLineTwo, city, postalCode, province, country):
-        super().__init__(address, addressLineTwo, city, postalCode, province, country)
+    def __init__(self, address, city, postalCode, province, country, addressLineTwo=None, nickname=None):
+        super().__init__(address, city, postalCode, province, country, addressLineTwo)
         self.nickname = nickname
 
 
 class ContactName:
     """ContactName payload object."""
 
-    def __init__(self, firstName, middleName, lastName):
+    def __init__(self, firstName, lastName, middleName=None):
         self.firstName = firstName
-        self.middleName = middleName
         self.lastName = lastName
+        self.middleName = middleName
 
 
 class ContactDetails:
     """ContactDetails payload object."""
 
-    def __init__(self, preferredName, phoneNumber, extension, faxNumber, emailAddress):
-        self.preferredName = preferredName
+    def __init__(self, phoneNumber, emailAddress, preferredName=None, extension=None, faxNumber=None):
         self.phoneNumber = phoneNumber
+        self.emailAddress = emailAddress
+        self.preferredName = preferredName
         self.extension = extension
         self.faxNumber = faxNumber
-        self.emailAddress = emailAddress
 
 
 class Contact:

@@ -58,6 +58,7 @@ class RegistrationService:
         db.session.flush()
         db.session.refresh(primary_contact)
 
+        secondary_contact = None
         if registration_request.secondaryContact:
             secondary_contact = models.User(
                 firstname=registration_request.secondaryContact.name.firstName,
@@ -76,7 +77,6 @@ class RegistrationService:
 
         property_manager = models.PropertyManager(
             user_id=primary_contact.id,
-            secondary_contact_user_id=secondary_contact.id if secondary_contact else None,
             primary_address=models.Address(
                 country=registration_request.primaryContact.mailingAddress.country,
                 street_address=registration_request.primaryContact.mailingAddress.address,
@@ -85,7 +85,11 @@ class RegistrationService:
                 province=registration_request.primaryContact.mailingAddress.province,
                 postal_code=registration_request.primaryContact.mailingAddress.postalCode,
             ),
-            secondary_address=models.Address(
+        )
+
+        if secondary_contact:
+            property_manager.secondary_contact_user_id = (secondary_contact.id,)
+            property_manager.secondary_address = models.Address(
                 country=registration_request.secondaryContact.mailingAddress.country,
                 street_address=registration_request.secondaryContact.mailingAddress.address,
                 street_address_additional=registration_request.secondaryContact.mailingAddress.addressLineTwo,
@@ -93,9 +97,7 @@ class RegistrationService:
                 province=registration_request.secondaryContact.mailingAddress.province,
                 postal_code=registration_request.secondaryContact.mailingAddress.postalCode,
             )
-            if secondary_contact
-            else None,
-        )
+
         db.session.add(property_manager)
         db.session.flush()
         db.session.refresh(property_manager)
