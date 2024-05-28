@@ -161,7 +161,9 @@ if (currentAccount && me) {
     if (!formState.primaryContact.postalCode) { formState.primaryContact.postalCode = mailingAddress[0].postalCode }
     if (!formState.primaryContact.province) { formState.primaryContact.province = mailingAddress[0].region }
     if (!formState.primaryContact.address) { formState.primaryContact.address = mailingAddress[0].street }
-    if (!formState.primaryContact.addressLineTwo) { formState.primaryContact.addressLineTwo = mailingAddress[0].streetAdditional }
+    if (!formState.primaryContact.addressLineTwo) {
+      formState.primaryContact.addressLineTwo = mailingAddress[0].streetAdditional
+    }
   }
 }
 

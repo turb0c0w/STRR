@@ -139,7 +139,13 @@ export const propertyDetailsSchema = z.object({
   businessLicense: optionalOrEmptyString,
   city: requiredNonEmptyString,
   country: requiredNonEmptyString,
-  listingDetails: z.array(z.object({ url: z.string() })).length(1),
+  listingDetails: z
+    .array(
+      z
+        .object({ url: requiredNonEmptyString })
+        .refine(({ url }) => url !== '')
+    )
+    .refine(arr => arr.length > 0),
   nickname: optionalOrEmptyString,
   ownershipType: requiredNonEmptyString,
   parcelIdentifier: optionalOrEmptyString,
