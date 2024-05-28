@@ -26,6 +26,7 @@
           v-model:extension="formState.primaryContact.extension"
           v-model:fax-number="formState.primaryContact.faxNumber"
           v-model:email-address="formState.primaryContact.emailAddress"
+          :is-primary="true"
         />
         <BcrosFormSectionContactInformationMailingAddress
           id="primaryContactAddress"
@@ -66,7 +67,7 @@
             <UIcon class="h-[20px] w-[20px]" name="i-mdi-remove" alt="remove icon" />
           </div>
         </div>
-        <UForm :schema="contactSchema" :state="formState.secondaryContact">
+        <UForm :schema="secondaryContactSchema" :state="formState.secondaryContact">
           <BcrosFormSectionContactInformationContactInfo
             v-model:day="formState.secondaryContact.birthDay"
             v-model:month="formState.secondaryContact.birthMonth"
@@ -79,6 +80,10 @@
             v-model:extension="formState.secondaryContact.extension"
             v-model:fax-number="formState.secondaryContact.faxNumber"
             v-model:email-address="formState.secondaryContact.emailAddress"
+            v-model:first-name="formState.secondaryContact.firstName"
+            v-model:last-name="formState.secondaryContact.lastName"
+            v-model:middle-name="formState.secondaryContact.middleName"
+            :is-primary="false"
           />
           <BcrosFormSectionContactInformationMailingAddress
             id="secondaryContactAddress"

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import axios from 'axios'
-import { CreateAccountFormStateI, OrgI } from '~/interfaces/account-i'
+import { CreateAccountFormStateI, OrgI, SecondartContactInformationI, SecondaryContactInformationI } from '~/interfaces/account-i'
 
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
@@ -45,12 +45,36 @@ export const submitCreateAccountForm = (
 const numbersRegex = /^[0-9]+$/
 // matches chars 123456789 ()
 const phoneRegex = /^[0-9*#+() -]+$/
+const httpRegex = /^https?:/
 const phoneError = { message: 'Valid characters are "()- 123457890" ' }
 const requiredPhone = z.string().regex(phoneRegex, phoneError)
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
 const optionalOrEmptyString = z.string().optional().transform(e => e === '' ? undefined : e)
+const requiredURL = z.string().regex(httpRegex, { message: 'Must begin with http' })
 
 export const contactSchema = z.object({
+  preferredName: optionalOrEmptyString,
+  phoneNumber: requiredPhone,
+  extension: optionalOrEmptyString,
+  faxNumber: optionalOrEmptyString,
+  emailAddress: z.string(),
+  address: z.string(),
+  country: z.string(),
+  addressLineTwo: optionalOrEmptyString,
+  city: z.string(),
+  province: z.string(),
+  postalCode: z.string(),
+  birthDay: requiredNumber.refine(day => day.length === 2, 'Day must be two digits'),
+  birthMonth: z.string(),
+  birthYear: requiredNumber
+    .refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
+    .refine(year => year.length === 4, 'Year must be four digits')
+})
+
+export const secondaryContactSchema = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  middleName: z.string(),
   preferredName: optionalOrEmptyString,
   phoneNumber: requiredPhone,
   extension: optionalOrEmptyString,
@@ -86,7 +110,7 @@ const primaryContact: ContactInformationI = {
   birthYear: undefined
 }
 
-const secondaryContact: ContactInformationI = {
+const secondaryContact: SecondaryContactInformationI = {
   preferredName: '',
   phoneNumber: undefined,
   extension: '',
@@ -100,7 +124,10 @@ const secondaryContact: ContactInformationI = {
   postalCode: undefined,
   birthDay: undefined,
   birthMonth: undefined,
-  birthYear: undefined
+  birthYear: undefined,
+  firstName: undefined,
+  lastName: undefined,
+  middleName: undefined
 }
 
 export const propertyDetailsSchema = z.object({
@@ -109,7 +136,7 @@ export const propertyDetailsSchema = z.object({
   businessLicense: optionalOrEmptyString,
   city: z.string(),
   country: z.string(),
-  listingDetails: z.array(z.object({ url: z.string() })),
+  listingDetails: z.array(z.object({ url: requiredURL })),
   nickname: optionalOrEmptyString,
   ownershipType: z.string(),
   parcelIdentifier: optionalOrEmptyString,
