@@ -40,12 +40,11 @@ import logging
 from http import HTTPStatus
 
 from flasgger import swag_from
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
 from flask_cors import cross_origin
 
 from strr_api.common.auth import jwt
-from strr_api.exceptions import AuthException, ExternalServiceException, error_response, exception_response
-from strr_api.schemas.utils import validate
+from strr_api.exceptions import AuthException, ExternalServiceException, exception_response
 
 # from strr_api.schemas import utils as schema_utils
 from strr_api.services import AuthService
@@ -78,51 +77,6 @@ def me():
         response["profile"] = profile
         response["settings"] = settings
         return jsonify(response), HTTPStatus.OK
-    except AuthException as auth_exception:
-        return exception_response(auth_exception)
-    except ExternalServiceException as service_exception:
-        return exception_response(service_exception)
-
-
-@bp.route("", methods=("POST",))
-@swag_from({"security": [{"Bearer": []}]})
-@cross_origin(origin="*")
-@jwt.requires_auth
-def create_account():
-    """
-    Create a new account for the user.
-    ---
-    tags:
-      - users
-    parameters:
-          - in: body
-            name: body
-            schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  description: The name of the new user account.
-    responses:
-      201:
-        description:
-      401:
-        description:
-    """
-
-    try:
-        token = jwt.get_token_auth_header()
-        json_input = request.get_json()
-        [valid, errors] = validate(json_input, "new-account")
-        if not valid:
-            return error_response("Invalid request", HTTPStatus.BAD_REQUEST, errors)
-
-        name = json_input.get("name")
-        mailing_address = json_input.get("mailingAddress")
-        new_user_account = AuthService.create_user_account(token, name, mailing_address)
-        return jsonify(new_user_account), HTTPStatus.CREATED
     except AuthException as auth_exception:
         return exception_response(auth_exception)
     except ExternalServiceException as service_exception:

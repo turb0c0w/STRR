@@ -38,6 +38,8 @@ here as a convenience for audit and db reporting.
 """
 from __future__ import annotations
 
+from datetime import datetime
+
 from flask import current_app
 
 from .db import db
@@ -58,7 +60,12 @@ class User(db.Model):
     iss = db.Column(db.String(1024))
     idp_userid = db.Column(db.String(256), index=True)
     login_source = db.Column(db.String(200), nullable=True)
-    creation_date = db.Column(db.DateTime(timezone=True))
+    creation_date = db.Column(db.DateTime(timezone=True), default=datetime.now)
+    preferredname = db.Column(db.String, nullable=True)
+    phone_extension = db.Column(db.String, nullable=True)
+    fax_number = db.Column(db.String, nullable=True)
+    phone_number = db.Column(db.String, nullable=True)
+    date_of_birth = db.Column(db.Date, nullable=True)
 
     @property
     def display_name(self):

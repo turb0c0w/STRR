@@ -34,6 +34,7 @@
 """This module wraps helper services used by the API."""
 from .auth_service import AuthService
 from .payment_service import PayService
+from .registration_service import RegistrationService
 from .rest_service import RestService
 
 PAYMENT_REQUEST_TEMPLATE = {

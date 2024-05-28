@@ -43,6 +43,7 @@ from .account import bp as account_endpoint
 from .base import bp as base_endpoint
 from .ops import bp as ops_endpoint
 from .payment import bp as payment_endpoint
+from .registrations import bp as registrations_endpoint
 
 
 def register_endpoints(app: Flask):
@@ -75,6 +76,11 @@ def register_endpoints(app: Flask):
     app.register_blueprint(
         url_prefix="/pay",
         blueprint=payment_endpoint,
+    )
+
+    app.register_blueprint(
+        url_prefix="/registrations",
+        blueprint=registrations_endpoint,
     )
 
     app.config["SWAGGER"] = {

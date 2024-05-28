@@ -1,0 +1,41 @@
+{
+  "selectedAccount": {
+    "sbc_account_id": 3299
+  },
+  "registration": {
+    "primaryContact": {
+      "name": {
+        "firstName": "The",
+        "lastName": "Guy"
+      },
+      "dateOfBirth": "1986-10-23",
+      "details": {
+        "phoneNumber": "604-999-9999",
+        "emailAddress": "test@test.test"
+      },
+      "mailingAddress": {
+        "country": "CA",
+        "address": "12766 227st",
+        "city": "MAPLE RIDGE",
+        "province": "BC",
+        "postalCode": "V2X 6K6"
+      }
+    },
+    "unitDetails": {
+      "propertyType": "PRIMARY",
+      "ownershipType": "OWN"
+    },
+    "unitAddress": {
+      "country": "CA",
+      "address": "12166 GREENWELL ST MAPLE RIDGE",
+      "city": "MAPLE RIDGE",
+      "province": "BC",
+      "postalCode": "V2X 7N1"
+    },
+    "listingDetails": [
+      {
+        "url": "https://www.airbnb.ca/rooms/26359027"
+      }
+    ]
+  }
+}

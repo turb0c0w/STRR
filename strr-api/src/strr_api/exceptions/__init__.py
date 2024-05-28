@@ -14,4 +14,5 @@
 """Application Specific Exceptions/Responses, to manage handled errors."""
 from .exceptions import AuthException  # noqa: F401
 from .exceptions import ExternalServiceException  # noqa: F401
+from .exceptions import ValidationException  # noqa: F401
 from .responses import error_response, exception_response  # noqa: F401

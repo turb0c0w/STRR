@@ -40,9 +40,24 @@ from http import HTTPStatus
 class BaseExceptionE(Exception):
     """Base exception class for custom exceptions."""
 
-    error: str
+    error: str = None
     message: str = None
     status_code: HTTPStatus = None
+
+
+@dataclass
+class ValidationException(BaseExceptionE):
+    """Request validation exception."""
+
+    error = None
+
+    def __post_init__(self):
+        """Return a valid ValidationException."""
+        self.error = "Validation Error"
+        if not self.message:
+            self.message = "Invalid request."
+        if not self.status_code:
+            self.status_code = HTTPStatus.BAD_REQUEST
 
 
 @dataclass
