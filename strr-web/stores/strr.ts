@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import axios from 'axios'
-import { CreateAccountFormStateI, OrgI, SecondartContactInformationI, SecondaryContactInformationI } from '~/interfaces/account-i'
+import { CreateAccountFormStateI, OrgI, SecondaryContactInformationI } from '~/interfaces/account-i'
 
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
