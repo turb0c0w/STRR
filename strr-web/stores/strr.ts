@@ -135,19 +135,15 @@ const secondaryContact: SecondaryContactInformationI = {
   middleName: undefined
 }
 
+const urlSchema = z.object({ url: requiredNonEmptyString })
+
 export const propertyDetailsSchema = z.object({
   address: requiredNonEmptyString,
   addressLineTwo: optionalOrEmptyString,
   businessLicense: optionalOrEmptyString,
   city: requiredNonEmptyString,
   country: requiredNonEmptyString,
-  listingDetails: z
-    .array(
-      z
-        .object({ url: requiredNonEmptyString })
-        .refine(({ url }) => url !== '')
-    )
-    .refine(arr => arr.length > 0),
+  listingDetails: z.array(urlSchema),
   nickname: optionalOrEmptyString,
   ownershipType: requiredNonEmptyString,
   parcelIdentifier: optionalOrEmptyString,
