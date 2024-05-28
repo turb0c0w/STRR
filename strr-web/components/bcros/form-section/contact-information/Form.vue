@@ -155,12 +155,13 @@ if (me?.profile.contacts && me?.profile.contacts.length > 0) {
 if (currentAccount && me) {
   const mailingAddress = me?.orgs.find(({ id }) => id === currentAccount.id)?.mailingAddress
   if (mailingAddress) {
-    formState.primaryContact.country = mailingAddress[0].country
-    formState.primaryContact.city = mailingAddress[0].city
-    formState.primaryContact.postalCode = mailingAddress[0].postalCode
-    formState.primaryContact.province = mailingAddress[0].region
-    formState.primaryContact.address = mailingAddress[0].street
-    formState.primaryContact.addressLineTwo = mailingAddress[0].streetAdditional
+    // Check if field already has content before populating so as not to overwrite user changes
+    if (!formState.primaryContact.country) { formState.primaryContact.country = mailingAddress[0].country }
+    if (!formState.primaryContact.city) { formState.primaryContact.city = mailingAddress[0].city }
+    if (!formState.primaryContact.postalCode) { formState.primaryContact.postalCode = mailingAddress[0].postalCode }
+    if (!formState.primaryContact.province) { formState.primaryContact.province = mailingAddress[0].region }
+    if (!formState.primaryContact.address) { formState.primaryContact.address = mailingAddress[0].street }
+    if (!formState.primaryContact.addressLineTwo) { formState.primaryContact.addressLineTwo = mailingAddress[0].streetAdditional }
   }
 }
 
