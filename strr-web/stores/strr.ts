@@ -51,7 +51,7 @@ const requiredPhone = z.string().regex(phoneRegex, phoneError)
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
 const optionalOrEmptyString = z.string().optional().transform(e => e === '' ? undefined : e)
 const requiredURL = z.string().regex(httpRegex, { message: 'Must begin with http' })
-const requiredNonEmptyString = z.string().refine(e => e !== '')
+const requiredNonEmptyString = z.string().refine(e => e !== '', 'Field cannot be empty')
 
 export const contactSchema = z.object({
   preferredName: optionalOrEmptyString,
@@ -65,7 +65,9 @@ export const contactSchema = z.object({
   city: requiredNonEmptyString,
   province: requiredNonEmptyString,
   postalCode: requiredNonEmptyString,
-  birthDay: requiredNumber.refine(day => day.length === 2, 'Day must be two digits'),
+  birthDay: requiredNumber
+    .refine(day => day.length === 2, 'Day must be two digits')
+    .refine(day => Number(day) <= 31, 'Must be less than or equal to 31'),
   birthMonth: requiredNonEmptyString,
   birthYear: requiredNumber
     .refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
