@@ -100,9 +100,15 @@ export interface ContactInformationI {
   birthYear: string | undefined,
 }
 
+export interface SecondaryContactInformationI extends ContactInformationI {
+  firstName: string | undefined,
+  middleName: string | undefined,
+  lastName: string | undefined,
+}
+
 export interface CreateAccountFormStateI {
   primaryContact: ContactInformationI,
-  secondaryContact: ContactInformationI,
+  secondaryContact: SecondaryContactInformationI,
   propertyDetails: {
     primaryResidence: string | undefined,
     whichPlatform: string | undefined,

@@ -47,6 +47,7 @@
       "mailingAddress": "Mailing Address"
     },
     "property-form": {
+      "subtitle": "Rental Unit Information",
       "nickname": "Nickname (Optional)",
       "parcelIdentifier": "Parcel Identifier (Optional)",
       "businessLicense": "Local Government Business License (Optional)",

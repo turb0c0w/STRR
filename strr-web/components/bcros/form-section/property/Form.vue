@@ -3,7 +3,7 @@
     <div class="desktop:mb-[180px] mobile:mb-[32px] bg-white rounded-[4px]">
       <div class="bg-bcGovColor-gray2 rounded-t-[4px]">
         <p class="px-[40px] py-[15px] font-bold">
-          {{ t('create-account.contact.subtitle') }}
+          {{ t('create-account.property-form.subtitle') }}
         </p>
       </div>
       <UForm :schema="propertyDetailsSchema" :state="formState.propertyDetails">
