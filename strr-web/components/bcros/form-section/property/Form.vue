@@ -54,11 +54,6 @@ watch(canadaPostAddress, (newAddress) => {
   }
 })
 
-watch(formState.propertyDetails, () => {
-  console.log("FORM STATE PROPERTY DETAILS CHANGED")
-  console.log(formState.propertyDetails.listingDetails)
-})
-
 const t = useNuxtApp().$i18n.t
 
 const isValid = ref(false)

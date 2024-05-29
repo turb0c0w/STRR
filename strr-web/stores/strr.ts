@@ -135,7 +135,7 @@ const secondaryContact: SecondaryContactInformationI = {
   middleName: undefined
 }
 
-const urlSchema = z.object({ url: requiredNonEmptyString })
+const urlSchema = z.object({ url: requiredURL })
 
 export const propertyDetailsSchema = z.object({
   address: requiredNonEmptyString,
