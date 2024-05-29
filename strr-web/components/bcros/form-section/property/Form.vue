@@ -9,6 +9,7 @@
       <UForm :schema="propertyDetailsSchema" :state="formState.propertyDetails">
         <BcrosFormSectionPropertyAddress
           id="propertyAddress"
+          v-model:nickname="formState.propertyDetails.nickname"
           v-model:country="formState.propertyDetails.country"
           v-model:address="formState.propertyDetails.address"
           v-model:address-line-two="formState.propertyDetails.addressLineTwo"
