@@ -51,43 +51,48 @@ const requiredPhone = z.string().regex(phoneRegex, phoneError)
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
 const optionalOrEmptyString = z.string().optional().transform(e => e === '' ? undefined : e)
 const requiredURL = z.string().regex(httpRegex, { message: 'Must begin with http' })
+const requiredNonEmptyString = z.string().refine(e => e !== '', 'Field cannot be empty')
 
 export const contactSchema = z.object({
   preferredName: optionalOrEmptyString,
   phoneNumber: requiredPhone,
   extension: optionalOrEmptyString,
   faxNumber: optionalOrEmptyString,
-  emailAddress: z.string(),
-  address: z.string(),
-  country: z.string(),
+  emailAddress: requiredNonEmptyString,
+  address: requiredNonEmptyString,
+  country: requiredNonEmptyString,
   addressLineTwo: optionalOrEmptyString,
-  city: z.string(),
-  province: z.string(),
-  postalCode: z.string(),
-  birthDay: requiredNumber.refine(day => day.length === 2, 'Day must be two digits'),
-  birthMonth: z.string(),
+  city: requiredNonEmptyString,
+  province: requiredNonEmptyString,
+  postalCode: requiredNonEmptyString,
+  birthDay: requiredNumber
+    .refine(day => day.length === 2, 'Day must be two digits')
+    .refine(day => Number(day) <= 31, 'Must be less than or equal to 31'),
+  birthMonth: requiredNonEmptyString,
   birthYear: requiredNumber
     .refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
     .refine(year => year.length === 4, 'Year must be four digits')
 })
 
 export const secondaryContactSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  middleName: z.string(),
+  firstName: requiredNonEmptyString,
+  lastName: requiredNonEmptyString,
+  middleName: requiredNonEmptyString,
   preferredName: optionalOrEmptyString,
   phoneNumber: requiredPhone,
   extension: optionalOrEmptyString,
   faxNumber: optionalOrEmptyString,
-  emailAddress: z.string(),
-  address: z.string(),
-  country: z.string(),
+  emailAddress: requiredNonEmptyString,
+  address: requiredNonEmptyString,
+  country: requiredNonEmptyString,
   addressLineTwo: optionalOrEmptyString,
-  city: z.string(),
-  province: z.string(),
-  postalCode: z.string(),
-  birthDay: requiredNumber.refine(day => day.length === 2, 'Day must be two digits'),
-  birthMonth: z.string(),
+  city: requiredNonEmptyString,
+  province: requiredNonEmptyString,
+  postalCode: requiredNonEmptyString,
+  birthDay: requiredNumber
+    .refine(day => day.length === 2, 'Day must be two digits')
+    .refine(day => Number(day) <= 31, 'Must be less than or equal to 31'),
+  birthMonth: requiredNonEmptyString,
   birthYear: requiredNumber
     .refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
     .refine(year => year.length === 4, 'Year must be four digits')
@@ -130,19 +135,21 @@ const secondaryContact: SecondaryContactInformationI = {
   middleName: undefined
 }
 
+const urlSchema = z.object({ url: requiredURL })
+
 export const propertyDetailsSchema = z.object({
-  address: z.string(),
+  address: requiredNonEmptyString,
   addressLineTwo: optionalOrEmptyString,
   businessLicense: optionalOrEmptyString,
-  city: z.string(),
-  country: z.string(),
-  listingDetails: z.array(z.object({ url: requiredURL })),
+  city: requiredNonEmptyString,
+  country: requiredNonEmptyString,
+  listingDetails: z.array(urlSchema),
   nickname: optionalOrEmptyString,
-  ownershipType: z.string(),
+  ownershipType: requiredNonEmptyString,
   parcelIdentifier: optionalOrEmptyString,
-  postalCode: z.string(),
-  propertyType: z.string(),
-  province: z.string(),
+  postalCode: requiredNonEmptyString,
+  propertyType: requiredNonEmptyString,
+  province: requiredNonEmptyString,
   useMailing: z.boolean()
 })
 
