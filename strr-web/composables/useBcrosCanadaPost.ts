@@ -14,16 +14,16 @@ export const useCanadaPostAddress = () => {
     deliveryInstructions: ''
   })
 
-  const createAddressComplete = (pca: any, key: string, id: string, countryIso2: string): object => {
+  const createAddressComplete = (pca: any, key: string, id: string, countryIso2: string,
+    countrySelect: boolean): object => {
     const fields = [
-      { element: id, field: 'Line1', mode: pca.fieldMode.SEARCH }
+      { element: id, field: 'Line1', mode: pca.fieldMode.SEARCH },
     ]
-    const bar = {
-      visible: true,
-      showCountry: true
-    }
+    // Conditional to only allow country selection depending on control
+    const bar = countrySelect ? { visible: true, showCountry: true } : {}
     const countries = {
-      defaultCode: countryIso2
+      defaultCode: countryIso2,
+      ...(countrySelect ? {} : { codesList: 'CA' })
     }
     const options = { key, bar, countries }
     const addressComplete = new pca.Address(fields, options)
@@ -31,7 +31,7 @@ export const useCanadaPostAddress = () => {
     return addressComplete
   }
 
-  const enableAddressComplete = (id: string, countryIso2: string): void => {
+  const enableAddressComplete = (id: string, countryIso2: string, countrySelect: boolean): void => {
     activeAddressField.value = id
     const config = useRuntimeConfig()
     const pca = (window as any).pca
@@ -44,7 +44,7 @@ export const useCanadaPostAddress = () => {
     if ((window as any).currentAddressComplete) {
       (window as any).currentAddressComplete.destroy()
     }
-    (window as any).currentAddressComplete = createAddressComplete(pca, key, id, countryIso2)
+    (window as any).currentAddressComplete = createAddressComplete(pca, key, id, countryIso2, countrySelect)
   }
 
   const addressCompletePopulate = (addressComplete: CanadaPostResponseAddressI): void => {

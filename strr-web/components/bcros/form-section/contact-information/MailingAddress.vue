@@ -67,7 +67,7 @@ const countryItems = ref<CountryItem[]>([])
 
 const addressComplete = () => {
   if (typeof country.value === 'string') {
-    enableAddressComplete(id, country.value)
+    enableAddressComplete(id, country.value, true)
   }
 }
 
@@ -78,7 +78,7 @@ const {
 } = defineProps<{
   id: string,
   defaultCountryIso2: string,
-  enableAddressComplete:(id: string, countryIso2: string) => void
+  enableAddressComplete:(id: string, countryIso2: string, countrySelect: boolean) => void
 }>()
 
 onMounted(() => {

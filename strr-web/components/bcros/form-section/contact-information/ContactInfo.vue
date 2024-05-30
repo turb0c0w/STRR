@@ -17,6 +17,7 @@
             option-attribute="key"
             class="w-full"
             aria-label="birth month"
+            style="color: #1a202c; /* text-gray-900 */ dark:text-white; /* Override with dark mode text color */"
           />
         </UFormGroup>
         <UFormGroup name="birthYear">

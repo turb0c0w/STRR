@@ -28,6 +28,7 @@
             :options="propertyTypes"
             option-attribute="name"
             class="w-full"
+            style="color: #1a202c; /* text-gray-900 */ dark:text-white; /* Override with dark mode text color */"
           />
         </UFormGroup>
       </div>
@@ -40,6 +41,7 @@
             :options="ownershipTypes"
             option-attribute="name"
             class="w-full"
+            style="color: #1a202c; /* text-gray-900 */ dark:text-white; /* Override with dark mode text color */"
           />
         </UFormGroup>
       </div>

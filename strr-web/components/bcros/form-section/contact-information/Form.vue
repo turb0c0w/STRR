@@ -14,7 +14,7 @@
           {{ t('create-account.contact.disclaimer') }}
         </div>
       </BcrosFormSection>
-      <UForm :schema="contactSchema" :state="formState.primaryContact">
+      <UForm ref="form" :schema="contactSchema" :state="formState.primaryContact">
         <BcrosFormSectionContactInformationContactInfo
           v-model:day="formState.primaryContact.birthDay"
           v-model:month="formState.primaryContact.birthMonth"
@@ -95,6 +95,7 @@
             v-model:postal-code="formState.secondaryContact.postalCode"
             :enable-address-complete="enableAddressComplete"
             default-country-iso2="CA"
+            :postal=false
           />
         </UForm>
       </div>
@@ -166,5 +167,13 @@ if (currentAccount && me) {
     }
   }
 }
+
+const form = ref();
+
+defineExpose({
+  validate: async () => {
+    form.value.validate()
+  }
+})
 
 </script>

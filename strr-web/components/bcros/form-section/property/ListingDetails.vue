@@ -6,7 +6,7 @@
     >
       <div v-for="(listing, index) in listingDetails" :key="index">
         <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px] items-center">
-          <UFormGroup name="urlOne" class="desktop:pr-[16px] flex-grow">
+          <UFormGroup name="url" class="desktop:pr-[16px] flex-grow">
             <UInput
               v-model="listing.url"
               aria-label="URL input"

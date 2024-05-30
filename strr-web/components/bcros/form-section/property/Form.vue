@@ -46,12 +46,17 @@ const {
 
 watch(canadaPostAddress, (newAddress) => {
   if (newAddress) {
-    formState.propertyDetails.address = newAddress.street
-    formState.propertyDetails.addressLineTwo = newAddress.streetAdditional
-    formState.propertyDetails.country = newAddress.country
-    formState.propertyDetails.city = newAddress.city
-    formState.propertyDetails.province = newAddress.region
-    formState.propertyDetails.postalCode = newAddress.postalCode
+    if (newAddress.region == "BC") {
+      formState.propertyDetails.address = newAddress.street
+      formState.propertyDetails.addressLineTwo = newAddress.streetAdditional
+      formState.propertyDetails.country = newAddress.country
+      formState.propertyDetails.city = newAddress.city
+      formState.propertyDetails.province = newAddress.region
+      formState.propertyDetails.postalCode = newAddress.postalCode
+    } else {
+      // replace with validation error?
+      alert('Please choose an address in BC')
+    }
   }
 })
 
