@@ -28,6 +28,8 @@ coloredlogs = "^15.0.1"
 flask-httpauth = "^4.8.0"
 flasgger = "^0.9.7.1"
 pydantic = "^2.7.1"
+google-auth = "^2.29.0"
+google-cloud-storage = "^2.16.0"
 
 [tool.poetry.group.test.dependencies]
 freezegun = "^1.2.2"

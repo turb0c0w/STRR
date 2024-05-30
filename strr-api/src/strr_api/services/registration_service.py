@@ -36,6 +36,8 @@ from strr_api import models, requests
 from strr_api.enums.enum import RegistrationStatus
 from strr_api.models import db
 
+# from strr_api.services.gcp_storage_service import GCPStorageService
+
 
 class RegistrationService:
     """Service to save and load regristration details from the database."""
@@ -47,20 +49,37 @@ class RegistrationService:
         # TODO: FUTURE SPRINT - handle the other cases where jwt doesn't have the info
         user = models.User.get_or_create_user_by_jwt(jwt_oidc_token_info)
         user.email = registration_request.primaryContact.details.emailAddress
-        user.preferredname = registration_request.primaryContact.details.preferredName
-        user.phone_extension = registration_request.primaryContact.details.extension
-        user.fax_number = registration_request.primaryContact.details.faxNumber
-        user.phone_number = registration_request.primaryContact.details.phoneNumber
-        user.date_of_birth = registration_request.primaryContact.dateOfBirth
 
-        primary_contact = user
+        db.session.add(user)
+        db.session.flush()
+        db.session.refresh(user)
+
+        primary_contact = models.Contact(
+            firstname=registration_request.primaryContact.name.firstName,
+            lastname=registration_request.primaryContact.name.lastName,
+            middlename=registration_request.primaryContact.name.middleName,
+            email=registration_request.primaryContact.details.emailAddress,
+            preferredname=registration_request.primaryContact.details.preferredName,
+            phone_extension=registration_request.primaryContact.details.extension,
+            fax_number=registration_request.primaryContact.details.faxNumber,
+            phone_number=registration_request.primaryContact.details.phoneNumber,
+            date_of_birth=registration_request.primaryContact.dateOfBirth,
+            address=models.Address(
+                country=registration_request.primaryContact.mailingAddress.country,
+                street_address=registration_request.primaryContact.mailingAddress.address,
+                street_address_additional=registration_request.primaryContact.mailingAddress.addressLineTwo,
+                city=registration_request.primaryContact.mailingAddress.city,
+                province=registration_request.primaryContact.mailingAddress.province,
+                postal_code=registration_request.primaryContact.mailingAddress.postalCode,
+            ),
+        )
         db.session.add(primary_contact)
         db.session.flush()
         db.session.refresh(primary_contact)
 
         secondary_contact = None
         if registration_request.secondaryContact:
-            secondary_contact = models.User(
+            secondary_contact = models.Contact(
                 firstname=registration_request.secondaryContact.name.firstName,
                 lastname=registration_request.secondaryContact.name.lastName,
                 middlename=registration_request.secondaryContact.name.middleName,
@@ -70,39 +89,30 @@ class RegistrationService:
                 fax_number=registration_request.secondaryContact.details.faxNumber,
                 phone_number=registration_request.secondaryContact.details.phoneNumber,
                 date_of_birth=registration_request.secondaryContact.dateOfBirth,
+                address=models.Address(
+                    country=registration_request.primaryContact.mailingAddress.country,
+                    street_address=registration_request.primaryContact.mailingAddress.address,
+                    street_address_additional=registration_request.primaryContact.mailingAddress.addressLineTwo,
+                    city=registration_request.primaryContact.mailingAddress.city,
+                    province=registration_request.primaryContact.mailingAddress.province,
+                    postal_code=registration_request.primaryContact.mailingAddress.postalCode,
+                ),
             )
             db.session.add(secondary_contact)
             db.session.flush()
             db.session.refresh(secondary_contact)
 
-        property_manager = models.PropertyManager(
-            user_id=primary_contact.id,
-            primary_address=models.Address(
-                country=registration_request.primaryContact.mailingAddress.country,
-                street_address=registration_request.primaryContact.mailingAddress.address,
-                street_address_additional=registration_request.primaryContact.mailingAddress.addressLineTwo,
-                city=registration_request.primaryContact.mailingAddress.city,
-                province=registration_request.primaryContact.mailingAddress.province,
-                postal_code=registration_request.primaryContact.mailingAddress.postalCode,
-            ),
-        )
+        property_manager = models.PropertyManager(primary_contact_id=primary_contact.id)
 
         if secondary_contact:
-            property_manager.secondary_contact_user_id = (secondary_contact.id,)
-            property_manager.secondary_address = models.Address(
-                country=registration_request.secondaryContact.mailingAddress.country,
-                street_address=registration_request.secondaryContact.mailingAddress.address,
-                street_address_additional=registration_request.secondaryContact.mailingAddress.addressLineTwo,
-                city=registration_request.secondaryContact.mailingAddress.city,
-                province=registration_request.secondaryContact.mailingAddress.province,
-                postal_code=registration_request.secondaryContact.mailingAddress.postalCode,
-            )
+            property_manager.secondary_contact_id = secondary_contact.id
 
         db.session.add(property_manager)
         db.session.flush()
         db.session.refresh(property_manager)
 
         registration = models.Registration(
+            user_id=user.id,
             sbc_account_id=sbc_account_id,
             status=RegistrationStatus.PENDING,
             rental_property=models.RentalProperty(
@@ -124,8 +134,14 @@ class RegistrationService:
                     models.RentalPlatform(url=listing.url) for listing in registration_request.listingDetails
                 ],
             ),
+            eligibility=models.Eligibility(
+                is_principal_residence=registration_request.principalResidence.isPrincipalResidence,
+                agreed_to_rental_act=registration_request.principalResidence.agreedToRentalAct,
+                non_principal_option=registration_request.principalResidence.nonPrincipalOption,
+                specified_service_provider=registration_request.principalResidence.specifiedServiceProvider,
+                agreed_to_submit=registration_request.principalResidence.agreedToSubmit,
+            ),
         )
-
         db.session.add(registration)
         db.session.commit()
         db.session.refresh(registration)
@@ -135,10 +151,61 @@ class RegistrationService:
     def list_registrations(cls, jwt_oidc_token_info):
         """List all registrations for current user."""
         user = models.User.find_by_jwt_token(jwt_oidc_token_info)
+        return models.Registration.query.filter_by(user_id=user.id).all()
+
+    @classmethod
+    def get_registration(cls, jwt_oidc_token_info, registration_id):
+        """Get registration by id for current user."""
+        user = models.User.find_by_jwt_token(jwt_oidc_token_info)
+        return models.Registration.query.filter_by(user_id=user.id).filter_by(id=registration_id).one_or_none()
+
+    @classmethod
+    def save_registration_document(cls, eligibility_id, file_name, file_type, file_contents):
+        """Save STRR uploaded document to database."""
+
+        # TODO: store file in gcp using UUID for filename, and set path in save_registration_document()
+        # blob_name = GCPStorageService.upload_registration_document(file_type, file_contents)
+        path = file_contents
+        # path = blob_name
+
+        registration_document = models.Document(
+            eligibility_id=eligibility_id,
+            file_name=file_name,
+            file_type=file_type,
+            path=path,
+        )
+        db.session.add(registration_document)
+        db.session.commit()
+        db.session.refresh(registration_document)
+        return registration_document
+
+    @classmethod
+    def get_registration_documents(cls, registration_id):
+        """Get registration documents by registration id."""
         return (
-            models.Registration.query.join(
-                models.PropertyManager, models.PropertyManager.id == models.Registration.rental_property_id
-            )
-            .filter_by(user_id=user.id)
+            models.Document.query.join(models.Eligibility, models.Eligibility.id == models.Document.eligibility_id)
+            .filter(models.Eligibility.registration_id == registration_id)
             .all()
         )
+
+    @classmethod
+    def get_registration_document(cls, registration_id, document_id):
+        """Get registration document by id."""
+        return (
+            models.Document.query.join(models.Eligibility, models.Eligibility.id == models.Document.eligibility_id)
+            .filter(models.Eligibility.registration_id == registration_id)
+            .filter(models.Document.id == document_id)
+            .one_or_none()
+        )
+
+    @classmethod
+    def delete_registration_document(cls, registration_id, document_id):
+        """Delete registration document by id."""
+        document = RegistrationService.get_registration_document(registration_id, document_id)
+        if not document:
+            return False
+        # TODO: delete from gcp bucket
+        # GCPStorageService.delete_registration_document(document.path)
+        db.session.delete(document)
+        db.session.commit()
+        return True

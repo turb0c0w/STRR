@@ -1,19 +1,40 @@
-from strr_api.models import User
+from strr_api.models import Document, Eligibility, Registration, User
 
 
 def disable_jwt_requires_auth(f):
     return f
 
 
-def fake_get_token_auth_header(cls):
+def fake_get_token_auth_header(arg):
     return "fake_jwt_token"
 
 
-def fake_user_from_token(cls):
+def fake_user_from_token(arg):
     return User(
         firstname="First",
         lastname="last",
         email="test@test.test",
+        idp_userid="ABCDEFG",
+    )
+
+
+def fake_registration(token, registration_id):
+    return Registration(
+        id=registration_id,
+        user_id=1,
+        sbc_account_id="sbc",
+        eligibility=Eligibility(id=1, registration_id=registration_id),
+    )
+
+
+def fake_document(*args, **kwargs):
+    return Document(
+        id=1,
+        eligibility_id=1,
+        file_name="file_name",
+        file_type="file_type",
+        path="path",
+        eligibility=Eligibility(id=1, registration_id=1),
     )
 
 

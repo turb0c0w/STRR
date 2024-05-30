@@ -57,15 +57,13 @@ class Contact(db.Model):
     middlename = db.Column(db.String(1000))
     address_id = db.Column(db.Integer, db.ForeignKey("addresses.id"), nullable=False)
     email = db.Column(db.String(255), nullable=True)
-    creation_date = db.Column(db.DateTime(timezone=True), default=datetime.now)
     preferredname = db.Column(db.String, nullable=True)
     phone_extension = db.Column(db.String, nullable=True)
     fax_number = db.Column(db.String, nullable=True)
     phone_number = db.Column(db.String(20), nullable=True)
     date_of_birth = db.Column(db.Date, nullable=True)
 
-    address = relationship("Address", back_populates="contacts")
-    secondary_property_managers = relationship("PropertyManager", back_populates="secondary_contact_user")
+    address = relationship("Address", back_populates="contact")
 
 
 class User(db.Model):
@@ -84,11 +82,8 @@ class User(db.Model):
     idp_userid = db.Column(db.String(256), index=True)
     login_source = db.Column(db.String(200), nullable=True)
     creation_date = db.Column(db.DateTime(timezone=True), default=datetime.now)
-    preferredname = db.Column(db.String, nullable=True)
-    phone_extension = db.Column(db.String, nullable=True)
-    fax_number = db.Column(db.String, nullable=True)
-    phone_number = db.Column(db.String, nullable=True)
-    date_of_birth = db.Column(db.Date, nullable=True)
+
+    registrations = relationship("Registration")
 
     @property
     def display_name(self):
