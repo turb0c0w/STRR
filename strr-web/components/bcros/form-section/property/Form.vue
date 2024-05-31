@@ -6,7 +6,7 @@
           {{ t('create-account.property-form.subtitle') }}
         </p>
       </div>
-      <UForm :schema="propertyDetailsSchema" :state="formState.propertyDetails">
+      <UForm form="form" :schema="propertyDetailsSchema" :state="formState.propertyDetails">
         <BcrosFormSectionPropertyAddress
           id="propertyAddress"
           v-model:nickname="formState.propertyDetails.nickname"
@@ -39,6 +39,10 @@
 </template>
 
 <script setup lang="ts">
+const { isComplete } = defineProps<{
+  isComplete: boolean
+}>()
+
 const {
   address: canadaPostAddress,
   enableAddressComplete
@@ -46,7 +50,7 @@ const {
 
 watch(canadaPostAddress, (newAddress) => {
   if (newAddress) {
-    if (newAddress.region == "BC") {
+    if (newAddress.region === 'BC') {
       formState.propertyDetails.address = newAddress.street
       formState.propertyDetails.addressLineTwo = newAddress.streetAdditional
       formState.propertyDetails.country = newAddress.country
@@ -93,5 +97,11 @@ const ownershipTypes: string[] = [
   t('create-account.property-form.own'),
   t('create-account.property-form.other')
 ]
+
+const form = ref()
+
+watch(form, () => {
+  if (form.value && isComplete) { form.value.validate() }
+})
 
 </script>

@@ -52,7 +52,12 @@
           <UInput v-model="city" aria-label="city" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
         <UFormGroup name="province" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput v-model="province" aria-label="province" :placeholder="t('create-account.contact-form.province')" disabled />
+          <UInput
+            v-model="province"
+            aria-label="province"
+            :placeholder="t('create-account.contact-form.province')"
+            disabled
+          />
         </UFormGroup>
         <UFormGroup name="postalCode" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput

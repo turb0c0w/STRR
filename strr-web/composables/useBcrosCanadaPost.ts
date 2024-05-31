@@ -17,7 +17,7 @@ export const useCanadaPostAddress = () => {
   const createAddressComplete = (pca: any, key: string, id: string, countryIso2: string,
     countrySelect: boolean): object => {
     const fields = [
-      { element: id, field: 'Line1', mode: pca.fieldMode.SEARCH },
+      { element: id, field: 'Line1', mode: pca.fieldMode.SEARCH }
     ]
     // Conditional to only allow country selection depending on control
     const bar = countrySelect ? { visible: true, showCountry: true } : {}

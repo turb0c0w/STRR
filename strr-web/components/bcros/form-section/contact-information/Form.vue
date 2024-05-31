@@ -10,7 +10,7 @@
         <div class="mb-[16px] text-[14px] leading-[22px]">
           {{ fullName }}
         </div>
-        <div class="mb-[16px] text-[14px] leading-[22px]">
+        <div ref="testRef" class="mb-[16px] text-[14px] leading-[22px]">
           {{ t('create-account.contact.disclaimer') }}
         </div>
       </BcrosFormSection>
@@ -67,7 +67,7 @@
             <UIcon class="h-[20px] w-[20px]" name="i-mdi-remove" alt="remove icon" />
           </div>
         </div>
-        <UForm :schema="secondaryContactSchema" :state="formState.secondaryContact">
+        <UForm ref="secondForm" :schema="secondaryContactSchema" :state="formState.secondaryContact">
           <BcrosFormSectionContactInformationContactInfo
             v-model:day="formState.secondaryContact.birthDay"
             v-model:month="formState.secondaryContact.birthMonth"
@@ -95,7 +95,7 @@
             v-model:postal-code="formState.secondaryContact.postalCode"
             :enable-address-complete="enableAddressComplete"
             default-country-iso2="CA"
-            :postal=false
+            :postal="false"
           />
         </UForm>
       </div>
@@ -110,11 +110,15 @@ const t = useNuxtApp().$i18n.t
 const {
   fullName,
   addSecondaryContact,
-  toggleAddSecondary
+  toggleAddSecondary,
+  isComplete,
+  secondFormIsComplete
 } = defineProps<{
   fullName: string,
-  addSecondaryContact: boolean
-  toggleAddSecondary:() => void
+  addSecondaryContact: boolean,
+  toggleAddSecondary:() => void,
+  isComplete: boolean,
+  secondFormIsComplete: boolean
 }>()
 
 const {
@@ -168,12 +172,16 @@ if (currentAccount && me) {
   }
 }
 
-const form = ref();
+const form = ref()
 
-defineExpose({
-  validate: async () => {
-    form.value.validate()
-  }
+watch(form, () => {
+  if (form.value && isComplete) { form.value.validate() }
+})
+
+const secondForm = ref()
+
+watch(secondForm, () => {
+  if (secondForm.value && secondFormIsComplete) { secondForm.value.validate() }
 })
 
 </script>

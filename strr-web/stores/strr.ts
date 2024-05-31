@@ -45,7 +45,7 @@ export const submitCreateAccountForm = (
 const numbersRegex = /^[0-9]+$/
 // matches chars 123456789 ()
 const phoneRegex = /^[0-9*#+() -]+$/
-const httpRegex = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+\.?(:\d+)?(\/.*)?)$/i;
+const httpRegex = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+\.?(:\d+)?(\/.*)?)$/i
 const phoneError = { message: 'Valid characters are "()- 123457890" ' }
 const requiredPhone = z.string().regex(phoneRegex, phoneError)
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
@@ -141,7 +141,7 @@ export const propertyDetailsSchema = z.object({
   city: requiredNonEmptyString,
   country: requiredNonEmptyString,
   listingDetails: z.array(z.object({
-    url: z.string().regex(httpRegex, { message: "Invalid URL format" }),
+    url: z.string().regex(httpRegex, { message: 'Invalid URL format' })
   })),
   nickname: optionalOrEmptyString,
   ownershipType: requiredNonEmptyString,
