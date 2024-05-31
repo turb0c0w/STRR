@@ -6,7 +6,7 @@
           {{ t('create-account.property-form.subtitle') }}
         </p>
       </div>
-      <UForm form="form" :schema="propertyDetailsSchema" :state="formState.propertyDetails">
+      <UForm ref="form" :schema="propertyDetailsSchema" :state="formState.propertyDetails">
         <BcrosFormSectionPropertyAddress
           id="propertyAddress"
           v-model:nickname="formState.propertyDetails.nickname"
