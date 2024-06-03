@@ -83,8 +83,9 @@ const removeDetailAtIndex = (index: number) => {
 }
 
 const validateField = (index: number) => {
-  console.log("Validate field " + index)
-  if (propertyDetailsSchema.safeParse(formState.propertyDetails).error) {
+  const listingDetailsErrorsExist = propertyDetailsSchema.safeParse(formState.propertyDetails).error?.errors
+    .find(error => error.path[0] === 'listingDetails')
+  if (listingDetailsErrorsExist) {
     const invalidUrl = propertyDetailsSchema.safeParse(formState.propertyDetails).error?.errors
       .filter(error => error.path[0] === 'listingDetails' && error.path[1].toString() === index.toString())
       .map((error) => {
@@ -95,17 +96,22 @@ const validateField = (index: number) => {
       })
     // if validation isn't passed
     if (invalidUrl) {
-      listingURLErrors.value?.length 
+      listingURLErrors.value?.length
         // if other errors exist add this one
         ? listingURLErrors.value.push(invalidUrl[0])
         // if no other errors this becomes the error object
         : listingURLErrors.value = invalidUrl
-    } else {
+    } else if (listingURLErrors.value?.length === 0) {
       // if no other errors and URL is valid replace value with undefined
-      if (listingURLErrors.value?.length === 0) {
-        listingURLErrors.value = undefined
+      listingURLErrors.value = undefined
+    } else {
+      const removalIndex = listingURLErrors.value?.findIndex(nonerror => nonerror?.errorIndex === index)
+      if (removalIndex) {
+        listingURLErrors.value?.splice(removalIndex, 1)
       }
     }
+  } else {
+    listingURLErrors.value = undefined
   }
 }
 

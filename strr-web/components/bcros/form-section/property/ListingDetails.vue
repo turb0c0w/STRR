@@ -47,6 +47,7 @@
 </template>
 
 <script setup lang="ts">
+
 const {
   addPlatform,
   removeDetailAtIndex,
