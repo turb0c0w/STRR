@@ -14,7 +14,7 @@
             v-model="month"
             :placeholder="t('create-account.contact-form.month')"
             :options="getMonths()"
-            option-attribute="key"
+            option-attribute="name"
             class="w-full"
             aria-label="birth month"
             style="color: #1a202c; /* text-gray-900 */ dark:text-white; /* Override with dark mode text color */"
