@@ -87,14 +87,7 @@ export const secondaryContactSchema = z.object({
   addressLineTwo: optionalOrEmptyString,
   city: requiredNonEmptyString,
   province: requiredNonEmptyString,
-  postalCode: requiredNonEmptyString,
-  birthDay: requiredNumber
-    .refine(day => day.length === 2, 'Day must be two digits')
-    .refine(day => Number(day) <= 31, 'Must be less than or equal to 31'),
-  birthMonth: requiredNonEmptyString,
-  birthYear: requiredNumber
-    .refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
-    .refine(year => year.length === 4, 'Year must be four digits')
+  postalCode: requiredNonEmptyString
 })
 
 const primaryContact: ContactInformationI = {

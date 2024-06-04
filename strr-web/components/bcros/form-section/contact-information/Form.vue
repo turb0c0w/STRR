@@ -19,6 +19,9 @@
           v-model:day="formState.primaryContact.birthDay"
           v-model:month="formState.primaryContact.birthMonth"
           v-model:year="formState.primaryContact.birthYear"
+          :month-error="monthError"
+          :is-primary="true"
+          @validate-months="validateMonths"
         />
         <BcrosFormSectionContactInformationContactDetails
           v-model:phone-number="formState.primaryContact.phoneNumber"
@@ -72,7 +75,7 @@
             v-model:day="formState.secondaryContact.birthDay"
             v-model:month="formState.secondaryContact.birthMonth"
             v-model:year="formState.secondaryContact.birthYear"
-            :dob-optional="true"
+            :is-primary="false"
           />
           <BcrosFormSectionContactInformationContactDetails
             v-model:phone-number="formState.secondaryContact.phoneNumber"
@@ -106,6 +109,7 @@
 <script setup lang="ts">
 import { formState } from '@/stores/strr'
 const t = useNuxtApp().$i18n.t
+const monthError = ref('')
 
 const {
   fullName,
@@ -149,6 +153,12 @@ watch(canadaPostAddress, (newAddress) => {
   }
 })
 
+const validateMonths = () => {
+  const parsed = contactSchema.safeParse(formState.primaryContact).error?.errors
+  const error = parsed?.find(error => error.path.includes('birthMonth'))
+  monthError.value = error ? error.message : ''
+}
+
 const { me, currentAccount } = useBcrosAccount()
 
 if (me?.profile.contacts && me?.profile.contacts.length > 0) {
@@ -171,6 +181,10 @@ if (currentAccount && me) {
     }
   }
 }
+
+onMounted(() => {
+  if (isComplete) { validateMonths() }
+})
 
 const form = ref()
 
