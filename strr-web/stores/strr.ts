@@ -151,7 +151,8 @@ export const propertyDetailsSchema = z.object({
   parcelIdentifier: optionalOrEmptyString,
   postalCode: requiredNonEmptyString,
   propertyType: requiredNonEmptyString,
-  province: requiredNonEmptyString,
+  province: requiredNonEmptyString
+    .refine(province => province === 'BC', { message: 'Province must be set to BC' }),
   useMailing: z.boolean()
 })
 
