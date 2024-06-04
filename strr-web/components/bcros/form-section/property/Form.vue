@@ -26,6 +26,10 @@
           v-model:parcel-identifier="formState.propertyDetails.parcelIdentifier"
           :property-types="propertyTypes"
           :ownership-types="ownershipTypes"
+          :ownership-type-error="ownershipTypeError"
+          :property-type-error="propertyTypeError"
+          @validate-ownership="validateOwnershipType"
+          @validate-property="validatePropertyType"
         />
         <BcrosFormSectionPropertyListingDetails
           v-model:listing-details="formState.propertyDetails.listingDetails"
@@ -151,6 +155,21 @@ const ownershipTypes: string[] = [
   t('create-account.property-form.other')
 ]
 
+const propertyTypeError = ref('')
+const ownershipTypeError = ref('')
+
+const validatePropertyType = () => {
+  const parsed = propertyDetailsSchema.safeParse(formState.propertyDetails).error?.errors
+  const error = parsed?.find(error => error.path.includes('propertyType'))
+  propertyTypeError.value = error ? error.message : ''
+}
+
+const validateOwnershipType = () => {
+  const parsed = propertyDetailsSchema.safeParse(formState.propertyDetails).error?.errors
+  const error = parsed?.find(error => error.path.includes('ownershipType'))
+  ownershipTypeError.value = error ? error.message : ''
+}
+
 const form = ref()
 
 watch(form, () => {
@@ -160,6 +179,10 @@ watch(form, () => {
 onMounted(() => {
   if (isComplete && !isValid.value) {
     validateAllPropertyListingUrls()
+  }
+  if (isComplete) {
+    validatePropertyType()
+    validateOwnershipType()
   }
 })
 
