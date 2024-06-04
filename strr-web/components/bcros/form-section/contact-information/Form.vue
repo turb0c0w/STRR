@@ -10,15 +10,18 @@
         <div class="mb-[16px] text-[14px] leading-[22px]">
           {{ fullName }}
         </div>
-        <div class="mb-[16px] text-[14px] leading-[22px]">
+        <div ref="testRef" class="mb-[16px] text-[14px] leading-[22px]">
           {{ t('create-account.contact.disclaimer') }}
         </div>
       </BcrosFormSection>
-      <UForm :schema="contactSchema" :state="formState.primaryContact">
+      <UForm ref="form" :schema="contactSchema" :state="formState.primaryContact">
         <BcrosFormSectionContactInformationContactInfo
           v-model:day="formState.primaryContact.birthDay"
           v-model:month="formState.primaryContact.birthMonth"
           v-model:year="formState.primaryContact.birthYear"
+          :month-error="monthError"
+          :is-primary="true"
+          @validate-months="validateMonths"
         />
         <BcrosFormSectionContactInformationContactDetails
           v-model:phone-number="formState.primaryContact.phoneNumber"
@@ -67,12 +70,12 @@
             <UIcon class="h-[20px] w-[20px]" name="i-mdi-remove" alt="remove icon" />
           </div>
         </div>
-        <UForm :schema="secondaryContactSchema" :state="formState.secondaryContact">
+        <UForm ref="secondForm" :schema="secondaryContactSchema" :state="formState.secondaryContact">
           <BcrosFormSectionContactInformationContactInfo
             v-model:day="formState.secondaryContact.birthDay"
             v-model:month="formState.secondaryContact.birthMonth"
             v-model:year="formState.secondaryContact.birthYear"
-            :dob-optional="true"
+            :is-primary="false"
           />
           <BcrosFormSectionContactInformationContactDetails
             v-model:phone-number="formState.secondaryContact.phoneNumber"
@@ -95,6 +98,7 @@
             v-model:postal-code="formState.secondaryContact.postalCode"
             :enable-address-complete="enableAddressComplete"
             default-country-iso2="CA"
+            :postal="false"
           />
         </UForm>
       </div>
@@ -105,15 +109,20 @@
 <script setup lang="ts">
 import { formState } from '@/stores/strr'
 const t = useNuxtApp().$i18n.t
+const monthError = ref('')
 
 const {
   fullName,
   addSecondaryContact,
-  toggleAddSecondary
+  toggleAddSecondary,
+  isComplete,
+  secondFormIsComplete
 } = defineProps<{
   fullName: string,
-  addSecondaryContact: boolean
-  toggleAddSecondary:() => void
+  addSecondaryContact: boolean,
+  toggleAddSecondary:() => void,
+  isComplete: boolean,
+  secondFormIsComplete: boolean
 }>()
 
 const {
@@ -144,6 +153,12 @@ watch(canadaPostAddress, (newAddress) => {
   }
 })
 
+const validateMonths = () => {
+  const parsed = contactSchema.safeParse(formState.primaryContact).error?.errors
+  const error = parsed?.find(error => error.path.includes('birthMonth'))
+  monthError.value = error ? error.message : ''
+}
+
 const { me, currentAccount } = useBcrosAccount()
 
 if (me?.profile.contacts && me?.profile.contacts.length > 0) {
@@ -166,5 +181,21 @@ if (currentAccount && me) {
     }
   }
 }
+
+onMounted(() => {
+  if (isComplete) { validateMonths() }
+})
+
+const form = ref()
+
+watch(form, () => {
+  if (form.value && isComplete) { form.value.validate() }
+})
+
+const secondForm = ref()
+
+watch(secondForm, () => {
+  if (secondForm.value && secondFormIsComplete) { secondForm.value.validate() }
+})
 
 </script>

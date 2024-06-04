@@ -16,13 +16,16 @@
             </div>
             <div v-if="activeStepIndex === 0" :key="activeStepIndex">
               <BcrosFormSectionContactInformationForm
+                ref="contactForm"
                 :full-name="userFullName"
                 :add-secondary-contact="addSecondaryContact"
                 :toggle-add-secondary="toggleAddSecondary"
+                :is-complete="activeStep.step.complete"
+                :second-form-is-complete="activeStep.step.complete"
               />
             </div>
             <div v-if="activeStepIndex === 1" :key="activeStepIndex">
-              <BcrosFormSectionPropertyForm />
+              <BcrosFormSectionPropertyForm :is-complete="activeStep.step.complete" />
             </div>
           </div>
         </div>
@@ -49,6 +52,7 @@ import { FormPageI } from '~/interfaces/form/form-page-i'
 const addSecondaryContact: Ref<boolean> = ref(false)
 const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
+const contactForm = ref()
 
 const t = useNuxtApp().$i18n.t
 const {
@@ -90,7 +94,8 @@ watch(formState.secondaryContact, () => {
 })
 
 watch(formState.propertyDetails, () => {
-  if (propertyDetailsSchema.safeParse(formState.propertyDetails).success) {
+  const parsed = propertyDetailsSchema.safeParse(formState.propertyDetails)
+  if (parsed.success) {
     setStepValid(1, true)
   }
 })

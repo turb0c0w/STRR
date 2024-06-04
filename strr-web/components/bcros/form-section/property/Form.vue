@@ -6,7 +6,7 @@
           {{ t('create-account.property-form.subtitle') }}
         </p>
       </div>
-      <UForm :schema="propertyDetailsSchema" :state="formState.propertyDetails">
+      <UForm ref="form" :schema="propertyDetailsSchema" :state="formState.propertyDetails">
         <BcrosFormSectionPropertyAddress
           id="propertyAddress"
           v-model:nickname="formState.propertyDetails.nickname"
@@ -26,12 +26,18 @@
           v-model:parcel-identifier="formState.propertyDetails.parcelIdentifier"
           :property-types="propertyTypes"
           :ownership-types="ownershipTypes"
+          :ownership-type-error="ownershipTypeError"
+          :property-type-error="propertyTypeError"
+          @validate-ownership="validateOwnershipType"
+          @validate-property="validatePropertyType"
         />
         <BcrosFormSectionPropertyListingDetails
           v-model:listing-details="formState.propertyDetails.listingDetails"
           :enable-address-complete="enableAddressComplete"
           :add-platform="addPlatform"
           :remove-detail-at-index="removeDetailAtIndex"
+          :invalid-urls="listingURLErrors"
+          @validate-field="(index: number) => validateField(index)"
         />
       </UForm>
     </div>
@@ -39,6 +45,10 @@
 </template>
 
 <script setup lang="ts">
+const { isComplete } = defineProps<{
+  isComplete: boolean
+}>()
+
 const {
   address: canadaPostAddress,
   enableAddressComplete
@@ -46,18 +56,27 @@ const {
 
 watch(canadaPostAddress, (newAddress) => {
   if (newAddress) {
-    formState.propertyDetails.address = newAddress.street
-    formState.propertyDetails.addressLineTwo = newAddress.streetAdditional
-    formState.propertyDetails.country = newAddress.country
-    formState.propertyDetails.city = newAddress.city
-    formState.propertyDetails.province = newAddress.region
-    formState.propertyDetails.postalCode = newAddress.postalCode
+    if (newAddress.region === 'BC') {
+      formState.propertyDetails.address = newAddress.street
+      formState.propertyDetails.addressLineTwo = newAddress.streetAdditional
+      formState.propertyDetails.country = newAddress.country
+      formState.propertyDetails.city = newAddress.city
+      formState.propertyDetails.province = newAddress.region
+      formState.propertyDetails.postalCode = newAddress.postalCode
+    } else {
+      // replace with validation error?
+      alert('Please choose an address in BC')
+    }
   }
 })
 
 const t = useNuxtApp().$i18n.t
 
 const isValid = ref(false)
+const listingURLErrors = ref<(({
+    errorIndex: string | number;
+    message: string;
+} | undefined)[] | undefined)>([])
 
 const addPlatform = () => {
   formState.propertyDetails.listingDetails.push({ url: '' })
@@ -65,6 +84,53 @@ const addPlatform = () => {
 
 const removeDetailAtIndex = (index: number) => {
   formState.propertyDetails.listingDetails.splice(index, 1)
+}
+
+const validateField = (index: number) => {
+  const listingDetailsErrorsExist = propertyDetailsSchema.safeParse(formState.propertyDetails).error?.errors
+    .find(error => error.path[0] === 'listingDetails')
+  if (listingDetailsErrorsExist) {
+    const invalidUrl = propertyDetailsSchema.safeParse(formState.propertyDetails).error?.errors
+      .filter(error => error.path[0] === 'listingDetails' && error.path[1].toString() === index.toString())
+      .map((error) => {
+        return {
+          errorIndex: error.path[1],
+          message: error.message
+        }
+      })
+    // if validation isn't passed
+    if (invalidUrl) {
+      listingURLErrors.value?.length
+        // if other errors exist add this one
+        ? listingURLErrors.value.push(invalidUrl[0])
+        // if no other errors this becomes the error object
+        : listingURLErrors.value = invalidUrl
+    } else if (listingURLErrors.value?.length === 0) {
+      // if no other errors and URL is valid replace value with undefined
+      listingURLErrors.value = undefined
+    } else {
+      const removalIndex = listingURLErrors.value?.findIndex(nonerror => nonerror?.errorIndex === index)
+      if (removalIndex) {
+        listingURLErrors.value?.splice(removalIndex, 1)
+      }
+    }
+  } else {
+    listingURLErrors.value = undefined
+  }
+}
+
+const validateAllPropertyListingUrls = () => {
+  if (propertyDetailsSchema.safeParse(formState.propertyDetails).error) {
+    const invalidUrls = propertyDetailsSchema.safeParse(formState.propertyDetails).error?.errors
+      .filter(error => error.path[0] === 'listingDetails')
+      .map((error) => {
+        return {
+          errorIndex: error.path[1],
+          message: error.message
+        }
+      })
+    listingURLErrors.value = invalidUrls
+  }
 }
 
 watch(formState.propertyDetails, () => {
@@ -88,5 +154,36 @@ const ownershipTypes: string[] = [
   t('create-account.property-form.own'),
   t('create-account.property-form.other')
 ]
+
+const propertyTypeError = ref('')
+const ownershipTypeError = ref('')
+
+const validatePropertyType = () => {
+  const parsed = propertyDetailsSchema.safeParse(formState.propertyDetails).error?.errors
+  const error = parsed?.find(error => error.path.includes('propertyType'))
+  propertyTypeError.value = error ? error.message : ''
+}
+
+const validateOwnershipType = () => {
+  const parsed = propertyDetailsSchema.safeParse(formState.propertyDetails).error?.errors
+  const error = parsed?.find(error => error.path.includes('ownershipType'))
+  ownershipTypeError.value = error ? error.message : ''
+}
+
+const form = ref()
+
+watch(form, () => {
+  if (form.value && isComplete) { form.value.validate() }
+})
+
+onMounted(() => {
+  if (isComplete && !isValid.value) {
+    validateAllPropertyListingUrls()
+  }
+  if (isComplete) {
+    validatePropertyType()
+    validateOwnershipType()
+  }
+})
 
 </script>

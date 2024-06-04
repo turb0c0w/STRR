@@ -13,7 +13,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="Address" class="flex-grow">
+        <UFormGroup name="address" class="flex-grow">
           <UInput
             :id="id"
             v-model="address"
@@ -25,7 +25,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="AddressLineTwo" class="flex-grow">
+        <UFormGroup name="addressLineTwo" class="flex-grow">
           <UInput
             v-model="addressLineTwo"
             :placeholder="t('create-account.contact-form.addressLineTwo')"
@@ -67,7 +67,7 @@ const countryItems = ref<CountryItem[]>([])
 
 const addressComplete = () => {
   if (typeof country.value === 'string') {
-    enableAddressComplete(id, country.value)
+    enableAddressComplete(id, country.value, true)
   }
 }
 
@@ -78,7 +78,7 @@ const {
 } = defineProps<{
   id: string,
   defaultCountryIso2: string,
-  enableAddressComplete:(id: string, countryIso2: string) => void
+  enableAddressComplete:(id: string, countryIso2: string, countrySelect: boolean) => void
 }>()
 
 onMounted(() => {

@@ -6,11 +6,16 @@
     >
       <div v-for="(listing, index) in listingDetails" :key="index">
         <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px] items-center">
-          <UFormGroup name="urlOne" class="desktop:pr-[16px] flex-grow">
+          <UFormGroup
+            name="url"
+            class="desktop:pr-[16px] flex-grow"
+            :error="invalidUrls?.find((invalidUrl) => invalidUrl?.errorIndex === index)?.message"
+          >
             <UInput
               v-model="listing.url"
               aria-label="URL input"
               :placeholder="`Platform URL ${index > 0 ? index + 1: ''}`"
+              @blur="() => emitValidate(index)"
             />
           </UFormGroup>
           <div
@@ -42,13 +47,27 @@
 </template>
 
 <script setup lang="ts">
+
 const {
   addPlatform,
-  removeDetailAtIndex
+  removeDetailAtIndex,
+  invalidUrls
 } = defineProps<{
   addPlatform:() => void,
   removeDetailAtIndex: (index: number) => void,
+  invalidUrls: ({
+    errorIndex: string | number;
+    message: string;
+} | undefined)[] | undefined
 }>()
+
+const emit = defineEmits<{
+  validateField: [id: number]
+}>()
+
+const emitValidate = (index: number) => {
+  emit('validateField', index)
+}
 
 const listingDetails = defineModel<{ url: string }[]>('listingDetails')
 
