@@ -126,7 +126,12 @@ export interface CreateAccountFormStateI {
     postalCode: string | undefined,
     listingDetails: { url: string }[],
   },
-  selectedAccount: OrgI
+  selectedAccount: OrgI,
+  principal: {
+    isPrincipal: boolean | undefined;
+    reason?: string | undefined;
+    otherReason?: string | undefined;
+  }
 }
 
 export interface MailingAddressAPII {

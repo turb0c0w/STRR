@@ -173,7 +173,11 @@ export const formState: CreateAccountFormStateI = reactive({
     postalCode: undefined,
     listingDetails: [{ url: '' }]
   },
-  selectedAccount: {} as OrgI
+  selectedAccount: {} as OrgI,
+  principal: {
+    isPrincipal: undefined,
+    reason: undefined
+  }
 })
 
 const primaryContactAPI: ContactAPII = {

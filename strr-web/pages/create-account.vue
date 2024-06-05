@@ -10,7 +10,7 @@
           <div :key="activeStepIndex" class="grow">
             <div class="mobile:px-[8px]">
               <BcrosTypographyH2 :text="t(activeStep.title)" class="py-[32px]" />
-              <p class="mb-[32px]">
+              <p v-if="activeStep.subtitle" class="mb-[32px]">
                 {{ t(activeStep.subtitle) }}
               </p>
             </div>
@@ -23,6 +23,12 @@
             </div>
             <div v-if="activeStepIndex === 1" :key="activeStepIndex">
               <BcrosFormSectionPropertyForm />
+            </div>
+            <div v-if="activeStepIndex === 2" :key="activeStepIndex">
+              <BcrosFormSectionPrincipalResidenceForm />
+            </div>
+            <div v-if="activeStepIndex === 3" :key="activeStepIndex">
+              <BcrosFormSectionReviewForm :secondary-contact="addSecondaryContact"/>
             </div>
           </div>
         </div>

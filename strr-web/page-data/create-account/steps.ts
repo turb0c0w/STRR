@@ -39,7 +39,7 @@ const steps: FormPageI[] = [
       alt: 'Upload documents'
     },
     title: 'create-account.eligibility.title',
-    subtitle: 'create-account.eligibility.subtitle',
+    subtitle: '',
     formTitle: 'create-account.eligibility.primary',
     sections: []
   },
@@ -53,7 +53,7 @@ const steps: FormPageI[] = [
       alt: 'Check and verify'
     },
     title: 'create-account.confirm.title',
-    subtitle: 'create-account.confirm.subtitle',
+    subtitle: '',
     formTitle: 'create-account.confirm.primary',
     sections: []
   }
