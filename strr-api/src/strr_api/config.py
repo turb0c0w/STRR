@@ -112,6 +112,11 @@ class Config:  # pylint: disable=too-few-public-methods
     STRR_SERVICE_ACCOUNT_CLIENT_ID = os.getenv("STRR_SERVICE_ACCOUNT_CLIENT_ID")
     STRR_SERVICE_ACCOUNT_SECRET = os.getenv("STRR_SERVICE_ACCOUNT_SECRET")
 
+    GCP_CS_PROJECT_ID = os.getenv("GCP_CS_PROJECT_ID")
+    GCP_CS_SA_SCOPE = os.getenv("GCP_CS_SA_SCOPE")
+    GCP_CS_BUCKET_ID = os.getenv("GCP_CS_BUCKET_ID")
+    GCP_AUTH_KEY = os.getenv("GCP_AUTH_KEY")
+
 
 class Production(Config):  # pylint: disable=too-few-public-methods
     """Production class configuration that should override vars for production."""

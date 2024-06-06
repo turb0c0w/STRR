@@ -59,7 +59,9 @@ class SelectedAccount:
 class Registration:
     """Registration payload object."""
 
-    def __init__(self, primaryContact, unitAddress, unitDetails, listingDetails, secondaryContact=None):
+    def __init__(
+        self, primaryContact, unitAddress, unitDetails, listingDetails, principalResidence, secondaryContact=None
+    ):
         self.primaryContact = Contact(**primaryContact)
         self.secondaryContact = None
         if secondaryContact:
@@ -67,6 +69,25 @@ class Registration:
         self.unitAddress = UnitAddress(**unitAddress)
         self.unitDetails = UnitDetails(**unitDetails)
         self.listingDetails = [ListingDetails(**item) for item in listingDetails]
+        self.principalResidence = PrincipalResidence(**principalResidence)
+
+
+class PrincipalResidence:
+    """PrincipalResidence payload object."""
+
+    def __init__(
+        self,
+        isPrincipalResidence,
+        agreedToRentalAct,
+        agreedToSubmit,
+        nonPrincipalOption=None,
+        specifiedServiceProvider=None,
+    ):
+        self.isPrincipalResidence = isPrincipalResidence
+        self.agreedToRentalAct = agreedToRentalAct
+        self.agreedToSubmit = agreedToSubmit
+        self.nonPrincipalOption = nonPrincipalOption
+        self.specifiedServiceProvider = specifiedServiceProvider
 
 
 class ListingDetails:

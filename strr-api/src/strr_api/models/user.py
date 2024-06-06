@@ -41,8 +41,29 @@ from __future__ import annotations
 from datetime import datetime
 
 from flask import current_app
+from sqlalchemy.orm import relationship
 
 from .db import db
+
+
+class Contact(db.Model):
+    """Contact model for storing information about non-registered users."""
+
+    __tablename__ = "contacts"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    firstname = db.Column(db.String(1000), nullable=False)
+    lastname = db.Column(db.String(1000), nullable=False)
+    middlename = db.Column(db.String(1000))
+    address_id = db.Column(db.Integer, db.ForeignKey("addresses.id"), nullable=False)
+    email = db.Column(db.String(255), nullable=True)
+    preferredname = db.Column(db.String, nullable=True)
+    phone_extension = db.Column(db.String, nullable=True)
+    fax_number = db.Column(db.String, nullable=True)
+    phone_number = db.Column(db.String(20), nullable=True)
+    date_of_birth = db.Column(db.Date, nullable=True)
+
+    address = relationship("Address", back_populates="contact")
 
 
 class User(db.Model):
@@ -61,11 +82,8 @@ class User(db.Model):
     idp_userid = db.Column(db.String(256), index=True)
     login_source = db.Column(db.String(200), nullable=True)
     creation_date = db.Column(db.DateTime(timezone=True), default=datetime.now)
-    preferredname = db.Column(db.String, nullable=True)
-    phone_extension = db.Column(db.String, nullable=True)
-    fax_number = db.Column(db.String, nullable=True)
-    phone_number = db.Column(db.String, nullable=True)
-    date_of_birth = db.Column(db.Date, nullable=True)
+
+    registrations = relationship("Registration")
 
     @property
     def display_name(self):

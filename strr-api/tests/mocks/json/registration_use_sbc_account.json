@@ -68,6 +68,13 @@
       {
         "url": "https://www.airbnb.ca/rooms/26359027"
       }
-    ]
+    ],
+    "principalResidence": {
+      "isPrincipalResidence": true,
+      "agreedToRentalAct": true,
+      "nonPrincipalOption": "n/a",
+      "specifiedServiceProvider": "n/a",
+      "agreedToSubmit": true
+    }
   }
 }
