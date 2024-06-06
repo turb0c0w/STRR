@@ -14,7 +14,8 @@
           {{ tPrincipalResidence('provincial-rules') }}
         </p>
         <URadioGroup v-model="formState.principal.isPrincipal" :legend="tPrincipalResidence('radio-legend')" :options="primaryResidenceRadioOptions" />
-        <UFormGroup v-if="!formState.principal.isPrincipal && formState.principal.isPrincipal !== undefined" class="text-[16px] mt-[20px]">
+        {{ reasonError }}
+        <UFormGroup v-if="!formState.principal.isPrincipal && formState.principal.isPrincipal !== undefined" class="text-[16px] mt-[20px]" :error="reasonError">
           <USelect
             v-model="formState.principal.reason"
             :placeholder="tPrincipalResidence('reason')"
@@ -22,12 +23,14 @@
             option-attribute="key"
             class="w-full text-[16px]"
             aria-label="Exemption reason"
+            @blur="(event: any, reason: string) => validateReason(reason, event)"
+            @change="(reason: string) => validateReason(reason)"
           />
           <p class="ml-[18px] text-bcGovColor-midGray text-[12px]">
             {{ tPrincipalResidence('reason-hint') }}
           </p>
         </UFormGroup>
-        <UFormGroup v-if="formState.principal.reason === tPrincipalResidence('other')" class="text-[16px] ml-[48px] mt-[20px]">
+        <UFormGroup v-if="formState.principal.reason === tPrincipalResidence('other')" class="text-[16px] ml-[48px] mt-[20px]" :error="otherReasonError">
           <USelect
             v-model="formState.principal.otherReason"
             :placeholder="tPrincipalResidence('service')"
@@ -35,6 +38,8 @@
             option-attribute="key"
             class="w-full text-[16px]"
             aria-label="Other exemption reason"
+            @blur="(event: any, reason: string) => validateOtherReason(reason, event)"
+            @change="(reason: string) => validateOtherReason(reason)"
           />
           <p class="ml-[18px] text-bcGovColor-midGray text-[12px]">
             {{ tPrincipalResidence('reason-hint') }}
@@ -100,7 +105,15 @@ const tPrincipalResidence = (translationKey: string) => t(`create-account.princi
 
 const declaration = ref(false)
 const consent = ref(false)
+const reasonError = ref()
+const otherReasonError = ref()
 
+const validateReason = (reason: string, event?: any) => {
+  return reasonError.value = reason || event?.target?.value ? undefined : 'Reason required'
+}
+const validateOtherReason = (otherReason: string, event?: any) => {
+  return otherReasonError.value = otherReason || event?.target?.value ? undefined : 'Reason required'
+}
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
 
