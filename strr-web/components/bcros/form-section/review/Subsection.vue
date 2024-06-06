@@ -40,12 +40,9 @@
 </template>
 
 <script setup lang="ts">
-import { Locale } from '@nuxtjs/i18n/dist/runtime/composables'
 
 const t = useNuxtApp().$i18n.t
-// const tReview = (translationKey: string) => t(`create-account.review.${translationKey}`)
 const tContact = (translationKey: string) => t(`create-account.contact-form.${translationKey}`)
-const tProperty = (translationKey: string) => t(`create-account.property-form.${translationKey}`)
 
 const { state, primary } = defineProps<{
   state: ContactInformationI | SecondaryContactInformationI
@@ -68,8 +65,6 @@ const getNames = () => {
 }
 
 const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
-
-const tReview = (translationKey: string) => t(`create-account.review.${translationKey}`)
 
 const getDateOfBirth = () => {
   if (!state.birthDay || !state.birthMonth || !state.birthYear) {

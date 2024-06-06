@@ -13,9 +13,17 @@
         <p class="text-[16px] mb-[16px]">
           {{ tPrincipalResidence('provincial-rules') }}
         </p>
-        <URadioGroup v-model="formState.principal.isPrincipal" :legend="tPrincipalResidence('radio-legend')" :options="primaryResidenceRadioOptions" />
+        <URadioGroup
+          v-model="formState.principal.isPrincipal"
+          :legend="tPrincipalResidence('radio-legend')"
+          :options="primaryResidenceRadioOptions"
+        />
         {{ reasonError }}
-        <UFormGroup v-if="!formState.principal.isPrincipal && formState.principal.isPrincipal !== undefined" class="text-[16px] mt-[20px]" :error="reasonError">
+        <UFormGroup
+          v-if="!formState.principal.isPrincipal && formState.principal.isPrincipal !== undefined"
+          class="text-[16px] mt-[20px]"
+          :error="reasonError"
+        >
           <USelect
             v-model="formState.principal.reason"
             :placeholder="tPrincipalResidence('reason')"
@@ -30,7 +38,11 @@
             {{ tPrincipalResidence('reason-hint') }}
           </p>
         </UFormGroup>
-        <UFormGroup v-if="formState.principal.reason === tPrincipalResidence('other')" class="text-[16px] ml-[48px] mt-[20px]" :error="otherReasonError">
+        <UFormGroup
+          v-if="formState.principal.reason === tPrincipalResidence('other')"
+          class="text-[16px] ml-[48px] mt-[20px]"
+          :error="otherReasonError"
+        >
           <USelect
             v-model="formState.principal.otherReason"
             :placeholder="tPrincipalResidence('service')"
@@ -73,7 +85,6 @@
                 type="file"
                 class="w-full"
                 :placeholder="tPrincipalResidence('supporting')"
-                @change="uploadFile"
               />
             </div>
             <p class="text-[12px] ml-[58px] mt-[4px] mb-[40px] text-bcGovColor-midGray">
@@ -88,8 +99,20 @@
             </p>
           </div>
           <BcrosFormSection class="pb-[40px]">
-            <UCheckbox v-model="declaration" class="mb-[18px]" name="declaration" :label="tPrincipalResidence('declare')" />
-            <UCheckbox v-model="consent" name="consent" :label="tPrincipalResidence('consent')" />
+            <UCheckbox
+              v-model="formState.principal.declaration"
+              :class="`mb-[18px]
+                ${isComplete && !formState.principal.declaration ? 'outline outline-bcGovColor-error' : ''}
+              `"
+              name="declaration"
+              :label="tPrincipalResidence('declare')"
+            />
+            <UCheckbox
+              v-model="formState.principal.consent"
+              :class="`${isComplete && !formState.principal.consent ? 'outline outline-bcGovColor-error' : ''}`"
+              name="consent"
+              :label="tPrincipalResidence('consent')"
+            />
           </BcrosFormSection>
         </div>
       </div>
@@ -98,28 +121,38 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
+// import axios from 'axios'
 
 const t = useNuxtApp().$i18n.t
 const tPrincipalResidence = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
 
-const declaration = ref(false)
-const consent = ref(false)
 const reasonError = ref()
 const otherReasonError = ref()
 
+const { isComplete } = defineProps<{ isComplete: boolean }>()
+
 const validateReason = (reason: string, event?: any) => {
-  return reasonError.value = reason || event?.target?.value ? undefined : 'Reason required'
+  reasonError.value = reason || event?.target?.value ? undefined : 'Reason required'
 }
 const validateOtherReason = (otherReason: string, event?: any) => {
-  return otherReasonError.value = otherReason || event?.target?.value ? undefined : 'Reason required'
+  otherReasonError.value = otherReason || event?.target?.value ? undefined : 'Reason required'
 }
-const apiURL = useRuntimeConfig().public.strrApiURL
-const axiosInstance = addAxiosInterceptors(axios.create())
 
-const uploadFile = (file: any) => {
-  console.log(file)
+if (isComplete) {
+  if (!formState.principal.isPrincipal) {
+    validateReason(formState.principal.reason ?? '')
+  }
+  if (!formState.principal.isPrincipal && formState.principal.otherReason === tPrincipalResidence('other')) {
+    validateOtherReason(formState.principal.otherReason ?? '')
+  }
 }
+
+// const apiURL = useRuntimeConfig().public.strrApiURL
+// const axiosInstance = addAxiosInterceptors(axios.create())
+
+// const uploadFile = (file: any) => {
+//   console.log(file)
+// }
 
 // const upload = () => {
 //   axiosInstance.post<string>(`${apiURL}/registrations`)

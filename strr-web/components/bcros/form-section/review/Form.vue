@@ -69,7 +69,10 @@
               <div v-if="!formState.principal.isPrincipal">
                 <p>
                   <b>{{ tReview('reason') }}: </b>
-                  {{ `${formState.principal.otherReason ? formState.principal.otherReason : formState.principal.reason}` }}
+                  {{ `${formState.principal.otherReason
+                    ? formState.principal.otherReason
+                    : formState.principal.reason
+                  }` }}
                 </p>
               </div>
             </div>
@@ -83,11 +86,19 @@
               </p>
               <div class="mt-[8px]">
                 <div class="mb-[12px] flex flex-row">
-                  <img class="mr-[8px] self-start" src="/icons/create-account/gray_check.svg" alt="Confirmation checkmark">
+                  <img
+                    class="mr-[8px] self-start"
+                    src="/icons/create-account/gray_check.svg"
+                    alt="Confirmation checkmark"
+                  >
                   <BcrosFormSectionReviewDeclaration />
                 </div>
                 <div class="flex flex-row">
-                  <img class="mr-[8px] self-start" src="/icons/create-account/gray_check.svg" alt="Confirmation checkmark">
+                  <img
+                    class="mr-[8px] self-start"
+                    src="/icons/create-account/gray_check.svg"
+                    alt="Confirmation checkmark"
+                  >
                   {{ tPrincipal('consent') }}
                 </div>
               </div>

@@ -131,6 +131,8 @@ export interface CreateAccountFormStateI {
     isPrincipal: boolean | undefined;
     reason?: string | undefined;
     otherReason?: string | undefined;
+    declaration: boolean;
+    consent: boolean;
   }
 }
 

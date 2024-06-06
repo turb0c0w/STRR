@@ -25,7 +25,7 @@
               <BcrosFormSectionPropertyForm />
             </div>
             <div v-if="activeStepIndex === 2" :key="activeStepIndex">
-              <BcrosFormSectionPrincipalResidenceForm />
+              <BcrosFormSectionPrincipalResidenceForm :is-complete="steps[activeStepIndex].step.complete" />
             </div>
             <div v-if="activeStepIndex === 3" :key="activeStepIndex">
               <BcrosFormSectionReviewForm :secondary-contact="addSecondaryContact" />
@@ -55,6 +55,7 @@ import { FormPageI } from '~/interfaces/form/form-page-i'
 const addSecondaryContact: Ref<boolean> = ref(false)
 const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
+const tPrincipalResidence = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
 
 const t = useNuxtApp().$i18n.t
 const {
@@ -98,6 +99,27 @@ watch(formState.secondaryContact, () => {
 watch(formState.propertyDetails, () => {
   if (propertyDetailsSchema.safeParse(formState.propertyDetails).success) {
     setStepValid(1, true)
+  }
+})
+
+watch(formState.principal, () => {
+  if (formState.principal.isPrincipal &&
+    formState.principal.consent &&
+    formState.principal.declaration
+  ) {
+    setStepValid(2, true)
+  }
+  if (!formState.principal.isPrincipal &&
+    formState.principal.reason &&
+    formState.principal.reason !== tPrincipalResidence('other')
+  ) {
+    setStepValid(2, true)
+  }
+  if (!formState.principal.isPrincipal &&
+    formState.principal.reason &&
+    formState.principal.otherReason
+  ) {
+    setStepValid(2, true)
   }
 })
 
