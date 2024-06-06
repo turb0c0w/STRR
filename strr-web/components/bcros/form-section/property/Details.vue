@@ -20,7 +20,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="propertyType" class="pr-[16px] flex-grow">
+        <UFormGroup name="propertyType" class="pr-[16px] flex-grow" :error="propertyTypeError">
           <USelect
             v-model="propertyType"
             aria-label="property types"
@@ -28,11 +28,14 @@
             :options="propertyTypes"
             option-attribute="name"
             class="w-full"
+            style="color: #1a202c; /* text-gray-900 */ dark:text-white; /* Override with dark mode text color */"
+            @blur="emit('validateProperty')"
+            @change="emit('validateProperty')"
           />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="ownershipType" class="pr-[16px] flex-grow">
+        <UFormGroup name="ownershipType" class="pr-[16px] flex-grow" :error="ownershipTypeError">
           <USelect
             v-model="ownershipType"
             aria-label="ownership types"
@@ -40,6 +43,10 @@
             :options="ownershipTypes"
             option-attribute="name"
             class="w-full"
+            style="color: #1a202c; /* text-gray-900 */ dark:text-white; /* Override with dark mode text color */"
+            :error="ownershipTypeError"
+            @blur="emit('validateOwnership')"
+            @change="emit('validateOwnership')"
           />
         </UFormGroup>
       </div>
@@ -56,11 +63,17 @@ const ownershipType = defineModel<string>('ownershipType')
 const businessLicense = defineModel<string>('businessLicense')
 const parcelIdentifier = defineModel<string>('parcelIdentifier')
 
+const emit = defineEmits(['validateOwnership', 'validateProperty'])
+
 const {
   propertyTypes,
-  ownershipTypes
+  ownershipTypes,
+  ownershipTypeError,
+  propertyTypeError
 } = defineProps<{
   propertyTypes: string[],
-  ownershipTypes: string[]
+  ownershipTypes: string[],
+  ownershipTypeError: string,
+  propertyTypeError: string
 }>()
 </script>
