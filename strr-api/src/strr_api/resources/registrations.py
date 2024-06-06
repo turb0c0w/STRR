@@ -38,9 +38,10 @@ This module provides a simple flask blueprint with a single 'home' route that re
 
 import logging
 from http import HTTPStatus
+from io import BytesIO
 
 from flasgger import swag_from
-from flask import Blueprint, g, jsonify, request
+from flask import Blueprint, g, jsonify, request, send_file
 from flask_cors import cross_origin
 from werkzeug.utils import secure_filename
 
@@ -55,7 +56,7 @@ from strr_api.exceptions import (
 from strr_api.requests import RegistrationRequest
 from strr_api.responses import Document, Registration
 from strr_api.schemas.utils import validate
-from strr_api.services import AuthService, RegistrationService
+from strr_api.services import AuthService, GCPStorageService, RegistrationService
 from strr_api.validators.DocumentUploadValidator import validate_document_upload
 from strr_api.validators.RegistrationRequestValidator import validate_registration_request
 
@@ -69,7 +70,7 @@ bp = Blueprint("registrations", __name__)
 @jwt.requires_auth
 def get_registrations():
     """
-    Get Registrations for current user.
+    Get registrations for current user.
     ---
     tags:
       - registration
@@ -216,7 +217,7 @@ def upload_registration_supporting_document(registration_id):
 @jwt.requires_auth
 def get_registration_supporting_documents(registration_id):
     """
-    Get Registration supporting documents for given registration id.
+    Get registration supporting documents for given registration id.
     ---
     tags:
       - registration
@@ -256,7 +257,7 @@ def get_registration_supporting_documents(registration_id):
 @jwt.requires_auth
 def get_registration_supporting_document_by_id(registration_id, document_id):
     """
-    Get Registration supporting document for given registration id and document id.
+    Get registration supporting document metadata for given registration id and document id.
     ---
     tags:
       - registration
@@ -297,13 +298,65 @@ def get_registration_supporting_document_by_id(registration_id, document_id):
         return exception_response(auth_exception)
 
 
+@bp.route("/<registration_id>/documents/<document_id>/file", methods=("GET",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def get_registration_file_by_id(registration_id, document_id):
+    """
+    Get registration file contents for given registration id and document id.
+    ---
+    tags:
+      - registration
+    parameters:
+          - in: path
+            name: registration_id
+            type: integer
+            required: true
+            description: ID of the registration
+          - in: path
+            name: document_id
+            type: integer
+            required: true
+            description: ID of the document
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+      404:
+        description:
+    """
+
+    try:
+        # only allow upload for registrations that belong to the user
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            raise AuthException()
+
+        document = RegistrationService.get_registration_document(registration_id, document_id)
+        if not document:
+            return error_response(HTTPStatus.NOT_FOUND, "Document not found")
+
+        file_bytes = GCPStorageService.fetch_registration_document(document.path)
+        return send_file(
+            BytesIO(file_bytes), as_attachment=True, download_name=document.file_name, mimetype=document.file_type
+        )
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+    except ExternalServiceException as external_exception:
+        return exception_response(external_exception)
+
+
 @bp.route("/<registration_id>/documents/<document_id>", methods=("DELETE",))
 @swag_from({"security": [{"Bearer": []}]})
 @cross_origin(origin="*")
 @jwt.requires_auth
 def delete_registration_supporting_document_by_id(registration_id, document_id):
     """
-    Get Registration supporting document for given registration id and document id.
+    Delete registration supporting document for given registration id and document id.
     ---
     tags:
       - registration
@@ -337,3 +390,5 @@ def delete_registration_supporting_document_by_id(registration_id, document_id):
         return "", HTTPStatus.NO_CONTENT
     except AuthException as auth_exception:
         return exception_response(auth_exception)
+    except ExternalServiceException as external_exception:
+        return exception_response(external_exception)

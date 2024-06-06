@@ -32,11 +32,15 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 """Manages Auth service interactions."""
+import base64
+import json
 import uuid
 
 from flask import current_app
 from google.cloud import storage
 from google.oauth2 import service_account
+
+from strr_api.exceptions import ExternalServiceException
 
 
 class GCPStorageService:
@@ -46,25 +50,11 @@ class GCPStorageService:
     def registration_documents_bucket(cls):
         """Get gcp bucket for saving or deleting registration documents."""
 
-        # project_id = current_app.config.get("GCP_CS_PROJECT_ID")
         scope = current_app.config.get("GCP_CS_SA_SCOPE")
         bucket_id = current_app.config.get("GCP_CS_BUCKET_ID")
-        # auth_key = current_app.config.get("GCP_AUTH_KEY")
 
-        # TODO: fix service account setup
-        service_account_info = {
-            # 'type': 'service_account',
-            # 'project_id': project_id,
-            # 'private_key_id': GCP_SA_PRIVATE_KEY_ID,
-            # 'private_key': str(GCP_SA_PRIVATE_KEY).replace('\\n', '\n'),
-            # 'client_email': GCP_SA_CLIENT_EMAIL,
-            # 'client_id': GCP_SA_CLIENT_ID,
-            # 'auth_uri': 'https://accounts.google.com/o/oauth2/auth',
-            # 'token_uri': 'https://oauth2.googleapis.com/token',
-            # 'auth_provider_x509_cert_url': 'https://www.googleapis.com/oauth2/v1/certs',
-            # 'client_x509_cert_url': GCP_SA_CERT_URL
-        }
-        credentials = service_account.Credentials.from_service_account_info(service_account_info, scopes=scope)
+        service_account_info = json.loads(base64.b64decode(current_app.config.get("GCP_AUTH_KEY")).decode("utf-8"))
+        credentials = service_account.Credentials.from_service_account_info(service_account_info, scopes=[scope])
         storage_client = storage.Client(credentials=credentials)
         bucket = storage_client.bucket(bucket_id)
         return bucket
@@ -73,16 +63,34 @@ class GCPStorageService:
     def upload_registration_document(cls, file_type, file_contents):
         """Save STRR uploaded document to gcp bucket."""
 
-        registration_documents_bucket = cls.registration_documents_bucket()
-        blob_name = str(uuid.uuid4())
-        blob = registration_documents_bucket.blob(blob_name)
-        blob.upload_from_string(data=file_contents, content_type=file_type)
-        return blob_name
+        try:
+            registration_documents_bucket = cls.registration_documents_bucket()
+            blob_name = str(uuid.uuid4())
+            blob = registration_documents_bucket.blob(blob_name)
+            blob.upload_from_string(data=file_contents, content_type=file_type)
+            return blob_name
+        except Exception as e:
+            raise ExternalServiceException(message="Error uploading registration document to gcp bucket.") from e
 
     @classmethod
     def delete_registration_document(cls, blob_name):
-        """Delete registration document by id."""
+        """Delete registration document by uuid."""
 
-        registration_documents_bucket = cls.registration_documents_bucket()
-        blob = registration_documents_bucket.blob(blob_name)
-        blob.delete()
+        try:
+            registration_documents_bucket = cls.registration_documents_bucket()
+            blob = registration_documents_bucket.blob(blob_name)
+            blob.delete()
+        except Exception as e:
+            raise ExternalServiceException(message="Error deleting registration document from gcp bucket.") from e
+
+    @classmethod
+    def fetch_registration_document(cls, blob_name):
+        """Fetch registration document by uuid."""
+
+        try:
+            registration_documents_bucket = cls.registration_documents_bucket()
+            blob = registration_documents_bucket.blob(blob_name)
+            contents = blob.download_as_bytes()
+            return contents
+        except Exception as e:
+            raise ExternalServiceException(message="Error fetching registration document from gcp bucket.") from e

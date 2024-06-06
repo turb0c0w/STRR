@@ -35,8 +35,7 @@
 from strr_api import models, requests
 from strr_api.enums.enum import RegistrationStatus
 from strr_api.models import db
-
-# from strr_api.services.gcp_storage_service import GCPStorageService
+from strr_api.services.gcp_storage_service import GCPStorageService
 
 
 class RegistrationService:
@@ -163,10 +162,8 @@ class RegistrationService:
     def save_registration_document(cls, eligibility_id, file_name, file_type, file_contents):
         """Save STRR uploaded document to database."""
 
-        # TODO: store file in gcp using UUID for filename, and set path in save_registration_document()
-        # blob_name = GCPStorageService.upload_registration_document(file_type, file_contents)
-        path = file_contents
-        # path = blob_name
+        blob_name = GCPStorageService.upload_registration_document(file_type, file_contents)
+        path = blob_name
 
         registration_document = models.Document(
             eligibility_id=eligibility_id,
@@ -204,8 +201,7 @@ class RegistrationService:
         document = RegistrationService.get_registration_document(registration_id, document_id)
         if not document:
             return False
-        # TODO: delete from gcp bucket
-        # GCPStorageService.delete_registration_document(document.path)
+        GCPStorageService.delete_registration_document(document.path)
         db.session.delete(document)
         db.session.commit()
         return True
