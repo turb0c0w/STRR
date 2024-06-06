@@ -51,8 +51,17 @@
         <UFormGroup name="city" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="city" aria-label="city" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
-        <UFormGroup name="province" class="pr-[16px] flex-grow mobile:mb-[16px]">
-          <UInput v-model="province" aria-label="province" :placeholder="t('create-account.contact-form.city')" />
+        <UFormGroup
+          name="province"
+          class="pr-[16px] flex-grow mobile:mb-[16px]"
+          :error="addressNotInBC ? 'Address must be in BC' :''"
+        >
+          <UInput
+            v-model="province"
+            aria-label="province"
+            :placeholder="t('create-account.contact-form.province')"
+            disabled
+          />
         </UFormGroup>
         <UFormGroup name="postalCode" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput
@@ -83,27 +92,32 @@ const countryItems = ref<CountryItem[]>([])
 
 const addressComplete = () => {
   if (typeof country.value === 'string') {
-    enableAddressComplete(id, 'CAN')
+    enableAddressComplete(id, 'CAN', false)
   }
 }
 
 const {
   id,
   defaultCountryIso2,
-  enableAddressComplete
+  enableAddressComplete,
+  addressNotInBC
 } = defineProps<{
   id: string,
   defaultCountryIso2: string,
-  enableAddressComplete:(id: string, countryIso2: string) => void
+  enableAddressComplete:(id: string, countryIso2: string, countrySelect: boolean) => void,
+  addressNotInBC?: boolean
 }>()
 
 country.value = defaultCountryIso2
 
+// Rental addresses for registration can only be in Canada
 onMounted(() => {
-  countryItems.value = countries.map(country => ({
-    value: country.iso2,
-    name: country.en
-  }))
+  countryItems.value = countries
+    .filter(country => country.iso2 === 'CA')
+    .map(country => ({
+      value: country.iso2,
+      name: country.en
+    }))
 })
 
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div data-cy="form-section-contact-info">
-    <BcrosFormSection :title="t('create-account.contact-form.dateOfBirth')" :optional="dobOptional">
+    <BcrosFormSection :title="t('create-account.contact-form.dateOfBirth')" :optional="!isPrimary">
       <div class="flex flex-row justify-between w-full mobile:flex-col">
         <UFormGroup name="birthDay" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput
@@ -9,7 +9,7 @@
             aria-label="birth day"
           />
         </UFormGroup>
-        <UFormGroup name="month" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
+        <UFormGroup name="month" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]" :error="monthError">
           <USelect
             v-model="month"
             :placeholder="t('create-account.contact-form.month')"
@@ -17,6 +17,9 @@
             option-attribute="key"
             class="w-full"
             aria-label="birth month"
+            style="color: #1a202c; /* text-gray-900 */ dark:text-white; /* Override with dark mode text color */"
+            @blur="isPrimary ? emit('validateMonths'): null"
+            @change="isPrimary ? emit('validateMonths'): null"
           />
         </UFormGroup>
         <UFormGroup name="birthYear">
@@ -31,14 +34,18 @@
 const t = useNuxtApp().$i18n.t
 
 const {
-  dobOptional
+  isPrimary,
+  monthError
 } = defineProps<{
-  dobOptional?: boolean
+  isPrimary?: boolean
+  monthError?: string
 }>()
 
 const day = defineModel<string>('day')
 const month = defineModel<string>('month')
 const year = defineModel<string>('year')
+
+const emit = defineEmits(['validateMonths'])
 
 const months: string[] = [
   t('general.january'),
