@@ -61,7 +61,6 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
     idpHint?: string,
     forceLogin?: boolean
   ) {
-    forceLogin = true
     kc.value = new Keycloak(config)
     if (kc.value) {
       // add idpHint to login options
