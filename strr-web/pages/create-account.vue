@@ -28,7 +28,7 @@
               <BcrosFormSectionPrincipalResidenceForm />
             </div>
             <div v-if="activeStepIndex === 3" :key="activeStepIndex">
-              <BcrosFormSectionReviewForm :secondary-contact="addSecondaryContact"/>
+              <BcrosFormSectionReviewForm :secondary-contact="addSecondaryContact" />
             </div>
           </div>
         </div>

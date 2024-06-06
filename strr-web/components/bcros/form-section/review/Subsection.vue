@@ -1,8 +1,8 @@
 <template>
-  <div class="bg-white py-[22px] px-[30px]">
-    <div class="flex flex-row justify-between w-full mb-[40px]">
+  <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+    <div class="flex flex-row justify-between w-full desktop:mb-[40px]">
       <div class="flex flex-col w-full">
-        <div class="flex flex-row justify-between w-full mb-[24px]">
+        <div class="flex flex-row justify-between w-full mb-[24px] mobile:flex-col">
           <BcrosFormSectionReviewItem
             :title="tContact('fullName')"
             :content="getNames()"
@@ -16,7 +16,7 @@
             :content="state.emailAddress ?? '-'"
           />
         </div>
-        <div class="flex flex-row justify-between w-full">
+        <div class="flex flex-row justify-between w-full mobile:flex-col">
           <BcrosFormSectionReviewItem
             :title="tContact('dateOfBirth')"
             :content="getDateOfBirth()"

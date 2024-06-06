@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col flex-1">
+  <div class="flex flex-col flex-1 mobile:mb-[24px]">
     <p class="font-bold">
       {{ title }}
     </p>

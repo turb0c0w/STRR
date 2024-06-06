@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
+import axios from 'axios'
 
 const t = useNuxtApp().$i18n.t
 const tPrincipalResidence = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
@@ -120,7 +120,6 @@ const uploadFile = (file: any) => {
 //       console.error(error)
 //     })
 // }
-
 
 const primaryResidenceRadioOptions = [{
   value: true,
