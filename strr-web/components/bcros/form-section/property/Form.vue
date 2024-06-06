@@ -18,6 +18,7 @@
           v-model:postal-code="formState.propertyDetails.postalCode"
           :enable-address-complete="enableAddressComplete"
           default-country-iso2="CA"
+          :address-not-in-b-c="addressNotInBC"
         />
         <BcrosFormSectionPropertyDetails
           v-model:property-type="formState.propertyDetails.propertyType"
@@ -49,6 +50,8 @@ const { isComplete } = defineProps<{
   isComplete: boolean
 }>()
 
+const addressNotInBC = ref(false)
+
 const {
   address: canadaPostAddress,
   enableAddressComplete
@@ -57,6 +60,7 @@ const {
 watch(canadaPostAddress, (newAddress) => {
   if (newAddress) {
     if (newAddress.region === 'BC') {
+      addressNotInBC.value = false
       formState.propertyDetails.address = newAddress.street
       formState.propertyDetails.addressLineTwo = newAddress.streetAdditional
       formState.propertyDetails.country = newAddress.country
@@ -64,8 +68,7 @@ watch(canadaPostAddress, (newAddress) => {
       formState.propertyDetails.province = newAddress.region
       formState.propertyDetails.postalCode = newAddress.postalCode
     } else {
-      // replace with validation error?
-      alert('Please choose an address in BC')
+      addressNotInBC.value = true
     }
   }
 })

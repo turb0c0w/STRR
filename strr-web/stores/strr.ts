@@ -49,6 +49,7 @@ const httpRegex = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+\.?(:\d+)?(\/.*)?)$/i
 const phoneError = { message: 'Valid characters are "()- 123457890" ' }
 const requiredPhone = z.string().regex(phoneRegex, phoneError)
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
+const optionalNumber = z.string().regex(numbersRegex, { message: 'Must be a number' }).optional()
 const optionalOrEmptyString = z.string().optional().transform(e => e === '' ? undefined : e)
 const requiredNonEmptyString = z.string().refine(e => e !== '', 'Field cannot be empty')
 
@@ -87,7 +88,16 @@ export const secondaryContactSchema = z.object({
   addressLineTwo: optionalOrEmptyString,
   city: requiredNonEmptyString,
   province: requiredNonEmptyString,
-  postalCode: requiredNonEmptyString
+  postalCode: requiredNonEmptyString,
+  birthDay: optionalNumber
+    .refine(day => day?.length === 2, 'Day must be two digits')
+    .refine(day => Number(day) <= 31, 'Must be less than or equal to 31')
+    .optional(),
+  birthMonth: optionalOrEmptyString,
+  birthYear: optionalNumber
+    .refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
+    .refine(year => year?.length === 4, 'Year must be four digits')
+    .optional()
 })
 
 const primaryContact: ContactInformationI = {
@@ -141,7 +151,8 @@ export const propertyDetailsSchema = z.object({
   parcelIdentifier: optionalOrEmptyString,
   postalCode: requiredNonEmptyString,
   propertyType: requiredNonEmptyString,
-  province: requiredNonEmptyString,
+  province: requiredNonEmptyString
+    .refine(province => province === 'BC', { message: 'Province must be set to BC' }),
   useMailing: z.boolean()
 })
 

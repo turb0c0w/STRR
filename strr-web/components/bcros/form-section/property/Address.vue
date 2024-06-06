@@ -51,7 +51,11 @@
         <UFormGroup name="city" class="pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="city" aria-label="city" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
-        <UFormGroup name="province" class="pr-[16px] flex-grow mobile:mb-[16px]">
+        <UFormGroup
+          name="province"
+          class="pr-[16px] flex-grow mobile:mb-[16px]"
+          :error="addressNotInBC ? 'Address must be in BC' :''"
+        >
           <UInput
             v-model="province"
             aria-label="province"
@@ -95,11 +99,13 @@ const addressComplete = () => {
 const {
   id,
   defaultCountryIso2,
-  enableAddressComplete
+  enableAddressComplete,
+  addressNotInBC
 } = defineProps<{
   id: string,
   defaultCountryIso2: string,
-  enableAddressComplete:(id: string, countryIso2: string, countrySelect: boolean) => void
+  enableAddressComplete:(id: string, countryIso2: string, countrySelect: boolean) => void,
+  addressNotInBC?: boolean
 }>()
 
 country.value = defaultCountryIso2
