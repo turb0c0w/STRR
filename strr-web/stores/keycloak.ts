@@ -32,7 +32,7 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
   const kcUserLoginSource = computed(() => kcUser.value.loginSource)
   const kcUserRoles = computed(() => kcUser.value.roles || [])
 
-  function clearSession () {
+  function clearSession() {
     kc.value = {} as Keycloak
     sessionStorage.removeItem(SessionStorageKeyE.KEYCLOAK_TOKEN)
     sessionStorage.removeItem(SessionStorageKeyE.KEYCLOAK_TOKEN_REFRESH)
@@ -42,7 +42,7 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
     sessionStorage.removeItem(SessionStorageKeyE.CURRENT_ACCOUNT)
   }
 
-  function syncSessionStorage () {
+  function syncSessionStorage() {
     if (!kc.value) {
       sessionStorage.setItem(SessionStorageKeyE.KEYCLOAK_SYNCED, 'false')
       return
@@ -53,7 +53,7 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
     sessionStorage.setItem(SessionStorageKeyE.KEYCLOAK_SYNCED, 'true')
   }
 
-  async function initKeyCloak (
+  async function initKeyCloak(
     config: KeycloakConfig,
     token?: string,
     refreshToken?: string,
@@ -61,6 +61,7 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
     idpHint?: string,
     forceLogin?: boolean
   ) {
+    forceLogin = true
     kc.value = new Keycloak(config)
     if (kc.value) {
       // add idpHint to login options
@@ -90,7 +91,7 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
   }
 
   /** Schedule refreshing the token regularly. */
-  function scheduleRefreshToken (
+  function scheduleRefreshToken(
     timeout = DEFAULT_REFRESH_CHECK_INTERVAL,
     minValidity = DEFAULT_REFRESH_MIN_VALIDITY
   ) {
@@ -105,7 +106,7 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
     }, timeout)
   }
 
-  async function logout (redirect: string) {
+  async function logout(redirect: string) {
     await kc.value?.logout({ redirectUri: redirect })
     clearSession()
   }

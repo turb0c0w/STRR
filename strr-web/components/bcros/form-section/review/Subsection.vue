@@ -19,7 +19,7 @@
         <div class="flex flex-row justify-between w-full">
           <BcrosFormSectionReviewItem
             :title="tContact('dateOfBirth')"
-            :content="`${state.birthMonth ?? '-'} ${state.birthDay ?? '-'}, ${state.birthYear ?? '-'}`"
+            :content="getDateOfBirth()"
           />
           <BcrosFormSectionReviewItem
             :title="tContact('faxNumberReview')"
@@ -31,7 +31,7 @@
               {{ state.addressLineTwo }}
             </p>
             <p>{{ `${state.city} ${state.province} ${state.postalCode}` }}</p>
-            <p>{{ state.country }}</p>
+            <p>{{ `${state.country ? regionNamesInEnglish.of(state.country) : '-'}` }}</p>
           </BcrosFormSectionReviewItem>
         </div>
       </div>
@@ -71,6 +71,10 @@ const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
 const tReview = (translationKey: string) => t(`create-account.review.${translationKey}`)
 
-// interface FormReviewSectionI =
-
+const getDateOfBirth = () => {
+  if (!state.birthDay || !state.birthMonth || !state.birthYear) {
+    return '-'
+  }
+  return `${state.birthMonth} ${state.birthDay}, ${state.birthYear}`
+}
 </script>

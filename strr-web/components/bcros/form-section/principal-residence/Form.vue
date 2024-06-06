@@ -1,7 +1,7 @@
 <template>
   <div data-cy="create-account-page" class="relative h-full">
     <div class="desktop:mb-[180px] mobile:mb-[32px] rounded-[4px]">
-      <div class="mb-[32px]">
+      <div class="mb-[32px] mx-[8px]">
         <p class="text-[18px] mb-[8px] font-bold">
           {{ tPrincipalResidence('property') }}
         </p>
@@ -9,7 +9,7 @@
           {{ formState.propertyDetails.address }}
         </p>
       </div>
-      <div class="bg-white py-[22px] px-[30px] text-bcGovColor-midGray text-[16px]">
+      <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] text-bcGovColor-midGray text-[16px]">
         <p class="text-[16px] mb-[16px]">
           {{ tPrincipalResidence('provincial-rules') }}
         </p>
@@ -42,7 +42,7 @@
         </UFormGroup>
       </div>
       <div v-if="formState.principal.isPrincipal">
-        <div class="mt-[40px]">
+        <div class="mt-[40px] mobile:mx-[8px]">
           <p>{{ tPrincipalResidence('required-docs') }}</p>
           <div class="p-[16px] flex flex-row text-blue-500 text-[16px]">
             <img class="mr-[4px]" src="/icons/create-account/info.svg">
@@ -61,11 +61,14 @@
             <p class="mb-[16px]">
               {{ tPrincipalResidence('upload-multiple') }}
             </p>
-            <div class="flex flex-row items-center" @click="">
-              <img class="mr-[4px]" src="/icons/create-account/attach.svg">
+            <div class="flex flex-row items-center">
+              <img class="mr-[4px]" src="/icons/create-account/attach.svg" alt="Paperclip icon">
               <UInput
+                accept=".pdf,.jpg,.png"
+                type="file"
                 class="w-full"
                 :placeholder="tPrincipalResidence('supporting')"
+                @change="uploadFile"
               />
             </div>
             <p class="text-[12px] ml-[58px] mt-[4px] mb-[40px] text-bcGovColor-midGray">
@@ -90,11 +93,34 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios';
+
 const t = useNuxtApp().$i18n.t
 const tPrincipalResidence = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
 
 const declaration = ref(false)
 const consent = ref(false)
+
+const apiURL = useRuntimeConfig().public.strrApiURL
+const axiosInstance = addAxiosInterceptors(axios.create())
+
+const uploadFile = (file: any) => {
+  console.log(file)
+}
+
+// const upload = () => {
+//   axiosInstance.post<string>(`${apiURL}/registrations`)
+//     .then((response) => {
+//       const data = response?.data
+//       if (!data) { throw new Error('Invalid AUTH API response') }
+//       return data
+//     })
+//     .catch((error: string) => {
+//       console.warn('Error creating account.')
+//       console.error(error)
+//     })
+// }
+
 
 const primaryResidenceRadioOptions = [{
   value: true,
