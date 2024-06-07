@@ -72,33 +72,32 @@ const {
 const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryContact.value }
 
 const propertyToApiType = (type: string | undefined): string => {
-  switch(type) {
-    case(t('create-account.property-form.primaryDwelling')):
+  switch (type) {
+    case (t('create-account.property-form.primaryDwelling')):
       return 'PRIMARY'
-    case(t('create-account.property-form.secondarySuite')):
+    case (t('create-account.property-form.secondarySuite')):
       return 'SECONDARY'
-    case(t('create-account.property-form.accessory')):
+    case (t('create-account.property-form.accessory')):
       return 'ACCESSORY'
-    case(t('create-account.property-form.float')):
+    case (t('create-account.property-form.float')):
       return 'FLOAT_HOME'
-    case(t('create-account.property-form.other')):
+    case (t('create-account.property-form.other')):
       return 'OTHER'
   }
   return ''
 }
 
 const ownershipToApiType = (type: string | undefined): string => {
-  switch(type) {
-    case(t('create-account.property-form.rent')):
+  switch (type) {
+    case (t('create-account.property-form.rent')):
       return 'RENT'
-    case(t('create-account.property-form.own')):
+    case (t('create-account.property-form.own')):
       return 'OWN'
-    case(t('create-account.property-form.other')):
+    case (t('create-account.property-form.other')):
       return 'CO_OWN'
   }
   return ''
 }
-
 
 const submit = () => submitCreateAccountForm(
   userFirstName,
@@ -106,7 +105,7 @@ const submit = () => submitCreateAccountForm(
   currentAccount.id,
   addSecondaryContact.value,
   propertyToApiType(formState.propertyDetails.propertyType),
-  ownershipToApiType(formState.propertyDetails.ownershipType),
+  ownershipToApiType(formState.propertyDetails.ownershipType)
 )
 
 const setActiveStep = (newStep: number) => {

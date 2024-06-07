@@ -1,6 +1,6 @@
-import { AxiosHeaders, AxiosInstance } from 'axios'
+import { AxiosInstance } from 'axios'
 
-export function addAxiosInterceptors(axiosInstance: AxiosInstance, contentType?: string): AxiosInstance {
+export function addAxiosInterceptors (axiosInstance: AxiosInstance, contentType?: string): AxiosInstance {
   axiosInstance.interceptors.request.use(
     (config) => {
       const token = useBcrosKeycloak().kc.token

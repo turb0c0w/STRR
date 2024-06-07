@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import axios from 'axios'
-import { CreateAccountFormStateI, OrgI, PrincipalResidenceI, SecondaryContactInformationI } from '~/interfaces/account-i'
+import { CreateAccountFormStateI, OrgI, SecondaryContactInformationI } from '~/interfaces/account-i'
 
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
@@ -33,7 +33,9 @@ export const submitCreateAccountForm = (
       return data
     })
     .then((response) => {
-      fileAxiosInstance.post<File[]>(`${apiURL}/registrations/${response.id}/documents`, formState.supportingDocuments)
+      formState.supportingDocuments.forEach((file: File) => {
+        fileAxiosInstance.post<File>(`${apiURL}/registrations/${response.id}/documents`, { file })
+      })
     })
     .catch((error: string) => {
       console.warn('Error creating account.')
@@ -254,6 +256,6 @@ export const formDataForAPI: CreateAccountFormAPII = {
       propertyType: '',
       ownershipType: ''
     },
-    listingDetails: [],
+    listingDetails: []
   }
 }
