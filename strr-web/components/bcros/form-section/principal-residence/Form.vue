@@ -81,7 +81,7 @@
             <div class="flex flex-row items-center">
               <img class="mr-[4px]" src="/icons/create-account/attach.svg" alt="Paperclip icon">
               <UInput
-                accept=".pdf,.jpg,.png"
+                accept=".pdf,.jpg,.png,.doc"
                 type="file"
                 class="w-full"
                 :placeholder="tPrincipalResidence('supporting')"
@@ -128,8 +128,6 @@
 </template>
 
 <script setup lang="ts">
-// import axios from 'axios'
-
 const t = useNuxtApp().$i18n.t
 const tPrincipalResidence = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
 
@@ -154,25 +152,9 @@ if (isComplete) {
   }
 }
 
-// const apiURL = useRuntimeConfig().public.strrApiURL
-// const axiosInstance = addAxiosInterceptors(axios.create())
-
 const uploadFile = (file: FileList) => {
   formState.supportingDocuments.push(file[0])
 }
-
-// const upload = () => {
-//   axiosInstance.post<string>(`${apiURL}/registrations`)
-//     .then((response) => {
-//       const data = response?.data
-//       if (!data) { throw new Error('Invalid AUTH API response') }
-//       return data
-//     })
-//     .catch((error: string) => {
-//       console.warn('Error creating account.')
-//       console.error(error)
-//     })
-// }
 
 const primaryResidenceRadioOptions = [{
   value: true,

@@ -178,8 +178,7 @@ export interface SelectedAccountMailingAPII {
 
 export interface CreateAccountFormAPII {
   selectedAccount: {
-    name: string,
-    mailingAddress: SelectedAccountMailingAPII
+    sbc_account_id: string
   },
   registration: {
     principalResidence: {

@@ -1,31 +1,27 @@
 import { z } from 'zod'
 import axios from 'axios'
-import { CreateAccountFormStateI, OrgI, SecondaryContactInformationI } from '~/interfaces/account-i'
+import { CreateAccountFormStateI, OrgI, PrincipalResidenceI, SecondaryContactInformationI } from '~/interfaces/account-i'
 
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
+const fileAxiosInstance = addAxiosInterceptors(axios.create(), 'multipart/form-data')
 
 export const submitCreateAccountForm = (
   userFirstName: string,
   userLastName: string,
-  userFullName: string,
-  mailingAddress: {
-    city: string,
-    country: string,
-    postalCode: string,
-    region: string,
-    street: string,
-    streetAdditional: string
-  }[] | undefined,
-  addSecondaryContact: boolean
+  selectedAccountId: string,
+  addSecondaryContact: boolean,
+  propertyType: string,
+  ownershipType: string
 ) => {
   const formData: CreateAccountFormAPII = formStateToApi(
     formState,
     userFirstName,
     userLastName,
-    userFullName,
-    mailingAddress,
-    addSecondaryContact
+    selectedAccountId,
+    addSecondaryContact,
+    propertyType,
+    ownershipType
   )
 
   axiosInstance.post(`${apiURL}/registrations`,
@@ -37,7 +33,7 @@ export const submitCreateAccountForm = (
       return data
     })
     .then((response) => {
-      axiosInstance.post<File[]>(`${apiURL}/registrations/${response.id}/documents`, formState.supportingDocuments)
+      fileAxiosInstance.post<File[]>(`${apiURL}/registrations/${response.id}/documents`, formState.supportingDocuments)
     })
     .catch((error: string) => {
       console.warn('Error creating account.')
@@ -239,15 +235,7 @@ const secondaryContactAPI: ContactAPII = {
 
 export const formDataForAPI: CreateAccountFormAPII = {
   selectedAccount: {
-    name: '',
-    mailingAddress: {
-      street: '',
-      streetAdditional: '',
-      city: '',
-      postalCode: '',
-      region: '',
-      country: ''
-    }
+    sbc_account_id: ''
   },
   registration: {
     primaryContact: primaryContactAPI,
@@ -266,6 +254,6 @@ export const formDataForAPI: CreateAccountFormAPII = {
       propertyType: '',
       ownershipType: ''
     },
-    listingDetails: []
+    listingDetails: [],
   }
 }
