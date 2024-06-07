@@ -76,7 +76,8 @@ const submit = () => submitCreateAccountForm(
   userLastName,
   userFullName,
   currentAccount.mailingAddress,
-  addSecondaryContact.value
+  addSecondaryContact.value,
+  formState.principal
 )
 
 const setActiveStep = (newStep: number) => {

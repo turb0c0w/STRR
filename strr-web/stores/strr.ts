@@ -10,12 +10,12 @@ export const submitCreateAccountForm = (
   userLastName: string,
   userFullName: string,
   mailingAddress: {
-    city: string;
-    country: string;
-    postalCode: string;
-    region: string;
-    street: string;
-    streetAdditional: string;
+    city: string,
+    country: string,
+    postalCode: string,
+    region: string,
+    street: string,
+    streetAdditional: string
   }[] | undefined,
   addSecondaryContact: boolean
 ) => {
@@ -28,13 +28,16 @@ export const submitCreateAccountForm = (
     addSecondaryContact
   )
 
-  axiosInstance.post<CreateAccountFormAPII>(`${apiURL}/registrations`,
+  axiosInstance.post(`${apiURL}/registrations`,
     { ...formData }
   )
     .then((response) => {
       const data = response?.data
       if (!data) { throw new Error('Invalid AUTH API response') }
       return data
+    })
+    .then((response) => {
+      axiosInstance.post<File[]>(`${apiURL}/registrations/${response.id}/documents`, formState.supportingDocuments)
     })
     .catch((error: string) => {
       console.warn('Error creating account.')
@@ -179,8 +182,11 @@ export const formState: CreateAccountFormStateI = reactive({
   selectedAccount: {} as OrgI,
   principal: {
     isPrincipal: undefined,
-    reason: undefined
-  }
+    reason: undefined,
+    declaration: false,
+    consent: false
+  },
+  supportingDocuments: []
 })
 
 const primaryContactAPI: ContactAPII = {

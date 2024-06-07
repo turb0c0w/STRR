@@ -68,6 +68,13 @@ export const formStateToApi = (
     }
   }
   formData.selectedAccount.name = fullName
+  formData.registration.principalResidence = {
+    isPrincipalResidence: formState.principal.isPrincipal ?? false,
+    agreedToRentalAct: formState.principal.declaration,
+    nonPrincipalOption: formState.principal.reason ?? 'n/a',
+    specifiedServiceProvider: formState.principal.otherReason ?? 'n/a',
+    agreedToSubmit: formState.principal.consent
+  }
 
   return formData
 }

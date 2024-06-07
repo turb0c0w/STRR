@@ -66,7 +66,7 @@
             <p>{{ tPrincipalResidence('doc-requirements') }}</p>
           </div>
         </div>
-        <div class="mb-[40px] bg-white rounded-[4px]">
+        <div class="mb-[40px] bg-white rounded-[4px] pb-[40px]">
           <div class="bg-bcGovColor-gray2 rounded-t-[4px]">
             <p class="px-[40px] py-[15px] font-bold">
               {{ tPrincipalResidence('doc-details') }}
@@ -85,11 +85,18 @@
                 type="file"
                 class="w-full"
                 :placeholder="tPrincipalResidence('supporting')"
+                @change="uploadFile"
               />
             </div>
-            <p class="text-[12px] ml-[58px] mt-[4px] mb-[40px] text-bcGovColor-midGray">
+            <p class="text-[12px] ml-[58px] mt-[4px] mb-[12px] text-bcGovColor-midGray">
               {{ tPrincipalResidence('file-reqs') }}
             </p>
+            <div v-for="supportingDocument in formState.supportingDocuments" :key="supportingDocument.name">
+              <div class="flex flex-row items-center">
+                <img class="mr-[4px] h-[18px] w-[18px]" src="/icons/create-account/attach_dark.svg" alt="Attach icon">
+                <p>{{ supportingDocument.name }}</p>
+              </div>
+            </div>
           </BcrosFormSection>
         </div>
         <div class="desktop:mb-[180px] mobile:mb-[32px] bg-white rounded-[4px]">
@@ -150,9 +157,9 @@ if (isComplete) {
 // const apiURL = useRuntimeConfig().public.strrApiURL
 // const axiosInstance = addAxiosInterceptors(axios.create())
 
-// const uploadFile = (file: any) => {
-//   console.log(file)
-// }
+const uploadFile = (file: FileList) => {
+  formState.supportingDocuments.push(file[0])
+}
 
 // const upload = () => {
 //   axiosInstance.post<string>(`${apiURL}/registrations`)
