@@ -10,7 +10,7 @@
       b. {{ tReview('declaration-a') }}
     </p>
     <p>
-      {{ tReview('declaration-part-one') }}
+      {{ tReview('declaration-part-two') }}
     </p>
   </div>
 </template>

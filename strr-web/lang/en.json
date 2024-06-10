@@ -82,6 +82,7 @@
       "exempt-community": "Located in exempt community",
       "reason": "Reason",
       "reason-hint": "Please enter the reason why the principal residence requirement does not apply to this property",
+      "service-hint": "Please specify the type of accommodation service provider",
       "required-docs": "Please submit required documentation that confirms that the property being registered is a principal residence.",
       "doc-requirements": "View Documentation Requirements",
       "doc-details": "Documentation Details",
@@ -98,6 +99,7 @@
       "fractional": "Fractional",
       "exchange": "Home Exchange",
       "lodge": "Lodge (operator of outdoor recreational activity)",
+      "farm": "Farm land (BC Assessment Farm Class 9) ",
       "institution": "Educational institution accommodation (Student or Employee) (off campus)",
       "strata-guest": "Strata corporation guest suite",
       "service": "Service Provider"

@@ -93,14 +93,6 @@
                   >
                   <BcrosFormSectionReviewDeclaration />
                 </div>
-                <div class="flex flex-row">
-                  <img
-                    class="mr-[8px] self-start"
-                    src="/icons/create-account/gray_check.svg"
-                    alt="Confirmation checkmark"
-                  >
-                  {{ tPrincipal('consent') }}
-                </div>
               </div>
             </div>
           </div>

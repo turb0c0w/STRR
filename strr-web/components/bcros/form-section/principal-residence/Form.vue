@@ -63,7 +63,7 @@
             @change="(reason: string) => validateOtherReason(reason)"
           />
           <p class="ml-[18px] text-bcGovColor-midGray text-[12px]">
-            {{ tPrincipalResidence('reason-hint') }}
+            {{ tPrincipalResidence('service-hint') }}
           </p>
         </UFormGroup>
       </div>
@@ -116,20 +116,16 @@
             </p>
           </div>
           <BcrosFormSection class="pb-[40px]">
-            <UCheckbox
-              v-model="formState.principal.declaration"
-              :class="`mb-[18px]
-                ${isComplete && !formState.principal.declaration ? 'outline outline-bcGovColor-error' : ''}
-              `"
-              name="declaration"
-              :label="tPrincipalResidence('declare')"
-            />
-            <UCheckbox
-              v-model="formState.principal.consent"
-              :class="`${isComplete && !formState.principal.consent ? 'outline outline-bcGovColor-error' : ''}`"
-              name="consent"
-              :label="tPrincipalResidence('consent')"
-            />
+            <div class="flex flex-row">
+              <UCheckbox
+                v-model="formState.principal.declaration"
+                :class="`mb-[18px]
+                  ${isComplete && !formState.principal.declaration ? 'outline outline-bcGovColor-error' : ''}
+                `"
+                name="declaration"
+              />
+              <BcrosFormSectionReviewDeclaration />
+            </div>
           </BcrosFormSection>
         </div>
       </div>
@@ -181,6 +177,7 @@ const primaryResidenceRadioOptions = [{
 const exemptionReasons: string[] = [
   tPrincipalResidence('exempt-community'),
   tPrincipalResidence('eligible'),
+  tPrincipalResidence('farm'),
   tPrincipalResidence('other')
 ]
 
