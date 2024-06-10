@@ -6,12 +6,21 @@
           {{ tPrincipalResidence('property') }}
         </p>
         <p class="text-[16px] text-bcGovColor-midGray">
-          {{ formState.propertyDetails.address }}
+          <!-- eslint-disable-next-line max-len -->
+          {{ `${formState.propertyDetails.nickname ?? '' } ${formState.propertyDetails.address ?? ''} ${formState.propertyDetails.addressLineTwo ?? ''}` }}
         </p>
       </div>
       <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] text-bcGovColor-midGray text-[16px]">
         <p class="text-[16px] mb-[16px]">
           {{ tPrincipalResidence('provincial-rules') }}
+          <a
+            class="text-bcGovColor-activeBlue underline"
+            target="_blank"
+            href="https://www2.gov.bc.ca/gov/content/housing-tenancy/short-term-rentals/straa-definitions#PRdef"
+          >
+            {{ tPrincipalResidence('provincial-rules-link') }}
+          </a>
+          {{ tPrincipalResidence('provincial-rules-continued') }}
         </p>
         <URadioGroup
           v-model="formState.principal.isPrincipal"
@@ -91,10 +100,11 @@
             <p class="text-[12px] ml-[58px] mt-[4px] mb-[12px] text-bcGovColor-midGray">
               {{ tPrincipalResidence('file-reqs') }}
             </p>
-            <div v-for="supportingDocument in formState.supportingDocuments" :key="supportingDocument.name">
+            <div v-for="(supportingDocument, index) in formState.supportingDocuments" :key="supportingDocument.name">
               <div class="flex flex-row items-center">
                 <img class="mr-[4px] h-[18px] w-[18px]" src="/icons/create-account/attach_dark.svg" alt="Attach icon">
                 <p>{{ supportingDocument.name }}</p>
+                <UIcon name="i-mdi-delete" class="h-[18px] w-[18px] ml-[4px]" @click="() => removeFile(index)" />
               </div>
             </div>
           </BcrosFormSection>
@@ -154,6 +164,10 @@ if (isComplete) {
 
 const uploadFile = (file: FileList) => {
   formState.supportingDocuments.push(file[0])
+}
+
+const removeFile = (index: number) => {
+  formState.supportingDocuments.splice(index, 1)
 }
 
 const primaryResidenceRadioOptions = [{
