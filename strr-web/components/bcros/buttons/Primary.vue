@@ -10,8 +10,8 @@
       :trailing="trailing"
       :variant="variant"
       data-cy="button"
-      @click="action()"
       :disabled="disabled"
+      @click="action()"
     >
       {{ text }}
     </UButton>

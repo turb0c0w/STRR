@@ -115,8 +115,6 @@
 <script setup lang="ts">
 const t = useNuxtApp().$i18n.t
 
-const emit = defineEmits(['toggleValid'])
-
 const { secondaryContact } = defineProps<{ secondaryContact: boolean }>()
 
 const tReview = (translationKey: string) => t(`create-account.review.${translationKey}`)

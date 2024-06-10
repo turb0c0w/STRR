@@ -34,7 +34,7 @@ const {
   isLastStep,
   setNextStep,
   submit,
-  setPreviousStep,
+  setPreviousStep
 } = defineProps<{
   isFirstStep: boolean,
   isLastStep: boolean,
