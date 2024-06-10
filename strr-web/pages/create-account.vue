@@ -1,7 +1,7 @@
 <template>
   <div data-cy="create-account-page" class="relative h-full">
-    <div class="w-full flex flex-col justify-between">
-      <div class="shrink w-full flex flex-row mobile:flex-col justify-between">
+    <div class="w-full flex flex-col justify-between desktop:justify-center items-center">
+      <div class="shrink w-full flex flex-row mobile:flex-col mobile:justify-between max-w-[1360px] justify-center">
         <div class="grow pr-[24px] mobile:pr-[0px]">
           <div class="mobile:px-[8px]">
             <BcrosTypographyH1 text="create-account.title" data-cy="accountPageTitle" class="mobile:pb-[20px]" />
