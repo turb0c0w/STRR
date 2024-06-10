@@ -92,7 +92,7 @@ const countryItems = ref<CountryItem[]>([])
 
 const addressComplete = () => {
   if (typeof country.value === 'string') {
-    enableAddressComplete(id, 'CAN', false)
+    enableAddressComplete(id, 'CA', false)
   }
 }
 

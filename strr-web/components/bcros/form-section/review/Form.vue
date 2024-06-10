@@ -44,10 +44,16 @@
               />
             </div>
             <div class="flex flex-row justify-between w-full desktop:mb-[24px] mobile:flex-col">
-              <BcrosFormSectionReviewItem
-                :title="tReview('address')"
-                :content="formState.propertyDetails.address ?? '-'"
-              />
+              <BcrosFormSectionReviewItem :title="tReview('address')">
+                <p>{{ formState.propertyDetails.address }}</p>
+                <p v-if="formState.propertyDetails.addressLineTwo">
+                  {{ formState.propertyDetails.addressLineTwo }}
+                </p>
+                <p>
+                  {{ `${formState.propertyDetails.city ?? '-'} ${formState.propertyDetails.province ?? '-'} ${formState.propertyDetails.postalCode ?? '-'}` }}
+                </p>
+                <p>{{ `${formState.propertyDetails.country ? regionNamesInEnglish.of(formState.propertyDetails.country) : '-'}` }}</p>
+              </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
                 :title="tReview('property-type')"
                 :content="formState.propertyDetails.propertyType ?? '-'"
@@ -76,22 +82,33 @@
                 </p>
               </div>
             </div>
-            <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
-              <p class="font-bold">
-                {{ tReview('proof') }}
-              </p>
-              <div class="mb-[24px]" />
-              <p class="font-bold">
-                {{ tReview('declaration') }}
-              </p>
-              <div class="mt-[8px]">
-                <div class="mb-[12px] flex flex-row">
-                  <img
-                    class="mr-[8px] self-start"
-                    src="/icons/create-account/gray_check.svg"
-                    alt="Confirmation checkmark"
-                  >
-                  <BcrosFormSectionReviewDeclaration />
+            <div v-if="formState.principal.isPrincipal && formState.principal.declaration">
+              <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+                <p class="font-bold mb-[8px]">
+                  {{ tReview('proof') }}
+                </p>
+                <div class="mb-[24px]">
+                  <div v-for="(supportingDocument) in formState.supportingDocuments" :key="supportingDocument.name">
+                    <div class="flex flex-row items-center">
+                      <img class="mr-[4px] h-[18px] w-[18px]" src="/icons/create-account/attach_dark.svg" alt="Attach icon">
+                      <p>{{ supportingDocument.name }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-[24px]">
+                  <p class="font-bold">
+                    {{ tReview('declaration') }}
+                  </p>
+                  <div class="mt-[8px]">
+                    <div class="mb-[12px] flex flex-row">
+                      <img
+                        class="mr-[8px] self-start"
+                        src="/icons/create-account/gray_check.svg"
+                        alt="Confirmation checkmark"
+                      >
+                      <BcrosFormSectionReviewDeclaration />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -118,6 +135,8 @@
 const t = useNuxtApp().$i18n.t
 
 const { secondaryContact, isComplete } = defineProps<{ secondaryContact: boolean, isComplete: boolean }>()
+
+const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
 const tReview = (translationKey: string) => t(`create-account.review.${translationKey}`)
 const tPrincipal = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
