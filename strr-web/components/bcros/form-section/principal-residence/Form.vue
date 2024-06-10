@@ -6,12 +6,21 @@
           {{ tPrincipalResidence('property') }}
         </p>
         <p class="text-[16px] text-bcGovColor-midGray">
-          {{ formState.propertyDetails.address }}
+          <!-- eslint-disable-next-line max-len -->
+          {{ `${formState.propertyDetails.nickname ?? '' } ${formState.propertyDetails.address ?? ''} ${formState.propertyDetails.addressLineTwo ?? ''}` }}
         </p>
       </div>
       <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] text-bcGovColor-midGray text-[16px]">
         <p class="text-[16px] mb-[16px]">
           {{ tPrincipalResidence('provincial-rules') }}
+          <a
+            class="text-bcGovColor-activeBlue underline"
+            target="_blank"
+            href="https://www2.gov.bc.ca/gov/content/housing-tenancy/short-term-rentals/straa-definitions#PRdef"
+          >
+            {{ tPrincipalResidence('provincial-rules-link') }}
+          </a>
+          {{ tPrincipalResidence('provincial-rules-continued') }}
         </p>
         <URadioGroup
           v-model="formState.principal.isPrincipal"
@@ -39,7 +48,7 @@
           </p>
         </UFormGroup>
         <UFormGroup
-          v-if="formState.principal.reason === tPrincipalResidence('other')"
+          v-if="!formState.principal.isPrincipal && formState.principal.reason === tPrincipalResidence('other')"
           class="text-[16px] ml-[48px] mt-[20px]"
           :error="otherReasonError"
         >
@@ -54,7 +63,7 @@
             @change="(reason: string) => validateOtherReason(reason)"
           />
           <p class="ml-[18px] text-bcGovColor-midGray text-[12px]">
-            {{ tPrincipalResidence('reason-hint') }}
+            {{ tPrincipalResidence('service-hint') }}
           </p>
         </UFormGroup>
       </div>
@@ -91,10 +100,11 @@
             <p class="text-[12px] ml-[58px] mt-[4px] mb-[12px] text-bcGovColor-midGray">
               {{ tPrincipalResidence('file-reqs') }}
             </p>
-            <div v-for="supportingDocument in formState.supportingDocuments" :key="supportingDocument.name">
+            <div v-for="(supportingDocument, index) in formState.supportingDocuments" :key="supportingDocument.name">
               <div class="flex flex-row items-center">
                 <img class="mr-[4px] h-[18px] w-[18px]" src="/icons/create-account/attach_dark.svg" alt="Attach icon">
                 <p>{{ supportingDocument.name }}</p>
+                <UIcon name="i-mdi-delete" class="h-[18px] w-[18px] ml-[4px]" @click="() => removeFile(index)" />
               </div>
             </div>
           </BcrosFormSection>
@@ -106,20 +116,16 @@
             </p>
           </div>
           <BcrosFormSection class="pb-[40px]">
-            <UCheckbox
-              v-model="formState.principal.declaration"
-              :class="`mb-[18px]
-                ${isComplete && !formState.principal.declaration ? 'outline outline-bcGovColor-error' : ''}
-              `"
-              name="declaration"
-              :label="tPrincipalResidence('declare')"
-            />
-            <UCheckbox
-              v-model="formState.principal.consent"
-              :class="`${isComplete && !formState.principal.consent ? 'outline outline-bcGovColor-error' : ''}`"
-              name="consent"
-              :label="tPrincipalResidence('consent')"
-            />
+            <div class="flex flex-row">
+              <UCheckbox
+                v-model="formState.principal.declaration"
+                :class="`mb-[18px]
+                  ${isComplete && !formState.principal.declaration ? 'outline outline-bcGovColor-error' : ''}
+                `"
+                name="declaration"
+              />
+              <BcrosFormSectionReviewDeclaration />
+            </div>
           </BcrosFormSection>
         </div>
       </div>
@@ -156,6 +162,10 @@ const uploadFile = (file: FileList) => {
   formState.supportingDocuments.push(file[0])
 }
 
+const removeFile = (index: number) => {
+  formState.supportingDocuments.splice(index, 1)
+}
+
 const primaryResidenceRadioOptions = [{
   value: true,
   label: tPrincipalResidence('yes')
@@ -167,6 +177,7 @@ const primaryResidenceRadioOptions = [{
 const exemptionReasons: string[] = [
   tPrincipalResidence('exempt-community'),
   tPrincipalResidence('eligible'),
+  tPrincipalResidence('farm'),
   tPrincipalResidence('other')
 ]
 

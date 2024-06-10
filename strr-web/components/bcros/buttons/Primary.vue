@@ -10,6 +10,7 @@
       :trailing="trailing"
       :variant="variant"
       data-cy="button"
+      :disabled="disabled"
       @click="action()"
     >
       {{ text }}
@@ -20,7 +21,7 @@
 <script setup lang="ts">
 import { ButtonVariant } from '@nuxt/ui/dist/runtime/types'
 
-const { action, color, className, icon, label, loading, text, trailing, variant } = defineProps<{
+const { action, color, className, icon, label, loading, text, trailing, variant, disabled } = defineProps<{
   action: Function,
   className?: string,
   color?: string,
@@ -29,7 +30,8 @@ const { action, color, className, icon, label, loading, text, trailing, variant 
   label?: string,
   text: string,
   trailing?: boolean,
-  variant?: ButtonVariant
+  variant?: ButtonVariant,
+  disabled?: boolean
 }>()
 
 const classWithDefaultSpacing = `

@@ -31,7 +31,7 @@
               <BcrosFormSectionPrincipalResidenceForm :is-complete="steps[activeStepIndex].step.complete" />
             </div>
             <div v-if="activeStepIndex === 3" :key="activeStepIndex">
-              <BcrosFormSectionReviewForm :secondary-contact="addSecondaryContact" />
+              <BcrosFormSectionReviewForm :secondary-contact="addSecondaryContact" @toggle-valid="toggleValid" />
             </div>
           </div>
         </div>
@@ -60,6 +60,9 @@ const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 const tPrincipalResidence = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
 const contactForm = ref()
+const isFinalStepValid = ref(false)
+
+const toggleValid = () => { isFinalStepValid.value = !isFinalStepValid.value }
 
 const t = useNuxtApp().$i18n.t
 const {
