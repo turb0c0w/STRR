@@ -106,6 +106,14 @@ export interface SecondaryContactInformationI extends ContactInformationI {
   lastName: string | undefined,
 }
 
+export interface PrincipalResidenceI {
+  isPrincipal: boolean | undefined;
+  reason?: string | undefined;
+  otherReason?: string | undefined;
+  declaration: boolean;
+  consent: boolean;
+}
+
 export interface CreateAccountFormStateI {
   primaryContact: ContactInformationI,
   secondaryContact: SecondaryContactInformationI,
@@ -126,7 +134,9 @@ export interface CreateAccountFormStateI {
     postalCode: string | undefined,
     listingDetails: { url: string }[],
   },
-  selectedAccount: OrgI
+  selectedAccount: OrgI,
+  principal: PrincipalResidenceI,
+  supportingDocuments: File[]
 }
 
 export interface MailingAddressAPII {
@@ -168,10 +178,16 @@ export interface SelectedAccountMailingAPII {
 
 export interface CreateAccountFormAPII {
   selectedAccount: {
-    name: string,
-    mailingAddress: SelectedAccountMailingAPII
+    sbc_account_id: string
   },
   registration: {
+    principalResidence: {
+      isPrincipalResidence: boolean,
+      agreedToRentalAct: boolean,
+      nonPrincipalOption: string,
+      specifiedServiceProvider: string,
+      agreedToSubmit: boolean,
+    }
     primaryContact?: ContactAPII,
     secondaryContact?: ContactAPII,
     unitAddress: MailingAddressAPII,

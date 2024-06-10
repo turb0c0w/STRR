@@ -4,37 +4,38 @@ import { CreateAccountFormStateI, OrgI, SecondaryContactInformationI } from '~/i
 
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
+const fileAxiosInstance = addAxiosInterceptors(axios.create(), 'multipart/form-data')
 
 export const submitCreateAccountForm = (
   userFirstName: string,
   userLastName: string,
-  userFullName: string,
-  mailingAddress: {
-    city: string;
-    country: string;
-    postalCode: string;
-    region: string;
-    street: string;
-    streetAdditional: string;
-  }[] | undefined,
-  addSecondaryContact: boolean
+  selectedAccountId: string,
+  addSecondaryContact: boolean,
+  propertyType: string,
+  ownershipType: string
 ) => {
   const formData: CreateAccountFormAPII = formStateToApi(
     formState,
     userFirstName,
     userLastName,
-    userFullName,
-    mailingAddress,
-    addSecondaryContact
+    selectedAccountId,
+    addSecondaryContact,
+    propertyType,
+    ownershipType
   )
 
-  axiosInstance.post<CreateAccountFormAPII>(`${apiURL}/registrations`,
+  axiosInstance.post(`${apiURL}/registrations`,
     { ...formData }
   )
     .then((response) => {
       const data = response?.data
       if (!data) { throw new Error('Invalid AUTH API response') }
       return data
+    })
+    .then((response) => {
+      formState.supportingDocuments.forEach((file: File) => {
+        fileAxiosInstance.post<File>(`${apiURL}/registrations/${response.id}/documents`, { file })
+      })
     })
     .catch((error: string) => {
       console.warn('Error creating account.')
@@ -176,7 +177,14 @@ export const formState: CreateAccountFormStateI = reactive({
     postalCode: undefined,
     listingDetails: [{ url: '' }]
   },
-  selectedAccount: {} as OrgI
+  selectedAccount: {} as OrgI,
+  principal: {
+    isPrincipal: undefined,
+    reason: undefined,
+    declaration: false,
+    consent: false
+  },
+  supportingDocuments: []
 })
 
 const primaryContactAPI: ContactAPII = {
@@ -229,15 +237,7 @@ const secondaryContactAPI: ContactAPII = {
 
 export const formDataForAPI: CreateAccountFormAPII = {
   selectedAccount: {
-    name: '',
-    mailingAddress: {
-      street: '',
-      streetAdditional: '',
-      city: '',
-      postalCode: '',
-      region: '',
-      country: ''
-    }
+    sbc_account_id: ''
   },
   registration: {
     primaryContact: primaryContactAPI,

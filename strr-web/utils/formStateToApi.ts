@@ -2,9 +2,10 @@ export const formStateToApi = (
   formState: CreateAccountFormStateI,
   firstName: string,
   lastName: string,
-  fullName: string,
-  selectedAccountMailingAddress: SelectedAccountMailingAPII[] | undefined,
-  addSecondaryContact: boolean
+  selectedAccountId: string,
+  addSecondaryContact: boolean,
+  propertyType: string,
+  ownershipType: string
 ): CreateAccountFormAPII => {
   const formData = formDataForAPI
 
@@ -58,16 +59,18 @@ export const formStateToApi = (
   }
   formData.registration.unitDetails = {
     parcelIdentifier: formState.propertyDetails.parcelIdentifier,
-    propertyType: formState.propertyDetails.propertyType ?? '',
-    ownershipType: formState.propertyDetails.ownershipType ?? '',
+    propertyType,
+    ownershipType,
     businessLicense: formState.propertyDetails.businessLicense
   }
-  if (selectedAccountMailingAddress && selectedAccountMailingAddress.length) {
-    formData.selectedAccount.mailingAddress = {
-      ...selectedAccountMailingAddress[0]
-    }
+  formData.selectedAccount.sbc_account_id = selectedAccountId
+  formData.registration.principalResidence = {
+    isPrincipalResidence: formState.principal.isPrincipal ?? false,
+    agreedToRentalAct: formState.principal.declaration,
+    nonPrincipalOption: formState.principal.reason ?? 'n/a',
+    specifiedServiceProvider: formState.principal.otherReason ?? 'n/a',
+    agreedToSubmit: formState.principal.consent
   }
-  formData.selectedAccount.name = fullName
 
   return formData
 }

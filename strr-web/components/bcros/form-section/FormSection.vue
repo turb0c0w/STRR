@@ -1,7 +1,7 @@
 <template>
   <div data-cy="form-section" class="mt-[40px] mobile:mt-[20px] ml-[40px] mr-[20px] mobile:mx-[8px]">
     <div class="flex flex-row mobile:flex-col">
-      <div class="w-[200px]">
+      <div v-if="title" class="w-[200px]">
         <p class="desktop:font-bold mobile:mb-[8px]">
           {{ t(title) }}
         </p>
@@ -20,7 +20,7 @@
 <script setup lang="ts">
 
 const { title, optional, divider } = defineProps<{
-  title: string,
+  title?: string,
   optional?: boolean
   divider?: boolean
 }>()
