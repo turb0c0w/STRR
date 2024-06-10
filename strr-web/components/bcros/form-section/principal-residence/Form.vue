@@ -71,7 +71,7 @@
         <div class="mt-[40px] mobile:mx-[8px]">
           <p>{{ tPrincipalResidence('required-docs') }}</p>
           <div class="p-[16px] flex flex-row text-blue-500 text-[16px]">
-            <img class="mr-[4px]" src="/icons/create-account/info.svg">
+            <img alt="Information icon" class="mr-[4px]" src="/icons/create-account/info.svg">
             <p>{{ tPrincipalResidence('doc-requirements') }}</p>
           </div>
         </div>
@@ -90,6 +90,7 @@
             <div class="flex flex-row items-center">
               <img class="mr-[4px]" src="/icons/create-account/attach.svg" alt="Paperclip icon">
               <UInput
+                aria-label="Supporting document file upload"
                 accept=".pdf,.jpg,.png,.doc"
                 type="file"
                 class="w-full"
@@ -119,6 +120,7 @@
             <div class="flex flex-row">
               <UCheckbox
                 v-model="formState.principal.declaration"
+                aria-label="Checkbox for primary residence declaration"
                 :class="`mb-[18px]
                   ${isComplete && !formState.principal.declaration ? 'outline outline-bcGovColor-error' : ''}
                 `"
