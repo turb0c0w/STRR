@@ -27,21 +27,20 @@
 </template>
 
 <script setup lang="ts">
+const t = useNuxtApp().$i18n.t
 
 const {
   isFirstStep,
   isLastStep,
   setNextStep,
   submit,
-  setPreviousStep
+  setPreviousStep,
 } = defineProps<{
   isFirstStep: boolean,
   isLastStep: boolean,
   setNextStep:() => void,
   submit: () => void,
-  setPreviousStep:() => void
+  setPreviousStep:() => void,
 }>()
-
-const t = useNuxtApp().$i18n.t
 
 </script>

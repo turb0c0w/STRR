@@ -48,7 +48,7 @@
           </p>
         </UFormGroup>
         <UFormGroup
-          v-if="formState.principal.reason === tPrincipalResidence('other')"
+          v-if="!formState.principal.isPrincipal && formState.principal.reason === tPrincipalResidence('other')"
           class="text-[16px] ml-[48px] mt-[20px]"
           :error="otherReasonError"
         >
