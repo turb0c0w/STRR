@@ -1,12 +1,12 @@
 <template>
   <div>
-    <p>
+    <p class="mb-[4px]">
       {{ tReview('declaration-part-one') }}
     </p>
-    <p class="pl-[12px]">
+    <p class="pl-[12px] mb-[4px]">
       a. {{ tReview('declaration-a') }}
     </p>
-    <p class="pl-[12px]">
+    <p class="pl-[12px] mb-[4px]">
       b. {{ tReview('declaration-a') }}
     </p>
     <p>

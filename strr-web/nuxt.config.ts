@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: {
-        lang: 'en',
+        lang: 'en'
       },
       title: { textContent: 'British Columbia Short Term Rental Registration' },
       meta: [

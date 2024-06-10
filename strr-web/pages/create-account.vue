@@ -32,7 +32,6 @@
             </div>
             <div v-if="activeStepIndex === 3" :key="activeStepIndex">
               <BcrosFormSectionReviewForm
-                :key="steps[3].step.complete.toString()"
                 :secondary-contact="addSecondaryContact"
                 :is-complete="steps[activeStepIndex].step.complete"
               />

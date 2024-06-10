@@ -7,7 +7,12 @@
         </p>
         <p class="text-[16px] text-bcGovColor-midGray">
           <!-- eslint-disable-next-line max-len -->
-          {{ `${formState.propertyDetails.nickname ?? '' } ${formState.propertyDetails.address ?? ''} ${formState.propertyDetails.addressLineTwo ?? ''}` }}
+          {{ `${formState.propertyDetails.nickname ?? '' }
+           ${formState.propertyDetails.address ?? ''}
+           ${formState.propertyDetails.addressLineTwo ?? ''}
+           ${formState.propertyDetails.city ?? ''}
+           ${formState.propertyDetails.postalCode ?? ''}
+          ` }}
         </p>
       </div>
       <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] text-bcGovColor-midGray text-[16px]">
@@ -23,6 +28,7 @@
           {{ tPrincipalResidence('provincial-rules-continued') }}
         </p>
         <URadioGroup
+          id="primary-residence-radio"
           v-model="formState.principal.isPrincipal"
           :legend="tPrincipalResidence('radio-legend')"
           :options="primaryResidenceRadioOptions"
@@ -193,3 +199,9 @@ const otherExemptionReasons: string[] = [
 ]
 
 </script>
+
+<style>
+  #primary-residence-radio legend {
+    font-weight: bold;
+  }
+</style>
