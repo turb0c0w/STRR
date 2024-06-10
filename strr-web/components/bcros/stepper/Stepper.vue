@@ -22,7 +22,7 @@
           pb-[20px] flex flex-col cursor-pointer
           mobile:border-b-0
         `"
-        @click="setActiveStep(index)"
+        @click="() => emit('changeStep', index)"
       >
         <div class="flex justify-center pt-[7px] ">
           <div
@@ -82,12 +82,14 @@ import { FormPageI } from '~/interfaces/form/form-page-i'
 
 const {
   steps,
-  activeStep,
-  setActiveStep
+  activeStep
 } = defineProps<{
   steps: FormPageI[],
   activeStep: number,
-  setActiveStep:(step: number) => void
+}>()
+
+const emit = defineEmits<{
+  changeStep: [stepIndex: number] // named tuple syntax
 }>()
 
 const t = useNuxtApp().$i18n.t

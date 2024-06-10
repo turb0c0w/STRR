@@ -102,7 +102,9 @@
             </p>
             <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] mb-[24px]">
               <UCheckbox
+                :v-model="formState.principal.agreeToSubmit"
                 :label="tReview('confirm')"
+                :class="`${isComplete && !formState.principal.agreeToSubmit ? 'outline outline-bcGovColor-error' : ''}`"
               />
             </div>
           </div>
@@ -115,7 +117,7 @@
 <script setup lang="ts">
 const t = useNuxtApp().$i18n.t
 
-const { secondaryContact } = defineProps<{ secondaryContact: boolean }>()
+const { secondaryContact, isComplete } = defineProps<{ secondaryContact: boolean, isComplete: boolean }>()
 
 const tReview = (translationKey: string) => t(`create-account.review.${translationKey}`)
 const tPrincipal = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)

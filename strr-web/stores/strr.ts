@@ -182,7 +182,7 @@ export const formState: CreateAccountFormStateI = reactive({
     isPrincipal: undefined,
     reason: undefined,
     declaration: false,
-    consent: false
+    agreeToSubmit: false
   },
   supportingDocuments: []
 })

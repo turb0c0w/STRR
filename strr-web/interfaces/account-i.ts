@@ -111,7 +111,7 @@ export interface PrincipalResidenceI {
   reason?: string | undefined;
   otherReason?: string | undefined;
   declaration: boolean;
-  consent: boolean;
+  agreeToSubmit: boolean;
 }
 
 export interface CreateAccountFormStateI {
