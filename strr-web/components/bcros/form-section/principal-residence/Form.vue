@@ -167,7 +167,11 @@ if (isComplete) {
 }
 
 const uploadFile = (file: FileList) => {
-  formState.supportingDocuments.push(file[0])
+  const extension = file[0].name.substring(file[0].name.length - 3)
+  const validType = ['pdf', 'jpg', 'doc', 'png']
+  if (validType.includes(extension)) {
+    formState.supportingDocuments.push(file[0])
+  }
 }
 
 const removeFile = (index: number) => {

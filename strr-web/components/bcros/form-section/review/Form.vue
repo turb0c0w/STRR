@@ -52,7 +52,14 @@
                 <p>
                   {{ `${formState.propertyDetails.city ?? '-'} ${formState.propertyDetails.province ?? '-'} ${formState.propertyDetails.postalCode ?? '-'}` }}
                 </p>
-                <p>{{ `${formState.propertyDetails.country ? regionNamesInEnglish.of(formState.propertyDetails.country) : '-'}` }}</p>
+                <p>
+                  {{ `
+                    ${formState.propertyDetails.country !== 'CAN'
+                    && formState.propertyDetails.country
+                      ? regionNamesInEnglish.of(formState.propertyDetails.country)
+                  : '-'}`
+                  }}
+                </p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
                 :title="tReview('property-type')"
@@ -76,7 +83,7 @@
                 <p>
                   <b>{{ tReview('reason') }}: </b>
                   {{ `${formState.principal.otherReason
-                    ? formState.principal.otherReason
+                    ? `${formState.principal.reason}: ${formState.principal.otherReason}`
                     : formState.principal.reason
                   }` }}
                 </p>
