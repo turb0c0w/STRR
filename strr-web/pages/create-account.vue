@@ -1,11 +1,11 @@
 <template>
   <div data-cy="create-account-page" class="relative h-full">
-    <div class="w-full flex flex-col justify-between">
-      <div class="shrink w-full flex flex-row mobile:flex-col justify-between">
+    <div class="w-full flex flex-col justify-between desktop:justify-center items-center">
+      <div class="shrink w-full flex flex-row mobile:flex-col mobile:justify-between max-w-[1360px] justify-center">
         <div class="grow pr-[24px] mobile:pr-[0px]">
           <div class="mobile:px-[8px]">
             <BcrosTypographyH1 text="create-account.title" data-cy="accountPageTitle" class="mobile:pb-[20px]" />
-            <BcrosStepper :active-step="activeStepIndex" :set-active-step="setActiveStep" :steps="steps" />
+            <BcrosStepper :active-step="activeStepIndex" :steps="steps" @change-step="setActiveStep" />
           </div>
           <div :key="activeStepIndex" class="grow">
             <div class="mobile:px-[8px]">
@@ -31,7 +31,10 @@
               <BcrosFormSectionPrincipalResidenceForm :is-complete="steps[activeStepIndex].step.complete" />
             </div>
             <div v-if="activeStepIndex === 3" :key="activeStepIndex">
-              <BcrosFormSectionReviewForm :secondary-contact="addSecondaryContact" @toggle-valid="toggleValid" />
+              <BcrosFormSectionReviewForm
+                :secondary-contact="addSecondaryContact"
+                :is-complete="steps[activeStepIndex].step.complete"
+              />
             </div>
           </div>
         </div>
@@ -60,9 +63,6 @@ const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 const tPrincipalResidence = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
 const contactForm = ref()
-const isFinalStepValid = ref(false)
-
-const toggleValid = () => { isFinalStepValid.value = !isFinalStepValid.value }
 
 const t = useNuxtApp().$i18n.t
 const {
@@ -102,16 +102,21 @@ const ownershipToApiType = (type: string | undefined): string => {
   return ''
 }
 
-const submit = () => submitCreateAccountForm(
-  userFirstName,
-  userLastName,
-  currentAccount.id,
-  addSecondaryContact.value,
-  propertyToApiType(formState.propertyDetails.propertyType),
-  ownershipToApiType(formState.propertyDetails.ownershipType)
-)
+const submit = () => {
+  formState.principal.agreeToSubmit
+    ? submitCreateAccountForm(
+      userFirstName,
+      userLastName,
+      currentAccount.id,
+      addSecondaryContact.value,
+      propertyToApiType(formState.propertyDetails.propertyType),
+      ownershipToApiType(formState.propertyDetails.ownershipType)
+    )
+    : steps[3].step.complete = true
+}
 
 const setActiveStep = (newStep: number) => {
+  activeStep.value.step.complete = true
   activeStepIndex.value = newStep
   activeStep.value = steps[activeStepIndex.value]
 }
@@ -139,25 +144,33 @@ watch(formState.propertyDetails, () => {
   }
 })
 
-watch(formState.principal, () => {
+const validateProofPage = () => {
   if (formState.principal.isPrincipal &&
-    formState.principal.consent &&
-    formState.principal.declaration
+    formState.principal.declaration &&
+    formState.supportingDocuments.length > 0
   ) {
     setStepValid(2, true)
-  }
-  if (!formState.principal.isPrincipal &&
+  } else if (!formState.principal.isPrincipal &&
     formState.principal.reason &&
     formState.principal.reason !== tPrincipalResidence('other')
   ) {
     setStepValid(2, true)
-  }
-  if (!formState.principal.isPrincipal &&
+  } else if (!formState.principal.isPrincipal &&
     formState.principal.reason &&
     formState.principal.otherReason
   ) {
     setStepValid(2, true)
+  } else {
+    setStepValid(2, false)
   }
+}
+
+watch(formState.supportingDocuments, () => {
+  validateProofPage()
+})
+
+watch(formState.principal, () => {
+  validateProofPage()
 })
 
 const setNextStep = () => {
@@ -174,6 +187,7 @@ const setPreviousStep = () => {
     const nextStep = activeStepIndex.value - 1
     activeStepIndex.value = nextStep
     activeStep.value = steps[activeStepIndex.value]
+    steps[activeStepIndex.value + 1].step.complete = true
   }
 }
 

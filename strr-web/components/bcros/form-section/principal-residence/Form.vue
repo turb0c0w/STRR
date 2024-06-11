@@ -7,7 +7,12 @@
         </p>
         <p class="text-[16px] text-bcGovColor-midGray">
           <!-- eslint-disable-next-line max-len -->
-          {{ `${formState.propertyDetails.nickname ?? '' } ${formState.propertyDetails.address ?? ''} ${formState.propertyDetails.addressLineTwo ?? ''}` }}
+          {{ `${formState.propertyDetails.nickname ?? '' }
+           ${formState.propertyDetails.address ?? ''}
+           ${formState.propertyDetails.addressLineTwo ?? ''}
+           ${formState.propertyDetails.city ?? ''}
+           ${formState.propertyDetails.postalCode ?? ''}
+          ` }}
         </p>
       </div>
       <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] text-bcGovColor-midGray text-[16px]">
@@ -23,6 +28,7 @@
           {{ tPrincipalResidence('provincial-rules-continued') }}
         </p>
         <URadioGroup
+          id="primary-residence-radio"
           v-model="formState.principal.isPrincipal"
           :legend="tPrincipalResidence('radio-legend')"
           :options="primaryResidenceRadioOptions"
@@ -71,7 +77,7 @@
         <div class="mt-[40px] mobile:mx-[8px]">
           <p>{{ tPrincipalResidence('required-docs') }}</p>
           <div class="p-[16px] flex flex-row text-blue-500 text-[16px]">
-            <img class="mr-[4px]" src="/icons/create-account/info.svg">
+            <img alt="Information icon" class="mr-[4px]" src="/icons/create-account/info.svg">
             <p>{{ tPrincipalResidence('doc-requirements') }}</p>
           </div>
         </div>
@@ -90,6 +96,7 @@
             <div class="flex flex-row items-center">
               <img class="mr-[4px]" src="/icons/create-account/attach.svg" alt="Paperclip icon">
               <UInput
+                aria-label="Supporting document file upload"
                 accept=".pdf,.jpg,.png,.doc"
                 type="file"
                 class="w-full"
@@ -119,6 +126,7 @@
             <div class="flex flex-row">
               <UCheckbox
                 v-model="formState.principal.declaration"
+                aria-label="Checkbox for primary residence declaration"
                 :class="`mb-[18px]
                   ${isComplete && !formState.principal.declaration ? 'outline outline-bcGovColor-error' : ''}
                 `"
@@ -159,7 +167,12 @@ if (isComplete) {
 }
 
 const uploadFile = (file: FileList) => {
-  formState.supportingDocuments.push(file[0])
+  const extension = file[0].name.substring(file[0].name.length - 3)
+  const validType = ['pdf', 'jpg', 'doc', 'png']
+  const fileSize = file[0].size / 1024 / 1024 // in MiB
+  if (validType.includes(extension) && fileSize <= 50) {
+    formState.supportingDocuments.push(file[0])
+  }
 }
 
 const removeFile = (index: number) => {
@@ -191,3 +204,9 @@ const otherExemptionReasons: string[] = [
 ]
 
 </script>
+
+<style>
+  #primary-residence-radio legend {
+    font-weight: bold;
+  }
+</style>

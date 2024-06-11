@@ -69,7 +69,7 @@ export const formStateToApi = (
     agreedToRentalAct: formState.principal.declaration,
     nonPrincipalOption: formState.principal.reason ?? 'n/a',
     specifiedServiceProvider: formState.principal.otherReason ?? 'n/a',
-    agreedToSubmit: formState.principal.consent
+    agreedToSubmit: formState.principal.agreeToSubmit
   }
 
   return formData

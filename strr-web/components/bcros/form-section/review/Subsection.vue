@@ -30,7 +30,7 @@
             <p v-if="state.addressLineTwo">
               {{ state.addressLineTwo }}
             </p>
-            <p>{{ `${state.city} ${state.province} ${state.postalCode}` }}</p>
+            <p>{{ `${state.city ?? '-'} ${state.province ?? '-'} ${state.postalCode ?? '-'}` }}</p>
             <p>{{ `${state.country ? regionNamesInEnglish.of(state.country) : '-'}` }}</p>
           </BcrosFormSectionReviewItem>
         </div>
@@ -70,6 +70,7 @@ const getDateOfBirth = () => {
   if (!state.birthDay || !state.birthMonth || !state.birthYear) {
     return '-'
   }
-  return `${state.birthMonth} ${state.birthDay}, ${state.birthYear}`
+  const date = new Date(`${state.birthMonth} ${state.birthDay} ${state.birthYear}`)
+  return date.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
 }
 </script>
