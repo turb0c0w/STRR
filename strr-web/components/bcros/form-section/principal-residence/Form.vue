@@ -169,7 +169,8 @@ if (isComplete) {
 const uploadFile = (file: FileList) => {
   const extension = file[0].name.substring(file[0].name.length - 3)
   const validType = ['pdf', 'jpg', 'doc', 'png']
-  if (validType.includes(extension)) {
+  const fileSize = file[0].size / 1024 / 1024; // in MiB
+  if (validType.includes(extension) && fileSize <= 50) {
     formState.supportingDocuments.push(file[0])
   }
 }
