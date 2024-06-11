@@ -150,6 +150,8 @@ class RegistrationService:
     def list_registrations(cls, jwt_oidc_token_info):
         """List all registrations for current user."""
         user = models.User.find_by_jwt_token(jwt_oidc_token_info)
+        if not user:
+            return []
         return models.Registration.query.filter_by(user_id=user.id).all()
 
     @classmethod
