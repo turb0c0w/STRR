@@ -50,6 +50,7 @@
                   {{ formState.propertyDetails.addressLineTwo }}
                 </p>
                 <p>
+                  <!-- eslint-disable-next-line max-len -->
                   {{ `${formState.propertyDetails.city ?? '-'} ${formState.propertyDetails.province ?? '-'} ${formState.propertyDetails.postalCode ?? '-'}` }}
                 </p>
                 <p>
@@ -97,7 +98,11 @@
                 <div class="mb-[24px]">
                   <div v-for="(supportingDocument) in formState.supportingDocuments" :key="supportingDocument.name">
                     <div class="flex flex-row items-center">
-                      <img class="mr-[4px] h-[18px] w-[18px]" src="/icons/create-account/attach_dark.svg" alt="Attach icon">
+                      <img
+                        class="mr-[4px] h-[18px] w-[18px]"
+                        src="/icons/create-account/attach_dark.svg"
+                        alt="Attach icon"
+                      >
                       <p>{{ supportingDocument.name }}</p>
                     </div>
                   </div>
@@ -126,7 +131,7 @@
             </p>
             <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] mb-[24px]">
               <UCheckbox
-                :v-model="formState.principal.agreeToSubmit"
+                v-model="formState.principal.agreeToSubmit"
                 :label="tReview('confirm')"
                 :class="`${isComplete && !formState.principal.agreeToSubmit ? 'outline outline-bcGovColor-error' : ''}`"
               />

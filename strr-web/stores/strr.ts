@@ -36,6 +36,10 @@ export const submitCreateAccountForm = (
       formState.supportingDocuments.forEach((file: File) => {
         fileAxiosInstance.post<File>(`${apiURL}/registrations/${response.id}/documents`, { file })
       })
+      return response.id
+    })
+    .then((id) => {
+      navigateTo(`/success/${id}`)
     })
     .catch((error: string) => {
       console.warn('Error creating account.')
@@ -256,6 +260,13 @@ export const formDataForAPI: CreateAccountFormAPII = {
       propertyType: '',
       ownershipType: ''
     },
-    listingDetails: []
+    listingDetails: [],
+    principalResidence: {
+      isPrincipalResidence: false,
+      agreedToRentalAct: false,
+      nonPrincipalOption: '',
+      specifiedServiceProvider: '',
+      agreedToSubmit: false
+    }
   }
 }
