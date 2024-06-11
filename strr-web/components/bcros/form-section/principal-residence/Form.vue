@@ -152,7 +152,11 @@ const { isComplete } = defineProps<{ isComplete: boolean }>()
 
 const validateReason = (reason: string, event?: any) => {
   reasonError.value = reason || event?.target?.value ? undefined : 'Reason required'
+  if (reason !== tPrincipalResidence('other') && event === undefined) {
+    formState.principal.otherReason = undefined
+  }
 }
+
 const validateOtherReason = (otherReason: string, event?: any) => {
   otherReasonError.value = otherReason || event?.target?.value ? undefined : 'Reason required'
 }
