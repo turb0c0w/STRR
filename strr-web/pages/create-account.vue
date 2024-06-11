@@ -144,24 +144,33 @@ watch(formState.propertyDetails, () => {
   }
 })
 
-watch(formState.principal, () => {
+const validateProofPage = () => {
   if (formState.principal.isPrincipal &&
-    formState.principal.declaration
+    formState.principal.declaration &&
+    formState.supportingDocuments.length > 0
   ) {
     setStepValid(2, true)
-  }
-  if (!formState.principal.isPrincipal &&
+  } else if (!formState.principal.isPrincipal &&
     formState.principal.reason &&
     formState.principal.reason !== tPrincipalResidence('other')
   ) {
     setStepValid(2, true)
-  }
-  if (!formState.principal.isPrincipal &&
+  } else if (!formState.principal.isPrincipal &&
     formState.principal.reason &&
     formState.principal.otherReason
   ) {
     setStepValid(2, true)
+  } else {
+    setStepValid(2, false)
   }
+}
+
+watch(formState.supportingDocuments, () => {
+  validateProofPage()
+})
+
+watch(formState.principal, () => {
+  validateProofPage()
 })
 
 const setNextStep = () => {
