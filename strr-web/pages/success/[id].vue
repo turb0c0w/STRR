@@ -31,7 +31,7 @@
       </p>
       <p class="mb-[24px]">
         <!-- eslint-disable-next-line max-len -->
-        <a @click="redirectToProfilePage">{{ tApplicationConfirm('bc-reg-link') }}</a> {{ tApplicationConfirm('update') }}
+        <a @click="goToAccountInfo">{{ tApplicationConfirm('bc-reg-link') }}</a> {{ tApplicationConfirm('update') }}
       </p>
       <p class="mb-[24px]">
         {{ tApplicationConfirm('have-another') }}
@@ -50,16 +50,17 @@ import axios from 'axios'
 
 const route = useRoute()
 const fetchedRegistration = ref()
-// const { me } = useBcrosAccount()
 const t = useNuxtApp().$i18n.t
 const tApplicationConfirm = (translationKey: string) => t(`create-account.application-confirm.${translationKey}`)
+
+const {
+  goToAccountInfo
+} = useBcrosNavigate()
 
 const id = route.params.id
 
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
-
-const redirectToProfilePage = () => {}
 
 axiosInstance.get(`${apiURL}/registrations`)
   .then((res) => {
