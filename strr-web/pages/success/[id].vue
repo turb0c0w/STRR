@@ -1,7 +1,7 @@
 <template>
   <div data-cy="account-select-page">
     <BcrosTypographyH1
-      text="Application Submitted"
+      :text="tApplicationConfirm('submitted')"
       data-cy="accountPageTitle"
       class="mobile:pb-[20px] mobile:mx-[8px] pb-[32px]"
     />
@@ -9,32 +9,38 @@
       <img
         class="self-start mr-[10px] mt-[2px] mobile:[mb-8px]"
         src="/icons/create-account/check_circle.svg"
-        alt="Confirmation check mark"
+        :alt="tApplicationConfirm('confirm-alt')"
       >
       <div>
         <p class="mb-[24px] mobile:[mb-8px]">
-          Short term registry application submitted for the following property:
+          {{ tApplicationConfirm('submitted-for') }}
         </p>
         <p class="mb-[24px] font-bold">
           {{ fetchedRegistration ? fetchedRegistration.unitAddress.address : '-' }}
         </p>
         <p class="mobile:mb-[24px]">
-          Your application will be reviewed by our team and we will email you with next steps.
+          {{ tApplicationConfirm('will-review') }}
         </p>
       </div>
     </div>
     <div class="mobile:mx-[8px]">
-      <BcrosTypographyH2 text="Helpful Links" class="mt-[32px] text-[18px] mb-[24px]" />
+      <BcrosTypographyH2 :text="tApplicationConfirm('links')" class="mt-[32px] text-[18px] mb-[24px]" />
       <p class="mb-[24px]">
-        <a @click="navigateTo('/application-status')">View your application status</a> in your dashboard
+        <!-- eslint-disable-next-line max-len -->
+        <a @click="navigateTo('/application-status')">{{ tApplicationConfirm('status') }}</a> {{ tApplicationConfirm('dashboard') }}
       </p>
       <p class="mb-[24px]">
-        <a @click="navigateTo('/profile-page')">Visit your BC Registries Online Services profile page</a> to update your profile information
+        <!-- eslint-disable-next-line max-len -->
+        <a @click="redirectToProfilePage">{{ tApplicationConfirm('bc-reg-link') }}</a> {{ tApplicationConfirm('update') }}
       </p>
       <p class="mb-[24px]">
-        Have another rental property?
+        {{ tApplicationConfirm('have-another') }}
       </p>
-      <BcrosButtonsPrimary text="Start a new application" :action="redirectToCreate" class-name="font-bold" />
+      <BcrosButtonsPrimary
+        :text="tApplicationConfirm('start-new')"
+        :action="() => navigateTo('/create-account')"
+        class-name="font-bold"
+      />
     </div>
   </div>
 </template>
@@ -44,15 +50,16 @@ import axios from 'axios'
 
 const route = useRoute()
 const fetchedRegistration = ref()
+// const { me } = useBcrosAccount()
+const t = useNuxtApp().$i18n.t
+const tApplicationConfirm = (translationKey: string) => t(`create-account.application-confirm.${translationKey}`)
 
 const id = route.params.id
 
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
 
-const redirectToCreate = () => {
-  navigateTo('/create-account')
-}
+const redirectToProfilePage = () => {}
 
 axiosInstance.get(`${apiURL}/registrations`)
   .then((res) => {

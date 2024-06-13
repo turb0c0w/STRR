@@ -13,6 +13,19 @@
       "eligibility": "Principal Residence",
       "review": "Review and Confirm"
     },
+    "application-confirm": {
+      "submitted": "Application Submitted",
+      "confirm-alt": "Confirmation check mark",
+      "submitted-for": "Short term registry application submitted for the following property:",
+      "will-review": "Your application will be reviewed by our team and we will email you with next steps.",
+      "links": "Helpful Links",
+      "status": "View your application status",
+      "dashboard": "in your dashboard",
+      "bc-reg-link": "Visit your BC Registries Online Services profile page",
+      "update": "to update your profile information",
+      "have-another": "Have another rental property?",
+      "start-new": "Start a new application"
+    },
     "contact": {
       "title": "Step 1 - Contact Information",
       "subtitle": "Primary Contact Information",
