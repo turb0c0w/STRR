@@ -79,7 +79,7 @@ const tRegistrationStatus = (translationKey: string) => t(`registration-status.$
 
 const { getRegistrations } = useRegistrations()
 const registrations = ref<RegistrationI[]>()
-registrations.value = await getRegistrations();
+registrations.value = await getRegistrations()
 
 const getFlavour = (status: string) => {
   switch (status) {

@@ -1,9 +1,8 @@
-import axios from "axios"
+import axios from 'axios'
 
 export const useRegistrations = () => {
   const apiURL = useRuntimeConfig().public.strrApiURL
   const axiosInstance = addAxiosInterceptors(axios.create())
-  const registrations = ref<RegistrationI[]>()
 
   const getRegistrations = () => axiosInstance.get<RegistrationI[]>(`${apiURL}/registrations`)
     .then((res) => {
