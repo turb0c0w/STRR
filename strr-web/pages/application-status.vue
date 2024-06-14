@@ -23,7 +23,7 @@
             ${
             registrations && registrations?.length > 1
               ? 'desktop:w-[calc(33%-20px)]'
-              : 'desktop:w-full'
+              : 'desktop:w-full flex-grow flex-1'
           }
             flex flex-row mobile:flex-col
           `"
@@ -31,6 +31,7 @@
           <BcrosStatusCard
             :flavour="getFlavour(registration.status)"
             :status="registration.status"
+            :single="!(registrations && registrations?.length > 1)"
           >
             <div class="mb-[24px]">
               <p class="font-bold">
@@ -69,7 +70,6 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
 definePageMeta({
   layout: 'wide'
 })
@@ -77,17 +77,9 @@ definePageMeta({
 const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 
-const apiURL = useRuntimeConfig().public.strrApiURL
-const axiosInstance = addAxiosInterceptors(axios.create())
+const { getRegistrations } = useRegistrations()
 const registrations = ref<RegistrationI[]>()
-
-axiosInstance.get(`${apiURL}/registrations`)
-  .then((res) => {
-    registrations.value = res.data
-    for (let i = 0; i < 5; i++) {
-      registrations.value?.push(res.data[0])
-    }
-  })
+registrations.value = await getRegistrations();
 
 const getFlavour = (status: string) => {
   switch (status) {

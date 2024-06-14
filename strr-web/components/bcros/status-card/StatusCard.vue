@@ -2,6 +2,7 @@
   <div
     :class="
       `
+        ${single ? 'flex-1': ''}
         mb-[42px] mobile:mb-[24px] justify-between flex-col
         bg-white px-[30px] mobile:px-[8px] py-[22px]
         border-[2px] border-bcGovColor-hairlinesOnWhite
@@ -37,5 +38,13 @@ import { AlertsFlavourE } from '#imports'
 const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 
-const { status, flavour } = defineProps<{ status: string, flavour: AlertsFlavourE }>()
+const {
+  single,
+  status,
+  flavour
+} = defineProps<{
+  single: boolean,
+  status: string,
+  flavour: AlertsFlavourE
+}>()
 </script>
