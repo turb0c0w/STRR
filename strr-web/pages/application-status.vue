@@ -15,20 +15,23 @@
           class-name="mobile:hidden"
         />
       </div>
-      <div class="flex flex-row mobile:flex-col flex-wrap justify-between">
+      <div class="flex flex-row mobile:flex-col flex-wrap">
         <div
           v-for="registration in registrations"
           :key="registration.id"
-          class="
-            desktop:w-[calc(33%-20px)] mb-[42px] mobile:mb-[24px] justify-between flex-col
-            bg-white px-[30px] mobile:px-[8px] py-[22px]
-            border-[2px] border-bcGovColor-hairlinesOnWhite
-          "
+          :class="`
+            ${
+            registrations && registrations?.length > 1
+              ? 'desktop:w-[calc(33%-20px)]'
+              : 'desktop:w-full'
+          }
+            flex flex-row mobile:flex-col
+          `"
         >
-          <BcrosChip :flavour="getFlavour(registration.status)" class="mobile:hidden">
-            {{ tRegistrationStatus(registration.status) }}
-          </BcrosChip>
-          <div class="flex w-full justify-between">
+          <BcrosStatusCard
+            :flavour="getFlavour(registration.status)"
+            :status="registration.status"
+          >
             <div class="mb-[24px]">
               <p class="font-bold">
                 {{
@@ -50,29 +53,15 @@
               <p>
                 {{
                   `
-                  ${registration.unitAddress.city}
-                  ${registration.unitAddress.province}
-                  ${registration.unitAddress.postalCode},
-                  ${registration.unitAddress.country}
-                  `
+                    ${registration.unitAddress.city}
+                    ${registration.unitAddress.province}
+                    ${registration.unitAddress.postalCode},
+                    ${registration.unitAddress.country}
+                    `
                 }}
               </p>
             </div>
-            <BcrosChip :flavour="getFlavour(registration.status)" class="desktop: hidden">
-              {{ tRegistrationStatus(registration.status) }}
-            </BcrosChip>
-          </div>
-          <div class="flex flex-row text-bcGovColor-activeBlue justify-start">
-            <p class="mr-[22px] cursor-pointer">
-              {{ tRegistrationStatus('view') }}
-            </p>
-            <p class="mr-[22px] cursor-pointer">
-              {{ tRegistrationStatus('download') }}
-            </p>
-            <p class="cursor-pointer">
-              {{ tRegistrationStatus('renewal') }}
-            </p>
-          </div>
+          </BcrosStatusCard>
         </div>
       </div>
     </div>
