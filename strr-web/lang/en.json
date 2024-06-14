@@ -1,4 +1,16 @@
 {
+  "registration-status": {
+    "PENDING": "PENDING",
+    "APPROVED": "APPROVED",
+    "MORE_INFO_NEEDED": "PROVISIONAL",
+    "DENIED": "DENIED",
+    "create": "Create New Registration",
+    "my-app": "My Registration Application",
+    "title": "My STR Registry Dashboard",
+    "view": "View",
+    "download": "Download Certificate",
+    "renewal": "Renewal"
+  },
   "fee-widget": {
     "summary": "Fee Summary",
     "registration-fee": "STR Registration Fee",
