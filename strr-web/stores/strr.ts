@@ -142,15 +142,31 @@ const secondaryContact: SecondaryContactInformationI = {
   middleName: undefined
 }
 
+const listingDetailsSchema =
+  z
+    .array(
+      z
+        .object({
+          url:
+            z
+              .string()
+              .refine(value => httpRegex
+                .test(value ?? ''), 'Invalid URL format')
+              .or(
+                z
+                  .string()
+                  .refine(value => value === '')
+              )
+        })
+    )
+
 export const propertyDetailsSchema = z.object({
   address: requiredNonEmptyString,
   addressLineTwo: optionalOrEmptyString,
   businessLicense: optionalOrEmptyString,
   city: requiredNonEmptyString,
   country: requiredNonEmptyString,
-  listingDetails: z.array(z.object({
-    url: z.string().regex(httpRegex, { message: 'Invalid URL format' })
-  })),
+  listingDetails: listingDetailsSchema,
   nickname: optionalOrEmptyString,
   ownershipType: requiredNonEmptyString,
   parcelIdentifier: optionalOrEmptyString,
