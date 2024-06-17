@@ -58,6 +58,12 @@ const optionalNumber = z.string().regex(numbersRegex, { message: 'Must be a numb
 const optionalOrEmptyString = z.string().optional().transform(e => e === '' ? undefined : e)
 const requiredNonEmptyString = z.string().refine(e => e !== '', 'Field cannot be empty')
 
+export const finalizationSchema = z.object({
+  phoneNumber: requiredPhone,
+  extension: optionalOrEmptyString,
+  emailAddress: requiredNonEmptyString,
+})
+
 export const contactSchema = z.object({
   preferredName: optionalOrEmptyString,
   phoneNumber: requiredPhone,

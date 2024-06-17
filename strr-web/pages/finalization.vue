@@ -2,7 +2,7 @@
   <div data-cy="finalization-page" class="relative h-full">
     <div>
       <BcrosTypographyH1 data-cy="finalization-title" :text="tFinalization('title')" class="mobile:pb-[20px]" />
-      <p>{{ tFinalization('subtitle') }}</p>
+      <p class="mb-[20px]">{{ tFinalization('subtitle') }}</p>
       <div class="mb-['132px'] bg-white rounded-[4px] padding-[40px]">
         <div class="bg-bcGovColor-gray2 rounded-t-[4px]">
           <p class="px-[40px] py-[15px] font-bold">
@@ -18,7 +18,11 @@
           </div>
         </BcrosFormSection>
         <div class="w-full h-[1px] bg-bcGovColor-hairlinesOnWhite mx-[40px]" />
-        <UForm ref="form" :schema="contactSchema" :state="formState.primaryContact">
+        <UForm
+          ref="form"
+          :schema="finalizationSchema"
+          :state="formState"
+        >
           <BcrosFormSection
             :title="tFinalization('primary')"
           >
@@ -70,6 +74,12 @@ const form = ref()
 const phone = ref()
 const extension = ref()
 const email = ref()
+
+const formState = reactive({
+  phone: '',
+  extension: '',
+  email: ''
+})
 
 watch(form, () => {
   if (form.value) { form.value.validate() }
