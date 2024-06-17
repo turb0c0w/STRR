@@ -23,7 +23,7 @@
             :title="tFinalization('primary')"
           >
             <div class="flex flex-row">
-              <UFormGroup name="phone" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
+              <UFormGroup name="phone" class="desktop:pr-[16px] mr-[13px] mb-[40px] flex-grow mobile:mb-[16px]">
                 <UInput
                   v-model="phone"
                   :placeholder="tFinalization('phone')"
@@ -38,7 +38,7 @@
                 />
               </UFormGroup>
             </div>
-            <UFormGroup name="email" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
+            <UFormGroup name="email" class="desktop:pr-[16px] flex-grow mobile:mb-[16px] mb-[40px]">
               <UInput
                 v-model="email"
                 :placeholder="tFinalization('email')"
@@ -48,6 +48,15 @@
           </BcrosFormSection>
         </UForm>
       </div>
+    </div>
+    <div class="w-full mt-[32px] flex justify-center">
+      <BcrosButtonsPrimary
+        :text="tFinalization('create')"
+        variant="outline"
+        :action="() => navigateTo('/create-account')"
+        icon="i-mdi-chevron-right"
+        :trailing="true"
+      />
     </div>
   </div>
 </template>

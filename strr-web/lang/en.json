@@ -8,7 +8,8 @@
     "contact-details": "Contact Details",
     "email": "Email Address",
     "phone": "Phone Number",
-    "extension-optional": "Extension (Optional)"
+    "extension": "Extension (Optional)",
+    "create": "Create Account"
   },
   "registration-status": {
     "PENDING": "PENDING",
