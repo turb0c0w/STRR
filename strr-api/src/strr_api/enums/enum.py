@@ -101,3 +101,13 @@ class EventRecordType(Enum):
     SBC_ACCOUNT_ADDED_CONTACT = "added contact info to SBC account"
     INVOICE_GENERATED = "invoice generated for registration"
     INVOICE_PAYED = "invoice payed for registration"
+
+
+class PaymentStatus(Enum):
+    """Payment status codes."""
+
+    CREATED = "CREATED"
+    COMPLETED = "COMPLETED"
+    DELETED = "DELETED"
+    REFUNDED = "REFUNDED"
+    FAILED = "FAILED"

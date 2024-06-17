@@ -33,13 +33,18 @@
 # POSSIBILITY OF SUCH DAMAGE.
 """Manages filing type codes and payment service interactions."""
 from copy import deepcopy
+from datetime import datetime, timezone
 from http import HTTPStatus
 
 import requests
 from flask import Flask
 from flask_jwt_oidc import JwtManager
 
+from strr_api import models
+from strr_api.enums.enum import EventRecordType, PaymentStatus
 from strr_api.exceptions import ExternalServiceException
+from strr_api.models import db
+from strr_api.services.event_records_service import EventRecordsService
 
 
 class PayService:
@@ -65,46 +70,18 @@ class PayService:
         self.svc_url = app.config.get("PAYMENT_SVC_URL")
         self.timeout = app.config.get("PAY_API_TIMEOUT", 20)
 
-    def get_fee_codes(self) -> requests.Response:
-        """Get fee codes from the pay-api."""
-        try:
-            # make api call
-            headers = {"Content-Type": "application/json"}
-            resp = requests.get(url=self.svc_url + "/codes/fee_codes", headers=headers, timeout=self.timeout)
-            if resp.status_code not in [HTTPStatus.OK]:
-                error = f"{resp.status_code} - {str(resp.json())}"
-                self.app.logger.debug("Invalid response from pay-api: %s", error)
-                raise ExternalServiceException(error=error, status_code=HTTPStatus.PAYMENT_REQUIRED)
-
-            return resp.json()
-
-        except ExternalServiceException as exc:
-            # pass along
-            raise exc
-        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as err:
-            self.app.logger.debug("Pay-api connection failure:", repr(err))
-            raise ExternalServiceException(error=repr(err), status_code=HTTPStatus.GATEWAY_TIMEOUT) from err
-        except Exception as err:
-            self.app.logger.debug("Pay-api integration (create invoice) failure:", repr(err))
-            raise ExternalServiceException(error=repr(err), status_code=HTTPStatus.PAYMENT_REQUIRED) from err
-
-    def create_invoice(self, account_id: str, user_jwt: JwtManager, details: dict) -> requests.Response:
+    def create_invoice(self, user_jwt: JwtManager, account_id, registration) -> models.Invoice:
         """Create the invoice via the pay-api."""
         payload = deepcopy(self.default_invoice_payload)
-        # update payload details
-        if folio_number := details.get("folioNumber", None):
-            payload["filingInfo"]["folioNumber"] = folio_number
-
-        if identifier := details.get("businessIdentifier", None):
-            label_name = "Registration Number" if identifier[:2] == "FM" else "Incorporation Number"
-            payload["details"] = [{"label": f"{label_name}: ", "value": identifier}]
-            payload["businessInfo"]["businessIdentifier"] = identifier
 
         try:
             # make api call
             token = user_jwt.get_token_auth_header()
-
-            headers = {"Authorization": "Bearer " + token, "Content-Type": "application/json", "Account-Id": account_id}
+            headers = {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json",
+                "Account-Id": str(account_id),
+            }
             resp = requests.post(
                 url=self.svc_url + "/payment-requests", json=payload, headers=headers, timeout=self.timeout
             )
@@ -115,8 +92,25 @@ class PayService:
                 self.app.logger.debug("Invalid response from pay-api: %s", error)
                 raise ExternalServiceException(error=error, status_code=HTTPStatus.PAYMENT_REQUIRED)
 
-            return resp
+            invoice_id = resp.json()["id"]
+            invoice = models.Invoice(
+                registration_id=registration.id,
+                invoice_id=invoice_id,
+                payment_status_code=PaymentStatus.CREATED,
+                payment_account=account_id,
+            )
 
+            db.session.add(invoice)
+            db.session.commit()
+            db.session.refresh(invoice)
+            db.session.refresh(registration)
+
+            EventRecordsService.save_event_record(
+                EventRecordType.INVOICE_GENERATED,
+                f"Invoice created for registration_id: {registration.id} invoice_id: {invoice_id}",
+            )
+
+            return invoice
         except ExternalServiceException as exc:
             # pass along
             raise exc
@@ -126,3 +120,35 @@ class PayService:
         except Exception as err:
             self.app.logger.debug("Pay-api integration (create invoice) failure:", repr(err))
             raise ExternalServiceException(error=repr(err), status_code=HTTPStatus.PAYMENT_REQUIRED) from err
+
+    def get_payment_details_by_invoice_id(self, user_jwt: JwtManager, invoice_id: int):
+        """Get payment details by invoice id."""
+        token = user_jwt.get_token_auth_header()
+        headers = {"Authorization": "Bearer " + token, "Content-Type": "application/json"}
+        payment_details = requests.get(
+            url=self.svc_url + f"/payment-requests/{invoice_id}", headers=headers, timeout=self.timeout
+        ).json()
+        return payment_details
+
+    def get_invoice_by_id(self, registration_id, invoice_id):
+        """Get invoice by invoice id."""
+        return (
+            models.Invoice.query.filter(models.Invoice.invoice_id == invoice_id)
+            .filter(models.Invoice.registration_id == registration_id)
+            .one_or_none()
+        )
+
+    def update_invoice_payment_status(self, user_jwt: JwtManager, registration, invoice) -> requests.Response:
+        """Update the invoice by checking status via the pay-api."""
+        payment_details = self.get_payment_details_by_invoice_id(user_jwt, invoice.invoice_id)
+        if payment_details.get("statusCode") == PaymentStatus.COMPLETED.name:
+            invoice.payment_status_code = PaymentStatus.COMPLETED
+            invoice.payment_completion_date = datetime.now(timezone.utc)
+            db.session.commit()
+            db.session.refresh(invoice)
+
+            EventRecordsService.save_event_record(
+                EventRecordType.INVOICE_PAYED,
+                f"Invoice paid for registration_id: {registration.id} invoice_id: {invoice.invoice_id}",
+            )
+        return invoice

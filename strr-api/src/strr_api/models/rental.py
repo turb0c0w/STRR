@@ -96,6 +96,7 @@ class Registration(db.Model):
     user = relationship("User", back_populates="registrations")
     rental_property = relationship("RentalProperty", back_populates="registrations")
     eligibility = relationship("Eligibility", back_populates="registrations", uselist=False)
+    invoices = relationship("Invoice", back_populates="registration")
 
 
 class Document(db.Model):

@@ -54,9 +54,9 @@ from strr_api.exceptions import (
     exception_response,
 )
 from strr_api.requests import RegistrationRequest
-from strr_api.responses import Document, Registration
+from strr_api.responses import Document, Invoice, Registration
 from strr_api.schemas.utils import validate
-from strr_api.services import GCPStorageService, RegistrationService
+from strr_api.services import GCPStorageService, RegistrationService, strr_pay
 from strr_api.validators.DocumentUploadValidator import validate_document_upload
 from strr_api.validators.RegistrationRequestValidator import validate_registration_request
 
@@ -80,15 +80,11 @@ def get_registrations():
       401:
         description:
     """
-
-    try:
-        registrations = RegistrationService.list_registrations(g.jwt_oidc_token_info)
-        return (
-            jsonify([Registration.from_db(registration).model_dump(mode="json") for registration in registrations]),
-            HTTPStatus.OK,
-        )
-    except AuthException as auth_exception:
-        return exception_response(auth_exception)
+    registrations = RegistrationService.list_registrations(g.jwt_oidc_token_info)
+    return (
+        jsonify([Registration.from_db(registration).model_dump(mode="json") for registration in registrations]),
+        HTTPStatus.OK,
+    )
 
 
 @bp.route("", methods=("POST",))
@@ -102,22 +98,18 @@ def create_registration():
     tags:
       - registration
     parameters:
-          - in: body
-            name: body
-            schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  description: The name of the new user account.
+      - in: body
+        name: body
+        schema:
+          type: object
     responses:
       201:
         description:
       400:
         description:
       401:
+        description:
+      502:
         description:
     """
 
@@ -137,11 +129,13 @@ def create_registration():
         registration = RegistrationService.save_registration(
             g.jwt_oidc_token_info, sbc_account_id, registration_request.registration
         )
+
+        strr_pay.create_invoice(jwt, sbc_account_id, registration)
         return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.CREATED
     except ValidationException as auth_exception:
         return exception_response(auth_exception)
-    except AuthException as auth_exception:
-        return exception_response(auth_exception)
+    except ExternalServiceException as service_exception:
+        return exception_response(service_exception)
 
 
 @bp.route("/<registration_id>/documents", methods=("POST",))
@@ -155,16 +149,16 @@ def upload_registration_supporting_document(registration_id):
     tags:
       - registration
     parameters:
-          - in: path
-            name: registration_id
-            type: integer
-            required: true
-            description: ID of the registration
-          - name: file
-            in: formData
-            type: file
-            required: true
-            description: The file to upload
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+      - name: file
+        in: formData
+        type: file
+        required: true
+        description: The file to upload
     consumes:
       - multipart/form-data
     responses:
@@ -213,11 +207,11 @@ def get_registration_supporting_documents(registration_id):
     tags:
       - registration
     parameters:
-          - in: path
-            name: registration_id
-            type: integer
-            required: true
-            description: ID of the registration
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
     responses:
       200:
         description:
@@ -253,16 +247,16 @@ def get_registration_supporting_document_by_id(registration_id, document_id):
     tags:
       - registration
     parameters:
-          - in: path
-            name: registration_id
-            type: integer
-            required: true
-            description: ID of the registration
-          - in: path
-            name: document_id
-            type: integer
-            required: true
-            description: ID of the document
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+      - in: path
+        name: document_id
+        type: integer
+        required: true
+        description: ID of the document
     responses:
       200:
         description:
@@ -300,16 +294,16 @@ def get_registration_file_by_id(registration_id, document_id):
     tags:
       - registration
     parameters:
-          - in: path
-            name: registration_id
-            type: integer
-            required: true
-            description: ID of the registration
-          - in: path
-            name: document_id
-            type: integer
-            required: true
-            description: ID of the document
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+      - in: path
+        name: document_id
+        type: integer
+        required: true
+        description: ID of the document
     responses:
       200:
         description:
@@ -354,16 +348,16 @@ def delete_registration_supporting_document_by_id(registration_id, document_id):
     tags:
       - registration
     parameters:
-          - in: path
-            name: registration_id
-            type: integer
-            required: true
-            description: ID of the registration
-          - in: path
-            name: document_id
-            type: integer
-            required: true
-            description: ID of the document
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+      - in: path
+        name: document_id
+        type: integer
+        required: true
+        description: ID of the document
     responses:
       204:
         description:
@@ -387,3 +381,101 @@ def delete_registration_supporting_document_by_id(registration_id, document_id):
         return exception_response(auth_exception)
     except ExternalServiceException as external_exception:
         return exception_response(external_exception)
+
+
+@bp.route("/<registration_id>/invoice/<invoice_id>/paid", methods=("POST",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def mark_registration_invoice_paid(registration_id, invoice_id):
+    """
+    Mark an invoice as paid for a STRR registration.
+    ---
+    tags:
+      - pay
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+      - in: path
+        name: invoice_id
+        type: integer
+        required: true
+        description: ID of the invoice
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+      404:
+        description:
+    """
+
+    try:
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            raise AuthException()
+
+        invoice = strr_pay.get_invoice_by_id(registration.id, invoice_id)
+        if not invoice:
+            return error_response(HTTPStatus.NOT_FOUND, "Invoice not found")
+
+        invoice = strr_pay.update_invoice_payment_status(jwt, registration, invoice)
+
+        return jsonify(Invoice.from_db(invoice).model_dump(mode="json")), HTTPStatus.OK
+    except ValidationException as auth_exception:
+        return exception_response(auth_exception)
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+
+
+@bp.route("/<registration_id>/invoice/<invoice_id>", methods=("GET",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def get_registration_invoice_status(registration_id, invoice_id):
+    """
+    Get invoice status for a STRR registration.
+    ---
+    tags:
+      - pay
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+      - in: path
+        name: invoice_id
+        type: integer
+        required: true
+        description: ID of the invoice
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+      404:
+        description:
+    """
+
+    try:
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            raise AuthException()
+
+        invoice = strr_pay.get_invoice_by_id(registration.id, invoice_id)
+        if not invoice:
+            return error_response(HTTPStatus.NOT_FOUND, "Invoice not found")
+
+        return jsonify(Invoice.from_db(invoice).model_dump(mode="json")), HTTPStatus.OK
+    except ValidationException as auth_exception:
+        return exception_response(auth_exception)
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)

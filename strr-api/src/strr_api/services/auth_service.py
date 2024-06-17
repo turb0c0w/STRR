@@ -103,18 +103,20 @@ class AuthService:
         return user_settings
 
     @classmethod
-    def create_user_account(cls, bearer_token, name, user_id):
+    def create_user_account(cls, bearer_token, request: SBCAccountCreationRequest, user_id):
         """Create a new user account."""
 
         endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/orgs"
         create_account_payload = {
-            "name": name,
+            "name": request.name,
             "accessType": "REGULAR",
             "typeCode": "BASIC",
             "productSubscriptions": [{"productCode": "STRR"}],
             "paymentInfo": {"paymentMethod": "DIRECT_PAY"},
-            # "mailingAddress": mailing_address,
         }
+        if request.mailingAddress:
+            create_account_payload["mailingAddress"] = request.mailingAddress.to_dict()
+
         new_user_account = RestService.post(
             data=create_account_payload,
             endpoint=endpoint,
@@ -123,7 +125,7 @@ class AuthService:
         ).json()
 
         EventRecordsService.save_event_record(
-            EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{name}"', user_id
+            EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{request.name}"', user_id
         )
         return new_user_account
 

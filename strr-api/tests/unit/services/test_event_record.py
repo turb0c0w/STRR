@@ -31,16 +31,20 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-"""This module wraps helper services used by the API."""
-from .auth_service import AuthService
-from .event_records_service import EventRecordsService
-from .gcp_storage_service import GCPStorageService
-from .payment_service import PayService
-from .registration_service import RegistrationService
-from .rest_service import RestService
+"""Tests to assure the evennt record service."""
 
-PAYMENT_REQUEST_TEMPLATE = {
-    "filingInfo": {"filingTypes": [{"filingTypeCode": "RENTAL_FEE"}]},
-    "businessInfo": {"corpType": "STRR"},
-}
-strr_pay = PayService(default_invoice_payload=PAYMENT_REQUEST_TEMPLATE)
+from strr_api.enums.enum import EventRecordType
+from strr_api.services import EventRecordsService
+
+
+def test_event_record(app):
+    """Assure the event records are saved as expected."""
+
+    name = "Test User"
+    user_id = 1
+    record = EventRecordsService.save_event_record(
+        EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{name}"', user_id
+    )
+
+    assert record.user_id == user_id
+    assert record.event_type == EventRecordType.SBC_ACCOUNT_CREATE
