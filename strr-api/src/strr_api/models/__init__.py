@@ -35,6 +35,8 @@
 from .db import db  # noqa: I001
 from .rental import Address, Document, Eligibility, PropertyManager, Registration, RentalPlatform, RentalProperty
 from .user import Contact, User
+from .event_record import EventRecord
+from .invoice import Invoice
 
 __all__ = (
     "db",
@@ -47,4 +49,6 @@ __all__ = (
     "Contact",
     "Eligibility",
     "Document",
+    "EventRecord",
+    "Invoice",
 )
