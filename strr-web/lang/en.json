@@ -1,4 +1,15 @@
 {
+  "finalization": {
+    "title": "Finalize your SBC Connect account",
+    "subtitle": "Finalize your SBC Connect account to continue to the Short Term Rental Registration application.",
+    "primary": "Primary Contact Information",
+    "name": "Your Name",
+    "disclaimer": "This is your legal name as it appears on your BC Services Card.",
+    "contact-details": "Contact Details",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "extension-optional": "Extension (Optional)"
+  },
   "registration-status": {
     "PENDING": "PENDING",
     "APPROVED": "APPROVED",
