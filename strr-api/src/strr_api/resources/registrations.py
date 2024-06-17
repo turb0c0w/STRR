@@ -56,7 +56,7 @@ from strr_api.exceptions import (
 from strr_api.requests import RegistrationRequest
 from strr_api.responses import Document, Registration
 from strr_api.schemas.utils import validate
-from strr_api.services import AuthService, GCPStorageService, RegistrationService
+from strr_api.services import GCPStorageService, RegistrationService
 from strr_api.validators.DocumentUploadValidator import validate_document_upload
 from strr_api.validators.RegistrationRequestValidator import validate_registration_request
 
@@ -122,7 +122,6 @@ def create_registration():
     """
 
     try:
-        token = jwt.get_token_auth_header()
         json_input = request.get_json()
         [valid, errors] = validate(json_input, "registration")
         if not valid:
@@ -131,17 +130,9 @@ def create_registration():
         registration_request = RegistrationRequest(**json_input)
         selected_account = registration_request.selectedAccount
 
-        # SBC Account lookup or creation
-        sbc_account_id = None
-        if selected_account.sbc_account_id:
-            sbc_account_id = selected_account.sbc_account_id
-        else:
-            new_account = AuthService.create_user_account(
-                token, selected_account.name, selected_account.mailingAddress.to_dict()
-            )
-            sbc_account_id = new_account.get("id")
-
-        validate_registration_request(selected_account, registration_request)
+        # SBC Account lookup
+        sbc_account_id = selected_account.sbc_account_id
+        validate_registration_request(registration_request)
 
         registration = RegistrationService.save_registration(
             g.jwt_oidc_token_info, sbc_account_id, registration_request.registration
@@ -151,8 +142,6 @@ def create_registration():
         return exception_response(auth_exception)
     except AuthException as auth_exception:
         return exception_response(auth_exception)
-    except ExternalServiceException as service_exception:
-        return exception_response(service_exception)
 
 
 @bp.route("/<registration_id>/documents", methods=("POST",))
@@ -186,6 +175,8 @@ def upload_registration_supporting_document(registration_id):
       401:
         description:
       403:
+        description:
+      502:
         description:
     """
 
@@ -328,6 +319,8 @@ def get_registration_file_by_id(registration_id, document_id):
         description:
       404:
         description:
+      502:
+        description:
     """
 
     try:
@@ -377,6 +370,8 @@ def delete_registration_supporting_document_by_id(registration_id, document_id):
       401:
         description:
       403:
+        description:
+      502:
         description:
     """
 

@@ -1,0 +1,10 @@
+{
+  "name": "Test Account",
+  "mailingAddress": {
+    "country": "CA",
+    "street": "12766 227st",
+    "city": "MAPLE RIDGE",
+    "region": "BC",
+    "postalCode": "V2X 6K6"
+  }
+}

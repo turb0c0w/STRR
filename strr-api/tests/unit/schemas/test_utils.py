@@ -3,7 +3,7 @@ import os
 
 from strr_api.schemas import utils
 
-REGISTRATION = "registration_new_sbc_account"
+REGISTRATION = "registration_use_sbc_account"
 REGISTRATION_SCHEMA = "registration"
 MOCK_ACCOUNT_REQUEST = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), f"../../mocks/json/{REGISTRATION}.json"

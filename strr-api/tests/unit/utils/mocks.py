@@ -18,6 +18,16 @@ def fake_user_from_token(arg):
     )
 
 
+def fake_user_from_db(*args, **kwargs):
+    return User(
+        id=1,
+        firstname="First",
+        lastname="last",
+        email="test@test.test",
+        idp_userid="ABCDEFG",
+    )
+
+
 def fake_registration(token, registration_id):
     return Registration(
         id=registration_id,
@@ -40,6 +50,10 @@ def fake_document(*args, **kwargs):
 
 def keycloak_profile_json(*args, **kwargs):
     return {"keycloakGuid": "ecb1ef8f2fee443eb14a414321bbc1f2"}
+
+
+def new_sbc_account(*args, **kwargs):
+    return {"id": 1}
 
 
 def no_op(*args, **kwargs):

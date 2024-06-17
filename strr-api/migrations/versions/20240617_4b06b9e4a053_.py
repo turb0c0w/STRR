@@ -29,6 +29,7 @@ def upgrade():
                               autoincrement=False, nullable=False),
                     sa.Column('created_date', postgresql.TIMESTAMP(),
                               autoincrement=False, nullable=False, server_default=sa.text('(NOW())')),
+                    sa.PrimaryKeyConstraint('id'),
                     sa.ForeignKeyConstraint(
                         ['user_id'], ['users.id'], name='event_records_user_id_fkey')
                     )
@@ -45,6 +46,7 @@ def upgrade():
                     ), autoincrement=False, nullable=True),
                     sa.Column('payment_account', sa.VARCHAR(),
                               autoincrement=False, nullable=True),
+                    sa.PrimaryKeyConstraint('id'),
                     sa.ForeignKeyConstraint(['registration_id'], [
                         'registrations.id'], name='invoices_registration_id_fkey')
                     )

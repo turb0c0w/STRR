@@ -35,6 +35,8 @@
 import requests
 from flask import current_app
 
+from strr_api.enums.enum import EventRecordType
+from strr_api.services.event_records_service import EventRecordsService
 from strr_api.services.rest_service import RestService
 
 
@@ -100,7 +102,7 @@ class AuthService:
         return user_settings
 
     @classmethod
-    def create_user_account(cls, bearer_token, name, mailing_address):
+    def create_user_account(cls, bearer_token, name, mailing_address, user_id):
         """Create a new user account."""
 
         endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/orgs"
@@ -118,4 +120,8 @@ class AuthService:
             token=bearer_token,
             generate_token=False,
         ).json()
+
+        EventRecordsService.save_event_record(
+            EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{name}"', user_id
+        )
         return new_user_account
