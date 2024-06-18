@@ -33,7 +33,18 @@ export const useRegistrations = () => {
     }
   }
 
+  const createSbcRegistration = (registration: any) => axiosInstance.post<string>(`${apiURL}/account/sbc`,
+    registration
+  )
+    .then((res) => {
+      console.log(res)
+      if (res.data.length === 0) {
+        navigateTo('/create-account')
+      }
+    })
+
   return {
+    createSbcRegistration,
     getRegistrations
   }
 }

@@ -68,6 +68,26 @@
               />
               <div class="flex-1" />
             </div>
+            <div
+              v-if="
+                formState.propertyDetails.listingDetails.length > 0
+                && formState.propertyDetails.listingDetails[0].url !== ''
+              "
+            >
+              <BcrosFormSectionReviewItem
+                :title="tReview('listing')"
+              >
+                <a
+                  v-for="listing in formState.propertyDetails.listingDetails"
+                  :key="listing.url"
+                  :href="listing.url"
+                  target="_blank"
+                  class="my-[4px]"
+                >
+                  {{ listing.url }}
+                </a>
+              </BcrosFormSectionReviewItem>
+            </div>
           </div>
           <div class="mt-[48px]">
             <p class="font-bold mb-[24px] mobile:mx-[8px]">

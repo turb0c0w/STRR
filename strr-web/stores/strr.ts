@@ -61,7 +61,7 @@ const requiredNonEmptyString = z.string().refine(e => e !== '', 'Field cannot be
 export const finalizationSchema = z.object({
   phoneNumber: requiredPhone,
   extension: optionalOrEmptyString,
-  emailAddress: requiredNonEmptyString,
+  emailAddress: requiredNonEmptyString
 })
 
 export const contactSchema = z.object({

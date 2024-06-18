@@ -2,7 +2,9 @@
   <div data-cy="finalization-page" class="relative h-full">
     <div>
       <BcrosTypographyH1 data-cy="finalization-title" :text="tFinalization('title')" class="mobile:pb-[20px]" />
-      <p class="mb-[20px]">{{ tFinalization('subtitle') }}</p>
+      <p class="mb-[20px]">
+        {{ tFinalization('subtitle') }}
+      </p>
       <div class="mb-['132px'] bg-white rounded-[4px] padding-[40px]">
         <div class="bg-bcGovColor-gray2 rounded-t-[4px]">
           <p class="px-[40px] py-[15px] font-bold">
