@@ -39,9 +39,9 @@ def upgrade():
                     sa.Column('registration_id', sa.INTEGER(),
                               autoincrement=False, nullable=False),
                     sa.Column('invoice_id', sa.INTEGER(),
-                              autoincrement=False, nullable=True),
+                              autoincrement=False, nullable=False),
                     sa.Column('payment_status_code', sa.VARCHAR(),
-                              autoincrement=False, nullable=True),
+                              autoincrement=False, nullable=False),
                     sa.Column('payment_completion_date', postgresql.TIMESTAMP(
                     ), autoincrement=False, nullable=True),
                     sa.Column('payment_account', sa.VARCHAR(),

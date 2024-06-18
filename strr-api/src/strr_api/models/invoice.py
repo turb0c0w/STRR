@@ -15,8 +15,8 @@ class Invoice(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     registration_id = db.Column(db.Integer, db.ForeignKey("registrations.id"), nullable=False)
-    invoice_id = db.Column(db.Integer, nullable=True)
-    payment_status_code = db.Column(db.String, nullable=True)
+    invoice_id = db.Column(db.Integer, nullable=False)
+    payment_status_code = db.Column(db.String, nullable=False)
     payment_completion_date = db.Column(db.DateTime, nullable=True)
     payment_account = db.Column(db.String, nullable=True)
 

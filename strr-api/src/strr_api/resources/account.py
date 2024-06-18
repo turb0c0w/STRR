@@ -127,7 +127,7 @@ def create_sbc_account():
             raise ValidationException(message=errors)
 
         sbc_account_creation_request = SBCAccountCreationRequest(**json_input)
-        user = RegistrationService.get_user(g.jwt_oidc_token_info)
+        user = RegistrationService.get_or_create_user(g.jwt_oidc_token_info)
         validate_account_creation_request(sbc_account_creation_request)
         new_account = AuthService.create_user_account(
             token, sbc_account_creation_request.name, sbc_account_creation_request.mailingAddress.to_dict(), user.id
