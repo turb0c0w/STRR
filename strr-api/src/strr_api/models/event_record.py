@@ -6,6 +6,7 @@ from __future__ import annotations
 from sqlalchemy import Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import text
+from strr_api.enums.enum import EventRecordType
 
 from strr_api.enums.enum import EventRecordType
 
