@@ -49,11 +49,9 @@ export const useRegistrations = () => {
         registration
       )
       .then((res) => {
-        console.log(res.data)
         if (res.data) {
-          const { setAccountInfo, me } = useBcrosAccount()
+          const { setAccountInfo } = useBcrosAccount()
           setAccountInfo(res.data.sbc_account_id)
-          // formState.selectedAccount = me?.profile.
           navigateTo('/create-account')
         }
       })
