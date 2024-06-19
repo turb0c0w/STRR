@@ -1,17 +1,25 @@
 <template>
   <div data-cy="finalization-page" class="relative h-full">
     <div>
-      <BcrosTypographyH1 data-cy="finalization-title" :text="tFinalization('title')" class="mobile:pb-[20px]" />
-      <p class="mb-[20px]">
+      <BcrosTypographyH1
+        data-cy="finalization-title"
+        :text="tFinalization('title')"
+        class="mobile:pb-[20px] mobile:px-[8px]"
+      />
+      <p class="mb-[20px] mobile:px-[8px]">
         {{ tFinalization('subtitle') }}
       </p>
-      <div class="mb-[132px] pb-[32px] bg-white rounded-[4px] padding-[40px]">
+      <div class="desktop:mb-[132px] mobile:mb-[40px] pb-[32px] bg-white rounded-[4px] padding-[40px]">
         <div class="bg-bcGovColor-gray2 rounded-t-[4px]">
-          <p class="px-[40px] py-[15px] font-bold">
+          <p class="px-[40px] mobile:px-[8px] py-[15px] font-bold">
             {{ t('create-account.contact.subtitle') }}
           </p>
         </div>
-        <BcrosFormSection :title="t('create-account.contact.your-name')" :divider="true">
+        <BcrosFormSection
+          :title="t('create-account.contact.your-name')"
+          :divider="true"
+          class-name="mobile:mb-[20px]"
+        >
           <div class="mb-[16px] text-[14px] leading-[22px]">
             {{ userFullName }}
           </div>
@@ -26,7 +34,7 @@
         >
           <BcrosFormSection
             :title="tFinalization('account-name')"
-            class-name="mb-[-30px]"
+            class-name="mb-[-30px] mobile:mb-[30px]"
           >
             <UFormGroup
               name="name"
@@ -43,15 +51,21 @@
           <BcrosFormSection
             :title="tFinalization('contact-details')"
           >
-            <div class="flex flex-row">
-              <UFormGroup name="phone" class="desktop:pr-[16px] mr-[13px] mb-[40px] flex-grow mobile:mb-[16px]">
+            <div class="flex flex-row mobile:flex-col">
+              <UFormGroup
+                name="phone"
+                class="desktop:pr-[16px] mr-[13px] mb-[40px] flex-grow mobile:mb-[16px]"
+              >
                 <UInput
                   v-model="formState.phone"
                   :placeholder="tFinalization('phone')"
                   aria-label="phone"
                 />
               </UFormGroup>
-              <UFormGroup name="extension" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
+              <UFormGroup
+                name="extension"
+                class="desktop:pr-[16px] flex-grow mobile:mb-[16px]"
+              >
                 <UInput
                   v-model="formState.phoneExtension"
                   :placeholder="tFinalization('extension')"
@@ -59,7 +73,10 @@
                 />
               </UFormGroup>
             </div>
-            <UFormGroup name="email" class="desktop:pr-[16px] flex-grow mobile:mb-[16px] mb-[40px]">
+            <UFormGroup
+              name="email"
+              class="desktop:pr-[16px] flex-grow mobile:mb-[16px] mb-[40px]"
+            >
               <UInput
                 v-model="formState.email"
                 :placeholder="tFinalization('email')"
@@ -68,7 +85,9 @@
             </UFormGroup>
           </BcrosFormSection>
         </UForm>
-        <div class="w-full my-[32px] flex justify-end pr-[32px]">
+        <div
+          class="w-full desktop:my-[32px] flex justify-end mobile:px-[8px] mobile:justify-center desktop:pr-[32px]"
+        >
           <BcrosButtonsPrimary
             :text="tFinalization('create')"
             :action="() => validateAndSubmit()"
@@ -111,7 +130,7 @@ const validateAndSubmit = async () => {
 }
 
 definePageMeta({
-  layout: 'wide'
+  layout: 'wide-no-space'
 })
 
 </script>
