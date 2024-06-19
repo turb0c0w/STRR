@@ -29,7 +29,11 @@
             :title="tFinalization('account-name')"
             class-name="mb-[-30px]"
           >
-            <UFormGroup name="name" class="desktop:pr-[16px] mr-[13px] mb-[40px] flex-grow mobile:mb-[16px]">
+            <UFormGroup
+              name="name"
+              class="desktop:pr-[16px] mr-[13px] mb-[40px] flex-grow mobile:mb-[16px]"
+              :error="`${accountNameConflict ? 'Account name already exists': ''}`"
+            >
               <UInput
                 v-model="formState.name"
                 :placeholder="tFinalization('account-name')"
@@ -71,7 +75,7 @@
       <BcrosButtonsPrimary
         :text="tFinalization('create')"
         variant="outline"
-        :action="() => createSbcRegistration(formState)"
+        :action="() => validateAndSubmit()"
         icon="i-mdi-chevron-right"
         :trailing="true"
       />
@@ -80,10 +84,13 @@
 </template>
 
 <script setup lang="ts">
+import { SbcCreationResponseE } from '~/enums/sbc-creation-response-e'
+
 const t = useNuxtApp().$i18n.t
 const tFinalization = (translationKey: string) => t(`finalization.${translationKey}`)
 const { userFullName } = useBcrosAccount()
 const { createSbcRegistration } = useRegistrations()
+const accountNameConflict = ref<boolean>(false)
 
 const form = ref()
 
@@ -94,8 +101,15 @@ const formState = reactive({
   name: ''
 })
 
-watch(form, () => {
-  if (form.value) { form.value.validate() }
-})
+const validateAndSubmit = () => {
+  if (form.value.validate()) {
+    const result: SbcCreationResponseE = await createSbcRegistration(formState)
+    if (result === SbcCreationResponseE.CONFLICT) {
+      accountNameConflict.value = true
+    } else {
+      accountNameConflict.value = false
+    }
+  }
+}
 
 </script>

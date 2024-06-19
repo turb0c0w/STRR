@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { formState } from '@/stores/strr'
+import { SbcCreationResponseE } from '~/enums/sbc-creation-response-e'
 
 export const useRegistrations = () => {
   const apiURL = useRuntimeConfig().public.strrApiURL
@@ -41,7 +41,7 @@ export const useRegistrations = () => {
       phoneExtension: string,
       name: string
     }
-  ) =>
+  ): Promise<SbcCreationResponseE> =>
     axiosInstance
       .post<{
         sbc_account_id: string, id: string
@@ -53,7 +53,13 @@ export const useRegistrations = () => {
           const { setAccountInfo } = useBcrosAccount()
           setAccountInfo(res.data.sbc_account_id)
           navigateTo('/create-account')
+          return SbcCreationResponseE.SUCCESS
         }
+        return SbcCreationResponseE.ERROR
+      })
+      .catch((err) => {
+        if (err.status === '403') { return SbcCreationResponseE.CONFLICT }
+        return SbcCreationResponseE.ERROR
       })
 
   return {

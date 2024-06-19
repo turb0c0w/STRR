@@ -59,9 +59,10 @@ const optionalOrEmptyString = z.string().optional().transform(e => e === '' ? un
 const requiredNonEmptyString = z.string().refine(e => e !== '', 'Field cannot be empty')
 
 export const finalizationSchema = z.object({
-  phoneNumber: requiredPhone,
-  extension: optionalOrEmptyString,
-  emailAddress: requiredNonEmptyString
+  phone: requiredPhone,
+  phoneExtension: optionalOrEmptyString,
+  email: requiredNonEmptyString,
+  name: requiredNonEmptyString
 })
 
 export const contactSchema = z.object({
