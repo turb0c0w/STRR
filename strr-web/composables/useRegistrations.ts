@@ -37,7 +37,6 @@ export const useRegistrations = () => {
     registration
   )
     .then((res) => {
-      console.log(res)
       if (res.data.length === 0) {
         navigateTo('/create-account')
       }

@@ -9,7 +9,8 @@
     "email": "Email Address",
     "phone": "Phone Number",
     "extension": "Extension (Optional)",
-    "create": "Create Account"
+    "create": "Create Account",
+    "account-name": "Account Name"
   },
   "registration-status": {
     "PENDING": "PENDING",

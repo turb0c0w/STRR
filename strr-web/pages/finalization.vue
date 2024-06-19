@@ -26,19 +26,31 @@
           :state="formState"
         >
           <BcrosFormSection
-            :title="tFinalization('primary')"
+            :title="tFinalization('account-name')"
+            class-name="mb-[-30px]"
+          >
+            <UFormGroup name="name" class="desktop:pr-[16px] mr-[13px] mb-[40px] flex-grow mobile:mb-[16px]">
+              <UInput
+                v-model="formState.name"
+                :placeholder="tFinalization('account-name')"
+                aria-label="account name"
+              />
+            </UFormGroup>
+          </BcrosFormSection>
+          <BcrosFormSection
+            :title="tFinalization('contact-details')"
           >
             <div class="flex flex-row">
               <UFormGroup name="phone" class="desktop:pr-[16px] mr-[13px] mb-[40px] flex-grow mobile:mb-[16px]">
                 <UInput
-                  v-model="phone"
+                  v-model="formState.phone"
                   :placeholder="tFinalization('phone')"
                   aria-label="phone"
                 />
               </UFormGroup>
               <UFormGroup name="extension" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
                 <UInput
-                  v-model="extension"
+                  v-model="formState.extension"
                   :placeholder="tFinalization('extension')"
                   aria-label="extension"
                 />
@@ -46,7 +58,7 @@
             </div>
             <UFormGroup name="email" class="desktop:pr-[16px] flex-grow mobile:mb-[16px] mb-[40px]">
               <UInput
-                v-model="email"
+                v-model="formState.email"
                 :placeholder="tFinalization('email')"
                 aria-label="email"
               />
@@ -59,7 +71,7 @@
       <BcrosButtonsPrimary
         :text="tFinalization('create')"
         variant="outline"
-        :action="() => navigateTo('/create-account')"
+        :action="() => createSbcRegistration(formState)"
         icon="i-mdi-chevron-right"
         :trailing="true"
       />
@@ -71,16 +83,15 @@
 const t = useNuxtApp().$i18n.t
 const tFinalization = (translationKey: string) => t(`finalization.${translationKey}`)
 const { userFullName } = useBcrosAccount()
+const { createSbcRegistration } = useRegistrations()
 
 const form = ref()
-const phone = ref()
-const extension = ref()
-const email = ref()
 
 const formState = reactive({
   phone: '',
   extension: '',
-  email: ''
+  email: '',
+  name: ''
 })
 
 watch(form, () => {

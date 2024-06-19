@@ -71,7 +71,7 @@
             <div
               v-if="
                 formState.propertyDetails.listingDetails.length > 0
-                && formState.propertyDetails.listingDetails[0].url !== ''
+                  && formState.propertyDetails.listingDetails[0].url !== ''
               "
             >
               <BcrosFormSectionReviewItem
