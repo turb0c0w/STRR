@@ -92,3 +92,12 @@ class OwnershipType(Enum):
     OWN = "own"
     RENT = "rent"
     CO_OWN = "co-own"
+
+
+class EventRecordType(Enum):
+    """STRR Event Record Type."""
+
+    SBC_ACCOUNT_CREATE = "create a new SBC account"
+    SBC_ACCOUNT_ADDED_CONTACT = "added contact info to SBC account"
+    INVOICE_GENERATED = "invoice generated for registration"
+    INVOICE_PAYED = "invoice payed for registration"

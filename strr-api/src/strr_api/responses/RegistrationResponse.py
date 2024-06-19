@@ -9,17 +9,6 @@ from pydantic import BaseModel
 from strr_api import models
 
 
-class SBCMailingAddress(BaseModel):
-    """SBCMailingAddress response object."""
-
-    street: str
-    streetAdditional: Optional[str] = None
-    city: str
-    region: str
-    postalCode: str
-    country: str
-
-
 class PrincipalResidence(BaseModel):
     """PrincipalResidence response object."""
 

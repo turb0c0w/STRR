@@ -207,3 +207,8 @@ class RegistrationService:
         db.session.delete(document)
         db.session.commit()
         return True
+
+    @classmethod
+    def get_or_create_user(cls, jwt_oidc_token_info):
+        """Get STRR User"""
+        return models.User.get_or_create_user_by_jwt(jwt_oidc_token_info)

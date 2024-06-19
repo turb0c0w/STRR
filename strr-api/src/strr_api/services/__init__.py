@@ -33,6 +33,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 """This module wraps helper services used by the API."""
 from .auth_service import AuthService
+from .event_records_service import EventRecordsService
 from .gcp_storage_service import GCPStorageService
 from .payment_service import PayService
 from .registration_service import RegistrationService

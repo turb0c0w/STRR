@@ -2,18 +2,12 @@
 import re
 
 from strr_api.exceptions import ValidationException
+from strr_api.requests import RegistrationRequest
 
 
-def validate_registration_request(selected_account, registration_request):
+def validate_registration_request(registration_request: RegistrationRequest):
     """Validate the registration request."""
     # DO POSTAL CODE VALIDATION IF COUNTRY IS CANADA
-    if selected_account.mailingAddress:
-        selected_account.mailingAddress.postalCode = validate_and_format_canadian_postal_code(
-            selected_account.mailingAddress.country,
-            selected_account.mailingAddress.region,
-            selected_account.mailingAddress.postalCode,
-        )
-
     registration_request.registration.unitAddress.postalCode = validate_and_format_canadian_postal_code(
         registration_request.registration.unitAddress.country,
         registration_request.registration.unitAddress.province,

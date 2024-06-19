@@ -6,7 +6,6 @@ from unittest.mock import patch
 from flask import g
 
 from tests.unit.utils.mocks import (
-    empty_json,
     fake_document,
     fake_get_token_auth_header,
     fake_registration,
@@ -14,7 +13,7 @@ from tests.unit.utils.mocks import (
     no_op,
 )
 
-REGISTRATION = "registration_new_sbc_account"
+REGISTRATION = "registration_use_sbc_account"
 REGISTRATION_MINIMUM_FIELDS = "registration_use_sbc_account_minimum"
 MOCK_ACCOUNT_REQUEST = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), f"../../mocks/json/{REGISTRATION}.json"
@@ -39,7 +38,6 @@ def test_get_registrations_401(client):
     assert rv.status_code == HTTPStatus.UNAUTHORIZED
 
 
-@patch("strr_api.services.AuthService.create_user_account", new=empty_json)
 @patch("strr_api.models.user.User.get_or_create_user_by_jwt", new=fake_user_from_token)
 @patch("flask_jwt_oidc.JwtManager.get_token_auth_header", new=fake_get_token_auth_header)
 @patch("flask_jwt_oidc.JwtManager._validate_token", new=no_op)
@@ -51,7 +49,6 @@ def test_post_registrations_201(client):
         assert rv.status_code == HTTPStatus.CREATED
 
 
-@patch("strr_api.services.AuthService.create_user_account", new=empty_json)
 @patch("strr_api.models.user.User.get_or_create_user_by_jwt", new=fake_user_from_token)
 @patch("flask_jwt_oidc.JwtManager.get_token_auth_header", new=fake_get_token_auth_header)
 @patch("flask_jwt_oidc.JwtManager._validate_token", new=no_op)
