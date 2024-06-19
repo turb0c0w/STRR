@@ -50,7 +50,7 @@
               </UFormGroup>
               <UFormGroup name="extension" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
                 <UInput
-                  v-model="formState.extension"
+                  v-model="formState.phoneExtension"
                   :placeholder="tFinalization('extension')"
                   aria-label="extension"
                 />
@@ -89,7 +89,7 @@ const form = ref()
 
 const formState = reactive({
   phone: '',
-  extension: '',
+  phoneExtension: '',
   email: '',
   name: ''
 })

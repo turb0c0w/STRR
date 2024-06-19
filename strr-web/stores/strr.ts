@@ -148,6 +148,7 @@ const secondaryContact: SecondaryContactInformationI = {
   middleName: undefined
 }
 
+// If any listing details exist must follow httpRegex otherwise can be blank
 const listingDetailsSchema =
   z
     .array(

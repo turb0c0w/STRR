@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { formState } from '@/stores/strr'
 
 export const useRegistrations = () => {
   const apiURL = useRuntimeConfig().public.strrApiURL
@@ -33,14 +34,29 @@ export const useRegistrations = () => {
     }
   }
 
-  const createSbcRegistration = (registration: any) => axiosInstance.post<string>(`${apiURL}/account/sbc`,
-    registration
-  )
-    .then((res) => {
-      if (res.data.length === 0) {
-        navigateTo('/create-account')
-      }
-    })
+  const createSbcRegistration = (registration:
+    {
+      email: string,
+      phone: string,
+      phoneExtension: string,
+      name: string
+    }
+  ) =>
+    axiosInstance
+      .post<{
+        sbc_account_id: string, id: string
+      }>(`${apiURL}/account/sbc`,
+        registration
+      )
+      .then((res) => {
+        console.log(res.data)
+        if (res.data) {
+          const { setAccountInfo, me } = useBcrosAccount()
+          setAccountInfo(res.data.sbc_account_id)
+          // formState.selectedAccount = me?.profile.
+          navigateTo('/create-account')
+        }
+      })
 
   return {
     createSbcRegistration,
