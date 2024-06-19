@@ -49,7 +49,6 @@ from strr_api.requests import SBCAccountCreationRequest
 from strr_api.responses import SBCAccount
 from strr_api.schemas.utils import validate
 from strr_api.services import AuthService, RegistrationService
-from strr_api.validators.SBCAccountCreationRequestValidator import validate_account_creation_request
 
 logger = logging.getLogger("api")
 bp = Blueprint("account", __name__)
@@ -128,11 +127,11 @@ def create_sbc_account():
 
         sbc_account_creation_request = SBCAccountCreationRequest(**json_input)
         user = RegistrationService.get_or_create_user(g.jwt_oidc_token_info)
-        validate_account_creation_request(sbc_account_creation_request)
-        new_account = AuthService.create_user_account(
-            token, sbc_account_creation_request.name, sbc_account_creation_request.mailingAddress.to_dict(), user.id
-        )
+        new_account = AuthService.create_user_account(token, sbc_account_creation_request.name, user.id)
         sbc_account_id = new_account.get("id")
+
+        AuthService.add_contact_info(token, sbc_account_id, sbc_account_creation_request, user.id)
+
         return (
             jsonify(SBCAccount(user_id=user.id, sbc_account_id=sbc_account_id).model_dump(mode="json")),
             HTTPStatus.CREATED,

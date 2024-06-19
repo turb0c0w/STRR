@@ -53,10 +53,41 @@
           "postalCode",
           "country"
         ]
+      },
+      "phone": {
+        "$id": "#/properties/phone",
+        "type": "string",
+        "title": "Phone",
+        "default": "",
+        "examples": [
+          "111-222-3333"
+        ],
+        "pattern": "^(.*)$"
+      },
+      "phoneExtension": {
+        "$id": "#/properties/phone_extension",
+        "type": "string",
+        "title": "Phone Extension",
+        "default": "",
+        "examples": [
+          "123"
+        ],
+        "pattern": "^(.*)$"
+      },
+      "email": {
+        "$id": "#/properties/email",
+        "type": "string",
+        "title": "Email",
+        "default": "",
+        "examples": [
+          "abc123@mail.com"
+        ],
+        "pattern": "(^[a-zA-Z0-9!#$%&'*+-/=?^_`{|.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$)"
       }
   },
   "required": [
     "name",
-    "mailingAddress"
+    "phone",
+    "email"
   ]
 }

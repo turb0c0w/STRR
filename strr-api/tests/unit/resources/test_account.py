@@ -45,6 +45,7 @@ def test_me_401(client):
 
 @patch("strr_api.services.RegistrationService.get_or_create_user", new=fake_user_from_db)
 @patch("strr_api.services.AuthService.create_user_account", new=new_sbc_account)
+@patch("strr_api.services.AuthService.add_contact_info", new=no_op)
 @patch("strr_api.models.user.User.get_or_create_user_by_jwt", new=fake_user_from_token)
 @patch("flask_jwt_oidc.JwtManager.get_token_auth_header", new=fake_get_token_auth_header)
 @patch("flask_jwt_oidc.JwtManager._validate_token", new=no_op)
