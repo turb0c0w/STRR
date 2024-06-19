@@ -5,7 +5,7 @@
       <p class="mb-[20px]">
         {{ tFinalization('subtitle') }}
       </p>
-      <div class="mb-['132px'] bg-white rounded-[4px] padding-[40px]">
+      <div class="mb-[132px] pb-[32px] bg-white rounded-[4px] padding-[40px]">
         <div class="bg-bcGovColor-gray2 rounded-t-[4px]">
           <p class="px-[40px] py-[15px] font-bold">
             {{ t('create-account.contact.subtitle') }}
@@ -19,7 +19,6 @@
             {{ t('create-account.contact.disclaimer') }}
           </div>
         </BcrosFormSection>
-        <div class="w-full h-[1px] bg-bcGovColor-hairlinesOnWhite mx-[40px]" />
         <UForm
           ref="form"
           :schema="finalizationSchema"
@@ -69,16 +68,15 @@
             </UFormGroup>
           </BcrosFormSection>
         </UForm>
+        <div class="w-full my-[32px] flex justify-end pr-[32px]">
+          <BcrosButtonsPrimary
+            :text="tFinalization('create')"
+            :action="() => validateAndSubmit()"
+            icon="i-mdi-chevron-right"
+            :trailing="true"
+          />
+        </div>
       </div>
-    </div>
-    <div class="w-full mt-[32px] flex justify-center">
-      <BcrosButtonsPrimary
-        :text="tFinalization('create')"
-        variant="outline"
-        :action="() => validateAndSubmit()"
-        icon="i-mdi-chevron-right"
-        :trailing="true"
-      />
     </div>
   </div>
 </template>
@@ -101,7 +99,7 @@ const formState = reactive({
   name: ''
 })
 
-const validateAndSubmit = () => {
+const validateAndSubmit = async () => {
   if (form.value.validate()) {
     const result: SbcCreationResponseE = await createSbcRegistration(formState)
     if (result === SbcCreationResponseE.CONFLICT) {
@@ -111,5 +109,9 @@ const validateAndSubmit = () => {
     }
   }
 }
+
+definePageMeta({
+  layout: 'wide'
+})
 
 </script>
