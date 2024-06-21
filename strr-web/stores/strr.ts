@@ -90,7 +90,7 @@ export const contactSchema = z.object({
   birthYear: requiredNumber
     .refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
     .refine(year => year.length === 4, 'Year must be four digits')
-    .refine(day => Number(day) > 0, 'Year must be greater than 0'),
+    .refine(day => Number(day) > 0, 'Year must be greater than 0')
 })
 
 export const secondaryContactSchema = z.object({

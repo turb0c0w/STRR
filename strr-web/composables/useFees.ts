@@ -23,7 +23,16 @@ export const useFees = () => {
   const handlePaymentRedirect = async (invoiceId: number, applicationId: number) => {
     const paymentUrl = config.public.payPortalURL
     const returnUrl =
-      encodeURIComponent(`${window.location.href.replace('create-account', `success/${applicationId}/invoice/${invoiceId}`)}`)
+      encodeURIComponent(`
+        ${window
+          .location
+          .href
+          .replace(
+            'create-account',
+            `success/${applicationId}/invoice/${invoiceId}`
+          )
+        }
+      `)
     const payUrl = `${paymentUrl}/${invoiceId}/${returnUrl}`
     await navigateTo(payUrl, { external: true })
   }
