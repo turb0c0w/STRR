@@ -84,11 +84,13 @@ export const contactSchema = z.object({
   postalCode: requiredNonEmptyString,
   birthDay: requiredNumber
     .refine(day => day.length === 2, 'Day must be two digits')
-    .refine(day => Number(day) <= 31, 'Must be less than or equal to 31'),
+    .refine(day => Number(day) <= 31, 'Date must be less than or equal to 31')
+    .refine(day => Number(day) > 0, 'Date must be less greater to 0'),
   birthMonth: requiredNonEmptyString,
   birthYear: requiredNumber
     .refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
     .refine(year => year.length === 4, 'Year must be four digits')
+    .refine(day => Number(day) > 0, 'Year must be greater than 0'),
 })
 
 export const secondaryContactSchema = z.object({
