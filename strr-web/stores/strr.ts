@@ -291,7 +291,6 @@ export const formDataForAPI: CreateAccountFormAPII = {
       propertyType: '',
       ownershipType: ''
     },
-    listingDetails: [],
     principalResidence: {
       isPrincipalResidence: false,
       agreedToRentalAct: false,

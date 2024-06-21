@@ -47,8 +47,9 @@ export const formStateToApi = (
   } else {
     delete formData.registration.secondaryContact
   }
-  formData.registration.listingDetails =
-    formState.propertyDetails.listingDetails
+  if (formState.propertyDetails.listingDetails[0].url !== '') {
+    formData.registration.listingDetails = formState.propertyDetails.listingDetails
+  }
   formData.registration.unitAddress = {
     address: formState.propertyDetails.address ?? '',
     addressLineTwo: formState.propertyDetails.addressLineTwo,
