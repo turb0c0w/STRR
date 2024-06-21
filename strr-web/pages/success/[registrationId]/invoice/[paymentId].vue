@@ -16,7 +16,10 @@
           {{ tApplicationConfirm('submitted-for') }}
         </p>
         <p class="mb-[24px] font-bold">
-          {{ fetchedRegistration ? fetchedRegistration.unitAddress.address : '-' }}
+          {{
+            fetchedRegistration && fetchedRegistration?.unitAddress
+              ? fetchedRegistration.unitAddress.address
+              : '-' }}
         </p>
         <p class="mobile:mb-[24px]">
           {{ tApplicationConfirm('will-review') }}
@@ -46,7 +49,6 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
 
 const route = useRoute()
 const fetchedRegistration = ref()
@@ -59,8 +61,8 @@ const { createInvoiceRecord } = useFees()
 
 const { registrationId, paymentId } = route.params
 
-onMounted(() => {
-  fetchedRegistration.value = getRegistration(registrationId.toString())
+onMounted(async () => {
+  fetchedRegistration.value = await getRegistration(registrationId.toString())
   createInvoiceRecord(paymentId.toString(), registrationId.toString())
 })
 

@@ -27,7 +27,7 @@ export const submitCreateAccountForm = (
   axiosInstance.post(`${apiURL}/registrations`,
     { ...formData }
   )
-    .then(async (response) => {
+    .then((response) => {
       const data = response?.data
       if (!data) { throw new Error('Invalid AUTH API response') }
       return data

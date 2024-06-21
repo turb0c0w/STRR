@@ -21,16 +21,17 @@ export const useRegistrations = () => {
         )
     })
 
-  const getRegistration = (id: string) => {
+  const getRegistration = (id: string): Promise<string> =>
     axiosInstance.get(`${apiURL}/registrations`)
       .then((res) => {
+        let selectedRegistration = '-'
         res.data.forEach((registration: any) => {
           if (registration.id.toString() === id.toString()) {
-            return registration
+            selectedRegistration = registration
           }
         })
+        return selectedRegistration
       })
-  }
 
   const getStatusPriority = (status: string) => {
     switch (status) {
