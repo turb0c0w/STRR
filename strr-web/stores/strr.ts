@@ -5,6 +5,7 @@ import { CreateAccountFormStateI, OrgI, SecondaryContactInformationI } from '~/i
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
 const fileAxiosInstance = addAxiosInterceptors(axios.create(), 'multipart/form-data')
+const { handlePaymentRedirect } = useFees()
 
 export const submitCreateAccountForm = (
   userFirstName: string,
@@ -23,23 +24,23 @@ export const submitCreateAccountForm = (
     propertyType,
     ownershipType
   )
-
   axiosInstance.post(`${apiURL}/registrations`,
     { ...formData }
   )
-    .then((response) => {
+    .then(async (response) => {
       const data = response?.data
       if (!data) { throw new Error('Invalid AUTH API response') }
       return data
     })
-    .then((response) => {
+    .then((data) => {
       formState.supportingDocuments.forEach((file: File) => {
-        fileAxiosInstance.post<File>(`${apiURL}/registrations/${response.id}/documents`, { file })
+        fileAxiosInstance.post<File>(`${apiURL}/registrations/${data.id}/documents`, { file })
       })
-      return response.id
+      return data
     })
-    .then((id) => {
-      navigateTo(`/success/${id}`)
+    .then((data) => {
+      const { invoices } = data
+      handlePaymentRedirect(invoices[0].invoice_id, data.id)
     })
     .catch((error: string) => {
       console.warn('Error creating account.')
@@ -51,17 +52,21 @@ const numbersRegex = /^[0-9]+$/
 // matches chars 123456789 ()
 const phoneRegex = /^[0-9*#+() -]+$/
 const httpRegex = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+\.?(:\d+)?(\/.*)?)$/i
+const emailRegex = /^\S+@\S+\.\S+$/
 const phoneError = { message: 'Valid characters are "()- 123457890" ' }
+const emailError = { message: 'Email must contain @ symbol and domain' }
 const requiredPhone = z.string().regex(phoneRegex, phoneError)
+const requiredEmail = z.string().regex(emailRegex, emailError)
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
 const optionalNumber = z.string().regex(numbersRegex, { message: 'Must be a number' }).optional()
+const optionalExtension = optionalNumber
 const optionalOrEmptyString = z.string().optional().transform(e => e === '' ? undefined : e)
 const requiredNonEmptyString = z.string().refine(e => e !== '', 'Field cannot be empty')
 
 export const finalizationSchema = z.object({
   phone: requiredPhone,
-  phoneExtension: optionalOrEmptyString,
-  email: requiredNonEmptyString,
+  phoneExtension: optionalExtension,
+  email: requiredEmail,
   name: requiredNonEmptyString
 })
 

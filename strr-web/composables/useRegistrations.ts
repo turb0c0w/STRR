@@ -21,6 +21,17 @@ export const useRegistrations = () => {
         )
     })
 
+  const getRegistration = (id: string) => {
+    axiosInstance.get(`${apiURL}/registrations`)
+      .then((res) => {
+        res.data.forEach((registration: any) => {
+          if (registration.id.toString() === id.toString()) {
+            return registration
+          }
+        })
+      })
+  }
+
   const getStatusPriority = (status: string) => {
     switch (status) {
       case 'DENIED':
@@ -64,6 +75,7 @@ export const useRegistrations = () => {
 
   return {
     createSbcRegistration,
-    getRegistrations
+    getRegistrations,
+    getRegistration
   }
 }
