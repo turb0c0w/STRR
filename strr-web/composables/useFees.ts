@@ -7,8 +7,7 @@ export const useFees = () => {
 
   const getFeeAmount =
     (): Promise<string> =>
-      axiosInstance.get<{ total: number }>(
-        'https://pay-api-dev.apps.silver.devops.gov.bc.ca/api/v1/fees/STRR/RENTAL_FEE')
+      axiosInstance.get<{ total: number }>(`${config.public.payApiURL}/fees/STRR/RENTAL_FEE`)
         .then((res) => {
           return res.data.total.toString()
         })
