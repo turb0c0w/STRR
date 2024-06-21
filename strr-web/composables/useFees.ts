@@ -20,7 +20,7 @@ export const useFees = () => {
   }
 
   const handlePaymentRedirect = async (invoiceId: number, applicationId: number) => {
-    const paymentUrl = config.public.payPortalURL
+    const paymentUrl = config.public.authWebURL + 'makepayment'
     const returnUrl =
       encodeURIComponent(`
         ${window
