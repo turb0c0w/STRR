@@ -51,7 +51,7 @@ export const submitCreateAccountForm = (
 const numbersRegex = /^[0-9]+$/
 // matches chars 123456789 ()
 const phoneRegex = /^[0-9*#+() -]+$/
-const httpRegex = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+\.?(:\d+)?(\/.*)?)$/i
+const httpRegex = /^(https?:\/\/)([\w-]+(\.[\w-]+)+\.?(:\d+)?(\/.*)?)$/i
 const emailRegex = /^\S+@\S+\.\S+$/
 const phoneError = { message: 'Valid characters are "()- 123457890" ' }
 const emailError = { message: 'Email must contain @ symbol and domain' }
