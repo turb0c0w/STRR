@@ -32,10 +32,14 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 """Manages Auth service interactions."""
+import os
+from http import HTTPStatus
+
 import requests
 from flask import current_app
 
 from strr_api.enums.enum import EventRecordType
+from strr_api.exceptions import ExternalServiceException
 from strr_api.requests.SBCAccountCreationRequest import SBCAccountCreationRequest
 from strr_api.services.event_records_service import EventRecordsService
 from strr_api.services.rest_service import RestService
@@ -70,13 +74,19 @@ class AuthService:
             return None
 
     @classmethod
-    def search_accounts(cls, account_name: str):
-        """Search for accounts."""
+    def does_sbc_account_exist(cls, bearer_token, account_name: str):
+        """Search and return if SBC account name already exists."""
 
-        token = AuthService.get_service_client_token()
         endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/orgs?name={account_name.strip()}"
-        accounts = RestService.get(endpoint=endpoint, token=token).json()
-        return accounts
+        headers = {"Authorization": "Bearer " + bearer_token}
+        resp = requests.get(endpoint, headers=headers)
+
+        if resp.status_code == HTTPStatus.OK:
+            return True
+        elif resp.status_code == HTTPStatus.NO_CONTENT:
+            return False
+
+        raise ExternalServiceException(message="Error checking if SBC account name already exists.")
 
     @classmethod
     def get_user_accounts(cls, bearer_token):
@@ -103,18 +113,36 @@ class AuthService:
         return user_settings
 
     @classmethod
-    def create_user_account(cls, bearer_token, name, user_id):
+    def get_unique_sbc_username(cls, bearer_token, name):
+        """Get a unique username for the SBC account."""
+
+        basename = name
+        # add two random hexadecimals to the name to make it unique
+        for _ in range(10):
+            account_name_already_exists = AuthService.does_sbc_account_exist(bearer_token, name)
+            if not account_name_already_exists:
+                break
+            name = f"{basename}-{os.urandom(1).hex()}"
+
+        return name
+
+    @classmethod
+    def create_user_account(cls, bearer_token, request: SBCAccountCreationRequest, user_id):
         """Create a new user account."""
 
+        account_name = AuthService.get_unique_sbc_username(bearer_token, request.name)
         endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/orgs"
         create_account_payload = {
-            "name": name,
+            "name": account_name,
             "accessType": "REGULAR",
             "typeCode": "BASIC",
             "productSubscriptions": [{"productCode": "STRR"}],
             "paymentInfo": {"paymentMethod": "DIRECT_PAY"},
-            # "mailingAddress": mailing_address,
         }
+
+        if request.mailingAddress:
+            create_account_payload["mailingAddress"] = request.mailingAddress.to_dict()
+
         new_user_account = RestService.post(
             data=create_account_payload,
             endpoint=endpoint,
@@ -123,7 +151,7 @@ class AuthService:
         ).json()
 
         EventRecordsService.save_event_record(
-            EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{name}"', user_id
+            EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{account_name}"', user_id
         )
         return new_user_account
 

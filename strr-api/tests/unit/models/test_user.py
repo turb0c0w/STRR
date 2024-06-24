@@ -92,6 +92,11 @@ def test_get_or_create_user_by_jwt():
     assert result.login_source == sample_token["loginSource"]
 
 
+def test_create_from_jwt_token_no_token():
+    result = User.create_from_jwt_token(None)
+    assert result is None
+
+
 def test_get_or_create_user_by_jwt_no_user():
     sample_token = {
         "iss": "x",

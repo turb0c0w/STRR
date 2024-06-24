@@ -1,4 +1,6 @@
-from strr_api.models import Document, Eligibility, Registration, User
+from strr_api.enums.enum import PaymentStatus
+from strr_api.exceptions import ExternalServiceException
+from strr_api.models import Document, Eligibility, Invoice, Registration, User
 
 
 def disable_jwt_requires_auth(f):
@@ -28,13 +30,28 @@ def fake_user_from_db(*args, **kwargs):
     )
 
 
-def fake_registration(token, registration_id):
+def fake_registration(*args, **kwargs):
     return Registration(
-        id=registration_id,
+        id=1,
         user_id=1,
-        sbc_account_id="sbc",
-        eligibility=Eligibility(id=1, registration_id=registration_id),
+        sbc_account_id=1000,
+        eligibility=Eligibility(id=1, registration_id=1),
     )
+
+
+def fake_invoice(*args, **kwargs):
+    return Invoice(
+        id=1,
+        registration_id=1,
+        invoice_id=1,
+        payment_status_code=PaymentStatus.CREATED,
+        payment_completion_date=None,
+        payment_account="3299",
+    )
+
+
+def fake_invoice_details(*args, **kwargs):
+    return {"statusCode": "COMPLETED"}
 
 
 def fake_document(*args, **kwargs):
@@ -58,6 +75,10 @@ def new_sbc_account(*args, **kwargs):
 
 def no_op(*args, **kwargs):
     None
+
+
+def throw_external_service_exception(*args, **kwargs):
+    raise ExternalServiceException("Test exception")
 
 
 def empty_json(*args, **kwargs):

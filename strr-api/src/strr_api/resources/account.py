@@ -101,12 +101,6 @@ def create_sbc_account():
             name: body
             schema:
               type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  description: The name of the new user account.
     responses:
       201:
         description:
@@ -127,7 +121,7 @@ def create_sbc_account():
 
         sbc_account_creation_request = SBCAccountCreationRequest(**json_input)
         user = RegistrationService.get_or_create_user(g.jwt_oidc_token_info)
-        new_account = AuthService.create_user_account(token, sbc_account_creation_request.name, user.id)
+        new_account = AuthService.create_user_account(token, sbc_account_creation_request, user.id)
         sbc_account_id = new_account.get("id")
 
         AuthService.add_contact_info(token, sbc_account_id, sbc_account_creation_request, user.id)

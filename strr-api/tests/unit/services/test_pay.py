@@ -32,9 +32,18 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 """Tests to assure the pay service."""
-import pytest
+import json
+import os
+from unittest.mock import patch
 
-from strr_api.services import PayService, strr_pay
+from strr_api import requests
+from strr_api.services import PayService, RegistrationService, strr_pay
+from tests.unit.utils.mocks import fake_user_from_token
+
+REGISTRATION_MINIMUM_FIELDS = "registration_use_sbc_account_minimum"
+MOCK_ACCOUNT_MINIMUM_FIELDS_REQUEST = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), f"../../mocks/json/{REGISTRATION_MINIMUM_FIELDS}.json"
+)
 
 
 def test_init(app):
@@ -65,21 +74,12 @@ def test_init_strr_pay(app):
     assert strr_pay.timeout == mock_timeout
     assert strr_pay.default_invoice_payload == {
         "businessInfo": {"corpType": "STRR"},
-        "filingInfo": {"filingTypes": [{"filingTypeCode": "REGSIGIN"}]},
+        "filingInfo": {"filingTypes": [{"filingTypeCode": "RENTAL_FEE"}]},
     }
 
 
-@pytest.mark.parametrize(
-    "test_name, folio, identifier",
-    [
-        ("basic", None, None),
-        ("folio", "23245dddff44", None),
-        ("identifier-corp", None, "CP1234567"),
-        ("identifier-fm", None, "FM1234567"),
-        ("folio-identifier", "23245dddff44", "CP1234567"),
-    ],
-)
-def test_create_invoice(app, jwt, mocker, requests_mock, test_name, folio, identifier):
+@patch("strr_api.models.user.User.get_or_create_user_by_jwt", new=fake_user_from_token)
+def test_create_invoice(app, jwt, mocker, requests_mock):
     """Assure the create_invoice works as expected in strr_pay."""
 
     def mock_get_token():
@@ -89,25 +89,22 @@ def test_create_invoice(app, jwt, mocker, requests_mock, test_name, folio, ident
     mock_json = {"id": "1234"}
     pay_api_mock = requests_mock.post(f"{app.config.get('PAYMENT_SVC_URL')}/payment-requests", json=mock_json)
     strr_pay.init_app(app)
-    details = {}
-    if folio:
-        details["folioNumber"] = folio
-    if identifier:
-        details["businessIdentifier"] = identifier
 
-    resp = strr_pay.create_invoice("123", jwt, details)
-    assert resp.json() == mock_json
+    with open(MOCK_ACCOUNT_MINIMUM_FIELDS_REQUEST) as f:
+        registration_data = json.load(f)
+
+    registration_request = requests.RegistrationRequest(**registration_data)
+    registration = RegistrationService.save_registration(None, 1000, registration_request.registration)
+    invoice = strr_pay.create_invoice(jwt, 3299, registration)
+    assert invoice.invoice_id == 1234
+    assert invoice.payment_account == "3299"
 
     assert pay_api_mock.called
     payload = pay_api_mock.request_history[0].json()
-    assert payload.get("filingInfo", {}).get("filingTypes") == [{"filingTypeCode": "REGSIGIN"}]
+    assert payload.get("filingInfo", {}).get("filingTypes") == [{"filingTypeCode": "RENTAL_FEE"}]
     assert payload.get("businessInfo", {}).get("corpType") == "STRR"
-    if folio:
-        assert payload.get("filingInfo", {}).get("folioNumber") == folio
-    if identifier:
-        assert payload.get("businessInfo", {}).get("businessIdentifier") == identifier
-        assert payload.get("details", [{}])[0].get("value") == identifier
-        if identifier[:2] == "FM":
-            assert payload.get("details", [{}])[0].get("label") == "Registration Number: "
-        else:
-            assert payload.get("details", [{}])[0].get("label") == "Incorporation Number: "
+
+
+def test_update_invoice_payment_status(app):
+    """Assure the update_invoice_payment_status works as expected in strr_pay."""
+    None
