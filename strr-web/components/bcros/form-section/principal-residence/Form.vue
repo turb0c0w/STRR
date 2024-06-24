@@ -33,7 +33,6 @@
           :legend="tPrincipalResidence('radio-legend')"
           :options="primaryResidenceRadioOptions"
         />
-        {{ reasonError }}
         <UFormGroup
           v-if="!formState.principal.isPrincipal && formState.principal.isPrincipal !== undefined"
           class="text-[16px] mt-[20px]"
@@ -126,15 +125,24 @@
           </div>
           <BcrosFormSection class="pb-[40px]">
             <div class="flex flex-row">
-              <UCheckbox
-                v-model="formState.principal.declaration"
-                aria-label="Checkbox for primary residence declaration"
-                :class="`mb-[18px]
-                  ${isComplete && !formState.principal.declaration ? 'outline outline-bcGovColor-error' : ''}
+              <UFormGroup
+                :class="`
+                  ${
+                  isComplete
+                  && !formState.principal.declaration
+                    ? 'outline outline-bcGovColor-error p-[5px]'
+                    : 'p-[5px]'
+                }
                 `"
-                name="declaration"
-              />
-              <BcrosFormSectionReviewDeclaration />
+              >
+                <UCheckbox
+                  v-model="formState.principal.declaration"
+                  aria-label="Checkbox for primary residence declaration"
+                  class="mb-[18px]"
+                  name="declaration"
+                />
+                <BcrosFormSectionReviewDeclaration />
+              </UFormGroup>
             </div>
           </BcrosFormSection>
         </div>
