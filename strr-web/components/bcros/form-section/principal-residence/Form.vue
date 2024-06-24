@@ -184,6 +184,7 @@ const uploadFile = (file: FileList) => {
   } else if (!validFileType) {
     fileError.value = tPrincipalResidence('fileTypeError')
   } else {
+    fileError.value = null
     formState.supportingDocuments.push(file[0])
   }
 }
