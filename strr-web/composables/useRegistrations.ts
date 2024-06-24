@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { SbcCreationResponseE } from '~/enums/sbc-creation-response-e'
 
 export const useRegistrations = () => {
   const apiURL = useRuntimeConfig().public.strrApiURL
@@ -20,6 +21,18 @@ export const useRegistrations = () => {
         )
     })
 
+  const getRegistration = (id: string): Promise<string> =>
+    axiosInstance.get(`${apiURL}/registrations`)
+      .then((res) => {
+        let selectedRegistration = '-'
+        res.data.forEach((registration: any) => {
+          if (registration.id.toString() === id.toString()) {
+            selectedRegistration = registration
+          }
+        })
+        return selectedRegistration
+      })
+
   const getStatusPriority = (status: string) => {
     switch (status) {
       case 'DENIED':
@@ -33,7 +46,37 @@ export const useRegistrations = () => {
     }
   }
 
+  const createSbcRegistration = (registration:
+    {
+      email: string,
+      phone: string,
+      phoneExtension: string,
+      name: string
+    }
+  ): Promise<SbcCreationResponseE> =>
+    axiosInstance
+      .post<{
+        sbc_account_id: string, id: string
+      }>(`${apiURL}/account/sbc`,
+        registration
+      )
+      .then((res) => {
+        if (res.data) {
+          const { setAccountInfo } = useBcrosAccount()
+          setAccountInfo(res.data.sbc_account_id)
+          navigateTo('/create-account')
+          return SbcCreationResponseE.SUCCESS
+        }
+        return SbcCreationResponseE.ERROR
+      })
+      .catch((err) => {
+        if (err.status === '403') { return SbcCreationResponseE.CONFLICT }
+        return SbcCreationResponseE.ERROR
+      })
+
   return {
-    getRegistrations
+    createSbcRegistration,
+    getRegistrations,
+    getRegistration
   }
 }

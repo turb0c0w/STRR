@@ -3,10 +3,9 @@
     id="bcros-main-footer"
     :class="`
     ${extraSpace ? `
-      mobile:flex-[0_0_116px]`: 'mobile:flex-[0_0_80px]' }
+      mobile:flex-[0_0_116px] mobile:mb-[55px]`: 'mobile:flex-[0_0_80px]' }
       h-[54px] flex-[0_0_54px] flex items-center border-t-2
       border-bcGovColor-navDivider bg-bcGovColor-footer text-sm  flex-col
-      mobile:mb-[55px]
     `"
     data-cy="footer"
   >
@@ -53,7 +52,7 @@
 const t = useNuxtApp().$i18n.t
 const version = useRuntimeConfig().public.version
 
-const { extraSpace } = defineProps<{ extraSpace: number }>()
+const { extraSpace } = defineProps<{ extraSpace: boolean }>()
 
 const links = [
   { text: 'home', href: '/', newTab: false },

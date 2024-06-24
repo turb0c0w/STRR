@@ -7,7 +7,7 @@
           <NuxtPage />
         </div>
       </div>
-      <BcrosFooter :extra-space="true" />
+      <BcrosFooter :extra-space="false" />
     </div>
   </div>
 </template>

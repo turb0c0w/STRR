@@ -197,6 +197,6 @@ export interface CreateAccountFormAPII {
       propertyType: string,
       ownershipType: string
     },
-    listingDetails: { url: string }[]
+    listingDetails?: { url: string }[]
   }
 }

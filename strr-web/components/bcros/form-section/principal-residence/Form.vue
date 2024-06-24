@@ -33,7 +33,6 @@
           :legend="tPrincipalResidence('radio-legend')"
           :options="primaryResidenceRadioOptions"
         />
-        {{ reasonError }}
         <UFormGroup
           v-if="!formState.principal.isPrincipal && formState.principal.isPrincipal !== undefined"
           class="text-[16px] mt-[20px]"
@@ -95,14 +94,16 @@
             </p>
             <div class="flex flex-row items-center">
               <img class="mr-[4px]" src="/icons/create-account/attach.svg" alt="Paperclip icon">
-              <UInput
-                aria-label="Supporting document file upload"
-                accept=".pdf,.jpg,.png,.doc"
-                type="file"
-                class="w-full"
-                :placeholder="tPrincipalResidence('supporting')"
-                @change="uploadFile"
-              />
+              <UFormGroup :error="fileError">
+                <UInput
+                  aria-label="Supporting document file upload"
+                  accept=".pdf,.jpg,.png,.doc"
+                  type="file"
+                  class="w-full"
+                  :placeholder="tPrincipalResidence('supporting')"
+                  @change="uploadFile"
+                />
+              </UFormGroup>
             </div>
             <p class="text-[12px] ml-[58px] mt-[4px] mb-[12px] text-bcGovColor-midGray">
               {{ tPrincipalResidence('file-reqs') }}
@@ -124,15 +125,24 @@
           </div>
           <BcrosFormSection class="pb-[40px]">
             <div class="flex flex-row">
-              <UCheckbox
-                v-model="formState.principal.declaration"
-                aria-label="Checkbox for primary residence declaration"
-                :class="`mb-[18px]
-                  ${isComplete && !formState.principal.declaration ? 'outline outline-bcGovColor-error' : ''}
+              <UFormGroup
+                :class="`
+                  ${
+                  isComplete
+                  && !formState.principal.declaration
+                    ? 'outline outline-bcGovColor-error p-[5px]'
+                    : 'p-[5px]'
+                }
                 `"
-                name="declaration"
-              />
-              <BcrosFormSectionReviewDeclaration />
+              >
+                <UCheckbox
+                  v-model="formState.principal.declaration"
+                  aria-label="Checkbox for primary residence declaration"
+                  class="mb-[18px]"
+                  name="declaration"
+                />
+                <BcrosFormSectionReviewDeclaration />
+              </UFormGroup>
             </div>
           </BcrosFormSection>
         </div>
@@ -147,6 +157,7 @@ const tPrincipalResidence = (translationKey: string) => t(`create-account.princi
 
 const reasonError = ref()
 const otherReasonError = ref()
+const fileError = ref()
 
 const { isComplete } = defineProps<{ isComplete: boolean }>()
 
@@ -174,7 +185,14 @@ const uploadFile = (file: FileList) => {
   const extension = file[0].name.substring(file[0].name.length - 3)
   const validType = ['pdf', 'jpg', 'doc', 'png']
   const fileSize = file[0].size / 1024 / 1024 // in MiB
-  if (validType.includes(extension) && fileSize <= 50) {
+  const validFileType = validType.includes(extension)
+  const validFileSize = fileSize <= 50
+  if (!validFileSize) {
+    fileError.value = tPrincipalResidence('fileSizeError')
+  } else if (!validFileType) {
+    fileError.value = tPrincipalResidence('fileTypeError')
+  } else {
+    fileError.value = null
     formState.supportingDocuments.push(file[0])
   }
 }

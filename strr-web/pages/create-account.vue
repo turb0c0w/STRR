@@ -39,7 +39,9 @@
           </div>
         </div>
         <div class="shrink mobile:grow">
-          <BcrosFeeWidget />
+          <BcrosFeeWidget
+            :fee="fee"
+          />
         </div>
       </div>
       <BcrosStepperFooter
@@ -63,6 +65,17 @@ const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 const tPrincipalResidence = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
 const contactForm = ref()
+const fee = ref<string>()
+
+const { getFeeAmount } = useFees()
+
+const updateFees = async () => {
+  fee.value = await getFeeAmount()
+}
+
+onMounted(() => {
+  updateFees()
+})
 
 const t = useNuxtApp().$i18n.t
 const {

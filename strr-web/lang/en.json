@@ -1,4 +1,17 @@
 {
+  "finalization": {
+    "title": "Service BC Account Creation",
+    "subtitle": "Please create an account to continue",
+    "primary": "Primary Contact Information",
+    "name": "Your Name",
+    "disclaimer": "This is your legal name as it appears on your BC Services Card.",
+    "contact-details": "Contact Details",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "extension": "Extension (Optional)",
+    "create": "Save & Start Registration",
+    "account-name": "Account Name"
+  },
   "registration-status": {
     "PENDING": "PENDING",
     "APPROVED": "APPROVED",
@@ -127,7 +140,9 @@
       "farm": "Farm land (BC Assessment Farm Class 9) ",
       "institution": "Educational institution accommodation (Student or Employee) (off campus)",
       "strata-guest": "Strata corporation guest suite",
-      "service": "Service Provider"
+      "service": "Service Provider",
+      "fileSizeError": "File must be less than 50MB in size",
+      "fileTypeError": "File must be of type pdf, doc, jpg, png"
     },
     "review": {
       "review-instructions": "Please review all of the information entered below.",
@@ -154,6 +169,7 @@
       "declaration-part-two": "I understand that if the property host does not comply with the requirement to provide the short-term rental accommodation services in the principal residence, I may be subject to enforcement action under Part 4 of the Act, including being ordered to pay an administrative penalty.",
       "declaration": "Declaration",
       "proof": "Proof of Principal Residence",
+      "listing": "Internet Listings",
       "confirm": "I confirm that the information contained in the application for registration is accurate and true. I understand that, if I have knowingly provided inaccurate or false, I may be the subject of enforcement action under Part 4 of the Short-Term Rental Accommodations Act, including being ordered to pay an administrative penalty."
     },
     "details": {
@@ -215,6 +231,7 @@
     "next": "Next",
     "note": "Note: ",
     "submit": "Submit",
+    "submit-and-pay": "Submit and Pay",
     "optional": "(Optional)",
     "january": "January",
     "february": "February",

@@ -28,13 +28,15 @@
       </div>
     </div>
     <div :class="`transition-all ${folded ? 'h-[0px] overflow-hidden p-[0px]': 'px-[15px] pb-[10px] '}`">
-      <p class="py-[10px] border-b-[1px] border-bcGovGray-300">
-        {{ t("fee-widget.registration-fee") }}
-      </p>
-      <div class="py-[10px] flex-row flex justify-between" aria-label="null">
+      <div class="py-[10px] border-b-[1px] border-bcGovGray-300 flex flex-row justify-between">
+        <p>{{ t("fee-widget.registration-fee") }}</p>
+        <p>{{ fee === '-' ? fee: `$${fee}` }}</p>
+      </div>
+      <div class="py-[10px] text-[14px] font-bold flex-row flex justify-between items-end" aria-label="null">
         <p>{{ t("fee-widget.total") }}</p>
-        <p class="font-normal text-bcGovGray-700">
-          {{ t("fee-widget.cad") }} <b class="text-black">-</b>
+        <p class="font-normal text-[14px] text-bcGovGray-700 flex items-end">
+          {{ t("fee-widget.cad") }}
+          <b class="text-black text-[24px] ml-[5px] mb-[-4px] flex items-end">{{ fee === '-' ? fee: `$${fee}` }}</b>
         </p>
       </div>
     </div>
@@ -48,6 +50,10 @@ import useScreenSize from '../../../composables/useScreenSize'
 const t = useNuxtApp().$i18n.t
 const folded = ref(false)
 const isMobile = ref(false)
+
+const { fee } = defineProps<{
+  fee: string
+}>()
 
 const toggleFolded = () => {
   if (isMobile) {

@@ -5,6 +5,7 @@ import { CreateAccountFormStateI, OrgI, SecondaryContactInformationI } from '~/i
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
 const fileAxiosInstance = addAxiosInterceptors(axios.create(), 'multipart/form-data')
+const { handlePaymentRedirect } = useFees()
 
 export const submitCreateAccountForm = (
   userFirstName: string,
@@ -23,7 +24,6 @@ export const submitCreateAccountForm = (
     propertyType,
     ownershipType
   )
-
   axiosInstance.post(`${apiURL}/registrations`,
     { ...formData }
   )
@@ -32,14 +32,15 @@ export const submitCreateAccountForm = (
       if (!data) { throw new Error('Invalid AUTH API response') }
       return data
     })
-    .then((response) => {
+    .then((data) => {
       formState.supportingDocuments.forEach((file: File) => {
-        fileAxiosInstance.post<File>(`${apiURL}/registrations/${response.id}/documents`, { file })
+        fileAxiosInstance.post<File>(`${apiURL}/registrations/${data.id}/documents`, { file })
       })
-      return response.id
+      return data
     })
-    .then((id) => {
-      navigateTo(`/success/${id}`)
+    .then((data) => {
+      const { invoices } = data
+      handlePaymentRedirect(invoices[0].invoice_id, data.id)
     })
     .catch((error: string) => {
       console.warn('Error creating account.')
@@ -50,13 +51,24 @@ export const submitCreateAccountForm = (
 const numbersRegex = /^[0-9]+$/
 // matches chars 123456789 ()
 const phoneRegex = /^[0-9*#+() -]+$/
-const httpRegex = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+\.?(:\d+)?(\/.*)?)$/i
+const httpRegex = /^(https?:\/\/)([\w-]+(\.[\w-]+)+\.?(:\d+)?(\/.*)?)$/i
+const emailRegex = /^\S+@\S+\.\S+$/
 const phoneError = { message: 'Valid characters are "()- 123457890" ' }
+const emailError = { message: 'Email must contain @ symbol and domain' }
 const requiredPhone = z.string().regex(phoneRegex, phoneError)
+const requiredEmail = z.string().regex(emailRegex, emailError)
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
 const optionalNumber = z.string().regex(numbersRegex, { message: 'Must be a number' }).optional()
+const optionalExtension = optionalNumber
 const optionalOrEmptyString = z.string().optional().transform(e => e === '' ? undefined : e)
 const requiredNonEmptyString = z.string().refine(e => e !== '', 'Field cannot be empty')
+
+export const finalizationSchema = z.object({
+  phone: requiredPhone,
+  phoneExtension: optionalExtension,
+  email: requiredEmail,
+  name: requiredNonEmptyString
+})
 
 export const contactSchema = z.object({
   preferredName: optionalOrEmptyString,
@@ -72,11 +84,13 @@ export const contactSchema = z.object({
   postalCode: requiredNonEmptyString,
   birthDay: requiredNumber
     .refine(day => day.length === 2, 'Day must be two digits')
-    .refine(day => Number(day) <= 31, 'Must be less than or equal to 31'),
+    .refine(day => Number(day) <= 31, 'Date must be less than or equal to 31')
+    .refine(day => Number(day) > 0, 'Date must be less greater to 0'),
   birthMonth: requiredNonEmptyString,
   birthYear: requiredNumber
     .refine(year => Number(year) <= new Date().getFullYear(), 'Year must be in the past')
     .refine(year => year.length === 4, 'Year must be four digits')
+    .refine(day => Number(day) > 0, 'Year must be greater than 0')
 })
 
 export const secondaryContactSchema = z.object({
@@ -142,15 +156,32 @@ const secondaryContact: SecondaryContactInformationI = {
   middleName: undefined
 }
 
+// If any listing details exist must follow httpRegex otherwise can be blank
+const listingDetailsSchema =
+  z
+    .array(
+      z
+        .object({
+          url:
+            z
+              .string()
+              .refine(value => httpRegex
+                .test(value ?? ''), 'Invalid URL format')
+              .or(
+                z
+                  .string()
+                  .refine(value => value === '')
+              )
+        })
+    )
+
 export const propertyDetailsSchema = z.object({
   address: requiredNonEmptyString,
   addressLineTwo: optionalOrEmptyString,
   businessLicense: optionalOrEmptyString,
   city: requiredNonEmptyString,
   country: requiredNonEmptyString,
-  listingDetails: z.array(z.object({
-    url: z.string().regex(httpRegex, { message: 'Invalid URL format' })
-  })),
+  listingDetails: listingDetailsSchema,
   nickname: optionalOrEmptyString,
   ownershipType: requiredNonEmptyString,
   parcelIdentifier: optionalOrEmptyString,
@@ -260,7 +291,6 @@ export const formDataForAPI: CreateAccountFormAPII = {
       propertyType: '',
       ownershipType: ''
     },
-    listingDetails: [],
     principalResidence: {
       isPrincipalResidence: false,
       agreedToRentalAct: false,
