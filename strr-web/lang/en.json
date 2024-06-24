@@ -140,7 +140,9 @@
       "farm": "Farm land (BC Assessment Farm Class 9) ",
       "institution": "Educational institution accommodation (Student or Employee) (off campus)",
       "strata-guest": "Strata corporation guest suite",
-      "service": "Service Provider"
+      "service": "Service Provider",
+      "fileSizeError": "File must be less than 50MB in size",
+      "fileTypeError": "File must be of type pdf, doc, jpg, png"
     },
     "review": {
       "review-instructions": "Please review all of the information entered below.",
