@@ -141,12 +141,20 @@ class PayService:
     def update_invoice_payment_status(self, user_jwt: JwtManager, registration, invoice) -> requests.Response:
         """Update the invoice by checking status via the pay-api."""
         payment_details = self.get_payment_details_by_invoice_id(user_jwt, invoice.invoice_id)
-        if payment_details.get("statusCode") == PaymentStatus.COMPLETED.name:
+        invoice_paid = False
+        status = payment_details.get("statusCode")
+        if status == PaymentStatus.COMPLETED.name:
             invoice.payment_status_code = PaymentStatus.COMPLETED
             invoice.payment_completion_date = datetime.now(timezone.utc)
-            db.session.commit()
-            db.session.refresh(invoice)
+            invoice_paid = True
+        else:
+            if status in (code.value for code in PaymentStatus):
+                invoice.payment_status_code = PaymentStatus[status]
 
+        db.session.commit()
+        db.session.refresh(invoice)
+
+        if invoice_paid:
             EventRecordsService.save_event_record(
                 EventRecordType.INVOICE_PAYED,
                 f"Invoice paid for registration_id: {registration.id} invoice_id: {invoice.invoice_id}",
