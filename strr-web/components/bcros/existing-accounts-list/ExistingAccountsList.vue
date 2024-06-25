@@ -63,13 +63,12 @@ import { formState } from '@/stores/strr'
 
 const { accounts } = defineProps<{ accounts: OrgI[] }>()
 const t = useNuxtApp().$i18n.t
-const { goToCreateAccount } = useBcrosNavigate()
+const { goToCreateAccount, goToCreateSbcAccount } = useBcrosNavigate()
 
 const buttonText = t('account.existing-account-section.use-account-button')
 
 const createButtonAction = () => {
-  formState.selectedAccount = {} as OrgI
-  goToCreateAccount()
+  goToCreateSbcAccount()
 }
 
 const chooseButtonAction = (account: OrgI) => {

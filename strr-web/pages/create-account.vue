@@ -116,6 +116,9 @@ const ownershipToApiType = (type: string | undefined): string => {
 }
 
 const submit = () => {
+  validateStep(contactSchema, formState.primaryContact, 0)
+  validateStep(contactSchema, formState.secondaryContact, 1)
+  steps[2].step.complete = true
   formState.principal.agreeToSubmit
     ? submitCreateAccountForm(
       userFirstName,
@@ -138,29 +141,20 @@ const setStepValid = (index: number, valid: boolean) => {
   steps[index].step.isValid = valid
 }
 
+const validateStep = (schema: any, state: any, index: number) => {
+  steps[index].step.isValid = schema.safeParse(state).success
+}
+
 watch(formState.primaryContact, () => {
-  if (contactSchema.safeParse(formState.primaryContact).success) {
-    setStepValid(0, true)
-  } else {
-    setStepValid(0, false)
-  }
+  validateStep(contactSchema, formState.primaryContact, 0)
 })
 
 watch(formState.secondaryContact, () => {
-  if (contactSchema.safeParse(formState.secondaryContact).success) {
-    setStepValid(0, true)
-  } else {
-    setStepValid(0, false)
-  }
+  validateStep(contactSchema, formState.secondaryContact, 0)
 })
 
 watch(formState.propertyDetails, () => {
-  const parsed = propertyDetailsSchema.safeParse(formState.propertyDetails)
-  if (parsed.success) {
-    setStepValid(1, true)
-  } else {
-    setStepValid(1, false)
-  }
+  validateStep(propertyDetailsSchema, formState.propertyDetails, 1)
 })
 
 const validateProofPage = () => {
