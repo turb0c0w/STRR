@@ -92,7 +92,7 @@ const registrations = ref<(RegistrationI | undefined)[]>()
 const fetchedRegistrations = await getRegistrations()
 
 const addSpacingToRegistrations = (): (RegistrationI | undefined)[] => {
-  const spacedRegistrations: (RegistrationI | undefined)[] = 
+  const spacedRegistrations: (RegistrationI | undefined)[] =
     [...fetchedRegistrations.filter(reg => reg.invoices.length === 0)]
   while (spacedRegistrations.length % 3 !== 0) {
     spacedRegistrations.push(undefined)
