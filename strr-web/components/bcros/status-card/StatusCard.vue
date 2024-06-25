@@ -14,7 +14,7 @@
     </BcrosChip>
     <div class="flex w-full justify-between">
       <slot />
-      <BcrosChip :flavour="flavour" class="desktop: hidden">
+      <BcrosChip :flavour="flavour" class="desktop:hidden">
         {{ tRegistrationStatus(status) }}
       </BcrosChip>
     </div>
