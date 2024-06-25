@@ -10,6 +10,13 @@ export interface RegistrationAddressI {
 
 export interface RegistrationI {
   id: number,
+  invoices: {
+    'invoice_id': number,
+    'payment_account': string,
+    'payment_completion_date': string,
+    'payment_status_code': string,
+    'registration_id': number
+  }[],
   listingDetails: { url: string }[],
   primaryContact: ContactI,
   principalResidence: PrincipalResidenceI,

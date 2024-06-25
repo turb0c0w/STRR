@@ -3,5 +3,6 @@ export enum AlertsFlavourE {
   INFO = 'info',
   WARNING = 'warning',
   SUCCESS = 'success',
-  MESSAGE = 'message'
+  MESSAGE = 'message',
+  APPLIED = 'pending'
 }

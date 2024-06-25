@@ -33,6 +33,9 @@ export const useBcrosNavigate = () => {
   function goToTransactions () {
     redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/transactions`)
   }
+  function goToCreateSbcAccount () {
+    router.push('/finalization')
+  }
   function goToCreateAccount () {
     router.push('/create-account')
   }
@@ -45,6 +48,7 @@ export const useBcrosNavigate = () => {
     goToBcrosHome,
     goToBcrosLogin,
     goToAccountInfo,
+    goToCreateSbcAccount,
     goToCreateAccount,
     goToEditProfile,
     goToSetupAccount,

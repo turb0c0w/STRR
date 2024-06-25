@@ -3,6 +3,7 @@
     :class="
       `
         ${single ? 'flex-1': ''}
+        w-full
         mb-[42px] mobile:mb-[24px] justify-between flex-col
         bg-white px-[30px] mobile:px-[8px] py-[22px]
         border-[2px] border-bcGovColor-hairlinesOnWhite
@@ -10,12 +11,12 @@
     "
   >
     <BcrosChip :flavour="flavour" class="mobile:hidden">
-      {{ tRegistrationStatus(status) }}
+      {{ flavour.text }}
     </BcrosChip>
     <div class="flex w-full justify-between">
       <slot />
-      <BcrosChip :flavour="flavour" class="desktop: hidden">
-        {{ tRegistrationStatus(status) }}
+      <BcrosChip :flavour="flavour" class="desktop:hidden">
+        {{ flavour.text }}
       </BcrosChip>
     </div>
     <div class="flex flex-row text-bcGovColor-activeBlue justify-start">
@@ -40,11 +41,12 @@ const tRegistrationStatus = (translationKey: string) => t(`registration-status.$
 
 const {
   single,
-  status,
   flavour
 } = defineProps<{
   single: boolean,
-  status: string,
-  flavour: AlertsFlavourE
+  flavour: {
+    text: string,
+    alert: AlertsFlavourE
+  }
 }>()
 </script>

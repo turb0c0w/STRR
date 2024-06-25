@@ -5,7 +5,12 @@
         <div class="grow pr-[24px] mobile:pr-[0px]">
           <div class="mobile:px-[8px]">
             <BcrosTypographyH1 text="create-account.title" data-cy="accountPageTitle" class="mobile:pb-[20px]" />
-            <BcrosStepper :active-step="activeStepIndex" :steps="steps" @change-step="setActiveStep" />
+            <BcrosStepper
+              :key="headerUpdateKey"
+              :active-step="activeStepIndex"
+              :steps="steps"
+              @change-step="setActiveStep"
+            />
           </div>
           <div :key="activeStepIndex" class="grow">
             <div class="mobile:px-[8px]">
@@ -66,6 +71,7 @@ const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 const tPrincipalResidence = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
 const contactForm = ref()
 const fee = ref<string>()
+const headerUpdateKey = ref(0)
 
 const { getFeeAmount } = useFees()
 
@@ -116,6 +122,12 @@ const ownershipToApiType = (type: string | undefined): string => {
 }
 
 const submit = () => {
+  validateStep(contactSchema, formState.primaryContact, 0)
+  validateStep(contactSchema, formState.secondaryContact, 0)
+  validateStep(propertyDetailsSchema, formState.propertyDetails, 1)
+  steps[1].step.complete = true
+  steps[2].step.complete = true
+  headerUpdateKey.value++
   formState.principal.agreeToSubmit
     ? submitCreateAccountForm(
       userFirstName,
@@ -138,29 +150,20 @@ const setStepValid = (index: number, valid: boolean) => {
   steps[index].step.isValid = valid
 }
 
+const validateStep = (schema: any, state: any, index: number) => {
+  steps[index].step.isValid = schema.safeParse(state).success
+}
+
 watch(formState.primaryContact, () => {
-  if (contactSchema.safeParse(formState.primaryContact).success) {
-    setStepValid(0, true)
-  } else {
-    setStepValid(0, false)
-  }
+  validateStep(contactSchema, formState.primaryContact, 0)
 })
 
 watch(formState.secondaryContact, () => {
-  if (contactSchema.safeParse(formState.secondaryContact).success) {
-    setStepValid(0, true)
-  } else {
-    setStepValid(0, false)
-  }
+  validateStep(contactSchema, formState.secondaryContact, 0)
 })
 
 watch(formState.propertyDetails, () => {
-  const parsed = propertyDetailsSchema.safeParse(formState.propertyDetails)
-  if (parsed.success) {
-    setStepValid(1, true)
-  } else {
-    setStepValid(1, false)
-  }
+  validateStep(propertyDetailsSchema, formState.propertyDetails, 1)
 })
 
 const validateProofPage = () => {

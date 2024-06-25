@@ -15,21 +15,22 @@
           class-name="mobile:hidden"
         />
       </div>
-      <div class="flex flex-row mobile:flex-col flex-wrap">
+      <div class="flex flex-row mobile:flex-col flex-wrap desktop:justify-between">
         <div
           v-for="registration in registrations"
-          :key="registration.id"
+          :key="registration?.id"
           :class="`
             ${
             registrations && registrations?.length > 1
-              ? 'desktop:w-[calc(33%-20px)]'
+              ? 'desktop:w-[calc(33%-24px)]'
               : 'desktop:w-full flex-grow flex-1'
           }
             flex flex-row mobile:flex-col
           `"
         >
           <BcrosStatusCard
-            :flavour="getFlavour(registration.status)"
+            v-if="registration"
+            :flavour="getFlavour(registration.status, registration?.invoices)"
             :status="registration.status"
             :single="!(registrations && registrations?.length > 1)"
           >
@@ -66,31 +67,57 @@
         </div>
       </div>
     </div>
+    <div class="w-full h-[120px] bg-white desktop:hidden flex justify-center items-center p-[8px]">
+      <BcrosButtonsPrimary
+        :text="tRegistrationStatus('create')"
+        :action="() => navigateTo('/create-account')"
+        icon="i-mdi-plus"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { AlertsFlavourE } from '#imports'
+
 definePageMeta({
-  layout: 'wide'
+  layout: 'wide-gutters'
 })
 
 const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 
 const { getRegistrations } = useRegistrations()
-const registrations = ref<RegistrationI[]>()
-registrations.value = await getRegistrations()
+const registrations = ref<(RegistrationI | null)[]>()
+const fetchedRegistrations = await getRegistrations()
 
-const getFlavour = (status: string) => {
-  switch (status) {
-    case 'DENIED':
-      return AlertsFlavourE.ALERT
-    case 'APPROVED':
-      return AlertsFlavourE.SUCCESS
-    case 'PENDING':
-      return AlertsFlavourE.WARNING
-    default:
-      return AlertsFlavourE.INFO
+const addSpacingToRegistrations = (): (RegistrationI | null)[] => {
+  const spacedRegistrations: (RegistrationI | null)[] = [...fetchedRegistrations]
+  while (spacedRegistrations.length % 3 !== 0) {
+    spacedRegistrations.push(null)
+  }
+  return spacedRegistrations
+}
+
+registrations.value =
+  fetchedRegistrations.length % 3 === 0 &&
+  fetchedRegistrations.length !== 1
+    ? fetchedRegistrations
+    : addSpacingToRegistrations()
+
+const getFlavour = (status: string, invoices: RegistrationI['invoices']):
+  { alert: AlertsFlavourE, text: string } | undefined => {
+  if (status === 'PENDING' && invoices[0].payment_status_code === 'COMPLETED') {
+    return {
+      text: tRegistrationStatus('applied'),
+      alert: AlertsFlavourE.APPLIED
+    }
+  }
+  if (status === 'PENDING' && invoices[0].payment_status_code !== 'COMPLETED') {
+    return {
+      text: tRegistrationStatus('payment-due'),
+      alert: AlertsFlavourE.WARNING
+    }
   }
 }
 
