@@ -15,14 +15,14 @@
           class-name="mobile:hidden"
         />
       </div>
-      <div class="flex flex-row mobile:flex-col flex-wrap">
+      <div class="flex flex-row mobile:flex-col flex-wrap desktop:justify-between">
         <div
           v-for="registration in registrations"
           :key="registration.id"
           :class="`
             ${
             registrations && registrations?.length > 1
-              ? 'desktop:w-[calc(33%-20px)]'
+              ? 'desktop:w-[calc(33%-24px)]'
               : 'desktop:w-full flex-grow flex-1'
           }
             flex flex-row mobile:flex-col
@@ -80,7 +80,7 @@
 import { AlertsFlavourE } from '#imports'
 
 definePageMeta({
-  layout: 'wide'
+  layout: 'wide-gutters'
 })
 
 const t = useNuxtApp().$i18n.t
@@ -107,7 +107,3 @@ const getFlavour = (status: string, invoices: RegistrationI['invoices']):
 }
 
 </script>
-
-<!-- Need to update statuses as above:
-  pending + completed invoice payment = applied
-  pending + !completed invoice payment = payment due -->

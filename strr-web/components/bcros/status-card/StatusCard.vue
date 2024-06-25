@@ -3,6 +3,7 @@
     :class="
       `
         ${single ? 'flex-1': ''}
+        w-full
         mb-[42px] mobile:mb-[24px] justify-between flex-col
         bg-white px-[30px] mobile:px-[8px] py-[22px]
         border-[2px] border-bcGovColor-hairlinesOnWhite
