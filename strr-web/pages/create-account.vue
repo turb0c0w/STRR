@@ -5,7 +5,12 @@
         <div class="grow pr-[24px] mobile:pr-[0px]">
           <div class="mobile:px-[8px]">
             <BcrosTypographyH1 text="create-account.title" data-cy="accountPageTitle" class="mobile:pb-[20px]" />
-            <BcrosStepper :active-step="activeStepIndex" :steps="steps" @change-step="setActiveStep" />
+            <BcrosStepper
+              :key="headerUpdateKey"
+              :active-step="activeStepIndex"
+              :steps="steps"
+              @change-step="setActiveStep"
+            />
           </div>
           <div :key="activeStepIndex" class="grow">
             <div class="mobile:px-[8px]">
@@ -66,6 +71,7 @@ const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 const tPrincipalResidence = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
 const contactForm = ref()
 const fee = ref<string>()
+const headerUpdateKey = ref(0)
 
 const { getFeeAmount } = useFees()
 
@@ -117,8 +123,11 @@ const ownershipToApiType = (type: string | undefined): string => {
 
 const submit = () => {
   validateStep(contactSchema, formState.primaryContact, 0)
-  validateStep(contactSchema, formState.secondaryContact, 1)
+  validateStep(contactSchema, formState.secondaryContact, 0)
+  validateStep(propertyDetailsSchema, formState.propertyDetails, 1)
+  steps[1].step.complete = true
   steps[2].step.complete = true
+  headerUpdateKey.value++
   formState.principal.agreeToSubmit
     ? submitCreateAccountForm(
       userFirstName,
