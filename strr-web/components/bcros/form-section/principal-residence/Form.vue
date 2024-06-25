@@ -124,25 +124,23 @@
             </p>
           </div>
           <BcrosFormSection class="pb-[40px]">
-            <div class="flex flex-row">
-              <UFormGroup
-                :class="`
+            <div
+              :class="`flex flex-row
                   ${
-                  isComplete
-                  && !formState.principal.declaration
-                    ? 'outline outline-bcGovColor-error p-[5px]'
-                    : 'p-[5px]'
-                }
+                isComplete
+                && !formState.principal.declaration
+                  ? 'outline outline-bcGovColor-error p-[5px]'
+                  : 'p-[5px]'
+              }
                 `"
-              >
-                <UCheckbox
-                  v-model="formState.principal.declaration"
-                  aria-label="Checkbox for primary residence declaration"
-                  class="mb-[18px]"
-                  name="declaration"
-                />
-                <BcrosFormSectionReviewDeclaration />
-              </UFormGroup>
+            >
+              <UCheckbox
+                v-model="formState.principal.declaration"
+                aria-label="Checkbox for primary residence declaration"
+                class="mb-[18px]"
+                name="declaration"
+              />
+              <BcrosFormSectionReviewDeclaration />
             </div>
           </BcrosFormSection>
         </div>

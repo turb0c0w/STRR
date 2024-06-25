@@ -49,6 +49,8 @@ export const formStateToApi = (
   }
   if (formState.propertyDetails.listingDetails[0].url !== '') {
     formData.registration.listingDetails = formState.propertyDetails.listingDetails
+  } else {
+    formData.registration.listingDetails = []
   }
   formData.registration.unitAddress = {
     address: formState.propertyDetails.address ?? '',

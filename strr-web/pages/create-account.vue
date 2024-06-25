@@ -141,12 +141,16 @@ const setStepValid = (index: number, valid: boolean) => {
 watch(formState.primaryContact, () => {
   if (contactSchema.safeParse(formState.primaryContact).success) {
     setStepValid(0, true)
+  } else {
+    setStepValid(0, false)
   }
 })
 
 watch(formState.secondaryContact, () => {
   if (contactSchema.safeParse(formState.secondaryContact).success) {
     setStepValid(0, true)
+  } else {
+    setStepValid(0, false)
   }
 })
 
@@ -154,6 +158,8 @@ watch(formState.propertyDetails, () => {
   const parsed = propertyDetailsSchema.safeParse(formState.propertyDetails)
   if (parsed.success) {
     setStepValid(1, true)
+  } else {
+    setStepValid(1, false)
   }
 })
 
