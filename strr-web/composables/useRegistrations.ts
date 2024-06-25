@@ -64,17 +64,7 @@ export const useRegistrations = () => {
         if (res.data) {
           const { setAccountInfo } = useBcrosAccount()
           setAccountInfo(res.data.sbc_account_id)
-            .then(() => {
-              navigateTo(`/create-account-pre/${res.data.sbc_account_id}`)
-            })
-          return res.data
-        } else {
-          return SbcCreationResponseE.ERROR
-        }
-      })
-      .then((data) => {
-        if (data !== SbcCreationResponseE.ERROR) {
-          navigateTo(`/create-account-pre/${data.sbc_account_id}`)
+          navigateTo('/create-account')
           return SbcCreationResponseE.SUCCESS
         }
         return SbcCreationResponseE.ERROR
