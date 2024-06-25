@@ -163,17 +163,6 @@ const validateMonths = () => {
 
 const { me, currentAccount } = useBcrosAccount()
 
-if (me?.profile.contacts && me?.profile.contacts.length > 0 && !id) {
-  formState.primaryContact.phoneNumber = me?.profile.contacts[0].phone
-  formState.primaryContact.emailAddress = me?.profile.contacts[0].email
-  formState.primaryContact.extension = me?.profile.contacts[0].phoneExtension
-} else {
-  const profile = me?.orgs.find((pro: any) => pro.id.toString() === id)
-  formState.primaryContact.phoneNumber = profile?.mailingAddress[0].phone
-  formState.primaryContact.emailAddress = profile?.mailingAddress[0].email
-  formState.primaryContact.extension = profile?.mailingAddress[0].phoneExtension
-}
-
 if (currentAccount && me) {
   const mailingAddress = me?.orgs.find(({ id }) => id === currentAccount.id)?.mailingAddress
   if (mailingAddress) {
@@ -191,6 +180,17 @@ if (currentAccount && me) {
 
 onMounted(() => {
   if (isComplete) { validateMonths() }
+
+  if (me?.profile.contacts && me?.profile.contacts.length > 0 && !id) {
+    formState.primaryContact.phoneNumber = me?.profile.contacts[0].phone
+    formState.primaryContact.emailAddress = me?.profile.contacts[0].email
+    formState.primaryContact.extension = me?.profile.contacts[0].phoneExtension
+  } else {
+    const profile = me?.orgs.find((pro: any) => pro.id.toString() === id)
+    formState.primaryContact.phoneNumber = profile?.mailingAddress[0].phone
+    formState.primaryContact.emailAddress = profile?.mailingAddress[0].email
+    formState.primaryContact.extension = profile?.mailingAddress[0].phoneExtension
+  }
 })
 
 const form = ref()
