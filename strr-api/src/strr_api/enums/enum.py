@@ -108,6 +108,8 @@ class PaymentStatus(Enum):
 
     CREATED = "CREATED"
     COMPLETED = "COMPLETED"
+    PAID = "PAID"
+    APPROVED = "APPROVED"
     DELETED = "DELETED"
     REFUNDED = "REFUNDED"
     FAILED = "FAILED"

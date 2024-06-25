@@ -103,8 +103,3 @@ def test_create_invoice(app, jwt, mocker, requests_mock):
     payload = pay_api_mock.request_history[0].json()
     assert payload.get("filingInfo", {}).get("filingTypes") == [{"filingTypeCode": "RENTAL_FEE"}]
     assert payload.get("businessInfo", {}).get("corpType") == "STRR"
-
-
-def test_update_invoice_payment_status(app):
-    """Assure the update_invoice_payment_status works as expected in strr_pay."""
-    None
