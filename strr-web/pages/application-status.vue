@@ -88,13 +88,14 @@ const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 
 const { getRegistrations } = useRegistrations()
-const registrations = ref<(RegistrationI | null)[]>()
+const registrations = ref<(RegistrationI | undefined)[]>()
 const fetchedRegistrations = await getRegistrations()
 
-const addSpacingToRegistrations = (): (RegistrationI | null)[] => {
-  const spacedRegistrations: (RegistrationI | null)[] = [...fetchedRegistrations]
+const addSpacingToRegistrations = (): (RegistrationI | undefined)[] => {
+  const spacedRegistrations: (RegistrationI | undefined)[] =
+    [...fetchedRegistrations.filter(reg => reg.invoices.length === 0)]
   while (spacedRegistrations.length % 3 !== 0) {
-    spacedRegistrations.push(null)
+    spacedRegistrations.push(undefined)
   }
   return spacedRegistrations
 }

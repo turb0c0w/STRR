@@ -21,7 +21,7 @@
             </div>
             <div v-if="activeStepIndex === 0" :key="activeStepIndex">
               <BcrosFormSectionContactInformationForm
-                :id="id"
+                :id="id.toString()"
                 ref="contactForm"
                 :full-name="userFullName"
                 :add-secondary-contact="addSecondaryContact"
@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import steps from '../page-data/create-account/steps'
+import steps from '../../page-data/create-account/steps'
 import { FormPageI } from '~/interfaces/form/form-page-i'
 
 const addSecondaryContact: Ref<boolean> = ref(false)
@@ -73,6 +73,9 @@ const tPrincipalResidence = (translationKey: string) => t(`create-account.princi
 const contactForm = ref()
 const fee = ref<string>()
 const headerUpdateKey = ref(0)
+const route = useRoute()
+
+const id = route.params.id
 
 const { getFeeAmount } = useFees()
 

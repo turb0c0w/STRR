@@ -15,6 +15,9 @@ export interface AddressI {
   region: string
   street: string
   streetAdditional: string
+  phone: string,
+  email: string,
+  phoneExtension: string
 }
 
 export interface AccountI {
