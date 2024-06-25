@@ -7,7 +7,7 @@ export default <Partial<Config>>{
       d: { min: '1263px' },
       m: { max: '1263px' },
       desktop: { min: '1263px' },
-      mobile: { max: '1263px' }
+      mobile: { max: '1262px' }
     },
     extend: {
       height: {

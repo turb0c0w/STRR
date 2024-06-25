@@ -29,7 +29,7 @@
           `"
         >
           <BcrosStatusCard
-            :flavour="getFlavour(registration.status)"
+            :flavour="getFlavour(registration.status, registration?.invoices)"
             :status="registration.status"
             :single="!(registrations && registrations?.length > 1)"
           >
@@ -68,15 +68,16 @@
     </div>
     <div class="w-full h-[120px] bg-white desktop:hidden flex justify-center items-center p-[8px]">
       <BcrosButtonsPrimary
-          :text="tRegistrationStatus('create')"
-          :action="() => navigateTo('/create-account')"
-          icon="i-mdi-plus"
-        />
+        :text="tRegistrationStatus('create')"
+        :action="() => navigateTo('/create-account')"
+        icon="i-mdi-plus"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { AlertsFlavourE } from '#imports'
 
 definePageMeta({
   layout: 'wide'
@@ -89,17 +90,24 @@ const { getRegistrations } = useRegistrations()
 const registrations = ref<RegistrationI[]>()
 registrations.value = await getRegistrations()
 
-const getFlavour = (status: string) => {
-  switch (status) {
-    case 'DENIED':
-      return AlertsFlavourE.ALERT
-    case 'APPROVED':
-      return AlertsFlavourE.SUCCESS
-    case 'PENDING':
-      return AlertsFlavourE.WARNING
-    default:
-      return AlertsFlavourE.INFO
+const getFlavour = (status: string, invoices: RegistrationI['invoices']):
+  { alert: AlertsFlavourE, text: string } | undefined => {
+  if (status === 'PENDING' && invoices[0].payment_status_code === 'COMPLETED') {
+    return {
+      text: tRegistrationStatus('applied'),
+      alert: AlertsFlavourE.APPLIED
+    }
+  }
+  if (status === 'PENDING' && invoices[0].payment_status_code !== 'COMPLETED') {
+    return {
+      text: tRegistrationStatus('payment-due'),
+      alert: AlertsFlavourE.WARNING
+    }
   }
 }
 
 </script>
+
+<!-- Need to update statuses as above:
+  pending + completed invoice payment = applied
+  pending + !completed invoice payment = payment due -->

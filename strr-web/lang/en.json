@@ -17,6 +17,8 @@
     "APPROVED": "APPROVED",
     "MORE_INFO_NEEDED": "PROVISIONAL",
     "DENIED": "DENIED",
+    "applied": "Applied",
+    "payment-due": "Payment Due",
     "create": "Create New Registration",
     "my-app": "My Registration Application",
     "title": "My STR Registry Dashboard",
