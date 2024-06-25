@@ -18,7 +18,7 @@
       <div class="flex flex-row mobile:flex-col flex-wrap desktop:justify-between">
         <div
           v-for="registration in registrations"
-          :key="registration.id"
+          :key="registration?.id"
           :class="`
             ${
             registrations && registrations?.length > 1
@@ -29,6 +29,7 @@
           `"
         >
           <BcrosStatusCard
+            v-if="registration"
             :flavour="getFlavour(registration.status, registration?.invoices)"
             :status="registration.status"
             :single="!(registrations && registrations?.length > 1)"
@@ -87,8 +88,22 @@ const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 
 const { getRegistrations } = useRegistrations()
-const registrations = ref<RegistrationI[]>()
-registrations.value = await getRegistrations()
+const registrations = ref<(RegistrationI | null)[]>()
+const fetchedRegistrations = await getRegistrations()
+
+const addSpacingToRegistrations = (): (RegistrationI | null)[] => {
+  const spacedRegistrations: (RegistrationI | null)[] = [...fetchedRegistrations]
+  while (spacedRegistrations.length % 3 !== 0) {
+    spacedRegistrations.push(null)
+  }
+  return spacedRegistrations
+}
+
+registrations.value =
+  fetchedRegistrations.length % 3 === 0 &&
+  fetchedRegistrations.length !== 1
+    ? fetchedRegistrations
+    : addSpacingToRegistrations()
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {
