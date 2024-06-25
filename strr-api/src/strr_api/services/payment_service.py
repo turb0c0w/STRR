@@ -121,10 +121,14 @@ class PayService:
             self.app.logger.debug("Pay-api integration (create invoice) failure:", repr(err))
             raise ExternalServiceException(error=repr(err), status_code=HTTPStatus.PAYMENT_REQUIRED) from err
 
-    def get_payment_details_by_invoice_id(self, user_jwt: JwtManager, invoice_id: int):
+    def get_payment_details_by_invoice_id(self, user_jwt: JwtManager, account_id, invoice_id: int):
         """Get payment details by invoice id."""
         token = user_jwt.get_token_auth_header()
-        headers = {"Authorization": "Bearer " + token, "Content-Type": "application/json"}
+        headers = {
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json",
+            "Account-Id": str(account_id),
+        }
         payment_details = requests.get(
             url=self.svc_url + f"/payment-requests/{invoice_id}", headers=headers, timeout=self.timeout
         ).json()
@@ -140,10 +144,12 @@ class PayService:
 
     def update_invoice_payment_status(self, user_jwt: JwtManager, registration, invoice) -> requests.Response:
         """Update the invoice by checking status via the pay-api."""
-        payment_details = self.get_payment_details_by_invoice_id(user_jwt, invoice.invoice_id)
+        payment_details = self.get_payment_details_by_invoice_id(
+            user_jwt, registration.sbc_account_id, invoice.invoice_id
+        )
         invoice_paid = False
         status = payment_details.get("statusCode")
-        if status == PaymentStatus.COMPLETED.name:
+        if status in (PaymentStatus.COMPLETED.name, PaymentStatus.PAID.name, PaymentStatus.APPROVED.name):
             invoice.payment_status_code = PaymentStatus.COMPLETED
             invoice.payment_completion_date = datetime.now(timezone.utc)
             invoice_paid = True
