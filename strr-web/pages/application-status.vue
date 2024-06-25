@@ -66,10 +66,18 @@
         </div>
       </div>
     </div>
+    <div class="w-full h-[120px] bg-white desktop:hidden flex justify-center items-center p-[8px]">
+      <BcrosButtonsPrimary
+          :text="tRegistrationStatus('create')"
+          :action="() => navigateTo('/create-account')"
+          icon="i-mdi-plus"
+        />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+
 definePageMeta({
   layout: 'wide'
 })
