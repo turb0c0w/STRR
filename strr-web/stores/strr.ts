@@ -59,7 +59,8 @@ const emailError = { message: 'Email must contain @ symbol and domain' }
 const requiredPhone = z.string().regex(phoneRegex, phoneError)
 const requiredEmail = z.string().regex(emailRegex, emailError)
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
-const optionalNumber = z
+const optionalNumber = z.string().regex(numbersRegex, { message: 'Must be a number' }).optional()
+const optionalPID = z
   .string()
   .regex(pidRegex, { message: 'If provided this value must be in the format 111-111-111' }).or(z.literal(''))
 const optionalExtension = optionalNumber
