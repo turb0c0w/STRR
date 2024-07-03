@@ -188,7 +188,7 @@ export const propertyDetailsSchema = z.object({
   listingDetails: listingDetailsSchema,
   nickname: optionalOrEmptyString,
   ownershipType: requiredNonEmptyString,
-  parcelIdentifier: optionalNumber,
+  parcelIdentifier: optionalPID,
   postalCode: requiredNonEmptyString,
   propertyType: requiredNonEmptyString,
   province: requiredNonEmptyString

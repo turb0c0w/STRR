@@ -5,7 +5,7 @@ export const useBcrosNavigate = () => {
   const router = useRouter()
 
   /** Redirect to the given URL with necessary BCROS args */
-  function redirect(url: string) {
+  function redirect (url: string) {
     // get account id and set in params
     const redirectURL = new URL(url)
     const accountId = account.currentAccount.id
@@ -17,32 +17,32 @@ export const useBcrosNavigate = () => {
   }
 
   // common redirects
-  function goToBcrosHome() { redirect(config.public.registryHomeURL) }
-  function goToBcrosLogin(idpHint: string) {
+  function goToBcrosHome () { redirect(config.public.registryHomeURL) }
+  function goToBcrosLogin (idpHint: string) {
     // using current window location as redirect for now
     // TODO: TC - review this once test deploy for redirects is complete
     window.location.assign(`${config.public.authWebURL}signin/${idpHint}/${window.location.href}`)
   }
-  function goToEditProfile() { redirect(config.public.authWebURL + 'userprofile') }
-  function goToAccountInfo() {
+  function goToEditProfile () { redirect(config.public.authWebURL + 'userprofile') }
+  function goToAccountInfo () {
     redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/account-info`)
   }
-  function goToTeamMembers() {
+  function goToTeamMembers () {
     redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/team-members`)
   }
-  function goToTransactions() {
+  function goToTransactions () {
     redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/transactions`)
   }
-  function goToCreateSbcAccount() {
+  function goToCreateSbcAccount () {
     router.push('/finalization')
   }
-  function goToCreateAccount() {
+  function goToCreateAccount () {
     router.push('/create-account')
   }
-  function goToSetupAccount() {
+  function goToSetupAccount () {
     redirect(config.public.authWebURL + 'setup-account')
   }
-  function goToTosPage() {
+  function goToTosPage () {
     router.push('/terms-of-service')
   }
 

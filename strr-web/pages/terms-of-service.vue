@@ -1,9 +1,9 @@
 <template>
-  <div></div>  
+  <div />
 </template>
 
 <script setup lang="ts">
 
-const t = useNuxtApp().$i18n.t
+// const t = useNuxtApp().$i18n.t
 
 </script>
