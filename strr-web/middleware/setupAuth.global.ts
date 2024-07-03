@@ -1,4 +1,10 @@
 export default defineNuxtRouteMiddleware(async (to) => {
+  const isCreateAccountPath = to.path.includes('/create-account')
+  const isAccountSelectPath = to.path.includes('/account-select')
+  if (isCreateAccountPath || isAccountSelectPath) {
+    console.log('detected')
+    useBcrosNavigate().goToTosPage()
+  }
   // setup auth
   if ((!to.query.error) && !process.env.VITEST_WORKER_ID) {
     // keycloak redirects with the error param when not logged in (nuxt/keycloak issue)
