@@ -42,12 +42,16 @@ export const useBcrosNavigate = () => {
   function goToSetupAccount () {
     redirect(config.public.authWebURL + 'setup-account')
   }
+  function goToTosPage () {
+    router.push('/terms-of-service')
+  }
 
   return {
     redirect,
     goToBcrosHome,
     goToBcrosLogin,
     goToAccountInfo,
+    goToTosPage,
     goToCreateSbcAccount,
     goToCreateAccount,
     goToEditProfile,
