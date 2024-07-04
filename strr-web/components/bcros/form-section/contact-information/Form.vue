@@ -14,17 +14,18 @@
           {{ t('create-account.contact.disclaimer') }}
         </div>
       </BcrosFormSection>
-      <UForm ref="form" :schema="contactSchema" :state="formState.primaryContact">
+      <UForm ref="form" :schema="primaryContactSchema" :state="formState.primaryContact">
         <BcrosFormSectionContactInformationContactInfo
           v-model:day="formState.primaryContact.birthDay"
           v-model:month="formState.primaryContact.birthMonth"
           v-model:year="formState.primaryContact.birthYear"
-          v-model:socialInsuranceNumber="formState.socialInsuranceNumber"
-          v-model:businessNumber="formState.businessNumber"
+          v-model:socialInsuranceNumber="formState.primaryContact.socialInsuranceNumber"
+          v-model:businessNumber="formState.primaryContact.businessNumber"
           :month-error="monthError"
           :is-primary="true"
           @validate-months="validateMonths"
         />
+        <BcrosFormSectionContactInformationCraInfo />
         <BcrosFormSectionContactInformationContactDetails
           v-model:phone-number="formState.primaryContact.phoneNumber"
           v-model:preferred-name="formState.primaryContact.preferredName"
@@ -156,7 +157,7 @@ watch(canadaPostAddress, (newAddress) => {
 })
 
 const validateMonths = () => {
-  const parsed = contactSchema.safeParse(formState.primaryContact).error?.errors
+  const parsed = primaryContactSchema.safeParse(formState.primaryContact).error?.errors
   const error = parsed?.find(error => error.path.includes('birthMonth'))
   monthError.value = error ? error.message : ''
 }

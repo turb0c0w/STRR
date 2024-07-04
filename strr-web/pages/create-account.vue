@@ -122,8 +122,8 @@ const ownershipToApiType = (type: string | undefined): string => {
 }
 
 const submit = () => {
-  validateStep(contactSchema, formState.primaryContact, 0)
-  validateStep(contactSchema, formState.secondaryContact, 0)
+  validateStep(primaryContactSchema, formState.primaryContact, 0)
+  validateStep(secondaryContactSchema, formState.secondaryContact, 0)
   validateStep(propertyDetailsSchema, formState.propertyDetails, 1)
   steps[1].step.complete = true
   steps[2].step.complete = true
@@ -155,11 +155,11 @@ const validateStep = (schema: any, state: any, index: number) => {
 }
 
 watch(formState.primaryContact, () => {
-  validateStep(contactSchema, formState.primaryContact, 0)
+  validateStep(primaryContactSchema, formState.primaryContact, 0)
 })
 
 watch(formState.secondaryContact, () => {
-  validateStep(contactSchema, formState.secondaryContact, 0)
+  validateStep(secondaryContactSchema, formState.secondaryContact, 0)
 })
 
 watch(formState.propertyDetails, () => {
