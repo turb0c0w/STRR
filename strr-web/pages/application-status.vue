@@ -60,7 +60,7 @@
                     ${registration.unitAddress.province}
                     ${registration.unitAddress.postalCode},
                     ${registration.unitAddress.country}
-                    `
+                  `
                 }}
               </p>
             </div>

@@ -48,9 +48,27 @@ export interface OrgI {
 }
 
 export interface ContactI {
-  email: string
-  phone: string
-  phoneExtension: string
+  dateOfBirth: string,
+  details: {
+    emailAddress: string,
+    extension: string,
+    faxNumber: string,
+    phoneNumber: string,
+    preferredName: string
+  },
+  mailingAddress: {
+    address: string,
+    addressLineTwo: string,
+    city: string,
+    country: string,
+    postalCode: string,
+    province: string
+  },
+  name: {
+    firstName: string,
+    lastName: string,
+    middleName: string
+  }
 }
 
 interface UserTermsI {

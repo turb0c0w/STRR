@@ -8,19 +8,22 @@
     <slot />
     <div>
       <BcrosButtonsPrimary
-        text="Button"
+        text="Approve"
         :action="() => null"
         variant="outline"
+        class-name="ml-[16px]"
       />
       <BcrosButtonsPrimary
-        text="Button"
+        text="Reject"
         :action="() => null"
         variant="outline"
+        class-name="ml-[16px]"
       />
       <BcrosButtonsPrimary
-        text="Button"
+        text="Issue Certificate"
         :action="() => null"
         variant="outline"
+        class-name="ml-[16px]"
       />
     </div>
   </div>

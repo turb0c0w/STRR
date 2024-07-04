@@ -19,6 +19,7 @@ export interface RegistrationI {
   }[],
   listingDetails: { url: string }[],
   primaryContact: ContactI,
+  secondaryContact: ContactI | null,
   principalResidence: PrincipalResidenceI,
   sbc_account_id: number,
   status: string,
