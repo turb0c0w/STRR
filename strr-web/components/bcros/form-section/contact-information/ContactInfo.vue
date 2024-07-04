@@ -44,8 +44,6 @@ const {
 const day = defineModel<string>('day')
 const month = defineModel<string>('month')
 const year = defineModel<string>('year')
-const socialInsuranceNumber = defineModel<string>('socialInsuranceNumber')
-const businessNumber = defineModel<string>('businessNumber')
 const emit = defineEmits(['validateMonths'])
 
 const months: string[] = [

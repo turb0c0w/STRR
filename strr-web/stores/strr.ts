@@ -1,6 +1,11 @@
 import { z } from 'zod'
 import axios from 'axios'
-import { CreateAccountFormStateI, OrgI, PrimaryContactInformationI, SecondaryContactInformationI } from '~/interfaces/account-i'
+import {
+  CreateAccountFormStateI,
+  OrgI,
+  PrimaryContactInformationI,
+  SecondaryContactInformationI
+} from '~/interfaces/account-i'
 
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
@@ -144,7 +149,7 @@ const primaryContact: PrimaryContactInformationI = {
   birthDay: undefined,
   birthMonth: undefined,
   birthYear: undefined,
-  socialInsuranceNumber: undefined,
+  socialInsuranceNumber: '',
   businessNumber: undefined
 }
 

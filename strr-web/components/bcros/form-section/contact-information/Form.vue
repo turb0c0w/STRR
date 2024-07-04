@@ -19,13 +19,14 @@
           v-model:day="formState.primaryContact.birthDay"
           v-model:month="formState.primaryContact.birthMonth"
           v-model:year="formState.primaryContact.birthYear"
-          v-model:socialInsuranceNumber="formState.primaryContact.socialInsuranceNumber"
-          v-model:businessNumber="formState.primaryContact.businessNumber"
           :month-error="monthError"
           :is-primary="true"
           @validate-months="validateMonths"
         />
-        <BcrosFormSectionContactInformationCraInfo />
+        <BcrosFormSectionContactInformationCraInfo
+          v-model:socialInsuranceNumber="formState.primaryContact.socialInsuranceNumber"
+          v-model:businessNumber="formState.primaryContact.businessNumber"
+        />
         <BcrosFormSectionContactInformationContactDetails
           v-model:phone-number="formState.primaryContact.phoneNumber"
           v-model:preferred-name="formState.primaryContact.preferredName"
