@@ -57,8 +57,24 @@
             <p v-if="application?.unitAddress.addressLineTwo">
               {{ application?.unitAddress.addressLineTwo }}
             </p>
-            <p>{{ `${application?.unitAddress.city ?? '-'} ${application?.unitAddress.province ?? '-'} ${application?.unitAddress.postalCode ?? '-'}` }}</p>
-            <p>{{ `${application?.unitAddress.country ? regionNamesInEnglish.of(application?.unitAddress.country) : '-'}` }}</p>
+            <p>
+              {{
+                `
+                  ${application?.unitAddress.city ?? '-'}
+                  ${application?.unitAddress.province ?? '-'}
+                  ${application?.unitAddress.postalCode ?? '-'}
+                ` 
+              }}
+            </p>
+            <p>
+              {{ 
+              `
+                ${application?.unitAddress.country 
+                  ? regionNamesInEnglish.of(application?.unitAddress.country) 
+                  : '-'}
+              `
+              }}
+            </p>
           </BcrosFormSectionReviewItem>
           <BcrosFormSectionReviewItem
             title="Type of Property"
@@ -84,7 +100,7 @@
           <UTable :rows="getContactRows(application?.secondaryContact)" />
         </div>
       </div>
-      <div>
+      <div class="mt-[40px]">
         <p class="font-bold mb-[24px] mobile:mx-[8px]">
           Documents
         </p>
