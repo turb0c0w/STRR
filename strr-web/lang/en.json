@@ -92,7 +92,7 @@
       "mailingAddress": "Mailing Address",
       "preferred": "Preferred Name",
       "socialInsuranceNumber": "Social Insurance Number",
-      "businessNumber": "Business Number (Optional)",
+      "businessNumber": "Business (GST) Number (Optional)",
       "businessNumberReview": "Business Number",
       "cra": "CRA Identifier"
     },

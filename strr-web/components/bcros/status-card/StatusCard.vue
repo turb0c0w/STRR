@@ -10,17 +10,17 @@
       `
     "
   >
-    <BcrosChip :flavour="flavour" class="mobile:hidden">
+    <BcrosChip :flavour="flavour" class="mobile:hidden mb-[24px]">
       {{ flavour.text }}
     </BcrosChip>
     <div class="flex w-full justify-between">
       <slot />
-      <BcrosChip :flavour="flavour" class="desktop:hidden">
+      <BcrosChip :flavour="flavour" class="desktop:hidden mb-[24px]">
         {{ flavour.text }}
       </BcrosChip>
     </div>
     <div class="flex flex-row text-bcGovColor-activeBlue justify-start">
-      <p class="mr-[22px] cursor-pointer">
+      <p class="mr-[22px] cursor-pointer" @click="() => navigateTo(`/application-details/${applicationId}`)">
         {{ tRegistrationStatus('view') }}
       </p>
       <p class="mr-[22px] cursor-pointer">
@@ -41,9 +41,11 @@ const tRegistrationStatus = (translationKey: string) => t(`registration-status.$
 
 const {
   single,
+  applicationId,
   flavour
 } = defineProps<{
   single: boolean,
+  applicationId: string,
   flavour: {
     text: string,
     alert: AlertsFlavourE

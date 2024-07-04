@@ -30,6 +30,7 @@
         >
           <BcrosStatusCard
             v-if="registration"
+            :application-id="registration.id.toString()"
             :flavour="getFlavour(registration.status, registration?.invoices)"
             :status="registration.status"
             :single="!(registrations && registrations?.length > 1)"

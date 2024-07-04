@@ -3,7 +3,7 @@
     :class="
       `
         ${flavourClass}
-        mb-[24px] font-bold px-[12px] py-[4px] flex-shrink flex h-fit w-fit rounded
+        font-bold px-[12px] py-[4px] flex-shrink flex h-fit w-fit rounded
       `
     "
   >
