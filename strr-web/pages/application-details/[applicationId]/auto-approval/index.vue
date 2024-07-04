@@ -1,0 +1,140 @@
+<template>
+  <div>
+    <div>
+      <BcrosBanner hide-buttons>
+        <div class="flex items-center">
+          <BcrosTypographyH1
+            :text="
+              `${
+                application?.unitAddress.nickname
+                  ? application?.unitAddress.nickname + ' '
+                  : ''}REGISTRATION #${applicationId}
+                `
+            "
+            no-spacing
+          />
+          <BcrosChip v-if="flavour" :flavour="flavour" class="ml-[16px]">
+            {{ flavour.text }}
+          </BcrosChip>
+        </div>
+      </BcrosBanner>
+    </div>
+    <div class="mt-[104px]">
+      <div>
+        <p class="font-bold mb-[24px] mobile:mx-[8px]">
+          Automatic Approval Logic
+        </p>
+        <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+          <div class="flex flex-col justify-between w-full mobile:flex-col">
+            <UTable :rows="automaticRows" />
+          </div>
+        </div>
+      </div>
+      <div class="mt-[40px]">
+        <div>
+          <p class="font-bold mb-[24px] mobile:mx-[8px]">
+            Provisional Approval Logic
+          </p>
+          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+            <div class="flex flex-col justify-between w-full mobile:flex-col">
+              <UTable :rows="provisionalRows" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { AlertsFlavourE } from '#imports'
+
+const route = useRoute()
+const t = useNuxtApp().$i18n.t
+const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
+
+const { applicationId } = route.params
+
+const { getRegistration } = useRegistrations()
+
+const application = await getRegistration(applicationId.toString())
+
+const data: {
+  renting: boolean | null,
+  service_provider: boolean | null,
+  pr_exempt: boolean | null,
+  address_match: boolean | null,
+  business_license_required: boolean | null,
+  business_license_required_not_provided : boolean | null,
+  business_license_required_provided : boolean | null,
+  business_license_not_required_not_provided : boolean | null,
+  title_check : boolean | null
+} = {
+  renting: false,
+  service_provider: false,
+  pr_exempt: false,
+  address_match: null,
+  business_license_required: true,
+  business_license_required_not_provided: null,
+  business_license_required_provided: true,
+  business_license_not_required_not_provided: null,
+  title_check: null
+}
+
+const automaticRows = [
+  {
+    criteria: 'Renting',
+    outcome: data.renting ? 'Yes' : 'No'
+  },
+  {
+    criteria: 'Accommodation Service Provider Selected',
+    outcome: data.service_provider ? 'Yes' : 'No'
+  },
+  {
+    criteria: 'Principal Residence Exempt',
+    outcome: data.pr_exempt
+      ? 'PR Exempt'
+      : data.pr_exempt === false
+        ? 'Not PR Exempt'
+        : 'Address Look Up Service Failed'
+  }
+]
+
+const provisionalRows = [
+  {
+    criteria: 'Does the STR  Address match the BC Services Account Address',
+    outcome: data.address_match ? 'Addresses match' : 'Addresses do not match'
+  },
+  {
+    criteria: 'Business License Required and Provided',
+    outcome: data.business_license_required_provided
+      ? 'Required & Provided'
+      : data.business_license_not_required_not_provided
+        ? 'Not Required & Not provided'
+        : 'Required & Not Provided'
+  },
+  {
+    criteria: 'Title Check',
+    outcome: data.title_check ? 'Passed LTSA Check' : 'Did Not Pass LTSA Check'
+  }
+]
+
+const getFlavour = (status: string, invoices: RegistrationI['invoices']):
+  { alert: AlertsFlavourE, text: string } | undefined => {
+  if (status === 'PENDING' && invoices[0].payment_status_code === 'COMPLETED') {
+    return {
+      text: tRegistrationStatus('applied'),
+      alert: AlertsFlavourE.APPLIED
+    }
+  }
+  if (status === 'PENDING' && invoices[0].payment_status_code !== 'COMPLETED') {
+    return {
+      text: tRegistrationStatus('payment-due'),
+      alert: AlertsFlavourE.WARNING
+    }
+  }
+}
+
+const flavour = application ? getFlavour(application.status, application.invoices) : null
+
+</script>

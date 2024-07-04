@@ -25,6 +25,10 @@ export const useRegistrations = () => {
     axiosInstance.get(`${apiURL}/registrations`)
       .then(res => res.data.find((registration: any) => registration.id.toString() === id))
 
+  const getDocumentsForRegistration = (id: string): Promise<DocumentI[]> =>
+    axiosInstance.get(`${apiURL}/registrations/${id}/documents`)
+      .then(res => res.data)
+
   const getStatusPriority = (status: string) => {
     switch (status) {
       case 'DENIED':
@@ -68,6 +72,7 @@ export const useRegistrations = () => {
 
   return {
     createSbcRegistration,
+    getDocumentsForRegistration,
     getRegistrations,
     getRegistration
   }

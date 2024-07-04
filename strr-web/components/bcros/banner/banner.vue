@@ -6,7 +6,7 @@
     "
   >
     <slot />
-    <div>
+    <div v-if="!hideButtons">
       <BcrosButtonsPrimary
         text="Approve"
         :action="() => null"
@@ -30,5 +30,7 @@
 </template>
 
 <script setup lang="ts">
+
+const { hideButtons = false } = defineProps<{ hideButtons?: boolean }>()
 
 </script>

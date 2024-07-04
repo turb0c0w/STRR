@@ -114,12 +114,35 @@
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
             <div class="flex flex-row justify-between w-full mobile:flex-col">
               <BcrosFormSectionReviewItem
-                title="Status"
+                title="Proof of Principal Residence"
               >
-                <p>{{ application?.status }}</p>
+                <div v-for="(supportingDocument) in documents" :key="supportingDocument.file_name">
+                  <div class="flex flex-row items-center">
+                    <img
+                      class="mr-[4px] h-[18px] w-[18px]"
+                      src="/icons/create-account/attach_dark.svg"
+                      alt="Attach icon"
+                    >
+                    <p>{{ supportingDocument.file_name }}</p>
+                  </div>
+                </div>
               </BcrosFormSectionReviewItem>
             </div>
           </div>
+        </div>
+        <div class="mt-[40px]">
+          <p class="font-bold mb-[24px] mobile:mx-[8px]">
+            LTSA Information
+          </p>
+          <a @click="() => navigateTo(`/application-details/${applicationId}/ltsa`)">View LTSA Details</a>
+        </div>
+        <div class="mt-[40px]">
+          <p class="font-bold mb-[24px] mobile:mx-[8px]">
+            Auto-Approval Logic
+          </p>
+          <a @click="() => navigateTo(`/application-details/${applicationId}/auto-approval`)">
+            View Auto-Approval Details
+          </a>
         </div>
       </div>
     </div>
@@ -136,9 +159,10 @@ const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
 const { applicationId } = route.params
 
-const { getRegistration } = useRegistrations()
+const { getRegistration, getDocumentsForRegistration } = useRegistrations()
 
 const application = await getRegistration(applicationId.toString())
+const documents = await getDocumentsForRegistration(applicationId.toString())
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {
