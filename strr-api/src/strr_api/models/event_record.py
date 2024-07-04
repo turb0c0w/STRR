@@ -22,5 +22,6 @@ class EventRecord(db.Model):
     event_type = db.Column(Enum(EventRecordType), nullable=False)
     message = db.Column(db.String, nullable=False)
     created_date = db.Column(db.DateTime, nullable=False, server_default=text("(NOW())"))
+    visible_to_end_user = db.Column(db.Boolean, nullable=False, server_default="false")
 
     user = relationship("User")

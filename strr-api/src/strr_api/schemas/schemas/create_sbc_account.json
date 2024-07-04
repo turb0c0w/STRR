@@ -83,6 +83,10 @@
           "abc123@mail.com"
         ],
         "pattern": "(^[a-zA-Z0-9!#$%&'*+-/=?^_`{|.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$)"
+      },
+      "terms_of_use_accepted": {
+        "description": "Terms of use accepted",
+        "type": "boolean"
       }
   },
   "required": [

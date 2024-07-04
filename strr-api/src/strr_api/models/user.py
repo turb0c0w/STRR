@@ -82,6 +82,7 @@ class User(db.Model):
     idp_userid = db.Column(db.String(256), index=True)
     login_source = db.Column(db.String(200), nullable=True)
     creation_date = db.Column(db.DateTime(timezone=True), default=datetime.now)
+    terms_of_use_accepted = db.Column(db.Boolean, server_default="false")
 
     registrations = relationship("Registration")
 
