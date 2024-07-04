@@ -1,108 +1,28 @@
 <template>
   <div>
-    <BcrosBanner>
-      <div class="flex items-center">
-        <BcrosTypographyH1
-          :text="`${application?.unitAddress.nickname ? application?.unitAddress.nickname + ' ' : ''}REGISTRATION #${applicationId}`"
-          no-spacing
-        />
-        <BcrosChip v-if="flavour" :flavour="flavour" class="ml-[16px]">
-          {{ flavour.text }}
-        </BcrosChip>
-      </div>
-    </BcrosBanner>
-  </div>
-  <div class="mt-[104px]">
     <div>
-      <p class="font-bold mb-[24px] mobile:mx-[8px]">
-        Registration Status
-      </p>
-      <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
-        <div class="flex flex-row justify-between w-full mobile:flex-col">
-          <BcrosFormSectionReviewItem
-            title="Status"
-          >
-            <p>{{ application?.status }}</p>
-          </BcrosFormSectionReviewItem>
-        </div>
-      </div>
-    </div>
-    <div class="mt-[40px]">
-      <p class="font-bold mb-[24px] mobile:mx-[8px]">
-        Rental Unit Information
-      </p>
-      <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
-        <div class="flex flex-row justify-between w-full mobile:flex-col desktop:mb-[24px]">
-          <BcrosFormSectionReviewItem
-            title="Nickname"
-          >
-            <p>{{ application?.unitAddress.nickname }}</p>
-          </BcrosFormSectionReviewItem>
-          <BcrosFormSectionReviewItem
-            title="Business License"
-          >
-            <p>{{ application?.unitDetails.businessLicense }}</p>
-          </BcrosFormSectionReviewItem>
-          <BcrosFormSectionReviewItem
-            title="Ownership Type"
-          >
-            <p>{{ application?.unitDetails.ownershipType }}</p>
-          </BcrosFormSectionReviewItem>
-        </div>
-        <div class="flex flex-row justify-between w-full mobile:flex-col">
-          <BcrosFormSectionReviewItem
-            title="Address"
-          >
-            <p>{{ application?.unitAddress.address }}</p>
-            <p v-if="application?.unitAddress.addressLineTwo">
-              {{ application?.unitAddress.addressLineTwo }}
-            </p>
-            <p>
-              {{
+      <BcrosBanner>
+        <div class="flex items-center">
+          <BcrosTypographyH1
+            :text="
+              `${
+                application?.unitAddress.nickname
+                  ? application?.unitAddress.nickname + ' '
+                  : ''}REGISTRATION #${applicationId}
                 `
-                  ${application?.unitAddress.city ?? '-'}
-                  ${application?.unitAddress.province ?? '-'}
-                  ${application?.unitAddress.postalCode ?? '-'}
-                ` 
-              }}
-            </p>
-            <p>
-              {{ 
-              `
-                ${application?.unitAddress.country 
-                  ? regionNamesInEnglish.of(application?.unitAddress.country) 
-                  : '-'}
-              `
-              }}
-            </p>
-          </BcrosFormSectionReviewItem>
-          <BcrosFormSectionReviewItem
-            title="Type of Property"
-          >
-            <p>{{ application?.unitDetails.propertyType }}</p>
-          </BcrosFormSectionReviewItem>
-          <div class="flex-1" />
+            "
+            no-spacing
+          />
+          <BcrosChip v-if="flavour" :flavour="flavour" class="ml-[16px]">
+            {{ flavour.text }}
+          </BcrosChip>
         </div>
-      </div>
-      <div class="mt-[40px]">
+      </BcrosBanner>
+    </div>
+    <div class="mt-[104px]">
+      <div>
         <p class="font-bold mb-[24px] mobile:mx-[8px]">
-          Primary Contact Information
-        </p>
-        <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
-          <UTable :rows="application ? getContactRows(application?.primaryContact): []" />
-        </div>
-      </div>
-      <div v-if="application && application?.secondaryContact" class="mt-[40px]">
-        <p class="font-bold mb-[24px] mobile:mx-[8px]">
-          Secondary Contact Information
-        </p>
-        <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
-          <UTable :rows="getContactRows(application?.secondaryContact)" />
-        </div>
-      </div>
-      <div class="mt-[40px]">
-        <p class="font-bold mb-[24px] mobile:mx-[8px]">
-          Documents
+          Registration Status
         </p>
         <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
           <div class="flex flex-row justify-between w-full mobile:flex-col">
@@ -111,6 +31,94 @@
             >
               <p>{{ application?.status }}</p>
             </BcrosFormSectionReviewItem>
+          </div>
+        </div>
+      </div>
+      <div class="mt-[40px]">
+        <p class="font-bold mb-[24px] mobile:mx-[8px]">
+          Rental Unit Information
+        </p>
+        <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+          <div class="flex flex-row justify-between w-full mobile:flex-col desktop:mb-[24px]">
+            <BcrosFormSectionReviewItem
+              title="Nickname"
+            >
+              <p>{{ application?.unitAddress.nickname }}</p>
+            </BcrosFormSectionReviewItem>
+            <BcrosFormSectionReviewItem
+              title="Business License"
+            >
+              <p>{{ application?.unitDetails.businessLicense }}</p>
+            </BcrosFormSectionReviewItem>
+            <BcrosFormSectionReviewItem
+              title="Ownership Type"
+            >
+              <p>{{ application?.unitDetails.ownershipType }}</p>
+            </BcrosFormSectionReviewItem>
+          </div>
+          <div class="flex flex-row justify-between w-full mobile:flex-col">
+            <BcrosFormSectionReviewItem
+              title="Address"
+            >
+              <p>{{ application?.unitAddress.address }}</p>
+              <p v-if="application?.unitAddress.addressLineTwo">
+                {{ application?.unitAddress.addressLineTwo }}
+              </p>
+              <p>
+                {{
+                  `
+                    ${application?.unitAddress.city ?? '-'}
+                    ${application?.unitAddress.province ?? '-'}
+                    ${application?.unitAddress.postalCode ?? '-'}
+                  `
+                }}
+              </p>
+              <p>
+                {{
+                  `
+                  ${application?.unitAddress.country
+                    ? regionNamesInEnglish.of(application?.unitAddress.country)
+                  : '-'}
+                `
+                }}
+              </p>
+            </BcrosFormSectionReviewItem>
+            <BcrosFormSectionReviewItem
+              title="Type of Property"
+            >
+              <p>{{ application?.unitDetails.propertyType }}</p>
+            </BcrosFormSectionReviewItem>
+            <div class="flex-1" />
+          </div>
+        </div>
+        <div class="mt-[40px]">
+          <p class="font-bold mb-[24px] mobile:mx-[8px]">
+            Primary Contact Information
+          </p>
+          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+            <UTable :rows="application ? getContactRows(application?.primaryContact): []" />
+          </div>
+        </div>
+        <div v-if="application && application?.secondaryContact" class="mt-[40px]">
+          <p class="font-bold mb-[24px] mobile:mx-[8px]">
+            Secondary Contact Information
+          </p>
+          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+            <UTable :rows="getContactRows(application?.secondaryContact)" />
+          </div>
+        </div>
+        <div class="mt-[40px]">
+          <p class="font-bold mb-[24px] mobile:mx-[8px]">
+            Documents
+          </p>
+          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+            <div class="flex flex-row justify-between w-full mobile:flex-col">
+              <BcrosFormSectionReviewItem
+                title="Status"
+              >
+                <p>{{ application?.status }}</p>
+              </BcrosFormSectionReviewItem>
+            </div>
           </div>
         </div>
       </div>

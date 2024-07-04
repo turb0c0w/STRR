@@ -29,7 +29,7 @@ export const formStateToApi = (
           ? lastName.toString()
           : formState.secondaryContact?.lastName
             ? formState.secondaryContact?.lastName
-            : '-',
+            : '-'
     }
     dataContact.dateOfBirth = `${stateContact.birthYear}-${stateContact.birthMonth}-${stateContact.birthDay}`
     dataContact.details = {
