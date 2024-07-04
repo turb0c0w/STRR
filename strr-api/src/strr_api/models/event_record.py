@@ -23,5 +23,6 @@ class EventRecord(db.Model):
     message = db.Column(db.String, nullable=False)
     created_date = db.Column(db.DateTime, nullable=False, server_default=text("(NOW())"))
     visible_to_end_user = db.Column(db.Boolean, nullable=False, server_default="false")
+    registration_id = db.Column(db.Integer, db.ForeignKey("registrations.id"), nullable=True)
 
     user = relationship("User")

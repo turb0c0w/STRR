@@ -40,15 +40,26 @@ class EventRecordsService:
     """Service to save event records into the database."""
 
     @classmethod
-    def save_event_record(cls, event_type: str, message: str, user_id: int = None):
+    def save_event_record(cls, event_type: str, message: str, visible_to_end_user: bool,
+                          user_id: int = None, registration_id: int = None):
         """Save STRR event record."""
 
         event_record = models.EventRecord(
             user_id=user_id,
             event_type=event_type.name,
             message=message,
+            visible_to_end_user=visible_to_end_user,
+            registration_id=registration_id
         )
         db.session.add(event_record)
         db.session.commit()
         db.session.refresh(event_record)
         return event_record
+
+    @classmethod
+    def fetch_event_records_for_registration(cls, registration_id, only_show_visible_to_user: bool = True):
+        """Get event records for a given registration by id."""
+        query = models.EventRecord.query.filter(models.EventRecord.registration_id == registration_id)
+        if only_show_visible_to_user:
+            query = query.filter(models.EventRecord.visible_to_end_user == True) # noqa
+        return query.all()

@@ -54,9 +54,10 @@ from strr_api.exceptions import (
     exception_response,
 )
 from strr_api.requests import RegistrationRequest
-from strr_api.responses import Document, Invoice, Registration
+from strr_api.responses import Document, Invoice, Registration, EventRecord
+from strr_api.models import User
 from strr_api.schemas.utils import validate
-from strr_api.services import GCPStorageService, RegistrationService, strr_pay
+from strr_api.services import GCPStorageService, RegistrationService, strr_pay, EventRecordsService
 from strr_api.validators.DocumentUploadValidator import validate_document_upload
 from strr_api.validators.RegistrationRequestValidator import validate_registration_request
 
@@ -477,5 +478,49 @@ def get_registration_invoice_status(registration_id, invoice_id):
         return jsonify(Invoice.from_db(invoice).model_dump(mode="json")), HTTPStatus.OK
     except ValidationException as auth_exception:
         return exception_response(auth_exception)
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+
+
+@bp.route("/<registration_id>/history", methods=("GET",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def get_registration_history(registration_id):
+    """
+    Get registration supporting documents for given registration id.
+    ---
+    tags:
+      - registration
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+    """
+
+    try:
+        user = User.find_by_jwt_token(g.jwt_oidc_token_info)
+        if not user:
+            raise AuthException()
+
+        if not user.is_examiner():
+            registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+            if not registration:
+                raise AuthException()
+
+        records = EventRecordsService.fetch_event_records_for_registration(registration_id)
+        return (
+            jsonify([EventRecord.from_db(record).model_dump(mode="json") for record in records]),
+            HTTPStatus.OK,
+        )
     except AuthException as auth_exception:
         return exception_response(auth_exception)

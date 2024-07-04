@@ -43,7 +43,7 @@ def test_event_record(app):
     name = "Test User"
     user_id = 1
     record = EventRecordsService.save_event_record(
-        EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{name}"', user_id
+        EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{name}"', False, user_id
     )
 
     assert record.user_id == user_id

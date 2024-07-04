@@ -151,7 +151,7 @@ class AuthService:
         ).json()
 
         EventRecordsService.save_event_record(
-            EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{account_name}"', user_id
+            EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{account_name}"', False, user_id
         )
         return new_user_account
 
@@ -175,6 +175,9 @@ class AuthService:
         ).json()
 
         EventRecordsService.save_event_record(
-            EventRecordType.SBC_ACCOUNT_ADDED_CONTACT, f'Added contact info to SBC account id: "{account_id}"', user_id
+            EventRecordType.SBC_ACCOUNT_ADDED_CONTACT,
+            f'Added contact info to SBC account id: "{account_id}"',
+            False,
+            user_id
         )
         return contact_info
