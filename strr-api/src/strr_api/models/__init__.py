@@ -37,6 +37,7 @@ from .event_record import EventRecord
 from .invoice import Invoice
 from .rental import Address, Document, Eligibility, PropertyManager, Registration, RentalPlatform, RentalProperty
 from .user import Contact, User
+from .dss import DSSOrganization
 
 __all__ = (
     "db",
@@ -51,4 +52,5 @@ __all__ = (
     "Document",
     "EventRecord",
     "Invoice",
+    "DSSOrganization"
 )

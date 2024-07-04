@@ -107,6 +107,11 @@ class Config:  # pylint: disable=too-few-public-methods
     PAYMENT_SVC_URL = os.getenv("PAY_API_URL", "") + os.getenv("PAY_API_VERSION", "")
     LEGAL_SVC_URL = os.getenv("LEGAL_API_URL", "") + os.getenv("LEGAL_API_VERSION_2", "")
     BOR_SVC_URL = os.getenv("BOR_API_URL", "") + os.getenv("BOR_API_VERSION", "")
+    LTSA_SVC_URL = os.getenv("LTSA_API_URL", "") + os.getenv("LTSA_API_VERSION", "")
+    LTSA_SVC_AUTH_KEY = os.getenv("LTSA_API_AUTH_KEY", "")
+
+    GEOCODER_SVC_URL = os.getenv("GEOCODER_API_URL", "")
+    GEOCODER_SVC_AUTH_KEY = os.getenv("GEOCODER_API_AUTH_KEY", "")
 
     KEYCLOAK_AUTH_TOKEN_URL = os.getenv("KEYCLOAK_AUTH_TOKEN_URL")
     STRR_SERVICE_ACCOUNT_CLIENT_ID = os.getenv("STRR_SERVICE_ACCOUNT_CLIENT_ID")

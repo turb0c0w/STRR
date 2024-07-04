@@ -31,19 +31,58 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-"""This module wraps helper services used by the API."""
-from .approval_service import ApprovalService
-from .auth_service import AuthService
-from .event_records_service import EventRecordsService
-from .gcp_storage_service import GCPStorageService
-from .geocoder_service import GeoCoderService
-from .ltsa_service import LtsaService
-from .payment_service import PayService
-from .registration_service import RegistrationService
-from .rest_service import RestService
+"""Uses BC Gov Geocoder service to fetch latitude and longitude."""
+from copy import deepcopy
+from datetime import datetime, timezone
+from http import HTTPStatus
+from urllib.parse import quote
 
-PAYMENT_REQUEST_TEMPLATE = {
-    "filingInfo": {"filingTypes": [{"filingTypeCode": "RENTAL_FEE"}]},
-    "businessInfo": {"corpType": "STRR"},
-}
-strr_pay = PayService(default_invoice_payload=PAYMENT_REQUEST_TEMPLATE)
+from strr_api.exceptions import ExternalServiceException
+
+import requests
+from flask import current_app
+
+class GeoCoderService:
+    """
+    A class that provides utility functions for connecting with the BC Government Geocorder Service API.
+    https://www2.gov.bc.ca/gov/content/data/geographic-data-services/location-services/geocoder
+    """
+
+    @classmethod
+    def get_geocode_by_address(cls, address):
+        """Get geocode (latitude, longitude) by address"""
+        svc_url = current_app.config.get("GEOCODER_SVC_URL")
+        svc_key = current_app.config.get("GEOCODER_SVC_AUTH_KEY")
+        timeout = current_app.config.get("GEOCODER_API_TIMEOUT", 20)
+
+        headers = {
+            "Authorization": "Bearer " + svc_key,
+            "Content-Type": "application/json",
+        }
+        encoded_address = quote(address)
+        
+        url = (
+            f"{svc_url}/addresses.json?"
+            f"addressString={encoded_address}&"
+            "locationDescriptor=any&"
+            "maxResults=1&"
+            "interpolation=adaptive&"
+            "echo=true&"
+            "brief=false&"
+            "autoComplete=false&"
+            "setBack=0&"
+            "outputSRS=4326&"
+            "minScore=1&"
+            "provinceCode=BC"
+        )
+        
+        geocode_response = requests.get(
+            url=url,
+            headers=headers,
+            timeout=timeout
+        ).json()
+
+        try:
+            return geocode_response
+        except Exception:
+            return None
