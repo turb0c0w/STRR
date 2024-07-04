@@ -90,7 +90,9 @@
       "dateOfBirth": "Date of Birth",
       "contactDetails": "Contact Details",
       "mailingAddress": "Mailing Address",
-      "preferred": "Preferred Name"
+      "preferred": "Preferred Name",
+      "socialInsuranceNumber": "Social Insurance Number",
+      "businessNumber": "Business Number (Optional)"
     },
     "property-form": {
       "subtitle": "Rental Unit Information",

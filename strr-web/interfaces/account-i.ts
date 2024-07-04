@@ -116,6 +116,8 @@ export interface PrincipalResidenceI {
 
 export interface CreateAccountFormStateI {
   primaryContact: ContactInformationI,
+  businessNumber: string,
+  socialInsuranceNumber: string,
   secondaryContact: SecondaryContactInformationI,
   propertyDetails: {
     primaryResidence: string | undefined,
