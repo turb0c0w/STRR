@@ -39,8 +39,18 @@
             <p>{{ `${state.city ?? '-'} ${state.province ?? '-'} ${state.postalCode ?? '-'}` }}</p>
             <p>{{ `${state.country ? regionNamesInEnglish.of(state.country) : '-'}` }}</p>
           </BcrosFormSectionReviewItem>
-          <div />
-          <div />
+          <div v-if="!primary" />
+          <BcrosFormSectionReviewItem
+            v-else
+            :title="tContact('socialInsuranceNumber')"
+            :content="getSocialInsuranceNumber()"
+          />
+          <div v-if="!primary && getBusinessNumber()" />
+          <BcrosFormSectionReviewItem
+            v-else
+            :title="tContact('businessNumberReview')"
+            :content="getBusinessNumber()"
+          />
         </div>
       </div>
     </div>
@@ -53,11 +63,25 @@ const t = useNuxtApp().$i18n.t
 const tContact = (translationKey: string) => t(`create-account.contact-form.${translationKey}`)
 
 const { state, primary } = defineProps<{
-  state: ContactInformationI | SecondaryContactInformationI
+  state: PrimaryContactInformationI | SecondaryContactInformationI
   primary: boolean
 }>()
 
 const { me } = useBcrosAccount()
+
+const getSocialInsuranceNumber = () => {
+  if ('socialInsuranceNumber' in state && state.socialInsuranceNumber) {
+    return state.socialInsuranceNumber
+  }
+  return '-'
+}
+
+const getBusinessNumber = () => {
+  if ('businessNumber' in state && state.businessNumber) {
+    return state.businessNumber
+  }
+  return '-'
+}
 
 const getNames = () => {
   const secondaryContactState: SecondaryContactInformationI = state as SecondaryContactInformationI
