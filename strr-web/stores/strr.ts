@@ -68,7 +68,7 @@ const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a numb
 const optionalNumber = z.string().regex(numbersRegex, { message: 'Must be a number' }).optional()
 const optionalPID = z
   .string()
-  .regex(pidRegex, { message: 'If provided this value must be in the format 111-111-111' }).or(z.literal(''))
+  .regex(pidRegex, { message: 'If provided this value must be in the format 111-111-111' }).optional()
 const requiredSin = z
   .string()
   .regex(sinRegex, { message: 'Social Insurance Number must be provided in the format 111 111 111' })
