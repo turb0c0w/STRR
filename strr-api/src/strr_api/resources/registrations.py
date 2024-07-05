@@ -46,6 +46,7 @@ from flask_cors import cross_origin
 from werkzeug.utils import secure_filename
 
 from strr_api.common.auth import jwt
+from strr_api.enums.enum import PaymentStatus
 from strr_api.exceptions import (
     AuthException,
     ExternalServiceException,
@@ -122,7 +123,6 @@ def create_registration():
     """
 
     try:
-        token = jwt.get_token_auth_header()
         json_input = request.get_json()
         [valid, errors] = validate(json_input, "registration")
         if not valid:
@@ -140,8 +140,6 @@ def create_registration():
         )
 
         strr_pay.create_invoice(jwt, sbc_account_id, registration)
-        approval = ApprovalService.process_approval(token, registration)
-        ApprovalService.save_approval_record(registration.id, approval)
         return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.CREATED
     except ValidationException as auth_exception:
         return exception_response(auth_exception)
@@ -427,6 +425,7 @@ def mark_registration_invoice_paid(registration_id, invoice_id):
     """
 
     try:
+        token = jwt.get_token_auth_header()
         registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
         if not registration:
             raise AuthException()
@@ -436,6 +435,9 @@ def mark_registration_invoice_paid(registration_id, invoice_id):
             return error_response(HTTPStatus.NOT_FOUND, "Invoice not found")
 
         invoice = strr_pay.update_invoice_payment_status(jwt, registration, invoice)
+        if invoice.payment_status_code == PaymentStatus.COMPLETED:
+            approval = ApprovalService.process_approval(token, registration)
+            ApprovalService.save_approval_record(registration.id, approval)
 
         return jsonify(Invoice.from_db(invoice).model_dump(mode="json")), HTTPStatus.OK
     except ValidationException as auth_exception:
