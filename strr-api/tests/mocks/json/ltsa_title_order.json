@@ -25,25 +25,25 @@
       "fieldedData": {
         "titleStatus": "REGISTERED",
         "titleIdentifier": {
-          "titleNumber": "CA000000",
-          "landTitleDistrict": "VICTORIA"
+            "titleNumber": "CA000000",
+            "landTitleDistrict": "VICTORIA"
         },
         "tombstone": {
-          "applicationReceivedDate": "2007-09-28T13:02:23Z",
-          "enteredDate": "2007-10-01T21:58:48Z",
-          "titleRemarks": "",
-          "marketValueAmount": "194000",
-          "fiel": [
-            {
-              "titleNumber": "EW000000",
-              "landTitleDistrict": "VICTORIA"
-            }
-          ],
-          "natureOfTransfers": [
-            {
-              "transferReason": "FEE SIMPLE"
-            }
-          ]
+            "applicationReceivedDate": "2007-09-28T13:02:23Z",
+            "enteredDate": "2007-10-01T21:58:48Z",
+            "titleRemarks": "",
+            "marketValueAmount": "194000",
+            "fromTitles": [
+                {
+                    "titleNumber": "EW000000",
+                    "landTitleDistrict": "VICTORIA"
+                }
+            ],
+            "natureOfTransfers": [
+                {
+                    "transferReason": "FEE SIMPLE"
+                }
+            ]
         },
         "ownershipGroups": [
           {
