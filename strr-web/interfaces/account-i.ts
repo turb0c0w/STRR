@@ -127,6 +127,8 @@ export interface SecondaryContactInformationI extends ContactInformationI {
   firstName: string | undefined,
   middleName: string | undefined,
   lastName: string | undefined,
+  businessNumber: string | undefined,
+  socialInsuranceNumber: string | undefined
 }
 
 export interface PrincipalResidenceI {

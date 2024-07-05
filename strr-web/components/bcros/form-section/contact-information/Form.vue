@@ -26,6 +26,7 @@
         <BcrosFormSectionContactInformationCraInfo
           v-model:socialInsuranceNumber="formState.primaryContact.socialInsuranceNumber"
           v-model:businessNumber="formState.primaryContact.businessNumber"
+          :is-primary="true"
         />
         <BcrosFormSectionContactInformationContactDetails
           v-model:phone-number="formState.primaryContact.phoneNumber"
@@ -79,6 +80,11 @@
             v-model:day="formState.secondaryContact.birthDay"
             v-model:month="formState.secondaryContact.birthMonth"
             v-model:year="formState.secondaryContact.birthYear"
+            :is-primary="false"
+          />
+          <BcrosFormSectionContactInformationCraInfo
+            v-model:socialInsuranceNumber="formState.secondaryContact.socialInsuranceNumber"
+            v-model:businessNumber="formState.secondaryContact.businessNumber"
             :is-primary="false"
           />
           <BcrosFormSectionContactInformationContactDetails

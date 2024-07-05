@@ -65,13 +65,15 @@ const emailError = { message: 'Email must contain @ symbol and domain' }
 const requiredPhone = z.string().regex(phoneRegex, phoneError)
 const requiredEmail = z.string().regex(emailRegex, emailError)
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
-const optionalNumber = z.string().regex(numbersRegex, { message: 'Must be a number' }).optional()
-const optionalPID = z
-  .string()
-  .regex(pidRegex, { message: 'If provided this value must be in the format 111-111-111' }).optional()
+const optionalNumber = z.string().refine(val => val === '' ||
+  numbersRegex.test(val), { message: 'Must be a number' }).optional()
+const optionalPID = z.string().refine(val => val === '' ||
+  pidRegex.test(val), { message: 'If provided this value must be in the format 111-111-111' }).optional()
 const requiredSin = z
   .string()
   .regex(sinRegex, { message: 'Social Insurance Number must be provided in the format 111 111 111' })
+const optionalSin = z.string().refine(val => val === '' ||
+  sinRegex.test(val), { message: 'Social Insurance Number must be provided in the format 111 111 111' }).optional()
 const optionalExtension = optionalNumber
 const optionalOrEmptyString = z.string().optional().transform(e => e === '' ? undefined : e)
 const requiredNonEmptyString = z.string().refine(e => e !== '', 'Field cannot be empty')
@@ -112,6 +114,8 @@ export const secondaryContactSchema = z.object({
   firstName: requiredNonEmptyString,
   lastName: requiredNonEmptyString,
   middleName: requiredNonEmptyString,
+  socialInsuranceNumber: optionalSin,
+  businessNumber: optionalOrEmptyString,
   preferredName: optionalOrEmptyString,
   phoneNumber: requiredPhone,
   extension: optionalOrEmptyString,
@@ -156,6 +160,8 @@ const primaryContact: PrimaryContactInformationI = {
 const secondaryContact: SecondaryContactInformationI = {
   preferredName: '',
   phoneNumber: undefined,
+  businessNumber: undefined,
+  socialInsuranceNumber: undefined,
   extension: '',
   faxNumber: '',
   emailAddress: undefined,
