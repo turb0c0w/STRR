@@ -1,0 +1,259 @@
+{
+  "order": {
+    "productType": "title",
+    "fileReference": "folio",
+    "productOrderParameters": {
+      "titleNumber": "xxx",
+      "includeCancelledInfo": false
+    },
+    "orderId": "guid",
+    "status": "Processing",
+    "billingInfo": {
+      "billingModel": "PROV",
+      "productName": "Searches",
+      "productCode": "Search",
+      "feeExempted": true,
+      "productFee": 0,
+      "serviceCharge": 0.0,
+      "subtotalFee": 0.0,
+      "productFeeTax": 0,
+      "serviceChargeTax": 0.0,
+      "totalTax": 0.0,
+      "totalFee": 0.0
+    },
+    "orderedProduct": {
+      "fieldedData": {
+        "titleStatus": "REGISTERED",
+        "titleIdentifier": {
+          "titleNumber": "CA000000",
+          "landTitleDistrict": "VICTORIA"
+        },
+        "tombstone": {
+          "applicationReceivedDate": "2007-09-28T13:02:23Z",
+          "enteredDate": "2007-10-01T21:58:48Z",
+          "titleRemarks": "",
+          "marketValueAmount": "194000",
+          "fiel": [
+            {
+              "titleNumber": "EW000000",
+              "landTitleDistrict": "VICTORIA"
+            }
+          ],
+          "natureOfTransfers": [
+            {
+              "transferReason": "FEE SIMPLE"
+            }
+          ]
+        },
+        "ownershipGroups": [
+          {
+            "jointTenancyIndication": false,
+            "interestFractionNumerator": "1",
+            "interestFractionDenominator": "1",
+            "ownershipRemarks": "",
+            "titleOwners": [
+              {
+                "lastNameOrCorpName1": "LAST",
+                "givenName": "FIRST MIDDLE",
+                "incorporationNumber": "",
+                "occupationDescription": "PROFESSIONAL DRIVER",
+                "address": {
+                  "addressLine1": "123 BEST ROAD",
+                  "addressLine2": "",
+                  "city": "VERNON",
+                  "province": "",
+                  "provinceName": "BC",
+                  "country": "CANADA",
+                  "postalCode": "V1V 1V1"
+                }
+              }
+            ]
+          }
+        ],
+        "taxAuthorities": [
+          {
+            "authorityName": "BC Assessment Area"
+          }
+        ],
+        "descriptionsOfLand": [
+          {
+            "parcelIdentifier": "000-000-000",
+            "fullLegalDescription": "LOT 00, DISTRICT LOT 000, COMOX DISTRICT, PLAN 00000",
+            "parcelStatus": "A"
+          }
+        ],
+        "legalNotationsOnTitle": [
+          {
+            "legalNotationNumber": "CV00000",
+            "status": "ACTIVE",
+            "legalNotation": {
+              "originalLegalNotationNumber": "CV00000",
+              "legalNotationText": "ZONING REGULATION AND PLAN UNDER THE AERONAUTICS ACT (CANADA)\nFILED 15/12/1980 UNDER NO. J128558 (SEE DF K24125 AND K95595)"
+            }
+          }
+        ],
+        "chargesOnTitle": [
+          {
+            "chargeNumber": "M00000",
+            "status": "REGISTERED",
+            "enteredDate": "2007-10-01T21:58:48Z",
+            "interAlia": "Yes",
+            "chargeRemarks": "",
+            "charge": {
+              "chargeNumber": "M00000",
+              "transactionType": "EXCEPTIONS AND RESERVATIONS",
+              "applicationReceivedDate": "0001-01-01T08:00:00Z",
+              "chargeOwnershipGroups": [
+                {
+                  "jointTenancyIndication": false,
+                  "interestFractionNumerator": "1",
+                  "interestFractionDenominator": "1",
+                  "ownershipRemarks": "",
+                  "chargeOwners": [
+                    {
+                      "lastNameOrCorpName1": "CORP NAME",
+                      "incorporationNumber": ""
+                    }
+                  ]
+                }
+              ],
+              "certificatesOfCharge": [],
+              "correctionsAltos1": [
+                {
+                  "number": "C000",
+                  "referenceDescription": "",
+                  "enteredDate": "1986-09-22T19:31:00Z",
+                  "correctionDate": "1986-09-22T19:31:00Z",
+                  "correctionText": "01/08/1983\n"
+                },
+                {
+                  "number": "C0002",
+                  "referenceDescription": "",
+                  "enteredDate": "1986-09-22T19:31:00Z",
+                  "correctionDate": "1986-09-22T19:31:00Z",
+                  "correctionText": "08:00\n"
+                }
+              ],
+              "corrections": [
+                {
+                  "reason": "CHARGE OWNER NAME CORRECTED",
+                  "originatingCorrectionApplication": "ET00000A",
+                  "enteredDate": "2002-06-05T16:30:00Z"
+                }
+              ]
+            },
+            "chargeRelease": {}
+          },
+          {
+            "chargeNumber": "M00000",
+            "status": "REGISTERED",
+            "enteredDate": "2007-10-01T21:58:48Z",
+            "interAlia": "Yes",
+            "chargeRemarks": "",
+            "charge": {
+              "chargeNumber": "M00000",
+              "transactionType": "UNDERSURFACE RIGHTS",
+              "applicationReceivedDate": "0001-01-01T08:00:00Z",
+              "chargeOwnershipGroups": [
+                {
+                  "jointTenancyIndication": false,
+                  "interestFractionNumerator": "1",
+                  "interestFractionDenominator": "1",
+                  "ownershipRemarks": "",
+                  "chargeOwners": [
+                    {
+                      "lastNameOrCorpName1": "HER MAJESTY THE QUEEN IN RIGHT OF THE PROVINCE OF BRITISH COLUMBIA",
+                      "incorporationNumber": ""
+                    }
+                  ]
+                }
+              ],
+              "certificatesOfCharge": [],
+              "correctionsAltos1": [
+                {
+                  "number": "C0001",
+                  "referenceDescription": "",
+                  "enteredDate": "1986-09-23T21:11:00Z",
+                  "correctionDate": "1986-09-23T21:11:00Z",
+                  "correctionText": "03/08/1983\n"
+                },
+                {
+                  "number": "C0002",
+                  "referenceDescription": "",
+                  "enteredDate": "1986-09-23T21:11:00Z",
+                  "correctionDate": "1986-09-23T21:11:00Z",
+                  "correctionText": "08:00\n"
+                },
+                {
+                  "number": "C0003",
+                  "referenceDescription": "",
+                  "enteredDate": "1988-10-13T17:58:00Z",
+                  "correctionDate": "1988-10-13T17:58:00Z",
+                  "correctionText": "NONE\n"
+                },
+                {
+                  "number": "C0004",
+                  "referenceDescription": "ED00000\n",
+                  "enteredDate": "1990-05-02T21:03:00Z",
+                  "correctionDate": "1990-05-02T21:03:00Z",
+                  "correctionText": "NONE\n"
+                }
+              ],
+              "corrections": []
+            },
+            "chargeRelease": {}
+          },
+          {
+            "chargeNumber": "F67678",
+            "status": "REGISTERED",
+            "enteredDate": "2007-10-01T21:58:48Z",
+            "interAlia": "Yes",
+            "chargeRemarks": "",
+            "charge": {
+              "chargeNumber": "F00000",
+              "transactionType": "STATUTORY BUILDING SCHEME",
+              "applicationReceivedDate": "1977-08-10T17:16:00Z",
+              "chargeOwnershipGroups": [],
+              "certificatesOfCharge": [],
+              "correctionsAltos1": [],
+              "corrections": []
+            },
+            "chargeRelease": {}
+          },
+          {
+            "chargeNumber": "CA000000",
+            "status": "REGISTERED",
+            "enteredDate": "2007-10-01T21:58:48Z",
+            "interAlia": "No",
+            "chargeRemarks": "",
+            "charge": {
+              "chargeNumber": "CA000000",
+              "transactionType": "MORTGAGE",
+              "applicationReceivedDate": "2007-09-28T13:02:23Z",
+              "chargeOwnershipGroups": [
+                {
+                  "jointTenancyIndication": false,
+                  "interestFractionNumerator": "1",
+                  "interestFractionDenominator": "1",
+                  "ownershipRemarks": "",
+                  "chargeOwners": [
+                    {
+                      "lastNameOrCorpName1": "RBC MORTGAGE CORPORATION",
+                      "incorporationNumber": "A00000"
+                    }
+                  ]
+                }
+              ],
+              "certificatesOfCharge": [],
+              "correctionsAltos1": [],
+              "corrections": []
+            },
+            "chargeRelease": {}
+          }
+        ],
+        "duplicateCertificatesOfTitle": [],
+        "titleTransfersOrDispositions": []
+      }
+    }
+  }
+}
