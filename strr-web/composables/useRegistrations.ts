@@ -29,11 +29,11 @@ export const useRegistrations = () => {
       .then(res => res.data.find((registration: any) => registration.id.toString() === id))
 
   const getLtsa = (): Promise<LtsaDataI | void> =>
-    axiosInstance.get(`${apiURL}/registrations`)
+    axiosInstance.get(`${apiURL}/registrations/ltsa`)
       .then(res => res.data)
 
   const getAutoApproval = (): Promise<AutoApprovalDataI | void> =>
-    axiosInstance.get(`${apiURL}/registrations`)
+    axiosInstance.get(`${apiURL}/registrations/auto_approval`)
       .then(res => res.data)
 
   const getDocumentsForRegistration = (id: string): Promise<DocumentI[]> =>

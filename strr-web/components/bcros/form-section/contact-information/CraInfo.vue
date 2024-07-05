@@ -8,13 +8,9 @@
             type="text"
             aria-label="social insurance number"
             :placeholder="
-              `
-                ${
-                isPrimary
-                  ? t('create-account.contact-form.socialInsuranceNumber')
-                  : t('create-account.contact-form.socialInsuranceNumberOptional')
-              }
-              `
+              `${isPrimary
+                ? t('create-account.contact-form.socialInsuranceNumber')
+                : t('create-account.contact-form.socialInsuranceNumberOptional')}`
             "
           />
         </UFormGroup>
