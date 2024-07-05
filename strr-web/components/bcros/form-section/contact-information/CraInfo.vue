@@ -7,7 +7,16 @@
             v-model="socialInsuranceNumber"
             type="text"
             aria-label="social insurance number"
-            :placeholder="t('create-account.contact-form.socialInsuranceNumber')"
+            :placeholder="
+              `
+                ${
+                  isPrimary 
+                    ? t('create-account.contact-form.socialInsuranceNumber')
+                    : t('create-account.contact-form.socialInsuranceNumberOptional')
+                }
+              `
+            "
+
           />
         </UFormGroup>
       </div>
@@ -30,5 +39,7 @@ const t = useNuxtApp().$i18n.t
 
 const socialInsuranceNumber = defineModel<string>('socialInsuranceNumber')
 const businessNumber = defineModel<string>('businessNumber')
+
+const { isPrimary } = defineProps<{ isPrimary: boolean }>()
 
 </script>
