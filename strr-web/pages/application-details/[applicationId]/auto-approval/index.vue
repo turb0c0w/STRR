@@ -11,6 +11,7 @@
                   : ''}REGISTRATION #${applicationId}
                 `
             "
+            class-name="mobile:text-[24px]"
             no-spacing
           />
           <BcrosChip v-if="flavour" :flavour="flavour" class="ml-[16px]">
