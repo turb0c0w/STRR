@@ -30,7 +30,7 @@
             <BcrosFormSectionReviewItem
               title="Status"
             >
-              <p>{{ application?.status }}</p>
+              <p>{{ application?.status ?? '-' }}</p>
             </BcrosFormSectionReviewItem>
           </div>
         </div>
@@ -44,17 +44,17 @@
             <BcrosFormSectionReviewItem
               title="Nickname"
             >
-              <p>{{ application?.unitAddress.nickname }}</p>
+              <p>{{ application?.unitAddress.nickname ?? '-' }}</p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
               title="Business License"
             >
-              <p>{{ application?.unitDetails.businessLicense }}</p>
+              <p>{{ application?.unitDetails.businessLicense ?? '-' }}</p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
               title="Ownership Type"
             >
-              <p>{{ application?.unitDetails.ownershipType }}</p>
+              <p>{{ application?.unitDetails.ownershipType ?? '-' }}</p>
             </BcrosFormSectionReviewItem>
           </div>
           <div class="flex flex-row justify-between w-full mobile:flex-col">
@@ -87,7 +87,7 @@
             <BcrosFormSectionReviewItem
               title="Type of Property"
             >
-              <p>{{ application?.unitDetails.propertyType }}</p>
+              <p>{{ application?.unitDetails.propertyType ?? '-' }}</p>
             </BcrosFormSectionReviewItem>
             <div class="flex-1" />
           </div>
