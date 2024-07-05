@@ -193,6 +193,9 @@
             View Auto-Approval Details
           </a>
         </div>
+        <div class="mt-[40px]">
+
+        </div>
       </div>
     </div>
   </div>
@@ -208,10 +211,17 @@ const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
 const { applicationId } = route.params
 
-const { getRegistration, getDocumentsForRegistration } = useRegistrations()
+const {
+  getRegistration,
+  getDocumentsForRegistration,
+  getRegistrationHistory
+} = useRegistrations()
 
 const application = await getRegistration(applicationId.toString())
 const documents = await getDocumentsForRegistration(applicationId.toString())
+const history = await getRegistrationHistory(applicationId.toString())
+
+console.log(history)
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {

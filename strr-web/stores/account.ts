@@ -6,11 +6,14 @@ import { ErrorCategoryE } from '~/enums/error-category-e'
 import { ErrorI } from '~/interfaces/error-i'
 import { KCUserI } from '~/interfaces/kc-user-i'
 import { addAxiosInterceptors } from '~/utils/axios'
+import { TermsOfServiceI } from '~/interfaces/terms-of-service-i'
 
 /** Manages bcros account data */
 export const useBcrosAccount = defineStore('bcros/account', () => {
   // keycloak info
   const keycloak = useBcrosKeycloak()
+  const tosAccepted = ref(false)
+  const tos = ref<TermsOfServiceI>()
   // selected user account
   const currentAccount: Ref<AccountI> = ref({} as AccountI)
   const currentAccountName = computed((): string => currentAccount.value?.label || '')
@@ -32,7 +35,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   const apiURL = useRuntimeConfig().public.authApiURL
 
   /** Get user information from AUTH */
-  async function getAuthUserProfile (identifier: string) {
+  async function getAuthUserProfile(identifier: string) {
     return await axiosInstance.get<KCUserI | void>(`${apiURL}/users/${identifier}`)
       .then((response) => {
         const data = response?.data
@@ -50,7 +53,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /** Update user information in AUTH with current token info */
-  async function updateAuthUserInfo () {
+  async function updateAuthUserInfo() {
     return await axiosInstance.post<KCUserI | void>(`${apiURL}/users`, { isLogin: true })
       .then(response => response.data)
       .catch((error) => {
@@ -59,8 +62,17 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       })
   }
 
+
+  async function updateTosAccpetance(): Promise<TermsOfServiceI | void> {
+    return await axiosInstance.get<TermsOfServiceI>(`${apiURL}/documents/termsofuse`)
+      .then(response => {
+        tos.value = response.data
+        return response.data
+      })
+  }
+
   /** Set user name information */
-  async function setUserName () {
+  async function setUserName() {
     if (user.value?.loginSource === LoginSourceE.BCEID) {
       // get from auth
       const authUserInfo = await getAuthUserProfile('@me')
@@ -76,7 +88,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   /** Get me object for this user from STRR api */
   // TODO: TC - move this to an STRR store
-  async function getMe () {
+  async function getMe() {
     const apiURL = useRuntimeConfig().public.strrApiURL
     return await axiosInstance.get(`${apiURL}/account/me`)
       .then((response) => {
@@ -96,7 +108,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /** Get the user's account list */
-  async function getUserAccounts (keycloakGuid: string) {
+  async function getUserAccounts(keycloakGuid: string) {
     const apiURL = useRuntimeConfig().public.authApiURL
     return await axiosInstance.get<UserSettingsI[]>(`${apiURL}/users/${keycloakGuid}/settings`)
       .then((response) => {
@@ -115,7 +127,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /** Set the user account list and current account */
-  async function setAccountInfo (currentAccountId?: string) {
+  async function setAccountInfo(currentAccountId?: string) {
     if (!currentAccountId) {
       // try getting id from existing session storage
       currentAccountId = JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT) || '{}').id
@@ -141,7 +153,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /** Switch the current account to the given account ID if it exists in the user's account list */
-  function switchCurrentAccount (accountId: string) {
+  function switchCurrentAccount(accountId: string) {
     for (const i in userAccounts.value) {
       if (userAccounts.value[i].id === accountId) {
         currentAccount.value = userAccounts.value[i]
@@ -153,6 +165,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   return {
     axiosInstance,
     me,
+    tos,
+    tosAccepted,
     currentAccount,
     currentAccountName,
     userAccounts,
@@ -163,6 +177,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     userFirstName,
     userLastName,
     updateAuthUserInfo,
+    updateTosAccpetance,
     setUserName,
     setAccountInfo,
     switchCurrentAccount
