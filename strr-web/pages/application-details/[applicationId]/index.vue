@@ -2,7 +2,7 @@
   <div>
     <div>
       <BcrosBanner>
-        <div class="flex items-center">
+        <div class="flex items-center m:mb-[8px] m:justify-between">
           <BcrosTypographyH1
             :text="
               `${
@@ -11,6 +11,7 @@
                   : ''}REGISTRATION #${applicationId}
                 `
             "
+            class-name="mobile:text-[24px]"
             no-spacing
           />
           <BcrosChip v-if="flavour" :flavour="flavour" class="ml-[16px]">
@@ -95,7 +96,7 @@
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             Primary Contact Information
           </p>
-          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] m:hidden">
             <UTable :rows="application ? getContactRows(application?.primaryContact): []" />
           </div>
         </div>
@@ -103,7 +104,7 @@
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             Secondary Contact Information
           </p>
-          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] m:hidden">
             <UTable :rows="getContactRows(application?.secondaryContact)" />
           </div>
         </div>
