@@ -108,7 +108,7 @@ class Config:  # pylint: disable=too-few-public-methods
     LEGAL_SVC_URL = os.getenv("LEGAL_API_URL", "") + os.getenv("LEGAL_API_VERSION_2", "")
     BOR_SVC_URL = os.getenv("BOR_API_URL", "") + os.getenv("BOR_API_VERSION", "")
     LTSA_SVC_URL = os.getenv("LTSA_API_URL", "") + os.getenv("LTSA_API_VERSION", "")
-    LTSA_SVC_AUTH_KEY = os.getenv("LTSA_API_AUTH_KEY", "")
+    LTSA_SVC_AUTH_KEY = os.getenv("LTSA_API_KEY_STRR", "")
 
     GEOCODER_SVC_URL = os.getenv("GEOCODER_API_URL", "")
     GEOCODER_SVC_AUTH_KEY = os.getenv("GEOCODER_API_AUTH_KEY", "")
