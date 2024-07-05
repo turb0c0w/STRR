@@ -39,13 +39,13 @@
 from flask import current_app
 
 from strr_api import models
+from strr_api.common.utils import compare_addresses
 from strr_api.enums.enum import EventRecordType, OwnershipType, RegistrationStatus
 from strr_api.models import db
 from strr_api.responses.AutoApprovalResponse import AutoApproval
 from strr_api.responses.LTSAResponse import LtsaResponse
-from strr_api.services import EventRecordsService, LtsaService, AuthService
+from strr_api.services import AuthService, EventRecordsService, LtsaService
 from strr_api.services.geocoder_service import GeoCoderService
-from strr_api.common.utils import compare_addresses
 
 
 class ApprovalService:

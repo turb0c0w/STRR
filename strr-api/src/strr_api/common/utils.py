@@ -1,3 +1,4 @@
+"""Common utility functions."""
 from strr_api.models import Address
 from strr_api.requests import SBCMailingAddress
 

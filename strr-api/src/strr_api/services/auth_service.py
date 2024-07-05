@@ -40,10 +40,10 @@ from flask import current_app
 
 from strr_api.enums.enum import EventRecordType
 from strr_api.exceptions import ExternalServiceException
+from strr_api.requests import SBCMailingAddress
 from strr_api.requests.SBCAccountCreationRequest import SBCAccountCreationRequest
 from strr_api.services.event_records_service import EventRecordsService
 from strr_api.services.rest_service import RestService
-from strr_api.requests import SBCMailingAddress
 
 
 class AuthService:
@@ -111,10 +111,9 @@ class AuthService:
         endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/users/@me"
 
         user_details = RestService.patch(
-            endpoint=endpoint, token=bearer_token, data={
-                "istermsaccepted": is_terms_accepted,
-                "termsversion": terms_version
-            }
+            endpoint=endpoint,
+            token=bearer_token,
+            data={"istermsaccepted": is_terms_accepted, "termsversion": terms_version},
         ).json()
         res = user_details.get("userTerms")
         return res

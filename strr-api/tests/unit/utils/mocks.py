@@ -1,6 +1,12 @@
+import os
+
 from strr_api.enums.enum import PaymentStatus
 from strr_api.exceptions import ExternalServiceException
 from strr_api.models import Document, Eligibility, Invoice, Registration, User
+
+
+def mock_json_file(filename):
+    return os.path.join(os.path.dirname(os.path.realpath(__file__)), f"../../mocks/json/{filename}.json")
 
 
 def disable_jwt_requires_auth(f):

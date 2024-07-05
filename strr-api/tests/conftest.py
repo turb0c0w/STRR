@@ -66,6 +66,10 @@ def create_test_db(
         with sqlalchemy.create_engine(DATABASE_URI, isolation_level="AUTOCOMMIT").connect() as conn:
             conn.execute(text(f"CREATE DATABASE {database}"))
 
+        new_db_uri = DATABASE_URI[: DATABASE_URI.rfind("/")] + f"/{database}"
+        with sqlalchemy.create_engine(new_db_uri, isolation_level="AUTOCOMMIT").connect() as conn:
+            conn.execute(text("CREATE EXTENSION postgis;"))
+
         return True
     except sqlalchemy.exc.ProgrammingError as err:
         print(err)  # used in the test suite, so on failure print something

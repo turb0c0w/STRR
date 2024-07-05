@@ -123,9 +123,10 @@ def create_sbc_account():
         sbc_account_creation_request = SBCAccountCreationRequest(**json_input)
         user = RegistrationService.get_or_create_user(g.jwt_oidc_token_info)
         user.terms_of_use_accepted = sbc_account_creation_request.acceptTermsAndConditions
-        user.save()
-        AuthService.update_user_tos(token, sbc_account_creation_request.acceptTermsAndConditions,
-                                    sbc_account_creation_request.termsVersion)
+        user.update()
+        AuthService.update_user_tos(
+            token, sbc_account_creation_request.acceptTermsAndConditions, sbc_account_creation_request.termsVersion
+        )
         new_account = AuthService.create_user_account(token, sbc_account_creation_request, user.id)
         sbc_account_id = new_account.get("id")
 
@@ -145,7 +146,7 @@ def create_sbc_account():
         return exception_response(service_exception)
 
 
-@bp.route("/", methods=("PATCH",))
+@bp.route("", methods=("PATCH",))
 @swag_from({"security": [{"Bearer": []}]})
 @cross_origin(origin="*")
 @jwt.requires_auth
@@ -179,9 +180,10 @@ def update_account():
         sbc_account_creation_request = UpdateUserRequest(**json_input)
         user = models.User.find_by_jwt_token(g.jwt_oidc_token_info)
         user.terms_of_use_accepted = sbc_account_creation_request.acceptTermsAndConditions
-        user.save()
-        AuthService.update_user_tos(token, sbc_account_creation_request.acceptTermsAndConditions,
-                                    sbc_account_creation_request.termsVersion)
+        user.update()
+        AuthService.update_user_tos(
+            token, sbc_account_creation_request.acceptTermsAndConditions, sbc_account_creation_request.termsVersion
+        )
 
         return (
             jsonify(Account.from_db(user).model_dump(mode="json")),

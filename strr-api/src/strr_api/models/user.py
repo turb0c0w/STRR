@@ -184,6 +184,10 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def update(self):
+        """Store the User into the local cache."""
+        db.session.commit()
+
     def delete(self):
         """Cannot delete User records."""
         return self
