@@ -89,7 +89,8 @@ const {
   userFullName,
   userFirstName,
   userLastName,
-  updateTosAccpetance
+  updateTosAcceptance,
+  me
 } = useBcrosAccount()
 
 const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryContact.value }
@@ -219,13 +220,11 @@ definePageMeta({
 })
 
 onMounted(async () => {
-  const acceptance = await updateTosAccpetance()
-  console.log(acceptance)
-  if (acceptance) {
-    navigateTo('/create-account')
-  } else {
+  const tos = await updateTosAcceptance()
+  const currentTosAccepted = me?.profile.userTerms.isTermsOfUseAccepted &&
+    me?.profile.userTerms.termsOfUseAcceptedVersion === tos?.versionId
+  if (!currentTosAccepted) {
     navigateTo('/terms-of-service')
   }
 })
-
 </script>

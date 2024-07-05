@@ -3,16 +3,17 @@
     <BcrosTypographyH1 text="BC Registry Terms and Conditions" />
     <div class="bg-white flex flex-col pb-[20px]">
       <div class="px-[20px] py-[25px]">
-        <span v-html="tos?.content"></span>
+        <!-- eslint-disable-next-line -->
+        <span v-html="tos?.content" />
       </div>
       <div class="flex flex-row justify-center">
         <BcrosButtonsPrimary
           text="Accept Terms"
-          :action="() => null"
+          :action="() => acceptTos(true)"
         />
         <BcrosButtonsPrimary
           text="Decline"
-          :action="() => null"
+          :action="() => acceptTos(false)"
           variant="outline"
           class-name="ml-[4px]"
         />
@@ -23,8 +24,8 @@
 
 <script setup lang="ts">
 
-const { updateTosAccpetance } = useBcrosAccount()
+const { updateTosAcceptance, acceptTos } = useBcrosAccount()
 
-const tos = await updateTosAccpetance()
+const tos = await updateTosAcceptance()
 
 </script>

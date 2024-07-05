@@ -183,7 +183,12 @@
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             LTSA Information
           </p>
-          <a class="mobile:mx-[8px]" @click="() => navigateTo(`/application-details/${applicationId}/ltsa`)">View LTSA Details</a>
+          <a
+            class="mobile:mx-[8px]"
+            @click="() => navigateTo(`/application-details/${applicationId}/ltsa`)"
+          >
+            View LTSA Details
+          </a>
         </div>
         <div class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
@@ -194,7 +199,22 @@
           </a>
         </div>
         <div class="mt-[40px]">
-
+          <p class="font-bold mb-[24px] mobile:mx-[8px]">
+            Filing History
+          </p>
+          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+            <div class="flex flex-row justify-between w-full mobile:flex-col">
+              <div v-for="event in history" :key="event.created_date" class="flex flex-row">
+                <div>
+                  <p class="text-bcGovColor-midGray mr-[16px]">{{ formatDate(new Date(event.created_date)) }}</p>
+                </div>
+                <div>
+                  <p class="text-bcGovColor-midGray">{{ formatTime(new Date(event.created_date)) }}</p>
+                  <p class="font-bold">{{ event.message }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -208,8 +228,15 @@ const route = useRoute()
 const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
+const lastDateValue = ref<string>()
 
 const { applicationId } = route.params
+
+const formatDate = (date: Date) => {
+  const day = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  return day
+}
+const formatTime = (date: Date): string => date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
 
 const {
   getRegistration,
@@ -220,8 +247,6 @@ const {
 const application = await getRegistration(applicationId.toString())
 const documents = await getDocumentsForRegistration(applicationId.toString())
 const history = await getRegistrationHistory(applicationId.toString())
-
-console.log(history)
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {

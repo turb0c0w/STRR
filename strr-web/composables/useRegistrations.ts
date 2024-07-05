@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { SbcCreationResponseE } from '~/enums/sbc-creation-response-e'
+import { RegistrationHistoryEventI } from '~/interfaces/registration-history-event-i'
 
 export const useRegistrations = () => {
   const apiURL = useRuntimeConfig().public.strrApiURL
@@ -29,7 +30,7 @@ export const useRegistrations = () => {
     axiosInstance.get(`${apiURL}/registrations/${id}/documents`)
       .then(res => res.data)
 
-  const getRegistrationHistory = (id: string): Promise<string[]> =>
+  const getRegistrationHistory = (id: string): Promise<RegistrationHistoryEventI[]> =>
     axiosInstance.get(`${apiURL}/registrations/${id}/history`)
       .then(res => res.data)
 

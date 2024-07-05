@@ -24,15 +24,15 @@ const t = useNuxtApp().$i18n.t
 
 const alertFlavour: AlertsFlavourE = AlertsFlavourE.INFO
 
-const { userOrgs, updateTosAccpetance, tosAccepted } = useBcrosAccount()
+const { userOrgs, me, updateTosAcceptance } = useBcrosAccount()
 
 const existingAccountsTitle = `${t('account.existing-account-section.title')} (${userOrgs.length})`
 
 onMounted(async () => {
-  const acceptance = await updateTosAccpetance()
-  if (acceptance) {
-    navigateTo('/account-select')
-  } else {
+  const tos = await updateTosAcceptance()
+  const currentTosAccepted = me?.profile.userTerms.isTermsOfUseAccepted &&
+    me?.profile.userTerms.termsOfUseAcceptedVersion === tos?.versionId
+  if (!currentTosAccepted) {
     navigateTo('/terms-of-service')
   }
 })
