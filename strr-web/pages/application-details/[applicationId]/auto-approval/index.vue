@@ -61,22 +61,22 @@ const { getRegistration, getAutoApproval } = useRegistrations()
 
 const application = await getRegistration(applicationId.toString())
 
-const data: AutoApprovalDataI = await getAutoApproval() || {} as AutoApprovalDataI
+const data: AutoApprovalDataI[] = await getAutoApproval(applicationId.toString()) || {} as AutoApprovalDataI[]
 
 const automaticRows = [
   {
     criteria: 'Renting',
-    outcome: data.renting ? 'Yes' : 'No'
+    outcome: data[0].record.renting ? 'Yes' : 'No'
   },
   {
     criteria: 'Accommodation Service Provider Selected',
-    outcome: data.service_provider ? 'Yes' : 'No'
+    outcome: data[0].record.service_provider ? 'Yes' : 'No'
   },
   {
     criteria: 'Principal Residence Exempt',
-    outcome: data.pr_exempt
+    outcome: data[0].record.pr_exempt
       ? 'PR Exempt'
-      : data.pr_exempt === false
+      : data[0].record.pr_exempt === false
         ? 'Not PR Exempt'
         : 'Address Look Up Service Failed'
   }
@@ -85,19 +85,19 @@ const automaticRows = [
 const provisionalRows = [
   {
     criteria: 'Does the STR  Address match the BC Services Account Address',
-    outcome: data.address_match ? 'Addresses match' : 'Addresses do not match'
+    outcome: data[0].record.address_match ? 'Addresses match' : 'Addresses do not match'
   },
   {
     criteria: 'Business License Required and Provided',
-    outcome: data.business_license_required_provided
+    outcome: data[0].record.business_license_required_provided
       ? 'Required & Provided'
-      : data.business_license_not_required_not_provided
+      : data[0].record.business_license_not_required_not_provided
         ? 'Not Required & Not provided'
         : 'Required & Not Provided'
   },
   {
     criteria: 'Title Check',
-    outcome: data.title_check ? 'Passed LTSA Check' : 'Did Not Pass LTSA Check'
+    outcome: data[0].record.title_check ? 'Passed LTSA Check' : 'Did Not Pass LTSA Check'
   }
 ]
 

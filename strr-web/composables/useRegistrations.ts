@@ -28,12 +28,12 @@ export const useRegistrations = () => {
     axiosInstance.get(`${apiURL}/registrations`)
       .then(res => res.data.find((registration: any) => registration.id.toString() === id))
 
-  const getLtsa = (): Promise<LtsaDataI | void> =>
-    axiosInstance.get(`${apiURL}/registrations/ltsa`)
+  const getLtsa = (id: string): Promise<LtsaDataI | void> =>
+    axiosInstance.get(`${apiURL}/registrations/${id}/ltsa`)
       .then(res => res.data)
 
-  const getAutoApproval = (): Promise<AutoApprovalDataI | void> =>
-    axiosInstance.get(`${apiURL}/registrations/auto_approval`)
+  const getAutoApproval = (id: string): Promise<AutoApprovalDataI[] | void> =>
+    axiosInstance.get(`${apiURL}/registrations/${id}/auto_approval`)
       .then(res => res.data)
 
   const getDocumentsForRegistration = (id: string): Promise<DocumentI[]> =>

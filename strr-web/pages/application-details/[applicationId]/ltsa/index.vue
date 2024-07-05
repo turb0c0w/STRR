@@ -151,7 +151,7 @@ const getFlavour = (status: string, invoices: RegistrationI['invoices']):
 
 const flavour = application ? getFlavour(application.status, application.invoices) : null
 
-const data: LtsaDataI = await getLtsa() || {} as LtsaDataI
+const data: LtsaDataI = await getLtsa(applicationId.toString()) || {} as LtsaDataI
 
 const ownerRows = [{
   givenName: data.ownershipGroups[0].titleOwners[0].givenName,
