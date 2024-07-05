@@ -49,6 +49,7 @@
 
 <script setup lang="ts">
 import { AlertsFlavourE } from '#imports'
+import { AutoApprovalDataI } from '~/interfaces/auto-approval-data-i'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
@@ -56,31 +57,11 @@ const tRegistrationStatus = (translationKey: string) => t(`registration-status.$
 
 const { applicationId } = route.params
 
-const { getRegistration } = useRegistrations()
+const { getRegistration, getAutoApproval } = useRegistrations()
 
 const application = await getRegistration(applicationId.toString())
 
-const data: {
-  renting: boolean | null,
-  service_provider: boolean | null,
-  pr_exempt: boolean | null,
-  address_match: boolean | null,
-  business_license_required: boolean | null,
-  business_license_required_not_provided : boolean | null,
-  business_license_required_provided : boolean | null,
-  business_license_not_required_not_provided : boolean | null,
-  title_check : boolean | null
-} = {
-  renting: false,
-  service_provider: false,
-  pr_exempt: false,
-  address_match: null,
-  business_license_required: true,
-  business_license_required_not_provided: null,
-  business_license_required_provided: true,
-  business_license_not_required_not_provided: null,
-  title_check: null
-}
+const data: AutoApprovalDataI = await getAutoApproval() || {} as AutoApprovalDataI
 
 const automaticRows = [
   {

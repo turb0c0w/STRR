@@ -9,7 +9,7 @@
       <div class="flex flex-row justify-center">
         <BcrosButtonsPrimary
           text="Accept Terms"
-          :action="() => acceptTos(true)"
+          :action="() => acceptTos(true, tos?.versionId)"
         />
         <BcrosButtonsPrimary
           text="Decline"

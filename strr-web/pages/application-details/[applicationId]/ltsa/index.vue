@@ -119,6 +119,7 @@
 
 <script setup lang="ts">
 import { AlertsFlavourE } from '#imports'
+import { LtsaDataI } from '~/interfaces/ltsa-data-i'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
@@ -126,7 +127,7 @@ const tRegistrationStatus = (translationKey: string) => t(`registration-status.$
 
 const { applicationId } = route.params
 
-const { getRegistration } = useRegistrations()
+const { getRegistration, getLtsa } = useRegistrations()
 
 const application = await getRegistration(applicationId.toString())
 
@@ -150,67 +151,7 @@ const getFlavour = (status: string, invoices: RegistrationI['invoices']):
 
 const flavour = application ? getFlavour(application.status, application.invoices) : null
 
-const data = {
-  titleStatus: 'REGISTERED',
-  titleIdentifier: {
-    titleNumber: 'CA111111',
-    landTitleDistrict: 'VICTORIA'
-  },
-  tombstone: {
-    applicationReceivedDate: '2007-09-28T13:02:23Z',
-    enteredDate: '2007-10-01T21:58:48Z',
-    titleRemarks: '',
-    marketValueAmount: '194000',
-    fromTitles: [
-      {
-        titleNumber: 'EW111111',
-        landTitleDistrict: 'VICTORIA'
-      }
-    ],
-    natureOfTransfers: [
-      {
-        transferReason: 'FEE SIMPLE'
-      }
-    ]
-  },
-  taxAuthorities: [
-    {
-      authorityName: 'Courtenay Assessment Area'
-    }
-  ],
-  ownershipGroups: [
-    {
-      jointTenancyIndication: false,
-      interestFractionNumerator: '1',
-      interestFractionDenominator: '1',
-      ownershipRemarks: '',
-      titleOwners: [
-        {
-          lastNameOrCorpName1: 'LASTNAME',
-          givenName: 'FIRST MIDDLE',
-          incorporationNumber: '',
-          occupationDescription: 'PROFESSIONAL DRIVER',
-          address: {
-            addressLine1: '12 123 HUGH ST',
-            addressLine2: '',
-            city: 'PRINCE GEORGE',
-            province: '',
-            provinceName: 'BC',
-            country: 'CANADA',
-            postalCode: 'V1V 1R1'
-          }
-        }
-      ]
-    }
-  ],
-  descriptionsOfLand: [
-    {
-      parcelIdentifier: '001-251-538',
-      fullLegalDescription: 'LOT 99, DISTRICT LOT 111, COMOX DISTRICT, PLAN 11111',
-      parcelStatus: 'A'
-    }
-  ]
-}
+const data: LtsaDataI = await getLtsa() || {} as LtsaDataI
 
 const ownerRows = [{
   givenName: data.ownershipGroups[0].titleOwners[0].givenName,

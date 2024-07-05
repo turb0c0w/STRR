@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { SbcCreationResponseE } from '~/enums/sbc-creation-response-e'
+import { AutoApprovalDataI } from '~/interfaces/auto-approval-data-i'
+import { LtsaDataI } from '~/interfaces/ltsa-data-i'
 import { RegistrationHistoryEventI } from '~/interfaces/registration-history-event-i'
 
 export const useRegistrations = () => {
@@ -25,6 +27,14 @@ export const useRegistrations = () => {
   const getRegistration = (id: string): Promise<RegistrationI | void> =>
     axiosInstance.get(`${apiURL}/registrations`)
       .then(res => res.data.find((registration: any) => registration.id.toString() === id))
+
+  const getLtsa = (): Promise<LtsaDataI | void> =>
+    axiosInstance.get(`${apiURL}/registrations`)
+      .then(res => res.data)
+
+  const getAutoApproval = (): Promise<AutoApprovalDataI | void> =>
+    axiosInstance.get(`${apiURL}/registrations`)
+      .then(res => res.data)
 
   const getDocumentsForRegistration = (id: string): Promise<DocumentI[]> =>
     axiosInstance.get(`${apiURL}/registrations/${id}/documents`)
@@ -80,6 +90,8 @@ export const useRegistrations = () => {
     getDocumentsForRegistration,
     getRegistrations,
     getRegistration,
-    getRegistrationHistory
+    getRegistrationHistory,
+    getLtsa,
+    getAutoApproval
   }
 }
