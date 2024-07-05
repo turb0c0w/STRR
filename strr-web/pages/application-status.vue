@@ -120,6 +120,10 @@ const getFlavour = (status: string, invoices: RegistrationI['invoices']):
       alert: AlertsFlavourE.WARNING
     }
   }
+  return {
+    text: tRegistrationStatus('payment-due'),
+    alert: AlertsFlavourE.WARNING
+  }
 }
 
 </script>

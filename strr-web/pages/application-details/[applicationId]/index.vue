@@ -203,8 +203,12 @@
             Filing History
           </p>
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
-            <div class="flex flex-row justify-between w-full mobile:flex-col">
-              <div v-for="event in history" :key="event.created_date" class="flex flex-row">
+            <div class="flex flex-col justify-between w-full">
+              <div
+                v-for="(event, index) in history"
+                :key="event.created_date"
+                :class="`flex flex-row ${index === history.length - 1 ? '': 'mb-[24px]'}`"
+              >
                 <div>
                   <p class="text-bcGovColor-midGray mr-[16px]">
                     {{ formatDate(new Date(event.created_date)) }}
