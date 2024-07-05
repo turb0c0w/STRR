@@ -96,6 +96,31 @@
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             Primary Contact Information
           </p>
+          <div class="d:hidden">
+            <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+
+              <BcrosFormSectionReviewItem
+                title="Name"
+              >
+                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].name }}</p>
+              </BcrosFormSectionReviewItem>
+              <BcrosFormSectionReviewItem
+                title="Address"
+              >
+                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].address }}</p>
+              </BcrosFormSectionReviewItem>
+              <BcrosFormSectionReviewItem
+                title="Email Address"
+              >
+                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].emailAddress }}</p>
+              </BcrosFormSectionReviewItem>
+              <BcrosFormSectionReviewItem
+                title="Phone Number"
+              >
+                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].phoneNumber }}</p>
+              </BcrosFormSectionReviewItem>
+            </div>
+          </div>
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] m:hidden">
             <UTable :rows="application ? getContactRows(application?.primaryContact): []" />
           </div>
@@ -104,6 +129,30 @@
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             Secondary Contact Information
           </p>
+          <div class="d:hidden">
+            <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+              <BcrosFormSectionReviewItem
+                title="Name"
+              >
+                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].name }}</p>
+              </BcrosFormSectionReviewItem>
+              <BcrosFormSectionReviewItem
+                title="Address"
+              >
+                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].address }}</p>
+              </BcrosFormSectionReviewItem>
+              <BcrosFormSectionReviewItem
+                title="Email Address"
+              >
+                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].emailAddress }}</p>
+              </BcrosFormSectionReviewItem>
+              <BcrosFormSectionReviewItem
+                title="Phone Number"
+              >
+                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].phoneNumber }}</p>
+              </BcrosFormSectionReviewItem>
+            </div>
+          </div>
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] m:hidden">
             <UTable :rows="getContactRows(application?.secondaryContact)" />
           </div>
