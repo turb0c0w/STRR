@@ -4,9 +4,17 @@
   "type": "object",
   "title": "Update Account",
   "properties": {
-      "terms_of_use_accepted": {
+      "acceptTermsAndConditions": {
         "description": "Terms of use accepted",
         "type": "boolean"
+      },
+      "termsVersion": {
+        "description": "Version of the Terms of Service accepted",
+        "type": "string"
       }
-  }
+  },
+  "required": [
+    "acceptTermsAndConditions",
+    "termsVersion"
+  ]
 }

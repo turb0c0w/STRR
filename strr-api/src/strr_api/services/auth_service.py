@@ -106,6 +106,20 @@ class AuthService:
         return SBCMailingAddress(**user_account_details["mailingAddress"])
 
     @classmethod
+    def update_user_tos(cls, bearer_token, is_terms_accepted, terms_version):
+        """Update user terms of service."""
+        endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/users/@me"
+
+        user_details = RestService.patch(
+            endpoint=endpoint, token=bearer_token, data={
+                "istermsaccepted": is_terms_accepted,
+                "termsversion": terms_version
+            }
+        ).json()
+        res = user_details.get("userTerms")
+        return res
+
+    @classmethod
     def get_user_profile(cls, bearer_token):
         """Return current user profile."""
 

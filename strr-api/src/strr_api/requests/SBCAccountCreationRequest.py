@@ -35,10 +35,12 @@ class SBCMailingAddress:
 class SBCAccountCreationRequest:
     """SBCAccountCreationRequest payload object."""
 
-    def __init__(self, name, email, phone, phoneExtension=None, mailingAddress=None, acceptTermsAndConditions=False):
+    def __init__(self, name, email, phone, phoneExtension=None, mailingAddress=None,
+                 acceptTermsAndConditions=False, termsVersion="5"):
         self.name = name
         self.email = email
         self.phone = phone
         self.phoneExtension = phoneExtension
         self.acceptTermsAndConditions = acceptTermsAndConditions
+        self.termsVersion = termsVersion
         self.mailingAddress = SBCMailingAddress(**mailingAddress) if mailingAddress else None

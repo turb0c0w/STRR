@@ -124,6 +124,8 @@ def create_sbc_account():
         user = RegistrationService.get_or_create_user(g.jwt_oidc_token_info)
         user.terms_of_use_accepted = sbc_account_creation_request.acceptTermsAndConditions
         user.save()
+        AuthService.update_user_tos(token, sbc_account_creation_request.acceptTermsAndConditions,
+                                    sbc_account_creation_request.termsVersion)
         new_account = AuthService.create_user_account(token, sbc_account_creation_request, user.id)
         sbc_account_id = new_account.get("id")
 
@@ -168,6 +170,7 @@ def update_account():
     """
 
     try:
+        token = jwt.get_token_auth_header()
         json_input = request.get_json()
         [valid, errors] = validate(json_input, "update_account")
         if not valid:
@@ -177,6 +180,8 @@ def update_account():
         user = models.User.find_by_jwt_token(g.jwt_oidc_token_info)
         user.terms_of_use_accepted = sbc_account_creation_request.acceptTermsAndConditions
         user.save()
+        AuthService.update_user_tos(token, sbc_account_creation_request.acceptTermsAndConditions,
+                                    sbc_account_creation_request.termsVersion)
 
         return (
             jsonify(Account.from_db(user).model_dump(mode="json")),

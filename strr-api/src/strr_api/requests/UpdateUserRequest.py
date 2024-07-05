@@ -8,5 +8,6 @@ UpdateUserRequest request payload objects.
 class UpdateUserRequest:
     """UpdateUserRequest payload object."""
 
-    def __init__(self, acceptTermsAndConditions=False):
+    def __init__(self, acceptTermsAndConditions, termsVersion):
         self.acceptTermsAndConditions = acceptTermsAndConditions
+        self.termsVersion = termsVersion
