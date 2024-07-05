@@ -36,7 +36,7 @@
               title="Date"
               class="d:mt-[24px]"
             >
-              <p>{{ data.tombstone.applicationReceivedDate }}</p>
+              <p>{{ formatDate(new Date(data.tombstone.applicationReceivedDate)) }}</p>
             </BcrosFormSectionReviewItem>
           </div>
           <div class="flex flex-col justify-between w-full mobile:flex-col mr-[40px]">
@@ -129,6 +129,8 @@ const { applicationId } = route.params
 const { getRegistration } = useRegistrations()
 
 const application = await getRegistration(applicationId.toString())
+
+const formatDate = (date: Date) => date.toLocaleDateString('en-US')
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {
