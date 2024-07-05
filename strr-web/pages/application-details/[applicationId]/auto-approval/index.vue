@@ -2,7 +2,7 @@
   <div>
     <div>
       <BcrosBanner hide-buttons>
-        <div class="flex items-center">
+        <div class="flex items-center m:justify-between">
           <BcrosTypographyH1
             :text="
               `${
@@ -19,7 +19,7 @@
         </div>
       </BcrosBanner>
     </div>
-    <div class="mt-[104px]">
+    <div class="mt-[104px] m:mt-[74px]">
       <div>
         <p class="font-bold mb-[24px] mobile:mx-[8px]">
           Automatic Approval Logic

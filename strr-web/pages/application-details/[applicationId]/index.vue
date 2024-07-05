@@ -98,7 +98,6 @@
           </p>
           <div class="d:hidden">
             <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
-
               <BcrosFormSectionReviewItem
                 title="Name"
               >
@@ -184,13 +183,13 @@
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             LTSA Information
           </p>
-          <a @click="() => navigateTo(`/application-details/${applicationId}/ltsa`)">View LTSA Details</a>
+          <a class="mobile:mx-[8px]" @click="() => navigateTo(`/application-details/${applicationId}/ltsa`)">View LTSA Details</a>
         </div>
         <div class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             Auto-Approval Logic
           </p>
-          <a @click="() => navigateTo(`/application-details/${applicationId}/auto-approval`)">
+          <a class="mobile:mx-[8px]" @click="() => navigateTo(`/application-details/${applicationId}/auto-approval`)">
             View Auto-Approval Details
           </a>
         </div>

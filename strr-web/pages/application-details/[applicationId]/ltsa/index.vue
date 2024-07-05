@@ -2,7 +2,7 @@
   <div>
     <div>
       <BcrosBanner hide-buttons>
-        <div class="flex items-center">
+        <div class="flex items-center m:justify-between">
           <BcrosTypographyH1
             :text="
               `${
@@ -11,6 +11,7 @@
                   : ''}REGISTRATION #${applicationId}
                 `
             "
+            class-name="mobile:text-[24px]"
             no-spacing
           />
           <BcrosChip v-if="flavour" :flavour="flavour" class="ml-[16px]">
@@ -19,12 +20,12 @@
         </div>
       </BcrosBanner>
     </div>
-    <div class="mt-[104px]">
+    <div class="mt-[104px] m:mt-[74px]">
       <div>
         <p class="font-bold mb-[24px] mobile:mx-[8px]">
           LTSA General Information
         </p>
-        <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] flex flex-row">
+        <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] flex d:flex-row m:flex-col">
           <div class="flex flex-col justify-between w-full mobile:flex-col mr-[40px]">
             <BcrosFormSectionReviewItem
               title="Tax Authority"
@@ -33,7 +34,7 @@
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
               title="Date"
-              class="mt-[24px]"
+              class="d:mt-[24px]"
             >
               <p>{{ data.tombstone.applicationReceivedDate }}</p>
             </BcrosFormSectionReviewItem>
@@ -48,7 +49,7 @@
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
               title="PID"
-              class="mt-[24px]"
+              class="d:mt-[24px]"
             >
               <p>
                 {{ data.descriptionsOfLand[0].parcelIdentifier }}
@@ -56,7 +57,7 @@
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
               title="Parcel Status"
-              class="mt-[24px]"
+              class="d:mt-[24px]"
             >
               <p>{{ data.descriptionsOfLand[0].parcelStatus }}</p>
             </BcrosFormSectionReviewItem>
@@ -76,7 +77,37 @@
             LTSA Title Owner(s)
           </p>
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
-            <div class="flex flex-row justify-between w-full mobile:flex-col desktop:mb-[24px]">
+            <div class="d:hidden">
+              <BcrosFormSectionReviewItem
+                title="Given Name"
+              >
+                <p>
+                  {{ ownerRows[0].givenName }}
+                </p>
+              </BcrosFormSectionReviewItem>
+              <BcrosFormSectionReviewItem
+                title="Last Name"
+              >
+                <p>
+                  {{ ownerRows[0].lastName }}
+                </p>
+              </BcrosFormSectionReviewItem>
+              <BcrosFormSectionReviewItem
+                title="Address"
+              >
+                <p>
+                  {{ ownerRows[0].address }}
+                </p>
+              </BcrosFormSectionReviewItem>
+              <BcrosFormSectionReviewItem
+                title="Occupation"
+              >
+                <p>
+                  {{ ownerRows[0].occupation }}
+                </p>
+              </BcrosFormSectionReviewItem>
+            </div>
+            <div class="flex flex-row justify-between w-full mobile:flex-col desktop:mb-[24px] m:hidden">
               <UTable :rows="ownerRows" />
             </div>
           </div>
