@@ -32,15 +32,13 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 """Uses Registries LTSA wrapper service to fetch title for a PID."""
-from copy import deepcopy
-from datetime import datetime, timezone
-from http import HTTPStatus
-
-from strr_api.exceptions import ExternalServiceException
-from strr_api.responses.LTSAResponse import TitleSummaries
-
 import requests
 from flask import current_app
+
+from strr_api import models
+from strr_api.models import db
+from strr_api.responses import LtsaResponse, TitleSummaries
+
 
 class LtsaService:
     """
@@ -58,15 +56,16 @@ class LtsaService:
             "Content-Type": "application/json",
         }
         title_summaries = requests.get(
-            url=svc_url + f"/titledirect/search/api/titleSummaries?filter=parcelIdentifier:{pid}", 
-            headers=headers, timeout=timeout
+            url=svc_url + f"/titledirect/search/api/titleSummaries?filter=parcelIdentifier:{pid}",
+            headers=headers,
+            timeout=timeout,
         ).json()
         try:
             title_summaries_model = TitleSummaries(**title_summaries)
             return title_summaries_model.titleSummaries[0].titleNumber
         except Exception:
             return None
-    
+
     @classmethod
     def get_title_details_from_pid(cls, pid):
         """Get title order on record for a given PID."""
@@ -83,14 +82,11 @@ class LtsaService:
                 "order": {
                     "productType": "title",
                     "fileReference": "folio",
-                    "productOrderParameters": {"titleNumber": title_number}
+                    "productOrderParameters": {"titleNumber": title_number},
                 }
             }
             title_order = requests.post(
-                url=svc_url + "/titledirect/search/api/orders", 
-                headers=headers, 
-                json=data, 
-                timeout=timeout
+                url=svc_url + "/titledirect/search/api/orders", headers=headers, json=data, timeout=timeout
             ).json()
             try:
                 return title_order
@@ -98,3 +94,30 @@ class LtsaService:
                 return None
         else:
             return None
+
+    @classmethod
+    def build_ltsa_response(cls, registration_id, ltsa):
+        """Build ltsa response."""
+        fielded_data = ltsa.get("order", {}).get("orderedProduct", {}).get("fieldedData", {})
+        if fielded_data:
+            ltsa_response = LtsaResponse(**fielded_data)
+            cls.save_ltsa_record(registration_id, ltsa_response)
+            return ltsa_response
+        else:
+            return None
+
+    @classmethod
+    def save_ltsa_record(cls, registration_id, ltsa: LtsaResponse):
+        """Save ltsa record."""
+
+        record = models.LTSARecord(registration_id=registration_id, record=ltsa.model_dump(mode="json"))
+        db.session.add(record)
+        db.session.commit()
+        db.session.refresh(record)
+        return record
+
+    @classmethod
+    def fetch_ltsa_records_for_registration(cls, registration_id):
+        """Get ltsa records for a given registration by id."""
+        query = models.LTSARecord.query.filter(models.LTSARecord.registration_id == registration_id)
+        return query.all()

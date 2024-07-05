@@ -53,11 +53,18 @@ from strr_api.exceptions import (
     error_response,
     exception_response,
 )
-from strr_api.requests import RegistrationRequest
-from strr_api.responses import Document, Invoice, Registration, EventRecord
 from strr_api.models import User
+from strr_api.requests import RegistrationRequest
+from strr_api.responses import AutoApprovalRecord, Document, EventRecord, Invoice, LTSARecord, Registration
 from strr_api.schemas.utils import validate
-from strr_api.services import GCPStorageService, RegistrationService, strr_pay, EventRecordsService
+from strr_api.services import (
+    ApprovalService,
+    EventRecordsService,
+    GCPStorageService,
+    LtsaService,
+    RegistrationService,
+    strr_pay,
+)
 from strr_api.validators.DocumentUploadValidator import validate_document_upload
 from strr_api.validators.RegistrationRequestValidator import validate_registration_request
 
@@ -115,6 +122,7 @@ def create_registration():
     """
 
     try:
+        token = jwt.get_token_auth_header()
         json_input = request.get_json()
         [valid, errors] = validate(json_input, "registration")
         if not valid:
@@ -132,6 +140,8 @@ def create_registration():
         )
 
         strr_pay.create_invoice(jwt, sbc_account_id, registration)
+        approval = ApprovalService.process_approval(token, registration)
+        ApprovalService.save_approval_record(registration.id, approval)
         return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.CREATED
     except ValidationException as auth_exception:
         return exception_response(auth_exception)
@@ -520,6 +530,94 @@ def get_registration_history(registration_id):
         records = EventRecordsService.fetch_event_records_for_registration(registration_id)
         return (
             jsonify([EventRecord.from_db(record).model_dump(mode="json") for record in records]),
+            HTTPStatus.OK,
+        )
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+
+
+@bp.route("/<registration_id>/ltsa", methods=("GET",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def get_registration_ltsa(registration_id):
+    """
+    Get registration ltsa records
+    ---
+    tags:
+      - registration
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+    """
+
+    try:
+        user = User.find_by_jwt_token(g.jwt_oidc_token_info)
+        if not user:
+            raise AuthException()
+
+        if not user.is_examiner():
+            registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+            if not registration:
+                raise AuthException()
+
+        records = LtsaService.fetch_ltsa_records_for_registration(registration_id)
+        return (
+            jsonify([LTSARecord.from_db(record).model_dump(mode="json") for record in records]),
+            HTTPStatus.OK,
+        )
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+
+
+@bp.route("/<registration_id>/auto_approval", methods=("GET",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def get_registration_auto_approval(registration_id):
+    """
+    Get registration ltsa records
+    ---
+    tags:
+      - registration
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+    """
+
+    try:
+        user = User.find_by_jwt_token(g.jwt_oidc_token_info)
+        if not user:
+            raise AuthException()
+
+        if not user.is_examiner():
+            registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+            if not registration:
+                raise AuthException()
+
+        records = ApprovalService.fetch_approval_records_for_registration(registration_id)
+        return (
+            jsonify([AutoApprovalRecord.from_db(record).model_dump(mode="json") for record in records]),
             HTTPStatus.OK,
         )
     except AuthException as auth_exception:

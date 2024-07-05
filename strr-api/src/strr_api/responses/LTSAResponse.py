@@ -2,10 +2,13 @@
 LTSA response objects.
 """
 from typing import List
+
 from pydantic import BaseModel
+
 
 class TitleSummary(BaseModel):
     """LTSA TitleSummary response object."""
+
     titleNumber: str
     landTitleDistrict: str
     landTitleDistrictCode: str
@@ -13,22 +16,36 @@ class TitleSummary(BaseModel):
     status: str
     firstOwner: str
 
+
 class TitleSummaries(BaseModel):
     """LTSA TitleSummaries response object."""
+
     titleSummaries: List[TitleSummary]
 
+
 class TitleIdentifier(BaseModel):
+    """LTSA TitleIdentifier response object."""
+
     titleNumber: str
     landTitleDistrict: str
+
 
 class FromTitle(BaseModel):
+    """LTSA FromTitle response object."""
+
     titleNumber: str
     landTitleDistrict: str
 
+
 class NatureOfTransfer(BaseModel):
+    """LTSA NatureOfTransfer response object."""
+
     transferReason: str
 
+
 class Tombstone(BaseModel):
+    """LTSA Tombstone response object."""
+
     applicationReceivedDate: str
     enteredDate: str
     titleRemarks: str
@@ -36,7 +53,10 @@ class Tombstone(BaseModel):
     fromTitles: List[FromTitle]
     natureOfTransfers: List[NatureOfTransfer]
 
+
 class Address(BaseModel):
+    """LTSA Address response object."""
+
     addressLine1: str
     addressLine2: str
     city: str
@@ -45,30 +65,44 @@ class Address(BaseModel):
     country: str
     postalCode: str
 
+
 class TitleOwner(BaseModel):
+    """LTSA TitleOwner response object."""
+
     lastNameOrCorpName1: str
     givenName: str
     incorporationNumber: str
     occupationDescription: str
     address: Address
 
+
 class TaxAuthority(BaseModel):
+    """LTSA TaxAuthority response object."""
+
     authorityName: str
 
+
 class OwnershipGroup(BaseModel):
+    """LTSA OwnershipGroup response object."""
+
     jointTenancyIndication: bool
     interestFractionNumerator: str
     interestFractionDenominator: str
     ownershipRemarks: str
     titleOwners: List[TitleOwner]
 
+
 class DescriptionOfLand(BaseModel):
+    """LTSA DescriptionOfLand response object"""
+
     parcelIdentifier: str
     fullLegalDescription: str
     parcelStatus: str
 
+
 class LtsaResponse(BaseModel):
     """LTSA Reference endpoint response object."""
+
     titleStatus: str
     titleIdentifier: TitleIdentifier
     tombstone: Tombstone
@@ -77,4 +111,6 @@ class LtsaResponse(BaseModel):
     descriptionsOfLand: List[DescriptionOfLand]
 
     class Config:
-        extra = 'ignore'
+        """Pydantic configuration"""
+
+        extra = "ignore"

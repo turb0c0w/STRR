@@ -114,8 +114,10 @@ class ContactDetails:
 class Contact:
     """Contact payload object."""
 
-    def __init__(self, name, dateOfBirth, details, mailingAddress):
+    def __init__(self, name, dateOfBirth, details, mailingAddress, socialInsuranceNumber=None, businessNumber=None):
         self.name = ContactName(**name)
         self.dateOfBirth = dateOfBirth
+        self.socialInsuranceNumber = socialInsuranceNumber
+        self.businessNumber = businessNumber
         self.details = ContactDetails(**details)
         self.mailingAddress = MailingAddress(**mailingAddress)

@@ -43,11 +43,11 @@ from flasgger import swag_from
 from flask import Blueprint, g, jsonify, request
 from flask_cors import cross_origin
 
+from strr_api import models
 from strr_api.common.auth import jwt
 from strr_api.exceptions import AuthException, ExternalServiceException, ValidationException, exception_response
-from strr_api import models
 from strr_api.requests import SBCAccountCreationRequest, UpdateUserRequest
-from strr_api.responses import SBCAccount, Account
+from strr_api.responses import Account, SBCAccount
 from strr_api.schemas.utils import validate
 from strr_api.services import AuthService, RegistrationService
 
@@ -130,9 +130,11 @@ def create_sbc_account():
         AuthService.add_contact_info(token, sbc_account_id, sbc_account_creation_request, user.id)
 
         return (
-            jsonify(SBCAccount(user_id=user.id,
-                               sbc_account_id=sbc_account_id,
-                               terms_of_use_accepted=user.terms_of_use_accepted).model_dump(mode="json")),
+            jsonify(
+                SBCAccount(
+                    user_id=user.id, sbc_account_id=sbc_account_id, terms_of_use_accepted=user.terms_of_use_accepted
+                ).model_dump(mode="json")
+            ),
             HTTPStatus.CREATED,
         )
     except ValidationException as auth_exception:

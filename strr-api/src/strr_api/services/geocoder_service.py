@@ -32,15 +32,11 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 """Uses BC Gov Geocoder service to fetch latitude and longitude."""
-from copy import deepcopy
-from datetime import datetime, timezone
-from http import HTTPStatus
 from urllib.parse import quote
-
-from strr_api.exceptions import ExternalServiceException
 
 import requests
 from flask import current_app
+
 
 class GeoCoderService:
     """
@@ -60,7 +56,7 @@ class GeoCoderService:
             "Content-Type": "application/json",
         }
         encoded_address = quote(address)
-        
+
         url = (
             f"{svc_url}/addresses.json?"
             f"addressString={encoded_address}&"
@@ -75,12 +71,8 @@ class GeoCoderService:
             "minScore=1&"
             "provinceCode=BC"
         )
-        
-        geocode_response = requests.get(
-            url=url,
-            headers=headers,
-            timeout=timeout
-        ).json()
+
+        geocode_response = requests.get(url=url, headers=headers, timeout=timeout).json()
 
         try:
             return geocode_response

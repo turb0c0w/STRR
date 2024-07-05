@@ -40,11 +40,10 @@ Health is determined by the ability to execute a simple SELECT 1 query on the co
 """
 from http import HTTPStatus
 
-from flask import Blueprint, request, current_app, jsonify
+from flask import Blueprint, current_app
 from sqlalchemy import exc, text
 
-from strr_api.models import db, dss
-from strr_api.services import ApprovalService
+from strr_api.models import db
 
 bp = Blueprint("ops", __name__)
 
@@ -94,45 +93,3 @@ def ready():
     """
     current_app.logger.info("/ops/readyz")
     return {"message": "api is ready"}, HTTPStatus.OK
-
-@bp.route("/approve", methods=("POST",))
-def approve():
-    """
-    Temporary? test endpoint for auto approval, remove later
-
-    ---
-    tags:
-      - ops
-    parameters:
-          - in: body
-            name: body
-            schema:
-              type: object
-    responses:
-      200:
-        description:
-      201:
-        description:
-      400:
-        description:
-      401:
-        description:
-      502:
-        description:
-    """
-    
-    try:
-        json_input = request.get_json()
-        pid = json_input.get("pid")
-        owner_name = json_input.get("owner_name")
-        address = json_input.get("address")
-        renting = json_input.get("renting")
-        other_service_provider = json_input.get("other_service_provider")
-        pr_exempt = json_input.get("pr_exempt")
-        bn_provided = json_input.get("bn_provided")
-        bcsc_address = json_input.get("bcsc_address")
-        result = ApprovalService.process_approval(pid, owner_name, address, renting, other_service_provider, pr_exempt, bn_provided, bcsc_address)
-        return result.model_dump_json(), HTTPStatus.OK
-    except Exception as default_exception:  # noqa: B902; log error
-        current_app.logger.error("auto approval failed:" + repr(default_exception))
-        return {"message": "auto approval failed somewhere"}, 500

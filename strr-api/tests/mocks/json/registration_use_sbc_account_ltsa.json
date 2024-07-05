@@ -5,8 +5,8 @@
   "registration": {
     "primaryContact": {
       "name": {
-        "firstName": "The",
-        "lastName": "Guy"
+        "firstName": "Graham",
+        "lastName": "Ronan"
       },
       "dateOfBirth": "1986-10-23",
       "socialInsuranceNumber": "666666666",
@@ -24,15 +24,16 @@
       }
     },
     "unitDetails": {
+      "parcelIdentifier": "001-251-538",
       "propertyType": "PRIMARY",
       "ownershipType": "OWN"
     },
     "unitAddress": {
       "country": "CA",
-      "address": "12166 GREENWELL ST MAPLE RIDGE",
-      "city": "MAPLE RIDGE",
+      "address": "525 Superior St",
+      "city": "Victoria",
       "province": "BC",
-      "postalCode": "V2X 7N1"
+      "postalCode": "V8V 1T7"
     },
     "listingDetails": [
     ],

@@ -74,6 +74,12 @@
           "format": "date",
           "description": "YYYY-MM-DD"
         },
+        "socialInsuranceNumber": {
+          "type": "string"
+        },
+        "businessNumber": {
+          "type": "string"
+        },
         "details": {
           "type": "object",
           "properties": {

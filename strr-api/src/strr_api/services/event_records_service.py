@@ -31,6 +31,9 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
+
+# pylint: disable=C0121
+
 """Logs Event Records to the Database."""
 from strr_api import models
 from strr_api.models import db
@@ -40,8 +43,9 @@ class EventRecordsService:
     """Service to save event records into the database."""
 
     @classmethod
-    def save_event_record(cls, event_type: str, message: str, visible_to_end_user: bool,
-                          user_id: int = None, registration_id: int = None):
+    def save_event_record(
+        cls, event_type: str, message: str, visible_to_end_user: bool, user_id: int = None, registration_id: int = None
+    ):  # pylint: disable=R0913
         """Save STRR event record."""
 
         event_record = models.EventRecord(
@@ -49,7 +53,7 @@ class EventRecordsService:
             event_type=event_type.name,
             message=message,
             visible_to_end_user=visible_to_end_user,
-            registration_id=registration_id
+            registration_id=registration_id,
         )
         db.session.add(event_record)
         db.session.commit()
@@ -61,5 +65,5 @@ class EventRecordsService:
         """Get event records for a given registration by id."""
         query = models.EventRecord.query.filter(models.EventRecord.registration_id == registration_id)
         if only_show_visible_to_user:
-            query = query.filter(models.EventRecord.visible_to_end_user == True) # noqa
+            query = query.filter(models.EventRecord.visible_to_end_user == True)  # noqa
         return query.all()

@@ -1,10 +1,11 @@
 """
 EventRecord response object.
 """
-from pydantic import BaseModel
-from typing import Optional
 from datetime import datetime
-from strr_api.enums.enum import EventRecordType
+from typing import Optional
+
+from pydantic import BaseModel
+
 from strr_api import models
 
 

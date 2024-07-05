@@ -62,6 +62,8 @@ class Contact(db.Model):
     fax_number = db.Column(db.String, nullable=True)
     phone_number = db.Column(db.String(20), nullable=True)
     date_of_birth = db.Column(db.Date, nullable=True)
+    social_insurance_number = db.Column(db.String, nullable=True)
+    business_number = db.Column(db.String, nullable=True)
 
     address = relationship("Address", back_populates="contact")
 

@@ -72,7 +72,9 @@ class RegistrationStatus(Enum):
 
     PENDING = "pending"
     APPROVED = "approved"
+    UNDER_REVIEW = "under review"
     MORE_INFO_NEEDED = "more info needed"
+    PROVISIONAL = "provisional"
     DENIED = "denied"
 
 
@@ -101,6 +103,9 @@ class EventRecordType(Enum):
     SBC_ACCOUNT_ADDED_CONTACT = "added contact info to SBC account"
     INVOICE_GENERATED = "invoice generated for registration"
     INVOICE_PAYED = "invoice payed for registration"
+    AUTO_APPROVAL_FULL_REVIEW = "automatically marked for full review"
+    AUTO_APPROVAL_PROVISIONAL = "automatically marked as provisionally approved"
+    AUTO_APPROVAL_APPROVED = "automatically marked as approved"
 
 
 class PaymentStatus(Enum):

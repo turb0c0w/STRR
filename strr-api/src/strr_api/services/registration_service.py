@@ -63,6 +63,8 @@ class RegistrationService:
             fax_number=registration_request.primaryContact.details.faxNumber,
             phone_number=registration_request.primaryContact.details.phoneNumber,
             date_of_birth=registration_request.primaryContact.dateOfBirth,
+            social_insurance_number=registration_request.primaryContact.socialInsuranceNumber,
+            business_number=registration_request.primaryContact.businessNumber,
             address=models.Address(
                 country=registration_request.primaryContact.mailingAddress.country,
                 street_address=registration_request.primaryContact.mailingAddress.address,
@@ -88,6 +90,8 @@ class RegistrationService:
                 fax_number=registration_request.secondaryContact.details.faxNumber,
                 phone_number=registration_request.secondaryContact.details.phoneNumber,
                 date_of_birth=registration_request.secondaryContact.dateOfBirth,
+                social_insurance_number=registration_request.secondaryContact.socialInsuranceNumber,
+                business_number=registration_request.secondaryContact.businessNumber,
                 address=models.Address(
                     country=registration_request.primaryContact.mailingAddress.country,
                     street_address=registration_request.primaryContact.mailingAddress.address,

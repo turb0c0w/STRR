@@ -32,12 +32,12 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 """This module wraps helper services used by the API."""
-from .approval_service import ApprovalService
 from .auth_service import AuthService
 from .event_records_service import EventRecordsService
 from .gcp_storage_service import GCPStorageService
 from .geocoder_service import GeoCoderService
 from .ltsa_service import LtsaService
+from .approval_service import ApprovalService
 from .payment_service import PayService
 from .registration_service import RegistrationService
 from .rest_service import RestService

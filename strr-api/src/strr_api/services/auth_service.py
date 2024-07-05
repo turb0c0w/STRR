@@ -43,6 +43,7 @@ from strr_api.exceptions import ExternalServiceException
 from strr_api.requests.SBCAccountCreationRequest import SBCAccountCreationRequest
 from strr_api.services.event_records_service import EventRecordsService
 from strr_api.services.rest_service import RestService
+from strr_api.requests import SBCMailingAddress
 
 
 class AuthService:
@@ -95,6 +96,14 @@ class AuthService:
         endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/users/orgs"
         user_account_details = RestService.get(endpoint=endpoint, token=bearer_token).json()
         return user_account_details
+
+    @classmethod
+    def get_sbc_accounts_mailing_address(cls, bearer_token, account_id):
+        """Return mailing address for given sbc account"""
+
+        endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/users/orgs/account_id"
+        user_account_details = RestService.get(endpoint=endpoint, token=bearer_token).json()
+        return SBCMailingAddress(**user_account_details["mailingAddress"])
 
     @classmethod
     def get_user_profile(cls, bearer_token):
@@ -178,6 +187,6 @@ class AuthService:
             EventRecordType.SBC_ACCOUNT_ADDED_CONTACT,
             f'Added contact info to SBC account id: "{account_id}"',
             False,
-            user_id
+            user_id,
         )
         return contact_info
