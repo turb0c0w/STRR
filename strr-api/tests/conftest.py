@@ -68,7 +68,7 @@ def create_test_db(
 
         new_db_uri = DATABASE_URI[: DATABASE_URI.rfind("/")] + f"/{database}"
         with sqlalchemy.create_engine(new_db_uri, isolation_level="AUTOCOMMIT").connect() as conn:
-            conn.execute(text("CREATE EXTENSION postgis;"))
+            conn.execute(text("CREATE EXTENSION IF NOT EXISTS postgis;"))
 
         return True
     except sqlalchemy.exc.ProgrammingError as err:
