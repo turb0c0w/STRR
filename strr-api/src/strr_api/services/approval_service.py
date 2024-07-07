@@ -198,7 +198,7 @@ class ApprovalService:
                         )
                     return auto_approval
                 else:
-                    if not compare_addresses(address, bcsc_address):
+                    if not compare_addresses(registration.rental_property.address, bcsc_address):
                         auto_approval.address_match = False
                         registration.status = RegistrationStatus.UNDER_REVIEW
                         registration.save()

@@ -5,11 +5,17 @@ from strr_api.requests import SBCMailingAddress
 
 def compare_addresses(property_address: Address, sbc_address: SBCMailingAddress):
     """Compare property address with sbc address."""
-    return (
-        property_address.street_address == sbc_address.street
-        and property_address.street_address_additional == sbc_address.streetAdditional
-        and property_address.city == sbc_address.city
-        and property_address.province == sbc_address.region
-        and property_address.postal_code == sbc_address.postalCode
-        and property_address.country == sbc_address.country
+
+    result = (
+        property_address.street_address.lower() == sbc_address.street.lower()
+        and (
+            (property_address.street_address_additional.lower() if property_address.street_address_additional else "")
+            == (sbc_address.streetAdditional.lower() if sbc_address.streetAdditional else "")
+        )
+        and property_address.city.lower() == sbc_address.city.lower()
+        and property_address.province.lower() == sbc_address.region.lower()
+        and property_address.postal_code.lower().replace(" ", "") == sbc_address.postalCode.lower().replace(" ", "")
+        and property_address.country.lower() == sbc_address.country.lower()
     )
+    print(f"result: {result}")
+    return result
