@@ -122,8 +122,6 @@ def create_sbc_account():
 
         sbc_account_creation_request = SBCAccountCreationRequest(**json_input)
         user = RegistrationService.get_or_create_user(g.jwt_oidc_token_info)
-        user.terms_of_use_accepted = sbc_account_creation_request.acceptTermsAndConditions
-        user.update()
         AuthService.update_user_tos(
             token, sbc_account_creation_request.acceptTermsAndConditions, sbc_account_creation_request.termsVersion
         )
@@ -133,11 +131,7 @@ def create_sbc_account():
         AuthService.add_contact_info(token, sbc_account_id, sbc_account_creation_request, user.id)
 
         return (
-            jsonify(
-                SBCAccount(
-                    user_id=user.id, sbc_account_id=sbc_account_id, terms_of_use_accepted=user.terms_of_use_accepted
-                ).model_dump(mode="json")
-            ),
+            jsonify(SBCAccount(user_id=user.id, sbc_account_id=sbc_account_id).model_dump(mode="json")),
             HTTPStatus.CREATED,
         )
     except ValidationException as auth_exception:
@@ -179,8 +173,6 @@ def update_account():
 
         sbc_account_creation_request = UpdateUserRequest(**json_input)
         user = models.User.find_by_jwt_token(g.jwt_oidc_token_info)
-        user.terms_of_use_accepted = sbc_account_creation_request.acceptTermsAndConditions
-        user.update()
         AuthService.update_user_tos(
             token, sbc_account_creation_request.acceptTermsAndConditions, sbc_account_creation_request.termsVersion
         )

@@ -23,7 +23,6 @@ class Account(BaseModel):
     idp_userid: Optional[str] = None
     login_source: Optional[str] = None
     creation_date: Optional[datetime] = None
-    terms_of_use_accepted: bool = False
 
     @classmethod
     def from_db(cls, source: models.User):
@@ -40,5 +39,4 @@ class Account(BaseModel):
             idp_userid=source.idp_userid,
             login_source=source.login_source,
             creation_date=source.creation_date,
-            terms_of_use_accepted=source.terms_of_use_accepted,
         )
