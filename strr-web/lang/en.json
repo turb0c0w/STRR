@@ -1,4 +1,43 @@
 {
+  "ltsa": {
+    "ltsa-general": "LTSA General Information",
+    "tax": "Tax Authority",
+    "date": "Date",
+    "description": "Description of Land",
+    "pid": "PID",
+    "parcel": "Parcel Status",
+    "ownership": "Ownership Group",
+    "joint": "Joint Tenancy",
+    "numerator": "Interest Fraction Numerator",
+    "denominator": "Interest Fraction Denominator",
+    "title-owners": "LTSA Title Owner(s)",
+    "given": "Given Name",
+    "last": "Last Name",
+    "address": "Address",
+    "occupation": "Occupation"
+  },
+  "auto-approval": {
+    "automatic-logic": "Automatic Approval Logic",
+    "provisional-logic": "Provisional Approval Logic",
+    "renting": "Renting",
+    "accomodation-selected": "Accommodation Service Provider Selected",
+    "yes": "Yes",
+    "no": "No",
+    "pr-exempt": "Principal Residence Exempt",
+    "exempt": "PR Exempt",
+    "not-exempt": "Not PR Exempt",
+    "lookup-failed": "Address Look Up Service Failed",
+    "do-addresses-match": "Does the STR Address match the BC Services Account Address",
+    "do": "Addresses match",
+    "do-not": "Addresses do not match",
+    "bl-required-provided": "Business License Required and Provided",
+    "required-provided": "Required & Provided",
+    "not-required-not-provided": "Not Required & Not provided",
+    "required-not-provided": "Required & Not Provided",
+    "title-check": "Title Check",
+    "passed": "Passed LTSA Check",
+    "did-not-pass": "Did Not Pass LTSA Check"
+  },
   "application-details": {
     "registration": "REGISTRATION",
     "registration-status": "Registration Status",
@@ -20,7 +59,7 @@
     "ltsa-details": "View LTSA Details",
     "aa-logic": "Auto-Approval Logic",
     "aa-details": "View Auto-Approval Details",
-    "filing": "Filing History",
+    "filing": "Filing History"
   },
   "banner": {
     "approve": "Approve",

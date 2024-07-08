@@ -8,7 +8,7 @@
               `${
                 application?.unitAddress.nickname
                   ? application?.unitAddress.nickname + ' '
-                  : ''}REGISTRATION #${applicationId}
+                  : ''}${tApplicationDetails('registration')} #${applicationId}
                 `
             "
             class-name="mobile:text-[24px]"
@@ -23,17 +23,17 @@
     <div class="mt-[104px] m:mt-[74px]">
       <div>
         <p class="font-bold mb-[24px] mobile:mx-[8px]">
-          LTSA General Information
+          {{ tLtsa('ltsa-general') }}
         </p>
         <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] flex d:flex-row m:flex-col">
           <div class="flex flex-col justify-between w-full mobile:flex-col mr-[40px]">
             <BcrosFormSectionReviewItem
-              title="Tax Authority"
+              :title="tLtsa('tax')"
             >
               <p>{{ data.taxAuthorities[0].authorityName }}</p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
-              title="Date"
+              :title="tLtsa('date')"
               class="d:mt-[24px]"
             >
               <p>{{ formatDate(new Date(data.tombstone.applicationReceivedDate)) }}</p>
@@ -41,14 +41,14 @@
           </div>
           <div class="flex flex-col justify-between w-full mobile:flex-col mr-[40px]">
             <BcrosFormSectionReviewItem
-              title="Description of Land"
+              :title="tLtsa('date')"
             >
               <p>
                 {{ data.descriptionsOfLand[0].fullLegalDescription }}
               </p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
-              title="PID"
+              :title="tLtsa('pid')"
               class="d:mt-[24px]"
             >
               <p>
@@ -56,7 +56,7 @@
               </p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
-              title="Parcel Status"
+              :title="tLtsa('parcel')"
               class="d:mt-[24px]"
             >
               <p>{{ data.descriptionsOfLand[0].parcelStatus }}</p>
@@ -64,43 +64,43 @@
           </div>
           <div class="flex flex-col justify-between w-full mobile:flex-col">
             <BcrosFormSectionReviewItem
-              title="Ownership Group"
+              :title="tLtsa('parcel')"
             >
-              <p>{{ `Joint Tenancy: ${data.ownershipGroups[0].jointTenancyIndication}` }}</p>
-              <p>{{ `Interest Fraction Numerator: ${data.ownershipGroups[0].interestFractionNumerator}` }}</p>
-              <p>{{ `Interest Fraction Denominator: ${data.ownershipGroups[0].interestFractionDenominator}` }}</p>
+              <p>{{ `${tLtsa('parcel')}: ${data.ownershipGroups[0].jointTenancyIndication}` }}</p>
+              <p>{{ `${tLtsa('numerator')}: ${data.ownershipGroups[0].interestFractionNumerator}` }}</p>
+              <p>{{ `${tLtsa('denominator')}: ${data.ownershipGroups[0].interestFractionDenominator}` }}</p>
             </BcrosFormSectionReviewItem>
           </div>
         </div>
         <div class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
-            LTSA Title Owner(s)
+            {{ tLtsa('title-owners') }}
           </p>
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
             <div class="d:hidden">
               <BcrosFormSectionReviewItem
-                title="Given Name"
+              :title="tLtsa('given')"
               >
                 <p>
                   {{ ownerRows[0].givenName }}
                 </p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
-                title="Last Name"
+              :title="tLtsa('last')"
               >
                 <p>
                   {{ ownerRows[0].lastName }}
                 </p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
-                title="Address"
+                :title="tLtsa('address')"
               >
                 <p>
                   {{ ownerRows[0].address }}
                 </p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
-                title="Occupation"
+                :title="tLtsa('occupation')"
               >
                 <p>
                   {{ ownerRows[0].occupation }}
@@ -124,6 +124,8 @@ import { LtsaDataI } from '~/interfaces/ltsa-data-i'
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
+const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
+const tLtsa = (translationKey: string) => t(`ltsa.${translationKey}`)
 
 const { applicationId } = route.params
 

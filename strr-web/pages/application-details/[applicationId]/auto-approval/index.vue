@@ -8,7 +8,7 @@
               `${
                 application?.unitAddress.nickname
                   ? application?.unitAddress.nickname + ' '
-                  : ''}REGISTRATION #${applicationId}
+                  : ''}${tApplicationDetails('registration')} #${applicationId}
                 `
             "
             class-name="mobile:text-[24px]"
@@ -23,7 +23,7 @@
     <div class="mt-[104px] m:mt-[74px]">
       <div>
         <p class="font-bold mb-[24px] mobile:mx-[8px]">
-          Automatic Approval Logic
+          {{ tAutoApproval('automatic-logic') }}
         </p>
         <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
           <div class="flex flex-col justify-between w-full mobile:flex-col">
@@ -34,7 +34,7 @@
       <div class="mt-[40px]">
         <div>
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
-            Provisional Approval Logic
+          {{ tAutoApproval('provisional-logic') }}
           </p>
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
             <div class="flex flex-col justify-between w-full mobile:flex-col">
@@ -54,6 +54,8 @@ import { AutoApprovalDataI } from '~/interfaces/auto-approval-data-i'
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
+const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
+const tAutoApproval = (translationKey: string) => t(`auto-approval.${translationKey}`)
 
 const { applicationId } = route.params
 
@@ -65,39 +67,39 @@ const data: AutoApprovalDataI[] = await getAutoApproval(applicationId.toString()
 
 const automaticRows = [
   {
-    criteria: 'Renting',
-    outcome: data[0].record.renting ? 'Yes' : 'No'
+    criteria: tAutoApproval('renting'),
+    outcome: data[0].record.renting ? tAutoApproval('yes') : tAutoApproval('no')
   },
   {
-    criteria: 'Accommodation Service Provider Selected',
-    outcome: data[0].record.service_provider ? 'Yes' : 'No'
+    criteria: tAutoApproval('accomodation-selected'),
+    outcome: data[0].record.service_provider ? tAutoApproval('yes') : tAutoApproval('no')
   },
   {
-    criteria: 'Principal Residence Exempt',
+    criteria: tAutoApproval('pr-exempt'),
     outcome: data[0].record.pr_exempt
-      ? 'PR Exempt'
+      ? tAutoApproval('exempt')
       : data[0].record.pr_exempt === false
-        ? 'Not PR Exempt'
-        : 'Address Look Up Service Failed'
+        ? tAutoApproval('not-exempt')
+        : tAutoApproval('lookup-failed')
   }
 ]
 
 const provisionalRows = [
   {
-    criteria: 'Does the STR  Address match the BC Services Account Address',
-    outcome: data[0].record.address_match ? 'Addresses match' : 'Addresses do not match'
+    criteria: tAutoApproval('do-addresses-match'),
+    outcome: data[0].record.address_match ? tAutoApproval('do') : tAutoApproval('do-not')
   },
   {
-    criteria: 'Business License Required and Provided',
+    criteria: tAutoApproval('bl-required-provided'),
     outcome: data[0].record.business_license_required_provided
-      ? 'Required & Provided'
+      ? tAutoApproval('required-provided')
       : data[0].record.business_license_not_required_not_provided
-        ? 'Not Required & Not provided'
-        : 'Required & Not Provided'
+        ? tAutoApproval('not-required-not-provided')
+        : tAutoApproval('required-not-provided')
   },
   {
-    criteria: 'Title Check',
-    outcome: data[0].record.title_check ? 'Passed LTSA Check' : 'Did Not Pass LTSA Check'
+    criteria: tAutoApproval('title-check'),
+    outcome: data[0].record.title_check ? tAutoApproval('passed') : tAutoApproval('did-not-pass')
   }
 ]
 
