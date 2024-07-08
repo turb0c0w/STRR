@@ -1,6 +1,11 @@
 import { z } from 'zod'
 import axios from 'axios'
-import { CreateAccountFormStateI, OrgI, SecondaryContactInformationI } from '~/interfaces/account-i'
+import {
+  CreateAccountFormStateI,
+  OrgI,
+  PrimaryContactInformationI,
+  SecondaryContactInformationI
+} from '~/interfaces/account-i'
 
 const apiURL = useRuntimeConfig().public.strrApiURL
 const axiosInstance = addAxiosInterceptors(axios.create())
@@ -54,15 +59,21 @@ const phoneRegex = /^[0-9*#+() -]+$/
 const httpRegex = /^(https?:\/\/)([\w-]+(\.[\w-]+)+\.?(:\d+)?(\/.*)?)$/i
 const emailRegex = /^\S+@\S+\.\S+$/
 const pidRegex = /^\d{3}(-)\d{3}(-)\d{3}$/
+const sinRegex = /^\d{3}( )\d{3}( )\d{3}$/
 const phoneError = { message: 'Valid characters are "()- 123457890" ' }
 const emailError = { message: 'Email must contain @ symbol and domain' }
 const requiredPhone = z.string().regex(phoneRegex, phoneError)
 const requiredEmail = z.string().regex(emailRegex, emailError)
 const requiredNumber = z.string().regex(numbersRegex, { message: 'Must be a number' })
-const optionalNumber = z.string().regex(numbersRegex, { message: 'Must be a number' }).optional()
-const optionalPID = z
+const optionalNumber = z.string().refine(val => val === '' ||
+  numbersRegex.test(val), { message: 'Must be a number' }).optional()
+const optionalPID = z.string().refine(val => val === '' ||
+  pidRegex.test(val), { message: 'If provided this value must be in the format 111-111-111' }).optional()
+const requiredSin = z
   .string()
-  .regex(pidRegex, { message: 'If provided this value must be in the format 111-111-111' }).or(z.literal(''))
+  .regex(sinRegex, { message: 'Social Insurance Number must be provided in the format 111 111 111' })
+const optionalSin = z.string().refine(val => val === '' ||
+  sinRegex.test(val), { message: 'Social Insurance Number must be provided in the format 111 111 111' }).optional()
 const optionalExtension = optionalNumber
 const optionalOrEmptyString = z.string().optional().transform(e => e === '' ? undefined : e)
 const requiredNonEmptyString = z.string().refine(e => e !== '', 'Field cannot be empty')
@@ -74,8 +85,10 @@ export const finalizationSchema = z.object({
   name: requiredNonEmptyString
 })
 
-export const contactSchema = z.object({
+export const primaryContactSchema = z.object({
   preferredName: optionalOrEmptyString,
+  socialInsuranceNumber: requiredSin,
+  businessNumber: optionalOrEmptyString,
   phoneNumber: requiredPhone,
   extension: optionalOrEmptyString,
   faxNumber: optionalOrEmptyString,
@@ -101,6 +114,8 @@ export const secondaryContactSchema = z.object({
   firstName: requiredNonEmptyString,
   lastName: requiredNonEmptyString,
   middleName: requiredNonEmptyString,
+  socialInsuranceNumber: optionalSin,
+  businessNumber: optionalOrEmptyString,
   preferredName: optionalOrEmptyString,
   phoneNumber: requiredPhone,
   extension: optionalOrEmptyString,
@@ -123,7 +138,7 @@ export const secondaryContactSchema = z.object({
     .optional()
 })
 
-const primaryContact: ContactInformationI = {
+const primaryContact: PrimaryContactInformationI = {
   preferredName: '',
   phoneNumber: undefined,
   extension: '',
@@ -137,12 +152,16 @@ const primaryContact: ContactInformationI = {
   postalCode: undefined,
   birthDay: undefined,
   birthMonth: undefined,
-  birthYear: undefined
+  birthYear: undefined,
+  socialInsuranceNumber: '',
+  businessNumber: undefined
 }
 
 const secondaryContact: SecondaryContactInformationI = {
   preferredName: '',
   phoneNumber: undefined,
+  businessNumber: undefined,
+  socialInsuranceNumber: undefined,
   extension: '',
   faxNumber: '',
   emailAddress: undefined,

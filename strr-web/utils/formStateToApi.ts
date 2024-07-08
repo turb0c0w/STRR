@@ -18,8 +18,18 @@ export const formStateToApi = (
       ? formState.primaryContact
       : formState.secondaryContact
     dataContact.name = {
-      firstName,
-      lastName
+      firstName:
+        primary
+          ? firstName.toString()
+          : formState.secondaryContact?.firstName
+            ? formState.secondaryContact?.firstName
+            : '-',
+      lastName:
+        primary
+          ? lastName.toString()
+          : formState.secondaryContact?.lastName
+            ? formState.secondaryContact?.lastName
+            : '-'
     }
     dataContact.dateOfBirth = `${stateContact.birthYear}-${stateContact.birthMonth}-${stateContact.birthDay}`
     dataContact.details = {

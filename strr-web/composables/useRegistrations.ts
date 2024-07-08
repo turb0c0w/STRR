@@ -1,5 +1,8 @@
 import axios from 'axios'
 import { SbcCreationResponseE } from '~/enums/sbc-creation-response-e'
+import { AutoApprovalDataI } from '~/interfaces/auto-approval-data-i'
+import { LtsaDataI } from '~/interfaces/ltsa-data-i'
+import { RegistrationHistoryEventI } from '~/interfaces/registration-history-event-i'
 
 export const useRegistrations = () => {
   const apiURL = useRuntimeConfig().public.strrApiURL
@@ -21,17 +24,25 @@ export const useRegistrations = () => {
         )
     })
 
-  const getRegistration = (id: string): Promise<string> =>
+  const getRegistration = (id: string): Promise<RegistrationI | void> =>
     axiosInstance.get(`${apiURL}/registrations`)
-      .then((res) => {
-        let selectedRegistration = '-'
-        res.data.forEach((registration: any) => {
-          if (registration.id.toString() === id.toString()) {
-            selectedRegistration = registration
-          }
-        })
-        return selectedRegistration
-      })
+      .then(res => res.data.find((registration: any) => registration.id.toString() === id))
+
+  const getLtsa = (id: string): Promise<LtsaDataI | void> =>
+    axiosInstance.get(`${apiURL}/registrations/${id}/ltsa`)
+      .then(res => res.data)
+
+  const getAutoApproval = (id: string): Promise<AutoApprovalDataI[] | void> =>
+    axiosInstance.get(`${apiURL}/registrations/${id}/auto_approval`)
+      .then(res => res.data)
+
+  const getDocumentsForRegistration = (id: string): Promise<DocumentI[]> =>
+    axiosInstance.get(`${apiURL}/registrations/${id}/documents`)
+      .then(res => res.data)
+
+  const getRegistrationHistory = (id: string): Promise<RegistrationHistoryEventI[]> =>
+    axiosInstance.get(`${apiURL}/registrations/${id}/history`)
+      .then(res => res.data)
 
   const getStatusPriority = (status: string) => {
     switch (status) {
@@ -76,7 +87,11 @@ export const useRegistrations = () => {
 
   return {
     createSbcRegistration,
+    getDocumentsForRegistration,
     getRegistrations,
-    getRegistration
+    getRegistration,
+    getRegistrationHistory,
+    getLtsa,
+    getAutoApproval
   }
 }

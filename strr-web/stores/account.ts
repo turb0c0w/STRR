@@ -6,11 +6,14 @@ import { ErrorCategoryE } from '~/enums/error-category-e'
 import { ErrorI } from '~/interfaces/error-i'
 import { KCUserI } from '~/interfaces/kc-user-i'
 import { addAxiosInterceptors } from '~/utils/axios'
+import { TermsOfServiceI } from '~/interfaces/terms-of-service-i'
 
 /** Manages bcros account data */
 export const useBcrosAccount = defineStore('bcros/account', () => {
   // keycloak info
   const keycloak = useBcrosKeycloak()
+  const tosAccepted = ref(false)
+  const tos = ref<TermsOfServiceI>()
   // selected user account
   const currentAccount: Ref<AccountI> = ref({} as AccountI)
   const currentAccountName = computed((): string => currentAccount.value?.label || '')
@@ -30,6 +33,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   // api request variables
   const axiosInstance = addAxiosInterceptors(axios.create())
   const apiURL = useRuntimeConfig().public.authApiURL
+  const strrApiURL = useRuntimeConfig().public.strrApiURL
 
   /** Get user information from AUTH */
   async function getAuthUserProfile (identifier: string) {
@@ -56,6 +60,28 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       .catch((error) => {
         // not too worried if this errs -- log for ops
         console.error('Error updating Auth with login attempt', error)
+      })
+  }
+
+  async function updateTosAcceptance (): Promise<TermsOfServiceI | void> {
+    return await axiosInstance.get<TermsOfServiceI>(`${apiURL}/documents/termsofuse`)
+      .then((response) => {
+        tos.value = response.data
+        return response.data
+      })
+  }
+
+  async function acceptTos (acceptance: boolean, versionId?: string): Promise<TermsOfServiceI | void> {
+    return await axiosInstance.patch<TermsOfServiceI>(`${strrApiURL}/account`,
+      {
+        acceptTermsAndConditions: acceptance,
+        termsVersion: versionId
+      }
+    )
+      .then((response) => {
+        tos.value = response.data
+        navigateTo('/account-select')
+        return response.data
       })
   }
 
@@ -153,6 +179,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   return {
     axiosInstance,
     me,
+    tos,
+    acceptTos,
+    tosAccepted,
     currentAccount,
     currentAccountName,
     userAccounts,
@@ -163,6 +192,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     userFirstName,
     userLastName,
     updateAuthUserInfo,
+    updateTosAcceptance,
     setUserName,
     setAccountInfo,
     switchCurrentAccount

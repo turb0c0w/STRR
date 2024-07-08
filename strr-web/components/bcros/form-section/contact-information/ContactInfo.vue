@@ -44,7 +44,6 @@ const {
 const day = defineModel<string>('day')
 const month = defineModel<string>('month')
 const year = defineModel<string>('year')
-
 const emit = defineEmits(['validateMonths'])
 
 const months: string[] = [

@@ -51,9 +51,27 @@ export interface OrgI {
 }
 
 export interface ContactI {
-  email: string
-  phone: string
-  phoneExtension: string
+  dateOfBirth: string,
+  details: {
+    emailAddress: string,
+    extension: string,
+    faxNumber: string,
+    phoneNumber: string,
+    preferredName: string
+  },
+  mailingAddress: {
+    address: string,
+    addressLineTwo: string,
+    city: string,
+    country: string,
+    postalCode: string,
+    province: string
+  },
+  name: {
+    firstName: string,
+    lastName: string,
+    middleName: string
+  }
 }
 
 interface UserTermsI {
@@ -103,10 +121,17 @@ export interface ContactInformationI {
   birthYear: string | undefined,
 }
 
+export interface PrimaryContactInformationI extends ContactInformationI {
+  businessNumber: string | undefined,
+  socialInsuranceNumber: string | undefined
+}
+
 export interface SecondaryContactInformationI extends ContactInformationI {
   firstName: string | undefined,
   middleName: string | undefined,
   lastName: string | undefined,
+  businessNumber: string | undefined,
+  socialInsuranceNumber: string | undefined
 }
 
 export interface PrincipalResidenceI {
@@ -118,7 +143,7 @@ export interface PrincipalResidenceI {
 }
 
 export interface CreateAccountFormStateI {
-  primaryContact: ContactInformationI,
+  primaryContact: PrimaryContactInformationI,
   secondaryContact: SecondaryContactInformationI,
   propertyDetails: {
     primaryResidence: string | undefined,

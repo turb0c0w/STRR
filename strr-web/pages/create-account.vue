@@ -89,7 +89,9 @@ const {
   currentAccount,
   userFullName,
   userFirstName,
-  userLastName
+  userLastName,
+  updateTosAcceptance,
+  me
 } = useBcrosAccount()
 
 const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryContact.value }
@@ -123,8 +125,8 @@ const ownershipToApiType = (type: string | undefined): string => {
 }
 
 const submit = () => {
-  validateStep(contactSchema, formState.primaryContact, 0)
-  validateStep(contactSchema, formState.secondaryContact, 0)
+  validateStep(primaryContactSchema, formState.primaryContact, 0)
+  validateStep(secondaryContactSchema, formState.secondaryContact, 0)
   validateStep(propertyDetailsSchema, formState.propertyDetails, 1)
   steps[1].step.complete = true
   steps[2].step.complete = true
@@ -156,11 +158,11 @@ const validateStep = (schema: any, state: any, index: number) => {
 }
 
 watch(formState.primaryContact, () => {
-  validateStep(contactSchema, formState.primaryContact, 0)
+  validateStep(primaryContactSchema, formState.primaryContact, 0)
 })
 
 watch(formState.secondaryContact, () => {
-  validateStep(contactSchema, formState.secondaryContact, 0)
+  validateStep(secondaryContactSchema, formState.secondaryContact, 0)
 })
 
 watch(formState.propertyDetails, () => {
@@ -218,4 +220,12 @@ definePageMeta({
   layout: 'wide'
 })
 
+onMounted(async () => {
+  const tos = await updateTosAcceptance()
+  const currentTosAccepted = me?.profile.userTerms.isTermsOfUseAccepted &&
+    me?.profile.userTerms.termsOfUseAcceptedVersion === tos?.versionId
+  if (!currentTosAccepted) {
+    navigateTo('/terms-of-service')
+  }
+})
 </script>

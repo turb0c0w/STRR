@@ -30,6 +30,7 @@
         >
           <BcrosStatusCard
             v-if="registration"
+            :application-id="registration.id.toString()"
             :flavour="getFlavour(registration.status, registration?.invoices)"
             :status="registration.status"
             :single="!(registrations && registrations?.length > 1)"
@@ -59,7 +60,7 @@
                     ${registration.unitAddress.province}
                     ${registration.unitAddress.postalCode},
                     ${registration.unitAddress.country}
-                    `
+                  `
                 }}
               </p>
             </div>
@@ -119,6 +120,10 @@ const getFlavour = (status: string, invoices: RegistrationI['invoices']):
       text: tRegistrationStatus('payment-due'),
       alert: AlertsFlavourE.WARNING
     }
+  }
+  return {
+    text: tRegistrationStatus('payment-due'),
+    alert: AlertsFlavourE.WARNING
   }
 }
 
