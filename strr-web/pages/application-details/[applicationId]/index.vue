@@ -8,7 +8,7 @@
               `${
                 application?.unitAddress.nickname
                   ? application?.unitAddress.nickname + ' '
-                  : ''}REGISTRATION #${applicationId}
+                  : ''}${tApplicationDetails('registration')} #${applicationId}
                 `
             "
             class-name="mobile:text-[24px]"
@@ -23,12 +23,12 @@
     <div class="mt-[104px]">
       <div>
         <p class="font-bold mb-[24px] mobile:mx-[8px]">
-          Registration Status
+          {{ tApplicationDetails('registration-status') }}
         </p>
         <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
           <div class="flex flex-row justify-between w-full mobile:flex-col">
             <BcrosFormSectionReviewItem
-              title="Status"
+              :title="tApplicationDetails('status')"
             >
               <p>{{ application?.status ?? '-' }}</p>
             </BcrosFormSectionReviewItem>
@@ -37,29 +37,29 @@
       </div>
       <div class="mt-[40px]">
         <p class="font-bold mb-[24px] mobile:mx-[8px]">
-          Rental Unit Information
+          {{ tApplicationDetails('unit-info') }}
         </p>
         <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
           <div class="flex flex-row justify-between w-full mobile:flex-col desktop:mb-[24px]">
             <BcrosFormSectionReviewItem
-              title="Nickname"
+              :title="tApplicationDetails('nickname')"
             >
               <p>{{ application?.unitAddress.nickname ?? '-' }}</p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
-              title="Business License"
+              :title="tApplicationDetails('business-license')"
             >
               <p>{{ application?.unitDetails.businessLicense ?? '-' }}</p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
-              title="Ownership Type"
+              :title="tApplicationDetails('ownership')"
             >
               <p>{{ application?.unitDetails.ownershipType ?? '-' }}</p>
             </BcrosFormSectionReviewItem>
           </div>
           <div class="flex flex-row justify-between w-full mobile:flex-col">
             <BcrosFormSectionReviewItem
-              title="Address"
+              :title="tApplicationDetails('address')"
             >
               <p>{{ application?.unitAddress.address }}</p>
               <p v-if="application?.unitAddress.addressLineTwo">
@@ -85,7 +85,7 @@
               </p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
-              title="Type of Property"
+              :title="tApplicationDetails('property-type')"
             >
               <p>{{ application?.unitDetails.propertyType ?? '-' }}</p>
             </BcrosFormSectionReviewItem>
@@ -94,27 +94,27 @@
         </div>
         <div class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
-            Primary Contact Information
+            {{ tApplicationDetails('primary-contact') }}
           </p>
           <div class="d:hidden">
             <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
               <BcrosFormSectionReviewItem
-                title="Name"
+                :title="tApplicationDetails('name')"
               >
                 <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].name }}</p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
-                title="Address"
+                :title="tApplicationDetails('address')"
               >
                 <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].address }}</p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
-                title="Email Address"
+                :title="tApplicationDetails('email')"
               >
                 <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].emailAddress }}</p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
-                title="Phone Number"
+                :title="tApplicationDetails('phone')"
               >
                 <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].phoneNumber }}</p>
               </BcrosFormSectionReviewItem>
@@ -126,27 +126,27 @@
         </div>
         <div v-if="application && application?.secondaryContact" class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
-            Secondary Contact Information
+            {{ tApplicationDetails('secondary-contact') }}
           </p>
           <div class="d:hidden">
             <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
               <BcrosFormSectionReviewItem
-                title="Name"
+                :title="tApplicationDetails('name')"
               >
                 <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].name }}</p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
-                title="Address"
+                :title="tApplicationDetails('address')"
               >
                 <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].address }}</p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
-                title="Email Address"
+                :title="tApplicationDetails('email')"
               >
                 <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].emailAddress }}</p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
-                title="Phone Number"
+                :title="tApplicationDetails('phone')"
               >
                 <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].phoneNumber }}</p>
               </BcrosFormSectionReviewItem>
@@ -158,12 +158,12 @@
         </div>
         <div v-if="documents.length" class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
-            Documents
+            {{ tApplicationDetails('documents') }}
           </p>
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
             <div class="flex flex-row justify-between w-full mobile:flex-col">
               <BcrosFormSectionReviewItem
-                title="Proof of Principal Residence"
+                :title="tApplicationDetails('proof')"
               >
                 <div v-for="(supportingDocument) in documents" :key="supportingDocument.file_name">
                   <div class="flex flex-row items-center">
@@ -181,26 +181,26 @@
         </div>
         <div class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
-            LTSA Information
+            {{ tApplicationDetails('ltsa-info') }}
           </p>
           <a
             class="mobile:mx-[8px]"
             @click="() => navigateTo(`/application-details/${applicationId}/ltsa`)"
           >
-            View LTSA Details
+          {{ tApplicationDetails('ltsa-details') }}
           </a>
         </div>
         <div class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
-            Auto-Approval Logic
+            {{ tApplicationDetails('aa-logic') }}
           </p>
           <a class="mobile:mx-[8px]" @click="() => navigateTo(`/application-details/${applicationId}/auto-approval`)">
-            View Auto-Approval Details
+            {{ tApplicationDetails('aa-details') }}
           </a>
         </div>
         <div class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
-            Filing History
+            {{ tApplicationDetails('filing') }}
           </p>
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
             <div class="flex flex-col justify-between w-full">
@@ -237,6 +237,8 @@ import { AlertsFlavourE } from '#imports'
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
+const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
+
 const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
 const { applicationId } = route.params

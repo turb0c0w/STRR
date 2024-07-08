@@ -1,4 +1,32 @@
 {
+  "application-details": {
+    "registration": "REGISTRATION",
+    "registration-status": "Registration Status",
+    "status": "Status",
+    "unit-info": "Rental Unit Information",
+    "nickname": "Nickname",
+    "business-license": "Business License",
+    "ownership": "Ownership Type",
+    "address": "Address",
+    "property-type": "Type of Property",
+    "primary-contact": "Primary Contact Information",
+    "secondary-contact": "Secondary Contact Information",
+    "name": "Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "documents": "Documents",
+    "proof": "Proof of Principal Residence",
+    "ltsa-info": "LTSA Information",
+    "ltsa-details": "View LTSA Details",
+    "aa-logic": "Auto-Approval Logic",
+    "aa-details": "View Auto-Approval Details",
+    "filing": "Filing History",
+  },
+  "banner": {
+    "approve": "Approve",
+    "reject": "Reject",
+    "issue": "Issue Certificate"
+  },
   "finalization": {
     "title": "Service BC Account Creation",
     "subtitle": "Please create an account to continue",

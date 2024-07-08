@@ -13,28 +13,28 @@
     <div v-if="!hideButtons">
       <div class="mobile:hidden">
         <BcrosButtonsPrimary
-          text="Approve"
+          :text="tBanner('approve')"
           :action="() => null"
           variant="outline"
           class-name="ml-[16px]"
         />
         <BcrosButtonsPrimary
-          text="Reject"
+          :text="tBanner('reject')"
           :action="() => null"
           variant="outline"
           class-name="ml-[16px]"
         />
         <BcrosButtonsPrimary
-          text="Issue Certificate"
+          :text="tBanner('issue')"
           :action="() => null"
           variant="outline"
           class-name="ml-[16px]"
         />
       </div>
       <div class="desktop:hidden flex">
-        <a class="mr-[16px] py-[10px]">Approve</a>
-        <a class="mr-[16px] py-[10px]">Reject</a>
-        <a class="mr-[16px] py-[10px]">Issue Certificate</a>
+        <a class="mr-[16px] py-[10px]">{{ tBanner('approve') }}</a>
+        <a class="mr-[16px] py-[10px]">{{ tBanner('reject') }}</a>
+        <a class="mr-[16px] py-[10px]">{{ tBanner('issue') }}</a>
       </div>
     </div>
   </div>
@@ -43,5 +43,7 @@
 <script setup lang="ts">
 
 const { hideButtons = false } = defineProps<{ hideButtons?: boolean }>()
+const t = useNuxtApp().$i18n.t
+const tBanner = (text: string) => t(`banner.${text}`)
 
 </script>
