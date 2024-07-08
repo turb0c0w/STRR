@@ -1,4 +1,9 @@
 {
+  "tos": {
+    "tos-title": "BC Registry Terms and Conditions",
+    "accept": "Accept Terms",
+    "decline": "Decline"
+  },
   "ltsa": {
     "ltsa-general": "LTSA General Information",
     "tax": "Tax Authority",

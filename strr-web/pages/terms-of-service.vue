@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BcrosTypographyH1 text="BC Registry Terms and Conditions" />
+    <BcrosTypographyH1 :text="tTos('tos-title')" />
     <div class="bg-white flex flex-col pb-[20px]">
       <div class="px-[20px] py-[25px]">
         <!-- eslint-disable-next-line -->
@@ -8,11 +8,11 @@
       </div>
       <div class="flex flex-row justify-center">
         <BcrosButtonsPrimary
-          text="Accept Terms"
+          :text="tTos('accept')"
           :action="() => acceptTos(true, tos?.versionId)"
         />
         <BcrosButtonsPrimary
-          text="Decline"
+          :text="tTos('decline')"
           :action="() => acceptTos(false)"
           variant="outline"
           class-name="ml-[4px]"
@@ -23,6 +23,9 @@
 </template>
 
 <script setup lang="ts">
+
+const t = useNuxtApp().$i18n.t
+const tTos = (translationKey: string) => t(`tos.${translationKey}`)
 
 const { updateTosAcceptance, acceptTos } = useBcrosAccount()
 
