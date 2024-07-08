@@ -1,0 +1,75 @@
+{
+  "type": "FeatureCollection",
+  "queryAddress": "525 Superior Street, Victoria, BC",
+  "searchTimestamp": "2024-06-19 18:00:10",
+  "executionTime": 0.579,
+  "version": "4.3.0",
+  "baseDataDate": "2024-05-22",
+  "crs": {
+    "type": "EPSG",
+    "properties": {
+      "code": 4326
+    }
+  },
+  "interpolation": "adaptive",
+  "echo": "true",
+  "locationDescriptor": "any",
+  "setBack": 0,
+  "minScore": 1,
+  "maxResults": 1,
+  "disclaimer": "https://www2.gov.bc.ca/gov/content?id=79F93E018712422FBC8E674A67A70535",
+  "privacyStatement": "https://www2.gov.bc.ca/gov/content?id=9E890E16955E4FF4BF3B0E07B4722932",
+  "copyrightNotice": "Copyright © 2024 Province of British Columbia",
+  "copyrightLicense": "https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "crs": {
+          "type": "EPSG",
+          "properties": {
+            "code": 4326
+          }
+        },
+        "coordinates": [
+          -123.3709161,
+          48.4177006
+        ]
+      },
+      "properties": {
+        "fullAddress": "525 Superior St, Victoria, BC",
+        "score": 100,
+        "matchPrecision": "CIVIC_NUMBER",
+        "precisionPoints": 100,
+        "faults": [],
+        "siteName": "",
+        "unitDesignator": "",
+        "unitNumber": "",
+        "unitNumberSuffix": "",
+        "civicNumber": 525,
+        "civicNumberSuffix": "",
+        "streetName": "Superior",
+        "streetType": "St",
+        "isStreetTypePrefix": "false",
+        "streetDirection": "",
+        "isStreetDirectionPrefix": "",
+        "streetQualifier": "",
+        "localityName": "Victoria",
+        "localityType": "City",
+        "electoralArea": "",
+        "provinceCode": "BC",
+        "locationPositionalAccuracy": "high",
+        "locationDescriptor": "parcelPoint",
+        "siteID": "c84d6dc3-3486-430b-8b76-1c79594dd9c6",
+        "blockID": 296337,
+        "fullSiteDescriptor": "",
+        "accessNotes": "\"",
+        "siteStatus": "active",
+        "siteRetireDate": "9999-12-31",
+        "changeDate": "2024-05-23",
+        "isOfficial": "true"
+      }
+    }
+  ]
+}

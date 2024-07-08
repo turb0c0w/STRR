@@ -32,9 +32,12 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 """This exports all of the models and schemas used by the application."""
+from .auto_approval_record import AutoApprovalRecord
 from .db import db  # noqa: I001
+from .dss import DSSOrganization
 from .event_record import EventRecord
 from .invoice import Invoice
+from .ltsa import LTSARecord
 from .rental import Address, Document, Eligibility, PropertyManager, Registration, RentalPlatform, RentalProperty
 from .user import Contact, User
 
@@ -51,4 +54,7 @@ __all__ = (
     "Document",
     "EventRecord",
     "Invoice",
+    "DSSOrganization",
+    "AutoApprovalRecord",
+    "LTSARecord",
 )

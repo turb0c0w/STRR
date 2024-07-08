@@ -52,6 +52,10 @@ class Address(db.Model):
         "RentalProperty", back_populates="address", foreign_keys="RentalProperty.address_id"
     )
 
+    def to_oneline_address(self):
+        """Convert object to one line address."""
+        return f"{self.street_address}, {self.city}, {self.province}, {self.postal_code}, {self.country}"
+
 
 class PropertyManager(db.Model):
     """Property Manager"""
@@ -97,6 +101,11 @@ class Registration(db.Model):
     rental_property = relationship("RentalProperty", back_populates="registrations")
     eligibility = relationship("Eligibility", back_populates="registrations", uselist=False)
     invoices = relationship("Invoice", back_populates="registration")
+
+    def save(self):
+        """Store the Registration into the local cache."""
+        db.session.add(self)
+        db.session.commit()
 
 
 class Document(db.Model):

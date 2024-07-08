@@ -62,6 +62,8 @@ class Contact(db.Model):
     fax_number = db.Column(db.String, nullable=True)
     phone_number = db.Column(db.String(20), nullable=True)
     date_of_birth = db.Column(db.Date, nullable=True)
+    social_insurance_number = db.Column(db.String, nullable=True)
+    business_number = db.Column(db.String, nullable=True)
 
     address = relationship("Address", back_populates="contact")
 
@@ -110,6 +112,11 @@ class User(db.Model):
     def find_by_id(cls, submitter_id: int = None) -> User | None:
         """Return a User if they exist and match the provided submitter id."""
         return cls.query.filter_by(id=submitter_id).one_or_none()
+
+    @classmethod
+    def is_examiner(cls) -> bool:
+        """Return True if User is an examiner."""
+        return False
 
     @classmethod
     def find_by_jwt_token(cls, token: dict) -> User | None:
@@ -174,6 +181,10 @@ class User(db.Model):
     def save(self):
         """Store the User into the local cache."""
         db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        """Store the User into the local cache."""
         db.session.commit()
 
     def delete(self):

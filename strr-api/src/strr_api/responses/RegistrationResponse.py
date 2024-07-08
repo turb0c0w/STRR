@@ -78,6 +78,8 @@ class Contact(BaseModel):
 
     name: ContactName
     dateOfBirth: date
+    socialInsuranceNumber: Optional[str] = None
+    businessNumber: Optional[str] = None
     details: ContactDetails
     mailingAddress: MailingAddress
 
@@ -137,6 +139,8 @@ class Registration(BaseModel):
                     lastName=source.rental_property.property_manager.primary_contact.lastname,
                 ),
                 dateOfBirth=source.rental_property.property_manager.primary_contact.date_of_birth,
+                socialInsuranceNumber=source.rental_property.property_manager.primary_contact.social_insurance_number,
+                businessNumber=source.rental_property.property_manager.primary_contact.business_number,
                 details=ContactDetails(
                     preferredName=source.rental_property.property_manager.primary_contact.preferredname,
                     phoneNumber=source.rental_property.property_manager.primary_contact.phone_number,
@@ -160,6 +164,8 @@ class Registration(BaseModel):
                     lastName=source.rental_property.property_manager.secondary_contact.lastname,
                 ),
                 dateOfBirth=source.rental_property.property_manager.secondary_contact.date_of_birth,
+                socialInsuranceNumber=source.rental_property.property_manager.secondary_contact.social_insurance_number,
+                businessNumber=source.rental_property.property_manager.secondary_contact.business_number,
                 details=ContactDetails(
                     preferredName=source.rental_property.property_manager.secondary_contact.preferredname,
                     phoneNumber=source.rental_property.property_manager.secondary_contact.phone_number,

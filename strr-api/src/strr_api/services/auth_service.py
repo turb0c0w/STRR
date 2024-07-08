@@ -40,6 +40,7 @@ from flask import current_app
 
 from strr_api.enums.enum import EventRecordType
 from strr_api.exceptions import ExternalServiceException
+from strr_api.requests import SBCMailingAddress
 from strr_api.requests.SBCAccountCreationRequest import SBCAccountCreationRequest
 from strr_api.services.event_records_service import EventRecordsService
 from strr_api.services.rest_service import RestService
@@ -97,6 +98,27 @@ class AuthService:
         return user_account_details
 
     @classmethod
+    def get_sbc_accounts_mailing_address(cls, bearer_token, account_id):
+        """Return mailing address for given sbc account"""
+
+        endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/orgs/{account_id}"
+        user_account_details = RestService.get(endpoint=endpoint, token=bearer_token).json()
+        return SBCMailingAddress(**user_account_details["mailingAddress"])
+
+    @classmethod
+    def update_user_tos(cls, bearer_token, is_terms_accepted, terms_version):
+        """Update user terms of service."""
+        endpoint = f"{current_app.config.get('AUTH_SVC_URL')}/users/@me"
+
+        user_details = RestService.patch(
+            endpoint=endpoint,
+            token=bearer_token,
+            data={"istermsaccepted": is_terms_accepted, "termsversion": terms_version},
+        ).json()
+        res = user_details.get("userTerms")
+        return res
+
+    @classmethod
     def get_user_profile(cls, bearer_token):
         """Return current user profile."""
 
@@ -151,7 +173,7 @@ class AuthService:
         ).json()
 
         EventRecordsService.save_event_record(
-            EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{account_name}"', user_id
+            EventRecordType.SBC_ACCOUNT_CREATE, f'SBC Account Created: "{account_name}"', False, user_id
         )
         return new_user_account
 
@@ -175,6 +197,9 @@ class AuthService:
         ).json()
 
         EventRecordsService.save_event_record(
-            EventRecordType.SBC_ACCOUNT_ADDED_CONTACT, f'Added contact info to SBC account id: "{account_id}"', user_id
+            EventRecordType.SBC_ACCOUNT_ADDED_CONTACT,
+            f'Added contact info to SBC account id: "{account_id}"',
+            False,
+            user_id,
         )
         return contact_info

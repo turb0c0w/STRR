@@ -35,9 +35,13 @@
 from .auth_service import AuthService
 from .event_records_service import EventRecordsService
 from .gcp_storage_service import GCPStorageService
+from .geocoder_service import GeoCoderService
 from .payment_service import PayService
 from .registration_service import RegistrationService
 from .rest_service import RestService
+
+from .ltsa_service import LtsaService  # isort: skip
+from .approval_service import ApprovalService  # isort: skip
 
 PAYMENT_REQUEST_TEMPLATE = {
     "filingInfo": {"filingTypes": [{"filingTypeCode": "RENTAL_FEE"}]},
