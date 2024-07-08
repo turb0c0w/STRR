@@ -187,7 +187,7 @@
             class="mobile:mx-[8px]"
             @click="() => navigateTo(`/application-details/${applicationId}/ltsa`)"
           >
-          {{ tApplicationDetails('ltsa-details') }}
+            {{ tApplicationDetails('ltsa-details') }}
           </a>
         </div>
         <div class="mt-[40px]">

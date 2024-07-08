@@ -34,7 +34,7 @@
       <div class="mt-[40px]">
         <div>
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
-          {{ tAutoApproval('provisional-logic') }}
+            {{ tAutoApproval('provisional-logic') }}
           </p>
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
             <div class="flex flex-col justify-between w-full mobile:flex-col">

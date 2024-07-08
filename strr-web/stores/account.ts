@@ -80,6 +80,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     )
       .then((response) => {
         tos.value = response.data
+        navigateTo('/account-select')
         return response.data
       })
   }

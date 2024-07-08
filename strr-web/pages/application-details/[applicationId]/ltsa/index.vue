@@ -79,14 +79,14 @@
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
             <div class="d:hidden">
               <BcrosFormSectionReviewItem
-              :title="tLtsa('given')"
+                :title="tLtsa('given')"
               >
                 <p>
                   {{ ownerRows[0].givenName }}
                 </p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
-              :title="tLtsa('last')"
+                :title="tLtsa('last')"
               >
                 <p>
                   {{ ownerRows[0].lastName }}
