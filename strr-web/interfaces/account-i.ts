@@ -220,8 +220,8 @@ export interface CreateAccountFormAPII {
     principalResidence: {
       isPrincipalResidence: boolean,
       agreedToRentalAct: boolean,
-      nonPrincipalOption: string,
-      specifiedServiceProvider: string,
+      nonPrincipalOption?: string,
+      specifiedServiceProvider?: string,
       agreedToSubmit: boolean,
     }
     primaryContact?: ContactAPII,
