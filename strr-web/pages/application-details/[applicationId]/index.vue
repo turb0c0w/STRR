@@ -261,7 +261,7 @@ const history = await getRegistrationHistory(applicationId.toString())
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {
-    if (invoices.length === 0) {
+  if (invoices.length === 0) {
     return {
       text: tRegistrationStatus('applied'),
       alert: AlertsFlavourE.APPLIED
