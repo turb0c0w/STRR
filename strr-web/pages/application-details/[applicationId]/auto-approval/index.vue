@@ -56,6 +56,8 @@ const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
 const tAutoApproval = (translationKey: string) => t(`auto-approval.${translationKey}`)
+const automaticRows = ref<{ [key: string]: string }[]>([])
+const provisionalRows = ref<{ [key: string]: string }[]>([])
 
 const { applicationId } = route.params
 
@@ -65,43 +67,58 @@ const application = await getRegistration(applicationId.toString())
 
 const data: AutoApprovalDataI[] = await getAutoApproval(applicationId.toString()) || {} as AutoApprovalDataI[]
 
-const automaticRows = [
-  {
-    criteria: tAutoApproval('renting'),
-    outcome: data[0].record.renting ? tAutoApproval('yes') : tAutoApproval('no')
-  },
-  {
-    criteria: tAutoApproval('accomodation-selected'),
-    outcome: data[0].record.service_provider ? tAutoApproval('yes') : tAutoApproval('no')
-  },
-  {
-    criteria: tAutoApproval('pr-exempt'),
-    outcome: data[0].record.pr_exempt
-      ? tAutoApproval('exempt')
-      : data[0].record.pr_exempt === false
-        ? tAutoApproval('not-exempt')
-        : tAutoApproval('lookup-failed')
+const buildAutomaticRows = (rowsData: AutoApprovalDataI[]) => {
+  if (rowsData[0].record.renting !== null) {
+    automaticRows.value.push({
+      criteria: tAutoApproval('renting'),
+      outcome: rowsData[0].record.renting ? tAutoApproval('yes') : tAutoApproval('no')
+    })
   }
-]
+  if (rowsData[0].record.service_provider !== null) {
+    automaticRows.value.push({
+      criteria: tAutoApproval('accomodation-selected'),
+      outcome: rowsData[0].record.service_provider ? tAutoApproval('yes') : tAutoApproval('no')
+    })
+  }
+  if (rowsData[0].record.pr_exempt !== null) {
+    automaticRows.value.push({
+      criteria: tAutoApproval('pr-exempt'),
+      outcome: rowsData[0].record.pr_exempt
+        ? tAutoApproval('exempt')
+        : rowsData[0].record.pr_exempt === false
+          ? tAutoApproval('not-exempt')
+          : tAutoApproval('lookup-failed')
+    })
+  }
+}
 
-const provisionalRows = [
-  {
-    criteria: tAutoApproval('do-addresses-match'),
-    outcome: data[0].record.address_match ? tAutoApproval('do') : tAutoApproval('do-not')
-  },
-  {
-    criteria: tAutoApproval('bl-required-provided'),
-    outcome: data[0].record.business_license_required_provided
-      ? tAutoApproval('required-provided')
-      : data[0].record.business_license_not_required_not_provided
-        ? tAutoApproval('not-required-not-provided')
-        : tAutoApproval('required-not-provided')
-  },
-  {
-    criteria: tAutoApproval('title-check'),
-    outcome: data[0].record.title_check ? tAutoApproval('passed') : tAutoApproval('did-not-pass')
+const buildProvisionalRows = (rowsData: AutoApprovalDataI[]) => {
+  if (rowsData[0].record.address_match !== null) {
+    provisionalRows.value.push({
+      criteria: tAutoApproval('do-addresses-match'),
+      outcome: rowsData[0].record.address_match ? tAutoApproval('do') : tAutoApproval('do-not')
+    })
   }
-]
+  if (rowsData[0].record.business_license_required_provided !== null) {
+    provisionalRows.value.push({
+      criteria: tAutoApproval('do-addresses-match'),
+      outcome: rowsData[0].record.business_license_required_provided
+        ? tAutoApproval('required-provided')
+        : rowsData[0].record.business_license_not_required_not_provided
+          ? tAutoApproval('not-required-not-provided')
+          : tAutoApproval('required-not-provided')
+    })
+  }
+  if (rowsData[0].record.title_check !== null) {
+    provisionalRows.value.push({
+      criteria: tAutoApproval('title-check'),
+      outcome: rowsData[0].record.title_check ? tAutoApproval('passed') : tAutoApproval('did-not-pass')
+    })
+  }
+}
+
+buildAutomaticRows(data)
+buildProvisionalRows(data)
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {

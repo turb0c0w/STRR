@@ -92,7 +92,7 @@
             <div class="flex-1" />
           </div>
         </div>
-        <div class="mt-[40px]">
+        <div class="mt-[40px] relative overflow-x-scroll">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('primary-contact') }}
           </p>
@@ -120,11 +120,14 @@
               </BcrosFormSectionReviewItem>
             </div>
           </div>
-          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] m:hidden">
+          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] m:hidden overflow-x-scroll w-[150%]">
             <UTable :rows="application ? getContactRows(application?.primaryContact): []" />
           </div>
         </div>
-        <div v-if="application && application?.secondaryContact" class="mt-[40px]">
+        <div
+          v-if="application && application?.secondaryContact"
+          class="mt-[40px] relative overflow-x-scroll"
+        >
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('secondary-contact') }}
           </p>
@@ -152,7 +155,7 @@
               </BcrosFormSectionReviewItem>
             </div>
           </div>
-          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] m:hidden">
+          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] m:hidden overflow-x-scroll w-[150%]">
             <UTable :rows="getContactRows(application?.secondaryContact)" />
           </div>
         </div>
@@ -299,8 +302,8 @@ const getContactRows = (contactBlock: ContactI) => [{
     ${contactBlock.mailingAddress.province} 
     ${contactBlock.mailingAddress.postalCode}
   `,
-  emailAddress: contactBlock.details.emailAddress,
-  phoneNumber:
+  'Email Address': contactBlock.details.emailAddress,
+  'Phone Number':
     `
       ${contactBlock.details.phoneNumber}
       ${contactBlock.details.extension
