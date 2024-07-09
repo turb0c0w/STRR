@@ -162,18 +162,18 @@ const flavour = application ? getFlavour(application.status, application.invoice
 const data: LtsaDataI[] = await getLtsa(applicationId.toString()) || {} as LtsaDataI[]
 
 const ownerRows = [{
-  givenName: data[0].ownershipGroups[0].titleOwners[0].givenName,
-  lastName: data[0].ownershipGroups[0].titleOwners[0].lastNameOrCorpName1,
+  givenName: data[0].record.ownershipGroups[0].titleOwners[0].givenName,
+  lastName: data[0].record.ownershipGroups[0].titleOwners[0].lastNameOrCorpName1,
   address: `
-    ${data[0].ownershipGroups[0].titleOwners[0].address.addressLine1}
-    ${data[0].ownershipGroups[0].titleOwners[0].address.addressLine2
-      ? `${data[0].ownershipGroups[0].titleOwners[0].address.addressLine2} , `
+    ${data[0].record.ownershipGroups[0].titleOwners[0].address.addressLine1}
+    ${data[0].record.ownershipGroups[0].titleOwners[0].address.addressLine2
+      ? `${data[0].record.ownershipGroups[0].titleOwners[0].address.addressLine2} , `
       : ', '}
-    ${data[0].ownershipGroups[0].titleOwners[0].address.city}
-    ${data[0].ownershipGroups[0].titleOwners[0].address.country}
-    ${data[0].ownershipGroups[0].titleOwners[0].address.postalCode}
+    ${data[0].record.ownershipGroups[0].titleOwners[0].address.city}
+    ${data[0].record.ownershipGroups[0].titleOwners[0].address.country}
+    ${data[0].record.ownershipGroups[0].titleOwners[0].address.postalCode}
   `,
-  occupation: data[0].ownershipGroups[0].titleOwners[0].occupationDescription
+  occupation: data[0].record.ownershipGroups[0].titleOwners[0].occupationDescription
 }]
 
 </script>
