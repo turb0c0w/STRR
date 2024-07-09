@@ -80,12 +80,22 @@ export const formStateToApi = (
     businessLicense: formState.propertyDetails.businessLicense
   }
   formData.selectedAccount.sbc_account_id = selectedAccountId
-  formData.registration.principalResidence = {
-    isPrincipalResidence: formState.principal.isPrincipal ?? false,
-    agreedToRentalAct: formState.principal.declaration,
-    nonPrincipalOption: formState.principal.reason ?? 'n/a',
-    specifiedServiceProvider: formState.principal.otherReason ?? 'n/a',
-    agreedToSubmit: formState.principal.agreeToSubmit
+  if (formState.principal.isPrincipal) {
+    formData.registration.principalResidence = {
+      isPrincipalResidence: formState.principal.isPrincipal ?? false,
+      agreedToRentalAct: formState.principal.declaration,
+      agreedToSubmit: formState.principal.agreeToSubmit
+    }
+    delete formState.principal.reason
+    delete formState.principal.otherReason
+  } else {
+    formData.registration.principalResidence = {
+      isPrincipalResidence: formState.principal.isPrincipal ?? false,
+      agreedToRentalAct: formState.principal.declaration,
+      nonPrincipalOption: formState.principal.reason ?? 'n/a',
+      specifiedServiceProvider: formState.principal.otherReason ?? 'n/a',
+      agreedToSubmit: formState.principal.agreeToSubmit
+    }
   }
 
   return formData
