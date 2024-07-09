@@ -27,7 +27,7 @@
         </p>
         <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
           <div class="flex flex-col justify-between w-full mobile:flex-col">
-            <UTable :rows="buildAutomaticRows" />
+            <UTable :rows="automaticRows" />
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
           </p>
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
             <div class="flex flex-col justify-between w-full mobile:flex-col">
-              <UTable :rows="buildProvisionalRows" />
+              <UTable :rows="provisionalRows" />
             </div>
           </div>
         </div>
@@ -56,6 +56,8 @@ const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
 const tAutoApproval = (translationKey: string) => t(`auto-approval.${translationKey}`)
+const automaticRows = ref<{ [key: string]: string }[]>([])
+const provisionalRows = ref<{ [key: string]: string }[]>([])
 
 const { applicationId } = route.params
 
@@ -65,59 +67,58 @@ const application = await getRegistration(applicationId.toString())
 
 const data: AutoApprovalDataI[] = await getAutoApproval(applicationId.toString()) || {} as AutoApprovalDataI[]
 
-const buildAutomaticRows = () => {
-  const rows = []
-  if (data[0].record.renting !== null) {
-    rows.push({
+const buildAutomaticRows = (rowsData: AutoApprovalDataI[]) => {
+  if (rowsData[0].record.renting !== null) {
+    automaticRows.value.push({
       criteria: tAutoApproval('renting'),
-      outcome: data[0].record.renting ? tAutoApproval('yes') : tAutoApproval('no')
+      outcome: rowsData[0].record.renting ? tAutoApproval('yes') : tAutoApproval('no')
     })
   }
-  if (data[0].record.service_provider !== null) {
-    rows.push({
+  if (rowsData[0].record.service_provider !== null) {
+    automaticRows.value.push({
       criteria: tAutoApproval('accomodation-selected'),
-      outcome: data[0].record.service_provider ? tAutoApproval('yes') : tAutoApproval('no')
+      outcome: rowsData[0].record.service_provider ? tAutoApproval('yes') : tAutoApproval('no')
     })
   }
-  if (data[0].record.pr_exempt !== null) {
-    rows.push({
-      criteria: tAutoApproval('accomodation-selected'),
-      outcome: data[0].record.pr_exempt
+  if (rowsData[0].record.pr_exempt !== null) {
+    automaticRows.value.push({
+      criteria: tAutoApproval('pr-exempt'),
+      outcome: rowsData[0].record.pr_exempt
         ? tAutoApproval('exempt')
-        : data[0].record.pr_exempt === false
+        : rowsData[0].record.pr_exempt === false
           ? tAutoApproval('not-exempt')
           : tAutoApproval('lookup-failed')
     })
   }
-  return rows
 }
 
-const buildProvisionalRows = () => {
-  const provisionalRows = []
-  if (data[0].record.address_match !== null) {
-    provisionalRows.push({
+const buildProvisionalRows = (rowsData: AutoApprovalDataI[]) => {
+  if (rowsData[0].record.address_match !== null) {
+    provisionalRows.value.push({
       criteria: tAutoApproval('do-addresses-match'),
-      outcome: data[0].record.address_match ? tAutoApproval('do') : tAutoApproval('do-not')
+      outcome: rowsData[0].record.address_match ? tAutoApproval('do') : tAutoApproval('do-not')
     })
   }
-  if (data[0].record.business_license_required_provided !== null) {
-    provisionalRows.push({
+  if (rowsData[0].record.business_license_required_provided !== null) {
+    provisionalRows.value.push({
       criteria: tAutoApproval('do-addresses-match'),
-      outcome: data[0].record.business_license_required_provided
+      outcome: rowsData[0].record.business_license_required_provided
         ? tAutoApproval('required-provided')
-        : data[0].record.business_license_not_required_not_provided
+        : rowsData[0].record.business_license_not_required_not_provided
           ? tAutoApproval('not-required-not-provided')
           : tAutoApproval('required-not-provided')
     })
   }
-  if (data[0].record.title_check !== null) {
-    provisionalRows.push({
+  if (rowsData[0].record.title_check !== null) {
+    provisionalRows.value.push({
       criteria: tAutoApproval('title-check'),
-      outcome: data[0].record.title_check ? tAutoApproval('passed') : tAutoApproval('did-not-pass')
+      outcome: rowsData[0].record.title_check ? tAutoApproval('passed') : tAutoApproval('did-not-pass')
     })
   }
-  return provisionalRows
 }
+
+buildAutomaticRows(data)
+buildProvisionalRows(data)
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {
