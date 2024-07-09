@@ -108,7 +108,7 @@ class ApprovalService:
         renting = registration.rental_property.ownership_type == OwnershipType.RENT.name
         other_service_provider = registration.eligibility.specified_service_provider is not None
         pr_exempt = not registration.eligibility.is_principal_residence
-        bn_provided = registration.rental_property.property_manager.primary_contact.business_number is not None
+        bl_provided = registration.rental_property.local_business_licence is not None
         bcsc_address = AuthService.get_sbc_accounts_mailing_address(token, registration.sbc_account_id)
 
         # Status setting just temporary for visibility
@@ -146,58 +146,6 @@ class ApprovalService:
 
                 if not pr_exempt:
                     auto_approval.pr_exempt = False
-                    geocode_response = GeoCoderService.get_geocode_by_address(address)
-                    longitude, latitude = cls.extract_longitude_and_latitude(geocode_response)
-                    organization = models.DSSOrganization.lookup_by_geocode(longitude, latitude)
-                    if organization["is_business_licence_required"]:
-                        auto_approval.business_license_required = True
-                        if bn_provided:
-                            auto_approval.business_license_required_provided = True
-                        else:
-                            auto_approval.business_license_required_not_provided = True
-                            registration.status = RegistrationStatus.UNDER_REVIEW
-                            registration.save()
-                            EventRecordsService.save_event_record(
-                                EventRecordType.AUTO_APPROVAL_FULL_REVIEW,
-                                EventRecordType.AUTO_APPROVAL_FULL_REVIEW.value,
-                                True,
-                                registration.user_id,
-                                registration.id,
-                            )
-                            return auto_approval
-                    else:
-                        auto_approval.business_license_not_required_not_provided = True
-
-                    if pid:
-                        ltsa_data = LtsaService.get_title_details_from_pid(pid)
-                        ltsa_response = LtsaService.build_ltsa_response(registration.id, ltsa_data)
-                        owner_title_match = cls.check_full_name_exists_in_ownership_groups(ltsa_response, owner_name)
-                    else:
-                        owner_title_match = False
-                    if owner_title_match:
-                        auto_approval.title_check = True
-                        registration.status = RegistrationStatus.PROVISIONAL
-                        registration.save()
-                        EventRecordsService.save_event_record(
-                            EventRecordType.AUTO_APPROVAL_PROVISIONAL,
-                            EventRecordType.AUTO_APPROVAL_PROVISIONAL.value,
-                            True,
-                            registration.user_id,
-                            registration.id,
-                        )
-                    else:
-                        auto_approval.title_check = False
-                        registration.status = RegistrationStatus.UNDER_REVIEW
-                        registration.save()
-                        EventRecordsService.save_event_record(
-                            EventRecordType.AUTO_APPROVAL_FULL_REVIEW,
-                            EventRecordType.AUTO_APPROVAL_FULL_REVIEW.value,
-                            True,
-                            registration.user_id,
-                            registration.id,
-                        )
-                    return auto_approval
-                else:
                     if not compare_addresses(registration.rental_property.address, bcsc_address):
                         auto_approval.address_match = False
                         registration.status = RegistrationStatus.UNDER_REVIEW
@@ -215,8 +163,46 @@ class ApprovalService:
                         geocode_response = GeoCoderService.get_geocode_by_address(address)
                         longitude, latitude = cls.extract_longitude_and_latitude(geocode_response)
                         organization = models.DSSOrganization.lookup_by_geocode(longitude, latitude)
-                        if organization["is_principal_residence_required"]:
-                            auto_approval.pr_exempt = False
+                        if organization["is_business_licence_required"]:
+                            auto_approval.business_license_required = True
+                            if bl_provided:
+                                auto_approval.business_license_required_provided = True
+                            else:
+                                auto_approval.business_license_required_not_provided = True
+                                registration.status = RegistrationStatus.UNDER_REVIEW
+                                registration.save()
+                                EventRecordsService.save_event_record(
+                                    EventRecordType.AUTO_APPROVAL_FULL_REVIEW,
+                                    EventRecordType.AUTO_APPROVAL_FULL_REVIEW.value,
+                                    True,
+                                    registration.user_id,
+                                    registration.id,
+                                )
+                                return auto_approval
+                        else:
+                            auto_approval.business_license_not_required_not_provided = True
+
+                        if pid:
+                            ltsa_data = LtsaService.get_title_details_from_pid(pid)
+                            ltsa_response = LtsaService.build_ltsa_response(registration.id, ltsa_data)
+                            owner_title_match = cls.check_full_name_exists_in_ownership_groups(
+                                ltsa_response, owner_name
+                            )
+                        else:
+                            owner_title_match = False
+                        if owner_title_match:
+                            auto_approval.title_check = True
+                            registration.status = RegistrationStatus.PROVISIONAL
+                            registration.save()
+                            EventRecordsService.save_event_record(
+                                EventRecordType.AUTO_APPROVAL_PROVISIONAL,
+                                EventRecordType.AUTO_APPROVAL_PROVISIONAL.value,
+                                True,
+                                registration.user_id,
+                                registration.id,
+                            )
+                        else:
+                            auto_approval.title_check = False
                             registration.status = RegistrationStatus.UNDER_REVIEW
                             registration.save()
                             EventRecordsService.save_event_record(
@@ -226,18 +212,34 @@ class ApprovalService:
                                 registration.user_id,
                                 registration.id,
                             )
-                        else:
-                            auto_approval.pr_exempt = True
-                            registration.status = RegistrationStatus.PROVISIONAL
-                            registration.save()
-                            EventRecordsService.save_event_record(
-                                EventRecordType.AUTO_APPROVAL_APPROVED,
-                                EventRecordType.AUTO_APPROVAL_APPROVED.value,
-                                True,
-                                registration.user_id,
-                                registration.id,
-                            )
                         return auto_approval
+                else:
+                    geocode_response = GeoCoderService.get_geocode_by_address(address)
+                    longitude, latitude = cls.extract_longitude_and_latitude(geocode_response)
+                    organization = models.DSSOrganization.lookup_by_geocode(longitude, latitude)
+                    if organization["is_principal_residence_required"]:
+                        auto_approval.pr_exempt = False
+                        registration.status = RegistrationStatus.UNDER_REVIEW
+                        registration.save()
+                        EventRecordsService.save_event_record(
+                            EventRecordType.AUTO_APPROVAL_FULL_REVIEW,
+                            EventRecordType.AUTO_APPROVAL_FULL_REVIEW.value,
+                            True,
+                            registration.user_id,
+                            registration.id,
+                        )
+                    else:
+                        auto_approval.pr_exempt = True
+                        registration.status = RegistrationStatus.APPROVED
+                        registration.save()
+                        EventRecordsService.save_event_record(
+                            EventRecordType.AUTO_APPROVAL_APPROVED,
+                            EventRecordType.AUTO_APPROVAL_APPROVED.value,
+                            True,
+                            registration.user_id,
+                            registration.id,
+                        )
+                    return auto_approval
         except Exception as default_exception:  # noqa: B902; log error
             current_app.logger.error("error in approval logoic:" + repr(default_exception))
             current_app.logger.error(auto_approval)
