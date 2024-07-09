@@ -302,8 +302,8 @@ const getContactRows = (contactBlock: ContactI) => [{
     ${contactBlock.mailingAddress.province} 
     ${contactBlock.mailingAddress.postalCode}
   `,
-  emailAddress: contactBlock.details.emailAddress,
-  phoneNumber:
+  'Email Address': contactBlock.details.emailAddress,
+  'Phone Number':
     `
       ${contactBlock.details.phoneNumber}
       ${contactBlock.details.extension

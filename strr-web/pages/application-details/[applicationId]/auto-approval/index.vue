@@ -27,7 +27,7 @@
         </p>
         <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
           <div class="flex flex-col justify-between w-full mobile:flex-col">
-            <UTable :rows="automaticRows" />
+            <UTable :rows="buildAutomaticRows" />
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
           </p>
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
             <div class="flex flex-col justify-between w-full mobile:flex-col">
-              <UTable :rows="provisionalRows" />
+              <UTable :rows="buildProvisionalRows" />
             </div>
           </div>
         </div>
@@ -65,43 +65,59 @@ const application = await getRegistration(applicationId.toString())
 
 const data: AutoApprovalDataI[] = await getAutoApproval(applicationId.toString()) || {} as AutoApprovalDataI[]
 
-const automaticRows = [
-  {
-    criteria: tAutoApproval('renting'),
-    outcome: data[0].record.renting ? tAutoApproval('yes') : tAutoApproval('no')
-  },
-  {
-    criteria: tAutoApproval('accomodation-selected'),
-    outcome: data[0].record.service_provider ? tAutoApproval('yes') : tAutoApproval('no')
-  },
-  {
-    criteria: tAutoApproval('pr-exempt'),
-    outcome: data[0].record.pr_exempt
-      ? tAutoApproval('exempt')
-      : data[0].record.pr_exempt === false
-        ? tAutoApproval('not-exempt')
-        : tAutoApproval('lookup-failed')
+const buildAutomaticRows = () => {
+  const rows = []
+  if (data[0].record.renting !== null) {
+    rows.push({
+      criteria: tAutoApproval('renting'),
+      outcome: data[0].record.renting ? tAutoApproval('yes') : tAutoApproval('no')
+    })
   }
-]
+  if (data[0].record.service_provider !== null) {
+    rows.push({
+      criteria: tAutoApproval('accomodation-selected'),
+      outcome: data[0].record.service_provider ? tAutoApproval('yes') : tAutoApproval('no')
+    })
+  }
+  if (data[0].record.pr_exempt !== null) {
+    rows.push({
+      criteria: tAutoApproval('accomodation-selected'),
+      outcome: data[0].record.pr_exempt
+        ? tAutoApproval('exempt')
+        : data[0].record.pr_exempt === false
+          ? tAutoApproval('not-exempt')
+          : tAutoApproval('lookup-failed')
+    })
+  }
+  return rows
+}
 
-const provisionalRows = [
-  {
-    criteria: tAutoApproval('do-addresses-match'),
-    outcome: data[0].record.address_match ? tAutoApproval('do') : tAutoApproval('do-not')
-  },
-  {
-    criteria: tAutoApproval('bl-required-provided'),
-    outcome: data[0].record.business_license_required_provided
-      ? tAutoApproval('required-provided')
-      : data[0].record.business_license_not_required_not_provided
-        ? tAutoApproval('not-required-not-provided')
-        : tAutoApproval('required-not-provided')
-  },
-  {
-    criteria: tAutoApproval('title-check'),
-    outcome: data[0].record.title_check ? tAutoApproval('passed') : tAutoApproval('did-not-pass')
+const buildProvisionalRows = () => {
+  const provisionalRows = []
+  if (data[0].record.address_match !== null) {
+    provisionalRows.push({
+      criteria: tAutoApproval('do-addresses-match'),
+      outcome: data[0].record.address_match ? tAutoApproval('do') : tAutoApproval('do-not')
+    })
   }
-]
+  if (data[0].record.business_license_required_provided !== null) {
+    provisionalRows.push({
+      criteria: tAutoApproval('do-addresses-match'),
+      outcome: data[0].record.business_license_required_provided
+        ? tAutoApproval('required-provided')
+        : data[0].record.business_license_not_required_not_provided
+          ? tAutoApproval('not-required-not-provided')
+          : tAutoApproval('required-not-provided')
+    })
+  }
+  if (data[0].record.title_check !== null) {
+    provisionalRows.push({
+      criteria: tAutoApproval('title-check'),
+      outcome: data[0].record.title_check ? tAutoApproval('passed') : tAutoApproval('did-not-pass')
+    })
+  }
+  return provisionalRows
+}
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {
