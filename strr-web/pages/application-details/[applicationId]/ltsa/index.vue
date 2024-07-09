@@ -137,7 +137,13 @@ const formatDate = (date: Date) => date.toLocaleDateString('en-US')
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {
-  if (status === 'PENDING' && invoices[0].payment_status_code === 'COMPLETED') {
+  if (invoices.length === 0) {
+    return {
+      text: tRegistrationStatus('applied'),
+      alert: AlertsFlavourE.APPLIED
+    }
+  }
+  if (invoices[0].payment_status_code === 'COMPLETED') {
     return {
       text: tRegistrationStatus('applied'),
       alert: AlertsFlavourE.APPLIED

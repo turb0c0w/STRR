@@ -261,7 +261,13 @@ const history = await getRegistrationHistory(applicationId.toString())
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {
-  if (status === 'PENDING' && invoices[0].payment_status_code === 'COMPLETED') {
+  if (invoices.length === 0) {
+    return {
+      text: tRegistrationStatus('applied'),
+      alert: AlertsFlavourE.APPLIED
+    }
+  }
+  if (invoices[0].payment_status_code === 'COMPLETED') {
     return {
       text: tRegistrationStatus('applied'),
       alert: AlertsFlavourE.APPLIED
@@ -301,6 +307,8 @@ const getContactRows = (contactBlock: ContactI) => [{
         ? contactBlock.details.extension
         : ''
       }
-    `
+    `,
+  SIN: contactBlock.socialInsuranceNumber,
+  'BN (GST)': contactBlock.businessNumber
 }]
 </script>

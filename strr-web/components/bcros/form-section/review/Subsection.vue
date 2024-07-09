@@ -4,12 +4,12 @@
       <div class="flex flex-col w-full">
         <div class="flex flex-row justify-between w-full mb-[24px] mobile:flex-col">
           <BcrosFormSectionReviewItem
-            :title="tContact('preferred')"
-            :content="state.preferredName ? state.preferredName: '-'"
-          />
-          <BcrosFormSectionReviewItem
             :title="tContact('fullName')"
             :content="getNames()"
+          />
+          <BcrosFormSectionReviewItem
+            :title="tContact('preferred')"
+            :content="state.preferredName ? state.preferredName: '-'"
           />
           <BcrosFormSectionReviewItem
             :title="tContact('phoneNumber')"
