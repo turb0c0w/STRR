@@ -30,13 +30,13 @@
             <BcrosFormSectionReviewItem
               :title="tLtsa('tax')"
             >
-              <p>{{ data.taxAuthorities[0].authorityName }}</p>
+              <p>{{ data[0].record.taxAuthorities[0].authorityName }}</p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
               :title="tLtsa('date')"
               class="d:mt-[24px]"
             >
-              <p>{{ formatDate(new Date(data.tombstone.applicationReceivedDate)) }}</p>
+              <p>{{ formatDate(new Date(data[0].record.tombstone.applicationReceivedDate)) }}</p>
             </BcrosFormSectionReviewItem>
           </div>
           <div class="flex flex-col justify-between w-full mobile:flex-col mr-[40px]">
@@ -44,7 +44,7 @@
               :title="tLtsa('date')"
             >
               <p>
-                {{ data.descriptionsOfLand[0].fullLegalDescription }}
+                {{ data[0].record.descriptionsOfLand[0].fullLegalDescription }}
               </p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
@@ -52,23 +52,23 @@
               class="d:mt-[24px]"
             >
               <p>
-                {{ data.descriptionsOfLand[0].parcelIdentifier }}
+                {{ data[0].record.descriptionsOfLand[0].parcelIdentifier }}
               </p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
               :title="tLtsa('parcel')"
               class="d:mt-[24px]"
             >
-              <p>{{ data.descriptionsOfLand[0].parcelStatus }}</p>
+              <p>{{ data[0].record.descriptionsOfLand[0].parcelStatus }}</p>
             </BcrosFormSectionReviewItem>
           </div>
           <div class="flex flex-col justify-between w-full mobile:flex-col">
             <BcrosFormSectionReviewItem
               :title="tLtsa('parcel')"
             >
-              <p>{{ `${tLtsa('parcel')}: ${data.ownershipGroups[0].jointTenancyIndication}` }}</p>
-              <p>{{ `${tLtsa('numerator')}: ${data.ownershipGroups[0].interestFractionNumerator}` }}</p>
-              <p>{{ `${tLtsa('denominator')}: ${data.ownershipGroups[0].interestFractionDenominator}` }}</p>
+              <p>{{ `${tLtsa('parcel')}: ${data[0].record.ownershipGroups[0].jointTenancyIndication}` }}</p>
+              <p>{{ `${tLtsa('numerator')}: ${data[0].record.ownershipGroups[0].interestFractionNumerator}` }}</p>
+              <p>{{ `${tLtsa('denominator')}: ${data[0].record.ownershipGroups[0].interestFractionDenominator}` }}</p>
             </BcrosFormSectionReviewItem>
           </div>
         </div>
