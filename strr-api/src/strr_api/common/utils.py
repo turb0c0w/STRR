@@ -17,5 +17,4 @@ def compare_addresses(property_address: Address, sbc_address: SBCMailingAddress)
         and property_address.postal_code.lower().replace(" ", "") == sbc_address.postalCode.lower().replace(" ", "")
         and property_address.country.lower() == sbc_address.country.lower()
     )
-    print(f"result: {result}")
     return result
