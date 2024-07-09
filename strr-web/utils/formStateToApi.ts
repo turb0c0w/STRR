@@ -77,7 +77,7 @@ export const formStateToApi = (
     parcelIdentifier: formState.propertyDetails.parcelIdentifier,
     propertyType,
     ownershipType,
-    businessLicense: formState.propertyDetails.businessLicense,
+    businessLicense: formState.propertyDetails.businessLicense
   }
   formData.selectedAccount.sbc_account_id = selectedAccountId
   formData.registration.principalResidence = {
