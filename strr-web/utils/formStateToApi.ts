@@ -31,6 +31,8 @@ export const formStateToApi = (
             ? formState.secondaryContact?.lastName
             : '-'
     }
+    dataContact.socialInsuranceNumber = stateContact.socialInsuranceNumber ?? ''
+    dataContact.businessNumber = stateContact.businessNumber ?? ''
     dataContact.dateOfBirth = `${stateContact.birthYear}-${stateContact.birthMonth}-${stateContact.birthDay}`
     dataContact.details = {
       preferredName: stateContact.preferredName,
@@ -68,13 +70,14 @@ export const formStateToApi = (
     city: formState.propertyDetails.city ?? '',
     postalCode: formState.propertyDetails.postalCode ?? '',
     province: formState.propertyDetails.province ?? '',
-    country: formState.propertyDetails.country ?? ''
+    country: formState.propertyDetails.country ?? '',
+    nickname: formState.propertyDetails.nickname ?? ''
   }
   formData.registration.unitDetails = {
     parcelIdentifier: formState.propertyDetails.parcelIdentifier,
     propertyType,
     ownershipType,
-    businessLicense: formState.propertyDetails.businessLicense
+    businessLicense: formState.propertyDetails.businessLicense,
   }
   formData.selectedAccount.sbc_account_id = selectedAccountId
   formData.registration.principalResidence = {

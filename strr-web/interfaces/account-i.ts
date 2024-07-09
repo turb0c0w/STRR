@@ -48,6 +48,8 @@ export interface OrgI {
 }
 
 export interface ContactI {
+  socialInsuranceNumber: string,
+  businessNumber: string,
   dateOfBirth: string,
   details: {
     emailAddress: string,
@@ -170,7 +172,11 @@ export interface MailingAddressAPII {
   city: string,
   postalCode: string,
   province: string,
-  country: string,
+  country: string
+}
+
+export interface UnitAddressI extends MailingAddressAPII {
+  nickname: string
 }
 
 export interface ContactNameAPII {
@@ -190,6 +196,8 @@ export interface ContactAPII {
     emailAddress: string
   },
   mailingAddress: MailingAddressAPII
+  socialInsuranceNumber: string,
+  businessNumber: string
 }
 
 export interface SelectedAccountMailingAPII {
@@ -215,7 +223,7 @@ export interface CreateAccountFormAPII {
     }
     primaryContact?: ContactAPII,
     secondaryContact?: ContactAPII,
-    unitAddress: MailingAddressAPII,
+    unitAddress: UnitAddressI,
     unitDetails: {
       parcelIdentifier?: string,
       businessLicense?: string,

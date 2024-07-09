@@ -307,6 +307,8 @@ const getContactRows = (contactBlock: ContactI) => [{
         ? contactBlock.details.extension
         : ''
       }
-    `
+    `,
+    SIN: contactBlock.socialInsuranceNumber,
+    'BN (GST)': contactBlock.businessNumber
 }]
 </script>
