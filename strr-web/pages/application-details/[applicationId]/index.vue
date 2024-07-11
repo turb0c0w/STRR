@@ -203,7 +203,13 @@
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('aa-logic') }}
           </p>
-          <a class="mobile:mx-[8px]" @click="() => navigateTo(`/application-details/${applicationId}/auto-approval`)">
+          <a
+            class="mobile:mx-[8px]"
+            @click="
+              () =>
+                navigateTo(`/application-details/${applicationId}/auto-approval`, { open: { target: '_blank' } })
+            "
+          >
             {{ tApplicationDetails('aa-details') }}
           </a>
         </div>
@@ -258,6 +264,7 @@ const formatDate = (date: Date) => {
   const day = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
   return day
 }
+
 const formatTime = (date: Date): string => date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
 
 const {
