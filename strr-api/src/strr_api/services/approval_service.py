@@ -105,7 +105,7 @@ class ApprovalService:
             + registration.rental_property.address.province
         )
 
-        renting = registration.rental_property.ownership_type == OwnershipType.RENT.name
+        renting = registration.rental_property.ownership_type == OwnershipType.RENT
         other_service_provider = registration.eligibility.specified_service_provider is not None
         pr_exempt = not registration.eligibility.is_principal_residence
         bl_provided = registration.rental_property.local_business_licence is not None
