@@ -27,11 +27,11 @@ It is important to store the copy of user input without any alteration for any r
 
 ## Data Model
 
-[Data Model](Data%20Model.jpg)
+[Data Model](diagrams/Data%20Model.jpg)
 
 
 ## Submission Flow
-[Diagram](Application%20Submission%20Flow.jpg)
+[Diagram](diagrams/Application%20Submission%20Flow.jpg)
 1. When an application is submitted, the application data will be stored in the applications table. The state of the application will be DRAFT by default.
 2. STRR API will create an invoice in the SBC Pay.
 3. Once the API receives invoice creation success message, the application state will be updated to SUBMITTED and success response will be returned to the UI.
@@ -42,7 +42,7 @@ It is important to store the copy of user input without any alteration for any r
 
 ## Approval Flow
 ### Auto Approval Job
-[Diagram](Auto%20Approval%20Process.jpg)
+[Diagram](diagrams/Auto%20Approval%20Process.jpg)
 - Runs every hour or at predefined intervals.
 - Fetches the PAID applications from the applications table.
 - Runs the auto approval logic on the application and updated the application status to APPROVED, REVIEW_REQUIRED or PROVISIONAL. 
