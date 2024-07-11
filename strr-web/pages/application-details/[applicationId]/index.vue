@@ -231,7 +231,7 @@
                 </div>
                 <div>
                   <p class="text-bcGovColor-midGray">
-                    {{ formatTime(new Date(event.created_date)) }}
+                    {{ formatTime(new Date(`${event.created_date}Z`)) }}
                   </p>
                   <p class="font-bold">
                     {{ event.message }}
