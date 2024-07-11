@@ -2,7 +2,7 @@
 - Start Date: 2024-07-10
 - Target Major Version:
 - Reference Issues: n/a
-- Issue:
+- Entity Issue: [22134](https://github.com/bcgov/entity/issues/22134)
 - Implementation PR: (leave this empty)
 
 
