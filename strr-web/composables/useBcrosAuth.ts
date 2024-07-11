@@ -8,7 +8,7 @@ export const useBcrosAuth = () => {
   const { redirect, goToSetupAccount, goToCreateAccount } = useBcrosNavigate()
 
   /** redirect to the correct creation screen based on auth state */
-  function createAccount () {
+  function createAccount() {
     if (keycloak.kc.authenticated) {
       goToSetupAccount()
     } else {
@@ -17,10 +17,10 @@ export const useBcrosAuth = () => {
   }
 
   /** Logout and then redirect to given page (if redirect provided). */
-  async function logout (redirect: string) { await keycloak.logout(redirect) }
+  async function logout(redirect: string) { await keycloak.logout(redirect) }
 
   /** redirect if account status is suspended */
-  function verifyAccountStatus () {
+  function verifyAccountStatus() {
     const accountStatus = account.currentAccount?.accountStatus
     if (accountStatus) {
       if ([AccountStatusE.NSF_SUSPENDED, AccountStatusE.SUSPENDED].includes(accountStatus)) {
@@ -33,7 +33,7 @@ export const useBcrosAuth = () => {
   }
 
   /** Setup keycloak / user auth pieces */
-  async function setupAuth (kcConfig: KeycloakConfig, currentAccountId?: string) {
+  async function setupAuth(kcConfig: KeycloakConfig, currentAccountId?: string) {
     if (!keycloak.kc.authenticated) {
       console.info('Initializing auth setup...')
       // initialize keycloak with user token

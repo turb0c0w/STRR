@@ -87,7 +87,13 @@
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('property-type')"
             >
-              <p>{{ application?.unitDetails.propertyType ?? '-' }}</p>
+              <p>
+                {{
+                  application?.unitDetails.propertyType
+                    ? tPropertyForm(propertyTypeMap[application?.unitDetails.propertyType as keyof PropertyTypeMapI])
+                    : '-'
+                }}
+              </p>
             </BcrosFormSectionReviewItem>
             <div class="flex-1" />
           </div>
@@ -188,7 +194,7 @@
           </p>
           <a
             class="mobile:mx-[8px]"
-            @click="() => navigateTo(`/application-details/${applicationId}/ltsa`)"
+            @click="() => navigateTo(`/application-details/${applicationId}/ltsa`, { open: { target: '_blank' } })"
           >
             {{ tApplicationDetails('ltsa-details') }}
           </a>
@@ -236,11 +242,13 @@
 
 <script setup lang="ts">
 import { AlertsFlavourE } from '#imports'
+import { propertyTypeMap } from '~/utils/propertyTypeMap'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
+const tPropertyForm = (translationKey: string) => t(`create-account.property-form.${translationKey}`)
 
 const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
