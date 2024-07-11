@@ -20,7 +20,10 @@
       </BcrosChip>
     </div>
     <div class="flex flex-row text-bcGovColor-activeBlue justify-start">
-      <p class="mr-[22px] cursor-pointer" @click="() => navigateTo(`/application-details/${applicationId}`)">
+      <p
+        class="mr-[22px] cursor-pointer"
+        @click="() => navigateTo(`/application-details/${applicationId}`, { open: { target: '_blank' } })"
+      >
         {{ tRegistrationStatus('view') }}
       </p>
       <p class="mr-[22px] cursor-pointer">
