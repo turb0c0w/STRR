@@ -79,10 +79,6 @@ const updateFees = async () => {
   fee.value = await getFeeAmount()
 }
 
-onMounted(() => {
-  updateFees()
-})
-
 const t = useNuxtApp().$i18n.t
 const {
   currentAccount,
@@ -92,6 +88,14 @@ const {
   updateTosAcceptance,
   me
 } = useBcrosAccount()
+
+onMounted(() => {
+  // if no SBC acccounts exist redirect to SBC account creation
+  if (!me?.settings.length) {
+    navigateTo('/finalization')
+  }
+  updateFees()
+})
 
 const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryContact.value }
 
