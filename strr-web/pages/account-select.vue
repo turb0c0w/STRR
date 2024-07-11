@@ -29,6 +29,10 @@ const { userOrgs, me, updateTosAcceptance } = useBcrosAccount()
 const existingAccountsTitle = `${t('account.existing-account-section.title')} (${userOrgs.length})`
 
 onMounted(async () => {
+  // if no sbc accounts navigate to sbc account creation
+  if (!me?.settings.length) {
+    navigateTo('/finalization')
+  }
   const tos = await updateTosAcceptance()
   const currentTosAccepted = me?.profile.userTerms.isTermsOfUseAccepted &&
     me?.profile.userTerms.termsOfUseAcceptedVersion === tos?.versionId
