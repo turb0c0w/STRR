@@ -46,5 +46,6 @@ from .approval_service import ApprovalService  # isort: skip
 PAYMENT_REQUEST_TEMPLATE = {
     "filingInfo": {"filingTypes": [{"filingTypeCode": "RENTAL_FEE"}]},
     "businessInfo": {"corpType": "STRR"},
+    "paymentInfo": {"methodOfPayment": "DIRECT_PAY"},
 }
 strr_pay = PayService(default_invoice_payload=PAYMENT_REQUEST_TEMPLATE)
