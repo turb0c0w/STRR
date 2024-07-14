@@ -96,6 +96,48 @@ def get_registrations():
     )
 
 
+@bp.route("/<registration_id>", methods=("GET",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def get_registration(registration_id):
+    """
+    Get registration by id
+    ---
+    tags:
+      - registration
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+      404:
+        description:
+    """
+
+    try:
+        user = User.find_by_jwt_token(g.jwt_oidc_token_info)
+        if not user:
+            raise AuthException()
+
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
+
+        return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.OK
+
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+
+
 @bp.route("", methods=("POST",))
 @swag_from({"security": [{"Bearer": []}]})
 @cross_origin(origin="*")
@@ -524,10 +566,9 @@ def get_registration_history(registration_id):
         if not user:
             raise AuthException()
 
-        if not user.is_examiner():
-            registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
-            if not registration:
-                raise AuthException()
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            raise AuthException()
 
         records = EventRecordsService.fetch_event_records_for_registration(registration_id)
         return (
@@ -565,13 +606,12 @@ def get_registration_ltsa(registration_id):
 
     try:
         user = User.find_by_jwt_token(g.jwt_oidc_token_info)
-        if not user:
+        if not user or not user.is_examiner():
             raise AuthException()
 
-        if not user.is_examiner():
-            registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
-            if not registration:
-                raise AuthException()
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
 
         records = LtsaService.fetch_ltsa_records_for_registration(registration_id)
         return (
@@ -609,13 +649,12 @@ def get_registration_auto_approval(registration_id):
 
     try:
         user = User.find_by_jwt_token(g.jwt_oidc_token_info)
-        if not user:
+        if not user or not user.is_examiner():
             raise AuthException()
 
-        if not user.is_examiner():
-            registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
-            if not registration:
-                raise AuthException()
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
 
         records = ApprovalService.fetch_approval_records_for_registration(registration_id)
         return (

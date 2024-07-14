@@ -160,9 +160,12 @@ class RegistrationService:
 
     @classmethod
     def get_registration(cls, jwt_oidc_token_info, registration_id):
-        """Get registration by id for current user."""
+        """Get registration by id for current user. Examiners are exempted from user_id check."""
         user = models.User.find_by_jwt_token(jwt_oidc_token_info)
-        return models.Registration.query.filter_by(user_id=user.id).filter_by(id=registration_id).one_or_none()
+        query = models.Registration.query.filter_by(id=registration_id)
+        if not user.is_examiner():
+            query = query.filter_by(user_id=user.id)
+        return query.one_or_none()
 
     @classmethod
     def save_registration_document(cls, eligibility_id, file_name, file_type, file_contents):
