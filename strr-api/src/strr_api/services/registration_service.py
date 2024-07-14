@@ -151,12 +151,18 @@ class RegistrationService:
         return registration
 
     @classmethod
-    def list_registrations(cls, jwt_oidc_token_info):
+    def list_registrations(cls, jwt_oidc_token_info, filter_by_status: RegistrationStatus = None,
+                           offset: int = 0, limit: int = 100):
         """List all registrations for current user."""
         user = models.User.find_by_jwt_token(jwt_oidc_token_info)
         if not user:
             return []
-        return models.Registration.query.filter_by(user_id=user.id).all()
+        query = models.Registration.query.filter(models.Registration.user_id == user.id)
+        if filter_by_status is not None:
+            query = query.filter(models.Registration.status == filter_by_status)
+
+        count = query.count()
+        return query.order_by(models.Registration.id).offset(offset).limit(limit).all(), count
 
     @classmethod
     def get_registration(cls, jwt_oidc_token_info, registration_id):

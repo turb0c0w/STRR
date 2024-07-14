@@ -41,10 +41,10 @@ from http import HTTPStatus
 from io import BytesIO
 
 from flasgger import swag_from
-from flask import Blueprint, g, jsonify, request, send_file
+from flask import Blueprint, g, jsonify, request, send_file, current_app
 from flask_cors import cross_origin
 from werkzeug.utils import secure_filename
-
+from strr_api.enums.enum import RegistrationStatus
 from strr_api.common.auth import jwt
 from strr_api.enums.enum import PaymentStatus
 from strr_api.exceptions import (
@@ -56,7 +56,7 @@ from strr_api.exceptions import (
 )
 from strr_api.models import User
 from strr_api.requests import RegistrationRequest
-from strr_api.responses import AutoApprovalRecord, Document, EventRecord, Invoice, LTSARecord, Registration
+from strr_api.responses import AutoApprovalRecord, Document, EventRecord, Invoice, LTSARecord, Registration, Pagination
 from strr_api.schemas.utils import validate
 from strr_api.services import (
     ApprovalService,
@@ -83,15 +83,45 @@ def get_registrations():
     ---
     tags:
       - registration
+    parameters:
+      - in: query
+        name: filter_by_status
+        enum: [PENDING,APPROVED,UNDER_REVIEW,MORE_INFO_NEEDED,PROVISIONAL,DENIED]
+        description: Filters affect pagination count returned
+      - in: query
+        name: offset
+        type: integer
+        default: 0
+      - in: query
+        name: limit
+        type: integer
+        default: 100
     responses:
       201:
         description:
       401:
         description:
     """
-    registrations = RegistrationService.list_registrations(g.jwt_oidc_token_info)
+    filter_by_status: RegistrationStatus = None
+    status_value = request.args.get("filter_by_status", None)
+    try:
+        if status_value is not None:
+            filter_by_status = RegistrationStatus[status_value.upper()]
+    except ValueError as e:
+        current_app.logger.error(f'filter_by_status: {str(e)}')
+
+    offset: int = request.args.get("offset", 0)
+    limit: int = request.args.get("limit", 100)
+
+    registrations, count = RegistrationService.list_registrations(g.jwt_oidc_token_info, filter_by_status,
+                                                                  offset, limit)
+
+    pagination = Pagination(
+        count=count,
+        results=[Registration.from_db(registration) for registration in registrations]
+    )
     return (
-        jsonify([Registration.from_db(registration).model_dump(mode="json") for registration in registrations]),
+        jsonify(pagination.model_dump(mode="json")),
         HTTPStatus.OK,
     )
 
@@ -566,11 +596,12 @@ def get_registration_history(registration_id):
         if not user:
             raise AuthException()
 
+        only_show_visible_to_user = not user.is_examiner()
         registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
         if not registration:
             raise AuthException()
 
-        records = EventRecordsService.fetch_event_records_for_registration(registration_id)
+        records = EventRecordsService.fetch_event_records_for_registration(registration_id, only_show_visible_to_user)
         return (
             jsonify([EventRecord.from_db(record).model_dump(mode="json") for record in records]),
             HTTPStatus.OK,
@@ -588,7 +619,7 @@ def get_registration_ltsa(registration_id):
     Get registration ltsa records
     ---
     tags:
-      - registration
+      - examiner
     parameters:
       - in: path
         name: registration_id
@@ -631,7 +662,7 @@ def get_registration_auto_approval(registration_id):
     Get registration ltsa records
     ---
     tags:
-      - registration
+      - examiner
     parameters:
       - in: path
         name: registration_id
