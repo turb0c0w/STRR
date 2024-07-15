@@ -6,5 +6,5 @@
 
 <script setup lang="ts">
 const t = useNuxtApp().$i18n.t
-const { text, className, dataCy } = defineProps<{ text: string, className: string, dataCy?: string }>()
+const { text, className, dataCy } = defineProps<{ text: string, className?: string, dataCy?: string }>()
 </script>
