@@ -152,10 +152,12 @@
               "type": "string"
             },
             "propertyType": {
-              "type": "string"
+              "type": "string",
+              "enum": ["PRIMARY", "SECONDARY", "ACCESSORY", "FLOAT_HOME", "OTHER"]
             },
             "ownershipType": {
-              "type": "string"
+              "type": "string",
+              "enum": ["OWN", "RENT", "CO_OWN"]
             }
           },
           "required": [
