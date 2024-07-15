@@ -75,6 +75,7 @@ def test_init_strr_pay(app):
     assert strr_pay.default_invoice_payload == {
         "businessInfo": {"corpType": "STRR"},
         "filingInfo": {"filingTypes": [{"filingTypeCode": "RENTAL_FEE"}]},
+        "paymentInfo": {"methodOfPayment": "DIRECT_PAY"},
     }
 
 
