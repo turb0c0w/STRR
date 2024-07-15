@@ -156,8 +156,10 @@ class RegistrationService:
         """List all registrations for current user."""
         user = models.User.find_by_jwt_token(jwt_oidc_token_info)
         if not user:
-            return []
-        query = models.Registration.query.filter(models.Registration.user_id == user.id)
+            return [], 0
+        query = models.Registration.query
+        if not user.is_examiner():
+            query = query.filter(models.Registration.user_id == user.id)
         if filter_by_status is not None:
             query = query.filter(models.Registration.status == filter_by_status)
 
