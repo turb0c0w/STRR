@@ -32,8 +32,8 @@ export const useRegistrations = () => {
   }
 
   const getRegistration = (id: string): Promise<RegistrationI | void> =>
-    axiosInstance.get(`${apiURL}/registration/${id}`)
-      .then(res => res.data)
+    axiosInstance.get(`${apiURL}/registrations`)
+      .then(res => res.data.find((registration: any) => registration.id.toString() === id))
 
   const getLtsa = (id: string): Promise<LtsaDataI[] | void> =>
     axiosInstance.get(`${apiURL}/registrations/${id}/ltsa`)
