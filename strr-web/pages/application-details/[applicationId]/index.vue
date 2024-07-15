@@ -87,7 +87,13 @@
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('property-type')"
             >
-              <p>{{ application?.unitDetails.propertyType ?? '-' }}</p>
+              <p>
+                {{
+                  application?.unitDetails.propertyType
+                    ? tPropertyForm(propertyTypeMap[application?.unitDetails.propertyType as keyof PropertyTypeMapI])
+                    : '-'
+                }}
+              </p>
             </BcrosFormSectionReviewItem>
             <div class="flex-1" />
           </div>
@@ -188,7 +194,7 @@
           </p>
           <a
             class="mobile:mx-[8px]"
-            @click="() => navigateTo(`/application-details/${applicationId}/ltsa`)"
+            @click="() => navigateTo(`/application-details/${applicationId}/ltsa`, { open: { target: '_blank' } })"
           >
             {{ tApplicationDetails('ltsa-details') }}
           </a>
@@ -197,7 +203,13 @@
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('aa-logic') }}
           </p>
-          <a class="mobile:mx-[8px]" @click="() => navigateTo(`/application-details/${applicationId}/auto-approval`)">
+          <a
+            class="mobile:mx-[8px]"
+            @click="
+              () =>
+                navigateTo(`/application-details/${applicationId}/auto-approval`, { open: { target: '_blank' } })
+            "
+          >
             {{ tApplicationDetails('aa-details') }}
           </a>
         </div>
@@ -219,7 +231,8 @@
                 </div>
                 <div>
                   <p class="text-bcGovColor-midGray">
-                    {{ formatTime(new Date(event.created_date)) }}
+                    {{ formatTime(new Date(`${event.created_date}`)) }}
+                    {{ formatTime(new Date(`${event.created_date}Z`)) }}
                   </p>
                   <p class="font-bold">
                     {{ event.message }}
@@ -236,11 +249,13 @@
 
 <script setup lang="ts">
 import { AlertsFlavourE } from '#imports'
+import { propertyTypeMap } from '~/utils/propertyTypeMap'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
+const tPropertyForm = (translationKey: string) => t(`create-account.property-form.${translationKey}`)
 
 const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
@@ -250,6 +265,7 @@ const formatDate = (date: Date) => {
   const day = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
   return day
 }
+
 const formatTime = (date: Date): string => date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
 
 const {

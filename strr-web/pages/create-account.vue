@@ -80,10 +80,6 @@ const updateFees = async () => {
   fee.value = await getFeeAmount()
 }
 
-onMounted(() => {
-  updateFees()
-})
-
 const t = useNuxtApp().$i18n.t
 const {
   currentAccount,
@@ -94,20 +90,22 @@ const {
   me
 } = useBcrosAccount()
 
+onMounted(() => {
+  // if no SBC acccounts exist redirect to SBC account creation
+  if (!me?.settings.length) {
+    navigateTo('/finalization')
+  }
+  updateFees()
+})
+
 const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryContact.value }
 
 const propertyToApiType = (type: string | undefined): string => {
-  switch (type) {
-    case (t('create-account.property-form.primaryDwelling')):
-      return 'PRIMARY'
-    case (t('create-account.property-form.secondarySuite')):
-      return 'SECONDARY'
-    case (t('create-account.property-form.accessory')):
-      return 'ACCESSORY'
-    case (t('create-account.property-form.float')):
-      return 'FLOAT_HOME'
-    case (t('create-account.property-form.other')):
-      return 'OTHER'
+  const tPropertyForm = (translationKey: string) => t(`create-account.property-form.${translationKey}`)
+  for (const key in propertyTypeMap) {
+    if (type && propertyTypeMap[key as keyof PropertyTypeMapI] === tPropertyForm(type)) {
+      return key
+    }
   }
   return ''
 }

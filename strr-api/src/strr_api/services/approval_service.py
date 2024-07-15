@@ -105,8 +105,11 @@ class ApprovalService:
             + registration.rental_property.address.province
         )
 
-        renting = registration.rental_property.ownership_type == OwnershipType.RENT.name
-        other_service_provider = registration.eligibility.specified_service_provider is not None
+        renting = registration.rental_property.ownership_type == OwnershipType.RENT
+        other_service_provider = (
+            registration.eligibility.specified_service_provider is not None
+            and registration.eligibility.specified_service_provider != "n/a"
+        )
         pr_exempt = not registration.eligibility.is_principal_residence
         bl_provided = registration.rental_property.local_business_licence is not None
         bcsc_address = AuthService.get_sbc_accounts_mailing_address(token, registration.sbc_account_id)

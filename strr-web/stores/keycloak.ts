@@ -70,7 +70,7 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
         if (options) {
           options.idpHint = idpHint
         }
-        return kcLogin(options)
+        return kcLogin(options ?? { idpHint: 'bcsc' })
       }
 
       kc.value.onTokenExpired = function () {
