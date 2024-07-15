@@ -103,7 +103,8 @@ const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryCont
 const propertyToApiType = (type: string | undefined): string => {
   const tPropertyForm = (translationKey: string) => t(`create-account.property-form.${translationKey}`)
   for (const key in propertyTypeMap) {
-    if (type && propertyTypeMap[key as keyof PropertyTypeMapI] === tPropertyForm(type)) {
+    const propertyKey = propertyTypeMap[key as keyof PropertyTypeMapI]
+    if (type && tPropertyForm(propertyKey) === type) {
       return key
     }
   }

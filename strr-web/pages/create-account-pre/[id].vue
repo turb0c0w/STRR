@@ -98,17 +98,12 @@ const {
 const toggleAddSecondary = () => { addSecondaryContact.value = !addSecondaryContact.value }
 
 const propertyToApiType = (type: string | undefined): string => {
-  switch (type) {
-    case (t('create-account.property-form.primaryDwelling')):
-      return 'PRIMARY'
-    case (t('create-account.property-form.secondarySuite')):
-      return 'SECONDARY'
-    case (t('create-account.property-form.accessory')):
-      return 'ACCESSORY'
-    case (t('create-account.property-form.float')):
-      return 'FLOAT_HOME'
-    case (t('create-account.property-form.other')):
-      return 'OTHER'
+  const tPropertyForm = (translationKey: string) => t(`create-account.property-form.${translationKey}`)
+  for (const key in propertyTypeMap) {
+    const propertyKey = propertyTypeMap[key as keyof PropertyTypeMapI]
+    if (type && tPropertyForm(propertyKey) === type) {
+      return key
+    }
   }
   return ''
 }
@@ -126,8 +121,8 @@ const ownershipToApiType = (type: string | undefined): string => {
 }
 
 const submit = () => {
-  validateStep(contactSchema, formState.primaryContact, 0)
-  validateStep(contactSchema, formState.secondaryContact, 0)
+  validateStep(primaryContactSchema, formState.primaryContact, 0)
+  validateStep(secondaryContactSchema, formState.secondaryContact, 0)
   validateStep(propertyDetailsSchema, formState.propertyDetails, 1)
   steps[1].step.complete = true
   steps[2].step.complete = true
@@ -159,11 +154,11 @@ const validateStep = (schema: any, state: any, index: number) => {
 }
 
 watch(formState.primaryContact, () => {
-  validateStep(contactSchema, formState.primaryContact, 0)
+  validateStep(primaryContactSchema, formState.primaryContact, 0)
 })
 
 watch(formState.secondaryContact, () => {
-  validateStep(contactSchema, formState.secondaryContact, 0)
+  validateStep(secondaryContactSchema, formState.secondaryContact, 0)
 })
 
 watch(formState.propertyDetails, () => {
