@@ -2,6 +2,7 @@ import axios from 'axios'
 import { SbcCreationResponseE } from '~/enums/sbc-creation-response-e'
 import { AutoApprovalDataI } from '~/interfaces/auto-approval-data-i'
 import { LtsaDataI } from '~/interfaces/ltsa-data-i'
+import { PaginationI } from '~/interfaces/pagination-i'
 import { RegistrationHistoryEventI } from '~/interfaces/registration-history-event-i'
 
 export const useRegistrations = () => {
@@ -24,9 +25,15 @@ export const useRegistrations = () => {
         )
     })
 
+  const getPaginatedRegistrations = (paginationObject: PaginationI): Promise<PaginatedRegistrationsI | void> => {
+    const params = new URLSearchParams(paginationObject as unknown as Record<string, string>)
+    return axiosInstance.get<PaginatedRegistrationsI>(`${apiURL}/registrations${params.size ? `/?${params}` : ''}`)
+      .then(res => res.data)
+  }
+
   const getRegistration = (id: string): Promise<RegistrationI | void> =>
-    axiosInstance.get(`${apiURL}/registrations`)
-      .then(res => res.data.find((registration: any) => registration.id.toString() === id))
+    axiosInstance.get(`${apiURL}/registration/${id}`)
+      .then(res => res.data)
 
   const getLtsa = (id: string): Promise<LtsaDataI[] | void> =>
     axiosInstance.get(`${apiURL}/registrations/${id}/ltsa`)
@@ -89,6 +96,7 @@ export const useRegistrations = () => {
     createSbcRegistration,
     getDocumentsForRegistration,
     getRegistrations,
+    getPaginatedRegistrations,
     getRegistration,
     getRegistrationHistory,
     getLtsa,
