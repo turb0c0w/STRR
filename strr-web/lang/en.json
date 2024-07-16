@@ -11,7 +11,10 @@
     "search": "Search",
     "all": "All",
     "fullReview": "Full Review",
-    "provisionalApproval": "Provisional Approval"
+    "provisionalApproval": "Provisional Approval",
+    "showing": "Showing",
+    "of": "of",
+    "results": "Results"
   },
   "tos": {
     "tos-title": "BC Registry Terms and Conditions",

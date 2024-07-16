@@ -76,7 +76,17 @@
         "
       >
         <div v-if="totalResults !== 0" class="flex items-center">
-          <span class="flex">Showing {{ `${offset + 1} to ${maxPageResults}` }} of {{ totalResults }} Results</span>
+          <span class="flex">
+            {{
+              `
+                ${tRegistryDashboard('showing')}
+                ${offset + 1} - ${maxPageResults}
+                ${tRegistryDashboard('of')}
+                ${totalResults}
+                ${tRegistryDashboard('results')}
+              `
+            }}
+          </span>
         </div>
         <UPagination v-if="totalResults > 10 " v-model:model-value="page" :total="totalResults" />
       </div>
