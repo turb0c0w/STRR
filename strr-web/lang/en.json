@@ -8,7 +8,10 @@
     "owner": "Owner",
     "submissionDate": "Submission Date",
     "columnsToShow": "Columns to Show",
-    "search": "Search"
+    "search": "Search",
+    "all": "All",
+    "fullReview": "Full Review",
+    "provisionalApproval": "Provisional Approval"
   },
   "tos": {
     "tos-title": "BC Registry Terms and Conditions",

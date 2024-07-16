@@ -2,7 +2,11 @@
   <div class="mb-[100px]">
     <BcrosTypographyH1 text="My CEU STR Registry Dashboard" />
     <BcrosTypographyH2 text="Owners STR Registration Applications" />
-    <div />
+    <UTabs
+      :items="filterOptions"
+      class="mb-[24px] w-[500px]"
+      @change="onTabChange"
+    />
     <div class="bg-white">
       <div class="flex flex-row justify-between px-[16px] py-[14px]">
         <div>
@@ -27,10 +31,54 @@
           </USelectMenu>
         </div>
       </div>
-      <UTable :loading="loading" :columns="columns" :rows="tableRows" />
-      <div class="flex flex-row justify-between border-[#E9ECEF] border-t-[1px] h-[67px]">
-        <span>Showing...  {{ `${offset + 1} - ${maxPageResults}` }} of {{ totalResults }}</span>
-        <UPagination v-if="totalResults > 10" v-model:model-value="page" :total="totalResults" />
+      <UTable :loading="loading" :columns="selectedColumns" :rows="tableRows">
+        <!-- Only way to do row clicks in NuxtUI currently -->
+        <template #id-data="{ row }">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
+            {{ row.id }}
+          </div>
+        </template>
+        <template #status-data="{ row }">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
+            {{ row.status }}
+          </div>
+        </template>
+        <template #nickname-data="{ row }">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
+            {{ row.nickname }}
+          </div>
+        </template>
+        <template #address-data="{ row }">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
+            {{ row.address }}
+          </div>
+        </template>
+        <template #registration-data="{ row }">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
+            {{ row.registration }}
+          </div>
+        </template>
+        <template #owner-data="{ row }">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
+            {{ row.owner }}
+          </div>
+        </template>
+        <template #submission-data="{ row }">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
+            {{ row.submission }}
+          </div>
+        </template>
+      </UTable>
+      <div
+        class="
+          flex flex-row justify-between border-[#E9ECEF]
+          border-t-[1px] h-[67px] justify-center px-[24px]
+        "
+      >
+        <div v-if="totalResults !== 0" class="flex items-center">
+          <span class="flex">Showing {{ `${offset + 1} to ${maxPageResults}` }} of {{ totalResults }} Results</span>
+        </div>
+        <UPagination v-if="totalResults > 10 " v-model:model-value="page" :total="totalResults" />
       </div>
     </div>
   </div>
@@ -51,6 +99,32 @@ const tableRows = ref<Record<string, string>[]>([])
 const totalResults = ref<number>(0)
 const loading = ref<boolean>(true)
 const maxPageResults = ref<number>(0)
+
+const onTabChange = (index: number) => {
+  switch (index) {
+    case 1:
+      statusFilter.value = 'UNDER_REVIEW'
+      break
+    case 2:
+      statusFilter.value = 'PROVISIONAL'
+      break
+    default:
+      statusFilter.value = ''
+  }
+}
+
+const filterOptions = [
+  {
+    label: tRegistryDashboard('all')
+  },
+  {
+    label: tRegistryDashboard('fullReview')
+  },
+  {
+    label: tRegistryDashboard('provisionalApproval')
+  }
+]
+const navigateToDetails = (id: number) => navigateTo(`/application-details/${id.toString()}`)
 
 const updateTableRows = async () => {
   const paginationObject: PaginationI = {
@@ -99,7 +173,7 @@ const updateMaxPageResults = () => {
   }
 }
 
-watch(page, () => { 
+watch(page, () => {
   offset.value = (page.value - 1) * 10
   updateTableRows()
 })
