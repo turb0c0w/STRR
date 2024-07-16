@@ -1,4 +1,15 @@
 {
+  "registry-dashboard": {
+    "applicationNumber": "Application #",
+    "registrationNumber": "Registration #",
+    "status": "Status",
+    "nickname": "Listing Nickname",
+    "address": "Listing Address",
+    "owner": "Owner",
+    "submissionDate": "Submission Date",
+    "columnsToShow": "Columns to Show",
+    "search": "Search"
+  },
   "tos": {
     "tos-title": "BC Registry Terms and Conditions",
     "accept": "Accept Terms",

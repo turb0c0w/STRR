@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-[100px]">
     <BcrosTypographyH1 text="My CEU STR Registry Dashboard" />
     <BcrosTypographyH2 text="Owners STR Registration Applications" />
     <div />
@@ -27,10 +27,10 @@
           </USelectMenu>
         </div>
       </div>
-      <UTable :columns="columns" :rows="tableRows" />
-      <div class="flex flex-row justify-between">
-        <span>Showing...</span>
-        <UPagination :model-value="1" :total="10" />
+      <UTable :loading="loading" :columns="columns" :rows="tableRows" />
+      <div class="flex flex-row justify-between border-[#E9ECEF] border-t-[1px] h-[67px]">
+        <span>Showing...  {{ `${offset + 1} - ${maxPageResults}` }} of {{ totalResults }}</span>
+        <UPagination v-if="totalResults > 10" v-model:model-value="page" :total="totalResults" />
       </div>
     </div>
   </div>
@@ -44,14 +44,18 @@ const t = useNuxtApp().$i18n.t
 const tRegistryDashboard = (translationKey: string) => t(`registry-dashboard.${translationKey}`)
 const { getPaginatedRegistrations } = useRegistrations()
 const statusFilter = ref<string>('')
-const limit = ref<string>('10')
-const offset = ref<string>('0')
+const limit = ref<number>(10)
+const offset = ref<number>(0)
+const page = ref<number>(1)
 const tableRows = ref<Record<string, string>[]>([])
+const totalResults = ref<number>(0)
+const loading = ref<boolean>(true)
+const maxPageResults = ref<number>(0)
 
 const updateTableRows = async () => {
   const paginationObject: PaginationI = {
-    limit: limit.value,
-    offset: offset.value
+    limit: limit.value.toString(),
+    offset: offset.value.toString()
   }
   if (statusFilter.value) {
     paginationObject.filter_by_status = statusFilter.value
@@ -60,8 +64,11 @@ const updateTableRows = async () => {
   }
   const registrations = await getPaginatedRegistrations(paginationObject)
   if (registrations) {
+    totalResults.value = registrations.count
     tableRows.value = registrationsToTableRows(registrations)
   }
+  updateMaxPageResults()
+  loading.value = false
 }
 
 const registrationsToTableRows = (registrations: PaginatedRegistrationsI): Record<string, string>[] => {
@@ -82,7 +89,20 @@ const registrationsToTableRows = (registrations: PaginatedRegistrationsI): Recor
 
 watch(statusFilter, () => updateTableRows())
 watch(limit, () => updateTableRows())
-watch(offset, () => updateTableRows())
+
+const updateMaxPageResults = () => {
+  const offsetPlusTen = offset.value + 10
+  if (totalResults.value >= offsetPlusTen) {
+    maxPageResults.value = offsetPlusTen
+  } else {
+    maxPageResults.value = totalResults.value
+  }
+}
+
+watch(page, () => { 
+  offset.value = (page.value - 1) * 10
+  updateTableRows()
+})
 
 onMounted(() => {
   updateTableRows()
