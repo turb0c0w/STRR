@@ -101,7 +101,6 @@ const buildProvisionalRows = (rowsData: AutoApprovalDataI[]) => {
   }
 
   const licenseNull = 
-    rowsData[0].record.business_license_required === null &&
     rowsData[0].record.business_license_required_provided === null &&
     rowsData[0].record.business_license_required_not_provided === null &&
     rowsData[0].record.business_license_not_required_not_provided === null
