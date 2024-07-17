@@ -99,7 +99,13 @@ const buildProvisionalRows = (rowsData: AutoApprovalDataI[]) => {
       outcome: rowsData[0].record.address_match ? tAutoApproval('do') : tAutoApproval('do-not')
     })
   }
-  if (rowsData[0].record.business_license_required_provided !== null) {
+
+  const licenseNull =
+    rowsData[0].record.business_license_required_provided === null &&
+    rowsData[0].record.business_license_required_not_provided === null &&
+    rowsData[0].record.business_license_not_required_not_provided === null
+
+  if (!licenseNull) {
     provisionalRows.value.push({
       criteria: tAutoApproval('do-addresses-match'),
       outcome: rowsData[0].record.business_license_required_provided
