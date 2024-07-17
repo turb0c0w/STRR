@@ -49,6 +49,9 @@ export const submitCreateAccountForm = (
               handlePaymentRedirect(invoices[0].invoice_id, data.id)
             }
           })
+          .catch(() => {
+            handlePaymentRedirect(invoices[0].invoice_id, data.id)
+          })
       })
       return data
     })
