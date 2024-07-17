@@ -39,7 +39,7 @@ export const submitCreateAccountForm = (
     })
     .then((data) => {
       const { invoices } = data
-      if (!formState.supportingDocuments) {
+      if (formState.supportingDocuments.length === 0) {
         handlePaymentRedirect(invoices[0].invoice_id, data.id)
       }
       formState.supportingDocuments.forEach((file: File, fileIndex: number) => {
