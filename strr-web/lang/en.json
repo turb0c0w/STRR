@@ -14,7 +14,15 @@
     "provisionalApproval": "Provisional Approval",
     "showing": "Showing",
     "of": "of",
-    "results": "Results"
+    "results": "Results",
+    "location": "Location",
+    "approved": "Approved",
+    "statusChip": {
+      "approved": "APPROVED",
+      "rejected": "REJECTED",
+      "provisional": "PROVISIONAL",
+      "underReview": "UNDER REVIEW"
+    }
   },
   "tos": {
     "tos-title": "BC Registry Terms and Conditions",

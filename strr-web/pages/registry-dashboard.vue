@@ -33,38 +33,33 @@
       </div>
       <UTable :loading="loading" :columns="selectedColumns" :rows="tableRows">
         <!-- Only way to do row clicks in NuxtUI currently -->
-        <template #id-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
-            {{ row.id }}
-          </div>
-        </template>
-        <template #status-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
-            {{ row.status }}
-          </div>
-        </template>
-        <template #nickname-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
-            {{ row.nickname }}
-          </div>
-        </template>
-        <template #address-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
-            {{ row.address }}
-          </div>
-        </template>
         <template #registration-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registrationNumber)">
             {{ row.registration }}
           </div>
         </template>
+        <template #location-data="{ row }">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registrationNumber)">
+            {{ row.location }}
+          </div>
+        </template>
+        <template #address-data="{ row }">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registrationNumber)">
+            {{ row.address }}
+          </div>
+        </template>
         <template #owner-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registrationNumber)">
             {{ row.owner }}
           </div>
         </template>
+        <template #status-data="{ row }">
+          <BcrosChip 
+            :flavour="getChipFlavour(row.status)" 
+          />
+        </template>
         <template #submission-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.id)">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registrationNumber)">
             {{ row.submission }}
           </div>
         </template>
@@ -97,9 +92,12 @@
 <script setup lang="ts">
 import { PaginatedRegistrationsI } from '~/interfaces/paginated-registrations-i'
 import { PaginationI } from '~/interfaces/pagination-i'
+import { StatusChipFlavoursI } from '~/interfaces/status-chip-flavours-i';
 
 const t = useNuxtApp().$i18n.t
 const tRegistryDashboard = (translationKey: string) => t(`registry-dashboard.${translationKey}`)
+const tRegistryDashboardStatus = (translationKey: string) => t(`registry-dashboard.statusChip.${translationKey}`)
+
 const { getPaginatedRegistrations } = useRegistrations()
 const statusFilter = ref<string>('')
 const limit = ref<number>(10)
@@ -116,10 +114,40 @@ const onTabChange = (index: number) => {
       statusFilter.value = 'UNDER_REVIEW'
       break
     case 2:
-      statusFilter.value = 'PROVISIONAL'
+      statusFilter.value = 'PENDING'
       break
     default:
       statusFilter.value = ''
+  }
+}
+
+const getChipFlavour = (status: string): StatusChipFlavoursI['flavour'] => {
+  switch(status) {
+    case 'APPROVED': 
+      return { 
+        alert: AlertsFlavourE.SUCCESS,
+        text: tRegistryDashboardStatus('approved')
+      }
+    case 'REJECTED': 
+      return { 
+        alert: AlertsFlavourE.ALERT,
+        text: tRegistryDashboardStatus('rejected')
+      }
+    case 'PENDING': 
+      return { 
+        alert: AlertsFlavourE.INFO,
+        text: tRegistryDashboardStatus('provisional')
+      }
+    case 'UNDER_REVIEW': 
+      return { 
+        alert: AlertsFlavourE.INFO,
+        text: tRegistryDashboardStatus('underReview')
+      }
+    default: 
+      return {
+        alert: AlertsFlavourE.MESSAGE,
+        text: ''
+      }
   }
 }
 
@@ -159,12 +187,15 @@ const registrationsToTableRows = (registrations: PaginatedRegistrationsI): Recor
   const rows: Record<string, string>[] = []
   registrations.results.forEach((result: RegistrationI) => {
     rows.push({
-      id: result.id.toString(),
-      status: result.status,
-      nickname: result.unitAddress.nickname,
-      address: result.unitAddress.address,
       registration: result.id.toString(),
-      owner: result.primaryContact.name.firstName,
+      location: result.unitAddress.city,
+      address: result.unitAddress.address,
+      owner: `
+        ${result.primaryContact.name.firstName}
+        ${result.primaryContact.name.middleName ?? ''}
+        ${result.primaryContact.name.lastName}
+      `,
+      status: result.status,
       submission: result.submissionDate
     })
   })
@@ -195,12 +226,11 @@ onMounted(() => {
 const selectedColumns = ref<{ key: string; label: string; }[]>([])
 
 const columns = [
-  { key: 'id', label: tRegistryDashboard('applicationNumber') },
-  { key: 'status', label: tRegistryDashboard('status') },
-  { key: 'nickname', label: tRegistryDashboard('nickname') },
-  { key: 'address', label: tRegistryDashboard('address') },
   { key: 'registration', label: tRegistryDashboard('registrationNumber') },
+  { key: 'location', label: tRegistryDashboard('location') },
+  { key: 'address', label: tRegistryDashboard('address') },
   { key: 'owner', label: tRegistryDashboard('owner') },
+  { key: 'status', label: tRegistryDashboard('status') },
   { key: 'submission', label: tRegistryDashboard('submissionDate') }
 ]
 
