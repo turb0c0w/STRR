@@ -171,23 +171,33 @@ const validateMonths = () => {
 
 const { me, currentAccount } = useBcrosAccount()
 
-if (currentAccount && me) {
-  const mailingAddress = me?.orgs.find(({ id }) => id === currentAccount.id)?.mailingAddress
-  if (mailingAddress) {
-    // Check if field already has content before populating so as not to overwrite user changes
-    if (!formState.primaryContact.country) { formState.primaryContact.country = mailingAddress[0].country }
-    if (!formState.primaryContact.city) { formState.primaryContact.city = mailingAddress[0].city }
-    if (!formState.primaryContact.postalCode) { formState.primaryContact.postalCode = mailingAddress[0].postalCode }
-    if (!formState.primaryContact.province) { formState.primaryContact.province = mailingAddress[0].region }
-    if (!formState.primaryContact.address) { formState.primaryContact.address = mailingAddress[0].street }
-    if (!formState.primaryContact.addressLineTwo) {
-      formState.primaryContact.addressLineTwo = mailingAddress[0].streetAdditional
-    }
-  }
-}
-
 onMounted(() => {
   if (isComplete) { validateMonths() }
+  if (currentAccount && me) {
+    const currentAccountInfo = me?.orgs.find(({ id }) => id === currentAccount.id)?.mailingAddress
+    if (currentAccountInfo) {
+      if (!formState.primaryContact.emailAddress) {
+        formState.primaryContact.emailAddress = currentAccountInfo[0].email
+      }
+      if (!formState.primaryContact.phoneNumber) {
+        formState.primaryContact.phoneNumber = currentAccountInfo[0].phone
+      }
+      if (!formState.primaryContact.extension) {
+        formState.primaryContact.extension = currentAccountInfo[0].phoneExtension
+      }
+      // Check if field already has content before populating so as not to overwrite user changes
+      if (!formState.primaryContact.country) { formState.primaryContact.country = currentAccountInfo[0].country }
+      if (!formState.primaryContact.city) { formState.primaryContact.city = currentAccountInfo[0].city }
+      if (!formState.primaryContact.postalCode) {
+        formState.primaryContact.postalCode = currentAccountInfo[0].postalCode
+      }
+      if (!formState.primaryContact.province) { formState.primaryContact.province = currentAccountInfo[0].region }
+      if (!formState.primaryContact.address) { formState.primaryContact.address = currentAccountInfo[0].street }
+      if (!formState.primaryContact.addressLineTwo) {
+        formState.primaryContact.addressLineTwo = currentAccountInfo[0].streetAdditional
+      }
+    }
+  }
 })
 
 const form = ref()
