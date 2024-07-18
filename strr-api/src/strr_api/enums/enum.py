@@ -106,6 +106,7 @@ class EventRecordType(Enum):
     AUTO_APPROVAL_FULL_REVIEW = "automatically marked for full review"
     AUTO_APPROVAL_PROVISIONAL = "automatically marked as provisionally approved"
     AUTO_APPROVAL_APPROVED = "automatically marked as approved"
+    MANUALLY_APPROVED = "marked as approved by examiner"
 
 
 class PaymentStatus(Enum):

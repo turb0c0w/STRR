@@ -40,6 +40,7 @@ from .invoice import Invoice
 from .ltsa import LTSARecord
 from .rental import Address, Document, Eligibility, PropertyManager, Registration, RentalPlatform, RentalProperty
 from .user import Contact, User
+from .certificate import Certificate
 
 __all__ = (
     "db",

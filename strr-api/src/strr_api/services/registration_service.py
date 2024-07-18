@@ -36,6 +36,7 @@ from strr_api import models, requests
 from strr_api.enums.enum import RegistrationStatus
 from strr_api.models import db
 from strr_api.services.gcp_storage_service import GCPStorageService
+from sqlalchemy import func
 
 
 class RegistrationService:
@@ -154,7 +155,7 @@ class RegistrationService:
     def list_registrations(cls, jwt_oidc_token_info, filter_by_status: RegistrationStatus = None,
                            offset: int = 0, limit: int = 100):
         """List all registrations for current user."""
-        user = models.User.find_by_jwt_token(jwt_oidc_token_info)
+        user = models.User.get_or_create_user_by_jwt(jwt_oidc_token_info)
         if not user:
             return [], 0
         query = models.Registration.query
@@ -167,9 +168,20 @@ class RegistrationService:
         return query.order_by(models.Registration.id).offset(offset).limit(limit).all(), count
 
     @classmethod
+    def get_registration_counts_by_status(cls):
+        """Return all registration counts by status type."""
+
+        query = models.Registration.query.with_entities(
+            models.Registration.status.label("status"),
+            func.count().label("count"),
+        ).group_by(models.Registration.status)
+
+        return query.all()
+
+    @classmethod
     def get_registration(cls, jwt_oidc_token_info, registration_id):
         """Get registration by id for current user. Examiners are exempted from user_id check."""
-        user = models.User.find_by_jwt_token(jwt_oidc_token_info)
+        user = models.User.get_or_create_user_by_jwt(jwt_oidc_token_info)
         query = models.Registration.query.filter_by(id=registration_id)
         if not user.is_examiner():
             query = query.filter_by(user_id=user.id)

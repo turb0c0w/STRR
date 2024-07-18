@@ -36,8 +36,10 @@
 # pylint: disable=R0912
 # pylint: disable=R0915
 """For a successfully paid registration, this service determines its auto-approval state."""
-from flask import current_app
-
+import random
+from weasyprint import HTML
+from datetime import datetime, timezone
+from flask import current_app, render_template
 from strr_api import models
 from strr_api.common.utils import compare_addresses
 from strr_api.enums.enum import EventRecordType, OwnershipType, RegistrationStatus
@@ -84,7 +86,7 @@ class ApprovalService:
         return False
 
     @classmethod
-    def process_approval(cls, token, registration: models.Registration):
+    def process_auto_approval(cls, token, registration: models.Registration):
         """Process approval logic and produce output JSON to store in the DB and providing to FE"""
         pid = registration.rental_property.parcel_identifier
         owner_name = (
@@ -125,7 +127,7 @@ class ApprovalService:
                 EventRecordsService.save_event_record(
                     EventRecordType.AUTO_APPROVAL_FULL_REVIEW,
                     EventRecordType.AUTO_APPROVAL_FULL_REVIEW.value,
-                    True,
+                    False,
                     registration.user_id,
                     registration.id,
                 )
@@ -139,7 +141,7 @@ class ApprovalService:
                     EventRecordsService.save_event_record(
                         EventRecordType.AUTO_APPROVAL_FULL_REVIEW,
                         EventRecordType.AUTO_APPROVAL_FULL_REVIEW.value,
-                        True,
+                        False,
                         registration.user_id,
                         registration.id,
                     )
@@ -156,7 +158,7 @@ class ApprovalService:
                         EventRecordsService.save_event_record(
                             EventRecordType.AUTO_APPROVAL_FULL_REVIEW,
                             EventRecordType.AUTO_APPROVAL_FULL_REVIEW.value,
-                            True,
+                            False,
                             registration.user_id,
                             registration.id,
                         )
@@ -177,7 +179,7 @@ class ApprovalService:
                                 EventRecordsService.save_event_record(
                                     EventRecordType.AUTO_APPROVAL_FULL_REVIEW,
                                     EventRecordType.AUTO_APPROVAL_FULL_REVIEW.value,
-                                    True,
+                                    False,
                                     registration.user_id,
                                     registration.id,
                                 )
@@ -200,7 +202,7 @@ class ApprovalService:
                             EventRecordsService.save_event_record(
                                 EventRecordType.AUTO_APPROVAL_PROVISIONAL,
                                 EventRecordType.AUTO_APPROVAL_PROVISIONAL.value,
-                                True,
+                                False,
                                 registration.user_id,
                                 registration.id,
                             )
@@ -211,7 +213,7 @@ class ApprovalService:
                             EventRecordsService.save_event_record(
                                 EventRecordType.AUTO_APPROVAL_FULL_REVIEW,
                                 EventRecordType.AUTO_APPROVAL_FULL_REVIEW.value,
-                                True,
+                                False,
                                 registration.user_id,
                                 registration.id,
                             )
@@ -227,7 +229,7 @@ class ApprovalService:
                         EventRecordsService.save_event_record(
                             EventRecordType.AUTO_APPROVAL_FULL_REVIEW,
                             EventRecordType.AUTO_APPROVAL_FULL_REVIEW.value,
-                            True,
+                            False,
                             registration.user_id,
                             registration.id,
                         )
@@ -238,10 +240,11 @@ class ApprovalService:
                         EventRecordsService.save_event_record(
                             EventRecordType.AUTO_APPROVAL_APPROVED,
                             EventRecordType.AUTO_APPROVAL_APPROVED.value,
-                            True,
+                            False,
                             registration.user_id,
                             registration.id,
                         )
+                        cls.generate_registration_certificate(registration)
                     return auto_approval
         except Exception as default_exception:  # noqa: B902; log error
             current_app.logger.error("error in approval logoic:" + repr(default_exception))
@@ -263,3 +266,59 @@ class ApprovalService:
         """Get approval records for a given registration by id."""
         query = models.AutoApprovalRecord.query.filter(models.AutoApprovalRecord.registration_id == registration_id)
         return query.all()
+
+    @classmethod
+    def process_manual_approval(cls, registration: models.Registration):
+        """Manually approve a given registration."""
+        registration.status = RegistrationStatus.APPROVED
+        registration.save()
+        EventRecordsService.save_event_record(
+            EventRecordType.MANUALLY_APPROVED,
+            EventRecordType.MANUALLY_APPROVED.value,
+            False,
+            registration.user_id,
+            registration.id,
+        )
+        cls.generate_registration_certificate(registration)
+
+    @classmethod
+    def generate_registration_certificate(cls, registration: models.Registration):
+        """Generate registration PDF certificate."""
+
+        registration_number_prefix = f'BCH{datetime.now(timezone.utc).strftime("%y")}'
+        while True:
+            random_digits = ''.join(random.choices('0123456789', k=9))
+            registration_number = f"{registration_number_prefix}{random_digits}"
+            if models.Certificate.query.filter(
+               models.Certificate.registration_number == registration_number).one_or_none() is None:
+
+                creation_date = datetime.now(timezone.utc)
+                expiry_date = creation_date.replace(year=creation_date.year + 1)
+                data = {
+                    'registration_number': f'{registration_number}',
+                    'creation_date': f'{creation_date.strftime("%Y-%m-%d")}',
+                    'expiry_date': f'{expiry_date.strftime("%Y-%m-%d")}'
+                }
+                rendered_template = render_template('certificate.html', **data)
+                pdf_binary = HTML(string=rendered_template).render(optimize_size=('fonts', 'images',)).write_pdf()
+
+                certificate = models.Certificate(
+                    registration_id=registration.id,
+                    registration_number=registration_number,
+                    creation_date=creation_date,
+                    expiry_date=expiry_date,
+                    certificate=pdf_binary,
+                )
+                break
+
+        db.session.add(certificate)
+        db.session.commit()
+        db.session.refresh(certificate)
+        return certificate
+
+    @classmethod
+    def get_latest_certificate(cls, registration: models.Registration):
+        """Get latest PDF certificate for a given registration."""
+
+        query = models.Certificate.query.filter(models.Certificate.registration_id == registration.id)
+        return query.order_by(models.Certificate.creation_date.desc()).limit(1).one_or_none()
