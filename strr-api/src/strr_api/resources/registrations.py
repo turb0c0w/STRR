@@ -44,7 +44,7 @@ from flasgger import swag_from
 from flask import Blueprint, g, jsonify, request, send_file, current_app
 from flask_cors import cross_origin
 from werkzeug.utils import secure_filename
-from strr_api.enums.enum import RegistrationStatus
+from strr_api.enums.enum import RegistrationStatus, RegistrationSortBy
 from strr_api.common.auth import jwt
 from strr_api.enums.enum import PaymentStatus
 from strr_api.exceptions import (
@@ -89,6 +89,14 @@ def get_registrations():
         enum: [PENDING,APPROVED,UNDER_REVIEW,MORE_INFO_NEEDED,PROVISIONAL,DENIED]
         description: Filters affect pagination count returned
       - in: query
+        name: sort_by
+        enum: [ID,USER_ID,SBC_ACCOUNT_ID,RENTAL_PROPERTY_ID,SUBMISSION_DATE,UPDATED_DATE,STATUS]
+        description: Filters affect pagination count returned
+      - in: query
+        name: sort_desc
+        type: boolean
+        description: false or omitted for ascending, true for descending order
+      - in: query
         name: offset
         type: integer
         default: 0
@@ -110,10 +118,20 @@ def get_registrations():
     except ValueError as e:
         current_app.logger.error(f'filter_by_status: {str(e)}')
 
+    sort_by_column: RegistrationSortBy = RegistrationSortBy.ID
+    sort_by = request.args.get("sort_by", None)
+    try:
+        if sort_by is not None:
+            sort_by_column = RegistrationSortBy[sort_by.upper()]
+    except ValueError as e:
+        current_app.logger.error(f'sort_by: {str(e)}')
+
+    sort_desc: bool = request.args.get("sort_desc", "false").lower() == "true"
     offset: int = request.args.get("offset", 0)
     limit: int = request.args.get("limit", 100)
 
     registrations, count = RegistrationService.list_registrations(g.jwt_oidc_token_info, filter_by_status,
+                                                                  sort_by_column, sort_desc,
                                                                   offset, limit)
 
     pagination = Pagination(

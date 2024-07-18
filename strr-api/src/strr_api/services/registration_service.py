@@ -33,7 +33,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 """Manages Auth service interactions."""
 from strr_api import models, requests
-from strr_api.enums.enum import RegistrationStatus
+from strr_api.enums.enum import RegistrationStatus, RegistrationSortBy
 from strr_api.models import db
 from strr_api.services.gcp_storage_service import GCPStorageService
 from sqlalchemy import func
@@ -153,6 +153,7 @@ class RegistrationService:
 
     @classmethod
     def list_registrations(cls, jwt_oidc_token_info, filter_by_status: RegistrationStatus = None,
+                           sort_by: RegistrationSortBy = RegistrationSortBy.ID, sort_desc: bool = False,
                            offset: int = 0, limit: int = 100):
         """List all registrations for current user."""
         user = models.User.get_or_create_user_by_jwt(jwt_oidc_token_info)
@@ -165,7 +166,17 @@ class RegistrationService:
             query = query.filter(models.Registration.status == filter_by_status)
 
         count = query.count()
-        return query.order_by(models.Registration.id).offset(offset).limit(limit).all(), count
+        sort_column = {
+            RegistrationSortBy.ID: models.Registration.id,
+            RegistrationSortBy.USER_ID: models.Registration.user_id,
+            RegistrationSortBy.SBC_ACCOUNT_ID: models.Registration.sbc_account_id,
+            RegistrationSortBy.RENTAL_PROPERTY_ID: models.Registration.rental_property_id,
+            RegistrationSortBy.SUBMISSION_DATE: models.Registration.submission_date,
+            RegistrationSortBy.UPDATED_DATE: models.Registration.updated_date,
+            RegistrationSortBy.STATUS: models.Registration.status,
+        }
+        query = query.order_by(sort_column[sort_by].desc() if sort_desc else sort_column[sort_by].asc())
+        return query.offset(offset).limit(limit).all(), count
 
     @classmethod
     def get_registration_counts_by_status(cls):

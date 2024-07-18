@@ -78,6 +78,18 @@ class RegistrationStatus(Enum):
     DENIED = "denied"
 
 
+class RegistrationSortBy(Enum):
+    """STRR Registration Sort By Columns."""
+
+    ID = 0
+    USER_ID = 1
+    SBC_ACCOUNT_ID = 2
+    RENTAL_PROPERTY_ID = 3
+    SUBMISSION_DATE = 4
+    UPDATED_DATE = 5
+    STATUS = 6
+
+
 class PropertyType(Enum):
     """STRR Property Type."""
 
