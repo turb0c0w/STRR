@@ -17,11 +17,11 @@ export const useRegistrations = () => {
       return res.data
         .sort(
           (registrationA, registrationB) =>
-            registrationA.unitAddress.city.localeCompare(registrationB.unitAddress.city)
+            getStatusPriority(registrationA.status) - getStatusPriority(registrationB.status)
         )
         .sort(
           (registrationA, registrationB) =>
-            getStatusPriority(registrationA.status) - getStatusPriority(registrationB.status)
+            registrationA.unitAddress.city.localeCompare(registrationB.unitAddress.city)
         )
     })
 

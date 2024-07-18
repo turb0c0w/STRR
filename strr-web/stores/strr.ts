@@ -38,13 +38,19 @@ export const submitCreateAccountForm = (
       return data
     })
     .then((data) => {
+      const { invoices } = data
+      if (formState.supportingDocuments.length === 0) {
+        handlePaymentRedirect(invoices[0].invoice_id, data.id)
+      }
       formState.supportingDocuments.forEach((file: File, fileIndex: number) => {
         fileAxiosInstance.post<File>(`${apiURL}/registrations/${data.id}/documents`, { file })
           .then(() => {
-            const { invoices } = data
             if (fileIndex === formState.supportingDocuments.length - 1) {
               handlePaymentRedirect(invoices[0].invoice_id, data.id)
             }
+          })
+          .catch(() => {
+            handlePaymentRedirect(invoices[0].invoice_id, data.id)
           })
       })
       return data
