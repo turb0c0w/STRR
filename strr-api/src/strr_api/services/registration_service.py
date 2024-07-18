@@ -31,12 +31,15 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
+# pylint: disable=R0913
+# pylint: disable=E1102
 """Manages Auth service interactions."""
+from sqlalchemy import func
+
 from strr_api import models, requests
-from strr_api.enums.enum import RegistrationStatus, RegistrationSortBy
+from strr_api.enums.enum import RegistrationSortBy, RegistrationStatus
 from strr_api.models import db
 from strr_api.services.gcp_storage_service import GCPStorageService
-from sqlalchemy import func
 
 
 class RegistrationService:
@@ -152,9 +155,15 @@ class RegistrationService:
         return registration
 
     @classmethod
-    def list_registrations(cls, jwt_oidc_token_info, filter_by_status: RegistrationStatus = None,
-                           sort_by: RegistrationSortBy = RegistrationSortBy.ID, sort_desc: bool = False,
-                           offset: int = 0, limit: int = 100):
+    def list_registrations(
+        cls,
+        jwt_oidc_token_info,
+        filter_by_status: RegistrationStatus = None,
+        sort_by: RegistrationSortBy = RegistrationSortBy.ID,
+        sort_desc: bool = False,
+        offset: int = 0,
+        limit: int = 100,
+    ):
         """List all registrations for current user."""
         user = models.User.get_or_create_user_by_jwt(jwt_oidc_token_info)
         if not user:

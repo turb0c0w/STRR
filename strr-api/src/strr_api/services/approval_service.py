@@ -35,11 +35,14 @@
 # pylint: disable=R0914
 # pylint: disable=R0912
 # pylint: disable=R0915
+# pylint: disable=R1702
 """For a successfully paid registration, this service determines its auto-approval state."""
 import random
-from weasyprint import HTML
 from datetime import datetime, timezone
+
 from flask import current_app, render_template
+from weasyprint import HTML
+
 from strr_api import models
 from strr_api.common.utils import compare_addresses
 from strr_api.enums.enum import EventRecordType, OwnershipType, RegistrationStatus
@@ -287,20 +290,32 @@ class ApprovalService:
 
         registration_number_prefix = f'BCH{datetime.now(timezone.utc).strftime("%y")}'
         while True:
-            random_digits = ''.join(random.choices('0123456789', k=9))
+            random_digits = "".join(random.choices("0123456789", k=9))
             registration_number = f"{registration_number_prefix}{random_digits}"
-            if models.Certificate.query.filter(
-               models.Certificate.registration_number == registration_number).one_or_none() is None:
-
+            if (
+                models.Certificate.query.filter(
+                    models.Certificate.registration_number == registration_number
+                ).one_or_none()
+                is None
+            ):
                 creation_date = datetime.now(timezone.utc)
                 expiry_date = creation_date.replace(year=creation_date.year + 1)
                 data = {
-                    'registration_number': f'{registration_number}',
-                    'creation_date': f'{creation_date.strftime("%Y-%m-%d")}',
-                    'expiry_date': f'{expiry_date.strftime("%Y-%m-%d")}'
+                    "registration_number": f"{registration_number}",
+                    "creation_date": f'{creation_date.strftime("%Y-%m-%d")}',
+                    "expiry_date": f'{expiry_date.strftime("%Y-%m-%d")}',
                 }
-                rendered_template = render_template('certificate.html', **data)
-                pdf_binary = HTML(string=rendered_template).render(optimize_size=('fonts', 'images',)).write_pdf()
+                rendered_template = render_template("certificate.html", **data)
+                pdf_binary = (
+                    HTML(string=rendered_template)
+                    .render(
+                        optimize_size=(
+                            "fonts",
+                            "images",
+                        )
+                    )
+                    .write_pdf()
+                )
 
                 certificate = models.Certificate(
                     registration_id=registration.id,

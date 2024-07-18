@@ -3,7 +3,6 @@ ORM Mapping for Certificate Records
 """
 from __future__ import annotations
 
-from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.sql import text
 
 from .db import db

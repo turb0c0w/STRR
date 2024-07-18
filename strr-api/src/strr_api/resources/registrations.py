@@ -41,12 +41,12 @@ from http import HTTPStatus
 from io import BytesIO
 
 from flasgger import swag_from
-from flask import Blueprint, g, jsonify, request, send_file, current_app
+from flask import Blueprint, current_app, g, jsonify, request, send_file
 from flask_cors import cross_origin
 from werkzeug.utils import secure_filename
-from strr_api.enums.enum import RegistrationStatus, RegistrationSortBy
+
 from strr_api.common.auth import jwt
-from strr_api.enums.enum import PaymentStatus
+from strr_api.enums.enum import PaymentStatus, RegistrationSortBy, RegistrationStatus
 from strr_api.exceptions import (
     AuthException,
     ExternalServiceException,
@@ -56,7 +56,7 @@ from strr_api.exceptions import (
 )
 from strr_api.models import User
 from strr_api.requests import RegistrationRequest
-from strr_api.responses import AutoApprovalRecord, Document, EventRecord, Invoice, LTSARecord, Registration, Pagination
+from strr_api.responses import AutoApprovalRecord, Document, EventRecord, Invoice, LTSARecord, Pagination, Registration
 from strr_api.schemas.utils import validate
 from strr_api.services import (
     ApprovalService,
@@ -116,7 +116,7 @@ def get_registrations():
         if status_value is not None:
             filter_by_status = RegistrationStatus[status_value.upper()]
     except ValueError as e:
-        current_app.logger.error(f'filter_by_status: {str(e)}')
+        current_app.logger.error(f"filter_by_status: {str(e)}")
 
     sort_by_column: RegistrationSortBy = RegistrationSortBy.ID
     sort_by = request.args.get("sort_by", None)
@@ -124,20 +124,17 @@ def get_registrations():
         if sort_by is not None:
             sort_by_column = RegistrationSortBy[sort_by.upper()]
     except ValueError as e:
-        current_app.logger.error(f'sort_by: {str(e)}')
+        current_app.logger.error(f"sort_by: {str(e)}")
 
     sort_desc: bool = request.args.get("sort_desc", "false").lower() == "true"
     offset: int = request.args.get("offset", 0)
     limit: int = request.args.get("limit", 100)
 
-    registrations, count = RegistrationService.list_registrations(g.jwt_oidc_token_info, filter_by_status,
-                                                                  sort_by_column, sort_desc,
-                                                                  offset, limit)
-
-    pagination = Pagination(
-        count=count,
-        results=[Registration.from_db(registration) for registration in registrations]
+    registrations, count = RegistrationService.list_registrations(
+        g.jwt_oidc_token_info, filter_by_status, sort_by_column, sort_desc, offset, limit
     )
+
+    pagination = Pagination(count=count, results=[Registration.from_db(registration) for registration in registrations])
     return (
         jsonify(pagination.model_dump(mode="json")),
         HTTPStatus.OK,
@@ -829,8 +826,8 @@ def get_registration_certificate(registration_id):
         return send_file(
             BytesIO(certificate.certificate),
             as_attachment=True,
-            download_name='Host Registration Certificate.pdf',
-            mimetype='application/pdf'
+            download_name="Host Registration Certificate.pdf",
+            mimetype="application/pdf",
         )
     except AuthException as auth_exception:
         return exception_response(auth_exception)
