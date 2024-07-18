@@ -72,6 +72,7 @@ class RegistrationStatus(Enum):
 
     PENDING = "pending"
     APPROVED = "approved"
+    ISSUED = "issued"
     UNDER_REVIEW = "under review"
     MORE_INFO_NEEDED = "more info needed"
     PROVISIONAL = "provisional"
@@ -119,6 +120,7 @@ class EventRecordType(Enum):
     AUTO_APPROVAL_PROVISIONAL = "automatically marked as provisionally approved"
     AUTO_APPROVAL_APPROVED = "automatically marked as approved"
     MANUALLY_APPROVED = "marked as approved by examiner"
+    CERTIFICATE_ISSUED = "certificate issued by examiner"
 
 
 class PaymentStatus(Enum):

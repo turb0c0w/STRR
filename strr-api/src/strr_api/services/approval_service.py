@@ -282,7 +282,6 @@ class ApprovalService:
             registration.user_id,
             registration.id,
         )
-        cls.generate_registration_certificate(registration)
 
     @classmethod
     def generate_registration_certificate(cls, registration: models.Registration):
@@ -329,6 +328,18 @@ class ApprovalService:
         db.session.add(certificate)
         db.session.commit()
         db.session.refresh(certificate)
+
+        registration.status = RegistrationStatus.ISSUED
+        registration.save()
+
+        EventRecordsService.save_event_record(
+            EventRecordType.CERTIFICATE_ISSUED,
+            EventRecordType.CERTIFICATE_ISSUED.value,
+            False,
+            registration.user_id,
+            registration.id,
+        )
+
         return certificate
 
     @classmethod
