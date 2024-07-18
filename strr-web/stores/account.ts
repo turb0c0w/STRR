@@ -81,7 +81,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       .then(() => {
         setAccountInfo()
           .then(() => {
-            navigateTo('/account-select')
+            navigateTo('/create-account')
           })
       })
   }
