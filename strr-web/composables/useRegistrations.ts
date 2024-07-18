@@ -17,6 +17,10 @@ export const useRegistrations = () => {
       return res.data
         .sort(
           (registrationA, registrationB) =>
+            getStatusPriority(registrationA.status) - getStatusPriority(registrationB.status)
+        )
+        .sort(
+          (registrationA, registrationB) =>
             registrationA.unitAddress.city.localeCompare(registrationB.unitAddress.city)
         )
     })
@@ -46,6 +50,19 @@ export const useRegistrations = () => {
   const getRegistrationHistory = (id: string): Promise<RegistrationHistoryEventI[]> =>
     axiosInstance.get(`${apiURL}/registrations/${id}/history`)
       .then(res => res.data)
+
+  const getStatusPriority = (status: string) => {
+    switch (status) {
+      case 'DENIED':
+        return 4
+      case 'APPROVED':
+        return 3
+      case 'PENDING':
+        return 2
+      default:
+        return 1
+    }
+  }
 
   const createSbcRegistration = (registration:
     {
