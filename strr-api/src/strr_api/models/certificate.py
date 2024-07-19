@@ -3,6 +3,7 @@ ORM Mapping for Certificate Records
 """
 from __future__ import annotations
 
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import text
 
 from .db import db
@@ -19,3 +20,5 @@ class Certificate(db.Model):
     creation_date = db.Column(db.DateTime, nullable=False, server_default=text("(NOW())"))
     expiry_date = db.Column(db.DateTime, nullable=False, server_default=text("(NOW() + interval '1 year')"))
     certificate = db.Column(db.LargeBinary, nullable=False)
+
+    registration = relationship("Registration", back_populates="certificates")

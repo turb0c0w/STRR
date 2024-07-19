@@ -40,7 +40,7 @@ from .exceptions import BaseExceptionE, ExternalServiceException
 
 
 def error_response(
-    message: str = "Bad request", http_status: HTTPStatus = HTTPStatus.BAD_REQUEST, errors: list[dict[str, str]] = None
+    http_status: HTTPStatus = HTTPStatus.BAD_REQUEST, message: str = "Bad request", errors: list[dict[str, str]] = None
 ):
     """Build generic request response with errors."""
     return jsonify({"message": message, "details": errors or []}), http_status
@@ -51,6 +51,6 @@ def exception_response(exception: BaseExceptionE):
     current_app.logger.error(repr(exception))
     if isinstance(exception, ExternalServiceException):
         return error_response(
-            exception.message, exception.status_code if exception.status_code > 500 else HTTPStatus.BAD_GATEWAY
+            (exception.status_code if exception.status_code > 500 else HTTPStatus.BAD_GATEWAY), exception.message
         )
-    return error_response(exception.message, exception.status_code)
+    return error_response(exception.status_code, exception.message)

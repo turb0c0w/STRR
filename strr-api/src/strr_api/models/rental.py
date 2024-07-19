@@ -101,6 +101,7 @@ class Registration(db.Model):
     rental_property = relationship("RentalProperty", back_populates="registrations")
     eligibility = relationship("Eligibility", back_populates="registrations", uselist=False)
     invoices = relationship("Invoice", back_populates="registration")
+    certificates = relationship("Certificate", back_populates="registration")
 
     def save(self):
         """Store the Registration into the local cache."""

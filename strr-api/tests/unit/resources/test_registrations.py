@@ -11,6 +11,7 @@ from tests.unit.utils.mocks import (
     fake_get_token_auth_header,
     fake_invoice,
     fake_registration,
+    fake_registration_pending,
     fake_user_from_token,
     no_op,
     throw_external_service_exception,
@@ -310,7 +311,7 @@ def test_get_registration_ltsa_403(client):
     assert rv.status_code == HTTPStatus.FORBIDDEN
 
 
-@patch("strr_api.services.registration_service.RegistrationService.get_registration", new=fake_registration)
+@patch("strr_api.services.registration_service.RegistrationService.get_registration", new=fake_registration_pending)
 @patch("strr_api.models.rental.Registration.save", new=no_op)
 @patch("strr_api.models.user.User.find_by_jwt_token", new=fake_examiner_from_token)
 @patch("flask_jwt_oidc.JwtManager.get_token_auth_header", new=fake_get_token_auth_header)

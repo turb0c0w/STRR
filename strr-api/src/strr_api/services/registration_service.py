@@ -159,6 +159,7 @@ class RegistrationService:
         cls,
         jwt_oidc_token_info,
         account_id: int = None,
+        search: str = None,
         filter_by_status: RegistrationStatus = None,
         sort_by: RegistrationSortBy = RegistrationSortBy.ID,
         sort_desc: bool = False,
@@ -169,7 +170,37 @@ class RegistrationService:
         user = models.User.get_or_create_user_by_jwt(jwt_oidc_token_info)
         if not user:
             return [], 0
-        query = models.Registration.query
+        query = (
+            models.Registration.query.join(
+                models.RentalProperty, models.Registration.rental_property_id == models.RentalProperty.id
+            )
+            .join(models.Address, models.RentalProperty.address_id == models.Address.id)
+            .join(models.PropertyManager, models.RentalProperty.property_manager_id == models.PropertyManager.id)
+            .join(models.Contact, models.PropertyManager.primary_contact_id == models.Contact.id)
+        )
+
+        certificates_subquery = db.session.query(
+            models.Certificate,
+            func.row_number()
+            .over(partition_by=models.Certificate.registration_id, order_by=models.Certificate.creation_date.desc())
+            .label("rank"),
+        ).subquery()
+
+        query = query.join(
+            certificates_subquery,
+            (models.Registration.id == certificates_subquery.c.registration_id) & (certificates_subquery.c.rank == 1),
+            isouter=True,
+        )
+
+        if search and len(search) >= 3:
+            query = query.filter(
+                func.concat(models.Contact.firstname, " ", models.Contact.lastname).ilike(f"%{search}%")
+                | models.Address.city.ilike(f"%{search}%")
+                | models.Address.street_address.ilike(f"%{search}%")
+                | models.Address.postal_code.ilike(f"%{search}%")
+                | certificates_subquery.c.registration_number.ilike(f"%{search}%")
+            )
+
         if not user.is_examiner():
             query = query.filter(models.Registration.user_id == user.id)
             if account_id:
@@ -180,12 +211,12 @@ class RegistrationService:
         count = query.count()
         sort_column = {
             RegistrationSortBy.ID: models.Registration.id,
-            RegistrationSortBy.USER_ID: models.Registration.user_id,
-            RegistrationSortBy.SBC_ACCOUNT_ID: models.Registration.sbc_account_id,
-            RegistrationSortBy.RENTAL_PROPERTY_ID: models.Registration.rental_property_id,
-            RegistrationSortBy.SUBMISSION_DATE: models.Registration.submission_date,
-            RegistrationSortBy.UPDATED_DATE: models.Registration.updated_date,
+            RegistrationSortBy.REGISTRATION_NUMBER: certificates_subquery.c.registration_number,
+            RegistrationSortBy.LOCATION: models.Address.city,
+            RegistrationSortBy.ADDRESS: models.Address.street_address,
+            RegistrationSortBy.NAME: func.concat(models.Contact.firstname, " ", models.Contact.lastname),
             RegistrationSortBy.STATUS: models.Registration.status,
+            RegistrationSortBy.SUBMISSION_DATE: models.Registration.submission_date,
         }
         query = query.order_by(sort_column[sort_by].desc() if sort_desc else sort_column[sort_by].asc())
         return query.offset(offset).limit(limit).all(), count
