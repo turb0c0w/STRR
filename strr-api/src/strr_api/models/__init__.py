@@ -1,4 +1,4 @@
-# Copyright © 2023 Province of British Columbia
+# Copyright © 2024 Province of British Columbia
 #
 # Licensed under the BSD 3 Clause License, (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 """This exports all of the models and schemas used by the application."""
+from .application import Application
 from .auto_approval_record import AutoApprovalRecord
 from .certificate import Certificate
 from .db import db  # noqa: I001
@@ -44,6 +45,7 @@ from .user import Contact, User
 
 __all__ = (
     "db",
+    "Application",
     "User",
     "RentalProperty",
     "Address",
