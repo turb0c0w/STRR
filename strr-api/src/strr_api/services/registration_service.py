@@ -158,6 +158,7 @@ class RegistrationService:
     def list_registrations(
         cls,
         jwt_oidc_token_info,
+        account_id: int = None,
         filter_by_status: RegistrationStatus = None,
         sort_by: RegistrationSortBy = RegistrationSortBy.ID,
         sort_desc: bool = False,
@@ -171,6 +172,8 @@ class RegistrationService:
         query = models.Registration.query
         if not user.is_examiner():
             query = query.filter(models.Registration.user_id == user.id)
+            if account_id:
+                query = query.filter(models.Registration.sbc_account_id == account_id)
         if filter_by_status is not None:
             query = query.filter(models.Registration.status == filter_by_status)
 

@@ -84,6 +84,10 @@ def get_registrations():
     tags:
       - registration
     parameters:
+      - in: header
+        name: Account-Id
+        type: integer
+        description: Optionally filters results based on SBC Account ID
       - in: query
         name: filter_by_status
         enum: [PENDING,APPROVED,UNDER_REVIEW,MORE_INFO_NEEDED,PROVISIONAL,DENIED]
@@ -110,6 +114,7 @@ def get_registrations():
       401:
         description:
     """
+    account_id = request.headers.get("Account-Id")
     filter_by_status: RegistrationStatus = None
     status_value = request.args.get("filter_by_status", None)
     try:
@@ -131,7 +136,7 @@ def get_registrations():
     limit: int = request.args.get("limit", 100)
 
     registrations, count = RegistrationService.list_registrations(
-        g.jwt_oidc_token_info, filter_by_status, sort_by_column, sort_desc, offset, limit
+        g.jwt_oidc_token_info, account_id, filter_by_status, sort_by_column, sort_desc, offset, limit
     )
 
     pagination = Pagination(count=count, results=[Registration.from_db(registration) for registration in registrations])
@@ -707,7 +712,7 @@ def get_registration_ltsa(registration_id):
 @jwt.requires_auth
 def get_registration_auto_approval(registration_id):
     """
-    Get registration ltsa records
+    Get registration auto approval records
     ---
     tags:
       - examiner
