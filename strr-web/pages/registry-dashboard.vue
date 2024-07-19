@@ -61,12 +61,16 @@
         </template>
         <template #status-data="{ row }">
           <BcrosChip
+            :key="row.status"
             :flavour="getChipFlavour(row.status)"
           />
         </template>
         <template #submission-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registrationNumber)">
-            {{ row.submission }}
+          <div
+            class="cursor-pointer w-full"
+            @click="navigateToDetails(row.registrationNumber)"
+          >
+            {{ new Date(row.submissionDate).toLocaleDateString('en-US', { dateStyle: 'medium'}) }}
           </div>
         </template>
       </UTable>
@@ -219,7 +223,7 @@ const registrationsToTableRows = (registrations: PaginatedRegistrationsI): Recor
         ${result.primaryContact.name.lastName}
       `,
       status: result.status,
-      'submission date': result.submissionDate
+      submissionDate: result.submissionDate
     })
   })
   return rows
@@ -250,7 +254,7 @@ const columns = [
   { key: 'address', label: tRegistryDashboard('address') },
   { key: 'owner', label: tRegistryDashboard('owner') },
   { key: 'status', label: tRegistryDashboard('status'), sortable: true },
-  { key: 'submission date', label: tRegistryDashboard('submissionDate'), sortable: true }
+  { key: 'submission', label: tRegistryDashboard('submissionDate'), sortable: true }
 ]
 
 const updateStatusCounts = () => {
