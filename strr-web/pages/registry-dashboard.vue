@@ -4,7 +4,7 @@
     <BcrosTypographyH2 text="Owners STR Registration Applications" />
     <UTabs
       :items="filterOptions"
-      class="mb-[24px] w-[500px]"
+      class="mb-[24px] w-[800px]"
       @change="onTabChange"
     />
     <div class="bg-white">
@@ -40,22 +40,22 @@
       >
         <!-- Only way to do row clicks in NuxtUI currently -->
         <template #registration-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registrationNumber)">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registration)">
             {{ row.registration }}
           </div>
         </template>
         <template #location-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registrationNumber)">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registration)">
             {{ row.location }}
           </div>
         </template>
         <template #address-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registrationNumber)">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registration)">
             {{ row.address }}
           </div>
         </template>
         <template #owner-data="{ row }">
-          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registrationNumber)">
+          <div class="cursor-pointer w-full" @click="navigateToDetails(row.registration)">
             {{ row.owner }}
           </div>
         </template>
@@ -68,7 +68,7 @@
         <template #submission-data="{ row }">
           <div
             class="cursor-pointer w-full"
-            @click="navigateToDetails(row.registrationNumber)"
+            @click="navigateToDetails(row.registration)"
           >
             {{ new Date(row.submissionDate).toLocaleDateString('en-US', { dateStyle: 'medium'}) }}
           </div>
@@ -117,9 +117,14 @@ const tableRows = ref<Record<string, string>[]>([])
 const totalResults = ref<number>(0)
 const loading = ref<boolean>(true)
 const maxPageResults = ref<number>(0)
-const statusCounts = ref()
+const statusCounts = ref<{
+  'APPROVED': number,
+  'UNDER_REVIEW': number,
+  'PROVISIONAL': number
+}>()
 const sortDesc = ref<boolean>(false)
 const sortBy = ref<string>('')
+const filterOptions = ref()
 
 const sort = ({ column, direction }: { column: string, direction: string }) => {
   sortBy.value = column.replace(' ', '_').toLocaleUpperCase()
@@ -134,7 +139,7 @@ const onTabChange = (index: number) => {
       statusFilter.value = 'UNDER_REVIEW'
       break
     case 2:
-      statusFilter.value = 'PENDING'
+      statusFilter.value = 'PROVISIONAL'
       break
     default:
       statusFilter.value = ''
@@ -143,6 +148,11 @@ const onTabChange = (index: number) => {
 
 const getChipFlavour = (status: string): StatusChipFlavoursI['flavour'] => {
   switch (status) {
+    case 'DENIED':
+      return {
+        text: tRegistryDashboardStatus('denied'),
+        alert: AlertsFlavourE.ALERT
+      }
     case 'APPROVED':
       return {
         alert: AlertsFlavourE.SUCCESS,
@@ -171,17 +181,24 @@ const getChipFlavour = (status: string): StatusChipFlavoursI['flavour'] => {
   }
 }
 
-const filterOptions = [
-  {
-    label: tRegistryDashboard('all')
-  },
-  {
-    label: tRegistryDashboard('fullReview')
-  },
-  {
-    label: tRegistryDashboard('provisionalApproval')
-  }
-]
+const updateFilterOptions = () => {
+  filterOptions.value = [
+    {
+      label: `${tRegistryDashboard('all')} (${totalResults.value})`
+    },
+    {
+      label: `${tRegistryDashboard('fullReview')} (${statusCounts.value?.UNDER_REVIEW})`
+    },
+    {
+      label: `${tRegistryDashboard('provisionalApproval')} (${statusCounts.value?.PROVISIONAL})`
+    }
+  ]
+}
+
+watch(statusCounts, () => {
+  updateFilterOptions()
+})
+
 const navigateToDetails = (id: number) => navigateTo(`/application-details/${id.toString()}`)
 
 const addOrDeleteRefFromObject = (ref: Ref, key: keyof PaginationI, paginationObject: PaginationI) => {
@@ -258,8 +275,8 @@ const columns = [
   { key: 'submission', label: tRegistryDashboard('submissionDate'), sortable: true }
 ]
 
-const updateStatusCounts = () => {
-  statusCounts.value = getCountsByStatus()
+const updateStatusCounts = async () => {
+  statusCounts.value = await getCountsByStatus() as { APPROVED: number; UNDER_REVIEW: number; PROVISIONAL: number; }
 }
 
 onMounted(() => {

@@ -31,7 +31,7 @@ export const useRegistrations = () => {
       .then(res => res.data)
   }
 
-  const getCountsByStatus = (): Promise<RegistrationI | void> =>
+  const getCountsByStatus = (): Promise<{ APPROVED: number; UNDER_REVIEW: number; PROVISIONAL: number; } | void> =>
     axiosInstance.get(`${apiURL}/registrations/counts_by_status`)
       .then(res => res.data)
 

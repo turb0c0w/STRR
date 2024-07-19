@@ -280,6 +280,12 @@ const history = await getRegistrationHistory(applicationId.toString())
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {
+  if (status === 'DENIED') {
+    return {
+      text: tRegistrationStatus('denied'),
+      alert: AlertsFlavourE.ALERT
+    }
+  }
   if (invoices.length === 0) {
     return {
       text: tRegistrationStatus('applied'),

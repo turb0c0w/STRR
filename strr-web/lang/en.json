@@ -21,7 +21,8 @@
       "approved": "APPROVED",
       "rejected": "REJECTED",
       "provisional": "PROVISIONAL",
-      "underReview": "UNDER REVIEW"
+      "underReview": "UNDER REVIEW",
+      "denied": "DENIED"
     }
   },
   "tos": {
@@ -112,6 +113,7 @@
   "registration-status": {
     "PENDING": "PENDING",
     "approved": "APPROVED",
+    "denied": "DENIED",
     "APPROVED": "APPROVED",
     "MORE_INFO_NEEDED": "PROVISIONAL",
     "DENIED": "DENIED",
