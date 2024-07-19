@@ -1,8 +1,18 @@
 import os
 
-from strr_api.enums.enum import PaymentStatus
+from strr_api.enums.enum import OwnershipType, PaymentStatus, PropertyType, RegistrationStatus
 from strr_api.exceptions import ExternalServiceException
-from strr_api.models import Document, Eligibility, Invoice, Registration, User
+from strr_api.models import (
+    Address,
+    Contact,
+    Document,
+    Eligibility,
+    Invoice,
+    PropertyManager,
+    Registration,
+    RentalProperty,
+    User,
+)
 
 
 def mock_json_file(filename):
@@ -26,6 +36,16 @@ def fake_user_from_token(arg):
     )
 
 
+def fake_examiner_from_token(arg):
+    return User(
+        firstname="First",
+        lastname="last",
+        email="test@test.test",
+        idp_userid="ABCDEFG",
+        login_source="IDIR",
+    )
+
+
 def fake_user_from_db(*args, **kwargs):
     return User(
         id=1,
@@ -41,7 +61,48 @@ def fake_registration(*args, **kwargs):
         id=1,
         user_id=1,
         sbc_account_id=1000,
-        eligibility=Eligibility(id=1, registration_id=1),
+        status=RegistrationStatus.APPROVED,
+        submission_date="2021-01-01T00:00:00Z",
+        updated_date="2021-01-01T00:00:00Z",
+        eligibility=Eligibility(
+            id=1,
+            registration_id=1,
+            is_principal_residence=True,
+            agreed_to_rental_act=True,
+            agreed_to_submit=True,
+        ),
+        rental_property=RentalProperty(
+            id=1,
+            property_type=PropertyType.PRIMARY,
+            ownership_type=OwnershipType.OWN,
+            address=Address(
+                id=1,
+                street_address="123 Fake St",
+                country="CA",
+                city="Victoria",
+                province="BC",
+                postal_code="V8V 8V8",
+            ),
+            property_manager=PropertyManager(
+                id=1,
+                primary_contact=Contact(
+                    id=1,
+                    firstname="First",
+                    lastname="Last",
+                    email="first.last@bc.gov.ca",
+                    phone_number="123-456-7890",
+                    date_of_birth="1970-01-01",
+                    address=Address(
+                        id=1,
+                        street_address="123 Fake St",
+                        country="CA",
+                        city="Victoria",
+                        province="BC",
+                        postal_code="V8V 8V8",
+                    ),
+                ),
+            ),
+        ),
     )
 
 

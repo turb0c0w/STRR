@@ -17,11 +17,11 @@ export const useRegistrations = () => {
       return res.data.results
         .sort(
           (registrationA, registrationB) =>
-            registrationA.unitAddress.city.localeCompare(registrationB.unitAddress.city)
+            getStatusPriority(registrationA.status) - getStatusPriority(registrationB.status)
         )
         .sort(
           (registrationA, registrationB) =>
-            getStatusPriority(registrationA.status) - getStatusPriority(registrationB.status)
+            registrationA.unitAddress.city.localeCompare(registrationB.unitAddress.city)
         )
     })
 
@@ -38,6 +38,7 @@ export const useRegistrations = () => {
   const getRegistration = (id: string): Promise<RegistrationI | void> =>
     axiosInstance.get(`${apiURL}/registrations/${id}`)
       .then(res => res.data)
+
 
   const getLtsa = (id: string): Promise<LtsaDataI[] | void> =>
     axiosInstance.get(`${apiURL}/registrations/${id}/ltsa`)

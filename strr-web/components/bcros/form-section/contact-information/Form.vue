@@ -126,15 +126,13 @@ const {
   addSecondaryContact,
   toggleAddSecondary,
   isComplete,
-  secondFormIsComplete,
-  id
+  secondFormIsComplete
 } = defineProps<{
   fullName: string,
   addSecondaryContact: boolean,
   toggleAddSecondary:() => void,
   isComplete: boolean,
   secondFormIsComplete: boolean
-  id?: string
 }>()
 
 const {
@@ -173,33 +171,32 @@ const validateMonths = () => {
 
 const { me, currentAccount } = useBcrosAccount()
 
-if (currentAccount && me) {
-  const mailingAddress = me?.orgs.find(({ id }) => id === currentAccount.id)?.mailingAddress
-  if (mailingAddress) {
-    // Check if field already has content before populating so as not to overwrite user changes
-    if (!formState.primaryContact.country) { formState.primaryContact.country = mailingAddress[0].country }
-    if (!formState.primaryContact.city) { formState.primaryContact.city = mailingAddress[0].city }
-    if (!formState.primaryContact.postalCode) { formState.primaryContact.postalCode = mailingAddress[0].postalCode }
-    if (!formState.primaryContact.province) { formState.primaryContact.province = mailingAddress[0].region }
-    if (!formState.primaryContact.address) { formState.primaryContact.address = mailingAddress[0].street }
-    if (!formState.primaryContact.addressLineTwo) {
-      formState.primaryContact.addressLineTwo = mailingAddress[0].streetAdditional
-    }
-  }
-}
-
 onMounted(() => {
   if (isComplete) { validateMonths() }
-
-  if (me?.profile.contacts && me?.profile.contacts.length > 0 && !id) {
-    formState.primaryContact.phoneNumber = me?.profile.contacts[0].phone
-    formState.primaryContact.emailAddress = me?.profile.contacts[0].email
-    formState.primaryContact.extension = me?.profile.contacts[0].phoneExtension
-  } else {
-    const profile = me?.orgs.find((pro: any) => pro.id.toString() === id)
-    formState.primaryContact.phoneNumber = profile?.mailingAddress[0].phone
-    formState.primaryContact.emailAddress = profile?.mailingAddress[0].email
-    formState.primaryContact.extension = profile?.mailingAddress[0].phoneExtension
+  if (currentAccount && me) {
+    const currentAccountInfo = me?.orgs.find(({ id }) => id === currentAccount.id)?.mailingAddress
+    if (currentAccountInfo) {
+      if (!formState.primaryContact.emailAddress) {
+        formState.primaryContact.emailAddress = currentAccountInfo[0].email
+      }
+      if (!formState.primaryContact.phoneNumber) {
+        formState.primaryContact.phoneNumber = currentAccountInfo[0].phone
+      }
+      if (!formState.primaryContact.extension) {
+        formState.primaryContact.extension = currentAccountInfo[0].phoneExtension
+      }
+      // Check if field already has content before populating so as not to overwrite user changes
+      if (!formState.primaryContact.country) { formState.primaryContact.country = currentAccountInfo[0].country }
+      if (!formState.primaryContact.city) { formState.primaryContact.city = currentAccountInfo[0].city }
+      if (!formState.primaryContact.postalCode) {
+        formState.primaryContact.postalCode = currentAccountInfo[0].postalCode
+      }
+      if (!formState.primaryContact.province) { formState.primaryContact.province = currentAccountInfo[0].region }
+      if (!formState.primaryContact.address) { formState.primaryContact.address = currentAccountInfo[0].street }
+      if (!formState.primaryContact.addressLineTwo) {
+        formState.primaryContact.addressLineTwo = currentAccountInfo[0].streetAdditional
+      }
+    }
   }
 })
 

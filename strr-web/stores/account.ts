@@ -78,10 +78,11 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
         termsVersion: versionId
       }
     )
-      .then((response) => {
-        tos.value = response.data
-        navigateTo('/account-select')
-        return response.data
+      .then(() => {
+        setAccountInfo()
+          .then(() => {
+            navigateTo('/create-account')
+          })
       })
   }
 
