@@ -111,6 +111,7 @@
   },
   "registration-status": {
     "PENDING": "PENDING",
+    "approved": "APPROVED",
     "APPROVED": "APPROVED",
     "MORE_INFO_NEEDED": "PROVISIONAL",
     "DENIED": "DENIED",

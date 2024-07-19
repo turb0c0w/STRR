@@ -8,7 +8,6 @@
     "
   >
     {{ flavour.text }}
-    <slot />
   </div>
 </template>
 

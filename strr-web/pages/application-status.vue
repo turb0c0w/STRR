@@ -109,6 +109,12 @@ registrations.value =
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {
+  if (status === 'APPROVED') {
+    return {
+      text: tRegistrationStatus('approved'),
+      alert: AlertsFlavourE.SUCCESS
+    }
+  }
   if (invoices.length === 0) {
     return {
       text: tRegistrationStatus('applied'),
