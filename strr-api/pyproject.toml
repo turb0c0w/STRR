@@ -9,16 +9,16 @@ packages = [{include = "strr_api", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-flask = "2.3.3"
+flask = "3.0.3"
 launchdarkly-server-sdk = "^9.0.1"
 python-dotenv = "^1.0.0"
-flask-sqlalchemy = "^3.0.5"
+flask-sqlalchemy = "^3.1.1"
 flask-migrate = "^4.0.4"
 sql-versioning = { git = "https://github.com/bcgov/lear.git", subdirectory = "python/common/sql-versioning", branch = "feature-legal-name" }
 sentry-sdk = "^1.24.0"
 flask-babel = "^4.0.0"
 flask-cors = "^4.0.0"
-flask-jwt-oidc = "0.6.0"
+flask-jwt-oidc = "0.7.0"
 gunicorn = "^21.2.0"
 jsonschema = {extras = ["format"], version = "^4.20.0"}
 pycountry = "^23.12.11"
