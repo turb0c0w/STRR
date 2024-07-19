@@ -174,6 +174,10 @@ def get_registration_counts_by_status():
         for row in counts:
             results[row.status.name] = row.count
 
+        for status in RegistrationStatus:
+            if results.get(status.name) is None:
+                results[status.name] = 0
+
         return jsonify(results), HTTPStatus.OK
     except AuthException as auth_exception:
         return exception_response(auth_exception)
