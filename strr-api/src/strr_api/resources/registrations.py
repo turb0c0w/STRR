@@ -833,6 +833,48 @@ def issue_registration_certificate(registration_id):
         return exception_response(auth_exception)
 
 
+@bp.route("/<registration_id>/deny", methods=("POST",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def deny_registration(registration_id):
+    """
+    Manually deny a STRR registration.
+    ---
+    tags:
+      - examiner
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+      404:
+        description:
+    """
+
+    try:
+        user = User.get_or_create_user_by_jwt(g.jwt_oidc_token_info)
+        if not user or not user.is_examiner():
+            raise AuthException()
+
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
+
+        ApprovalService.process_manual_denial(registration)
+        return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.OK
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+
+
 @bp.route("/<registration_id>/certificate", methods=("GET",))
 @swag_from({"security": [{"Bearer": []}]})
 @cross_origin(origin="*")

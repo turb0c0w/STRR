@@ -338,6 +338,29 @@ def test_post_registration_approve_403(client):
 @patch("strr_api.models.user.User.find_by_jwt_token", new=fake_examiner_from_token)
 @patch("flask_jwt_oidc.JwtManager.get_token_auth_header", new=fake_get_token_auth_header)
 @patch("flask_jwt_oidc.JwtManager._validate_token", new=no_op)
+def test_post_registration_deny_200(client):
+    rv = client.post("/registrations/1/deny")
+    assert rv.status_code == HTTPStatus.OK
+
+
+def test_post_registration_deny_401(client):
+    rv = client.post("/registrations/1/deny")
+    assert rv.status_code == HTTPStatus.UNAUTHORIZED
+
+
+@patch("strr_api.models.user.User.find_by_jwt_token", new=fake_user_from_token)
+@patch("flask_jwt_oidc.JwtManager.get_token_auth_header", new=fake_get_token_auth_header)
+@patch("flask_jwt_oidc.JwtManager._validate_token", new=no_op)
+def test_post_registration_deny_403(client):
+    rv = client.post("/registrations/1/deny")
+    assert rv.status_code == HTTPStatus.FORBIDDEN
+
+
+@patch("strr_api.services.registration_service.RegistrationService.get_registration", new=fake_registration)
+@patch("strr_api.models.rental.Registration.save", new=no_op)
+@patch("strr_api.models.user.User.find_by_jwt_token", new=fake_examiner_from_token)
+@patch("flask_jwt_oidc.JwtManager.get_token_auth_header", new=fake_get_token_auth_header)
+@patch("flask_jwt_oidc.JwtManager._validate_token", new=no_op)
 def test_post_registration_issue_200(client):
     rv = client.post("/registrations/1/issue")
     assert rv.status_code == HTTPStatus.OK

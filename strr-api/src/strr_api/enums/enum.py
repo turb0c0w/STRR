@@ -120,6 +120,7 @@ class EventRecordType(Enum):
     AUTO_APPROVAL_PROVISIONAL = "automatically marked as provisionally approved"
     AUTO_APPROVAL_APPROVED = "automatically marked as approved"
     MANUALLY_APPROVED = "marked as approved by examiner"
+    MANUALLY_DENIED = "marked as denied by examiner"
     CERTIFICATE_ISSUED = "certificate issued by examiner"
 
 
