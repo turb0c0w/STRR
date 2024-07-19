@@ -123,6 +123,7 @@ const sortBy = ref<string>('')
 
 const sort = ({ column, direction }: { column: string, direction: string }) => {
   sortBy.value = column.replace(' ', '_').toLocaleUpperCase()
+  if (column === 'submission') sortBy.value = 'SUBMISSION_DATE'
   sortDesc.value = direction !== 'asc'
   updateTableRows()
 }
