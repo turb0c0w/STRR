@@ -31,7 +31,13 @@
           </USelectMenu>
         </div>
       </div>
-      <UTable :loading="loading" :columns="selectedColumns" :rows="tableRows">
+      <UTable
+        :loading="loading"
+        :columns="selectedColumns"
+        :rows="tableRows"
+        sort-mode="manual"
+        @update:sort="sort"
+      >
         <!-- Only way to do row clicks in NuxtUI currently -->
         <template #registration-data="{ row }">
           <div class="cursor-pointer w-full" @click="navigateToDetails(row.registrationNumber)">
@@ -54,8 +60,8 @@
           </div>
         </template>
         <template #status-data="{ row }">
-          <BcrosChip 
-            :flavour="getChipFlavour(row.status)" 
+          <BcrosChip
+            :flavour="getChipFlavour(row.status)"
           />
         </template>
         <template #submission-data="{ row }">
@@ -92,13 +98,13 @@
 <script setup lang="ts">
 import { PaginatedRegistrationsI } from '~/interfaces/paginated-registrations-i'
 import { PaginationI } from '~/interfaces/pagination-i'
-import { StatusChipFlavoursI } from '~/interfaces/status-chip-flavours-i';
+import { StatusChipFlavoursI } from '~/interfaces/status-chip-flavours-i'
 
 const t = useNuxtApp().$i18n.t
 const tRegistryDashboard = (translationKey: string) => t(`registry-dashboard.${translationKey}`)
 const tRegistryDashboardStatus = (translationKey: string) => t(`registry-dashboard.statusChip.${translationKey}`)
 
-const { getPaginatedRegistrations } = useRegistrations()
+const { getPaginatedRegistrations, getCountsByStatus } = useRegistrations()
 const statusFilter = ref<string>('')
 const limit = ref<number>(10)
 const offset = ref<number>(0)
@@ -107,6 +113,15 @@ const tableRows = ref<Record<string, string>[]>([])
 const totalResults = ref<number>(0)
 const loading = ref<boolean>(true)
 const maxPageResults = ref<number>(0)
+const statusCounts = ref()
+const sortDesc = ref<boolean>(false)
+const sortBy = ref<string>('')
+
+const sort = ({ column, direction }: { column: string, direction: string }) => {
+  sortBy.value = column.replace(' ', '_').toLocaleUpperCase()
+  sortDesc.value = direction !== 'asc'
+  updateTableRows()
+}
 
 const onTabChange = (index: number) => {
   switch (index) {
@@ -122,28 +137,28 @@ const onTabChange = (index: number) => {
 }
 
 const getChipFlavour = (status: string): StatusChipFlavoursI['flavour'] => {
-  switch(status) {
-    case 'APPROVED': 
-      return { 
+  switch (status) {
+    case 'APPROVED':
+      return {
         alert: AlertsFlavourE.SUCCESS,
         text: tRegistryDashboardStatus('approved')
       }
-    case 'REJECTED': 
-      return { 
+    case 'REJECTED':
+      return {
         alert: AlertsFlavourE.ALERT,
         text: tRegistryDashboardStatus('rejected')
       }
-    case 'PENDING': 
-      return { 
-        alert: AlertsFlavourE.INFO,
+    case 'PENDING':
+      return {
+        alert: AlertsFlavourE.WARNING,
         text: tRegistryDashboardStatus('provisional')
       }
-    case 'UNDER_REVIEW': 
-      return { 
-        alert: AlertsFlavourE.INFO,
+    case 'UNDER_REVIEW':
+      return {
+        alert: AlertsFlavourE.APPLIED,
         text: tRegistryDashboardStatus('underReview')
       }
-    default: 
+    default:
       return {
         alert: AlertsFlavourE.MESSAGE,
         text: ''
@@ -164,16 +179,24 @@ const filterOptions = [
 ]
 const navigateToDetails = (id: number) => navigateTo(`/application-details/${id.toString()}`)
 
+const addOrDeleteRefFromObject = (ref: Ref, key: keyof PaginationI, paginationObject: PaginationI) => {
+  if (ref.value) {
+    paginationObject[key] = ref.value
+  } else {
+    delete paginationObject[key]
+  }
+}
+
 const updateTableRows = async () => {
   const paginationObject: PaginationI = {
     limit: limit.value.toString(),
     offset: offset.value.toString()
   }
-  if (statusFilter.value) {
-    paginationObject.filter_by_status = statusFilter.value
-  } else {
-    delete paginationObject.filter_by_status
-  }
+
+  addOrDeleteRefFromObject(statusFilter, 'filter_by_status', paginationObject)
+  addOrDeleteRefFromObject(sortBy, 'sort_by', paginationObject)
+  addOrDeleteRefFromObject(sortDesc, 'sort_desc', paginationObject)
+
   const registrations = await getPaginatedRegistrations(paginationObject)
   if (registrations) {
     totalResults.value = registrations.count
@@ -196,7 +219,7 @@ const registrationsToTableRows = (registrations: PaginatedRegistrationsI): Recor
         ${result.primaryContact.name.lastName}
       `,
       status: result.status,
-      submission: result.submissionDate
+      'submission date': result.submissionDate
     })
   })
   return rows
@@ -219,10 +242,6 @@ watch(page, () => {
   updateTableRows()
 })
 
-onMounted(() => {
-  updateTableRows()
-})
-
 const selectedColumns = ref<{ key: string; label: string; }[]>([])
 
 const columns = [
@@ -230,12 +249,18 @@ const columns = [
   { key: 'location', label: tRegistryDashboard('location') },
   { key: 'address', label: tRegistryDashboard('address') },
   { key: 'owner', label: tRegistryDashboard('owner') },
-  { key: 'status', label: tRegistryDashboard('status') },
-  { key: 'submission', label: tRegistryDashboard('submissionDate') }
+  { key: 'status', label: tRegistryDashboard('status'), sortable: true },
+  { key: 'submission date', label: tRegistryDashboard('submissionDate'), sortable: true }
 ]
 
+const updateStatusCounts = () => {
+  statusCounts.value = getCountsByStatus()
+}
+
 onMounted(() => {
+  updateTableRows()
   selectedColumns.value = columns
+  updateStatusCounts()
 })
 
 definePageMeta({

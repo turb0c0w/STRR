@@ -1,7 +1,9 @@
 export interface PaginationI {
   filter_by_status?: string,
   offset?: string,
-  limit?: string
+  limit?: string,
+  sort_by?: string,
+  sort_desc?: string
 }
 
 export enum RegistrationStatusesE {

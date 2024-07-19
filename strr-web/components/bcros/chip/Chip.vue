@@ -7,19 +7,18 @@
       `
     "
   >
-      {{ flavour.text }}
-      <slot />
+    {{ flavour.text }}
+    <slot />
   </div>
 </template>
 
 <script setup lang="ts">
 import { AlertsFlavourE } from '~/enums/alerts-e'
-import { StatusChipFlavoursI } from '#imports';
+import { StatusChipFlavoursI } from '#imports'
 
 const { flavour } = defineProps<StatusChipFlavoursI>()
 
 const flavourClass = ref('')
-
 
 switch (flavour.alert) {
   case AlertsFlavourE.ALERT:
