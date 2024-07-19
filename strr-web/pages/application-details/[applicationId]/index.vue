@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <BcrosBanner :hide-buttons="!kcUserRoles.includes('manage_accounts')">
+      <BcrosBanner :hide-buttons="kcUserLoginSource !== 'IDIR'">
         <div class="flex items-center m:mb-[8px] m:justify-between">
           <BcrosTypographyH1
             :text="
@@ -255,8 +255,7 @@ const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
 const tPropertyForm = (translationKey: string) => t(`create-account.property-form.${translationKey}`)
-const { kcUserRoles } = useBcrosKeycloak()
-console.log(kcUserRoles)
+const { kcUserLoginSource } = useBcrosKeycloak()
 
 const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
