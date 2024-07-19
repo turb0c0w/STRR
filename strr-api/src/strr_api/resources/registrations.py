@@ -41,12 +41,12 @@ from http import HTTPStatus
 from io import BytesIO
 
 from flasgger import swag_from
-from flask import Blueprint, g, jsonify, request, send_file
+from flask import Blueprint, current_app, g, jsonify, request, send_file
 from flask_cors import cross_origin
 from werkzeug.utils import secure_filename
 
 from strr_api.common.auth import jwt
-from strr_api.enums.enum import PaymentStatus
+from strr_api.enums.enum import PaymentStatus, RegistrationSortBy, RegistrationStatus
 from strr_api.exceptions import (
     AuthException,
     ExternalServiceException,
@@ -56,7 +56,7 @@ from strr_api.exceptions import (
 )
 from strr_api.models import User
 from strr_api.requests import RegistrationRequest
-from strr_api.responses import AutoApprovalRecord, Document, EventRecord, Invoice, LTSARecord, Registration
+from strr_api.responses import AutoApprovalRecord, Document, EventRecord, Invoice, LTSARecord, Pagination, Registration
 from strr_api.schemas.utils import validate
 from strr_api.services import (
     ApprovalService,
@@ -83,17 +83,142 @@ def get_registrations():
     ---
     tags:
       - registration
+    parameters:
+      - in: header
+        name: Account-Id
+        type: integer
+        description: Optionally filters results based on SBC Account ID
+      - in: query
+        name: filter_by_status
+        enum: [PENDING,APPROVED,UNDER_REVIEW,MORE_INFO_NEEDED,PROVISIONAL,DENIED]
+        description: Filters affect pagination count returned
+      - in: query
+        name: sort_by
+        enum: [ID,USER_ID,SBC_ACCOUNT_ID,RENTAL_PROPERTY_ID,SUBMISSION_DATE,UPDATED_DATE,STATUS]
+        description: Filters affect pagination count returned
+      - in: query
+        name: sort_desc
+        type: boolean
+        description: false or omitted for ascending, true for descending order
+      - in: query
+        name: offset
+        type: integer
+        default: 0
+      - in: query
+        name: limit
+        type: integer
+        default: 100
     responses:
       201:
         description:
       401:
         description:
     """
-    registrations = RegistrationService.list_registrations(g.jwt_oidc_token_info)
+    account_id = request.headers.get("Account-Id")
+    filter_by_status: RegistrationStatus = None
+    status_value = request.args.get("filter_by_status", None)
+    try:
+        if status_value is not None:
+            filter_by_status = RegistrationStatus[status_value.upper()]
+    except ValueError as e:
+        current_app.logger.error(f"filter_by_status: {str(e)}")
+
+    sort_by_column: RegistrationSortBy = RegistrationSortBy.ID
+    sort_by = request.args.get("sort_by", None)
+    try:
+        if sort_by is not None:
+            sort_by_column = RegistrationSortBy[sort_by.upper()]
+    except ValueError as e:
+        current_app.logger.error(f"sort_by: {str(e)}")
+
+    sort_desc: bool = request.args.get("sort_desc", "false").lower() == "true"
+    offset: int = request.args.get("offset", 0)
+    limit: int = request.args.get("limit", 100)
+
+    registrations, count = RegistrationService.list_registrations(
+        g.jwt_oidc_token_info, account_id, filter_by_status, sort_by_column, sort_desc, offset, limit
+    )
+
+    pagination = Pagination(count=count, results=[Registration.from_db(registration) for registration in registrations])
     return (
-        jsonify([Registration.from_db(registration).model_dump(mode="json") for registration in registrations]),
+        jsonify(pagination.model_dump(mode="json")),
         HTTPStatus.OK,
     )
+
+
+@bp.route("/counts_by_status", methods=("GET",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def get_registration_counts_by_status():
+    """
+    Get registrations counts by status.
+    ---
+    tags:
+      - examiner
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+    """
+    try:
+        user = User.get_or_create_user_by_jwt(g.jwt_oidc_token_info)
+        if not user or not user.is_examiner():
+            raise AuthException()
+
+        counts = RegistrationService.get_registration_counts_by_status()
+        results = {}
+        for row in counts:
+            results[row.status.name] = row.count
+
+        return jsonify(results), HTTPStatus.OK
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+
+
+@bp.route("/<registration_id>", methods=("GET",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def get_registration(registration_id):
+    """
+    Get registration by id
+    ---
+    tags:
+      - registration
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+      404:
+        description:
+    """
+
+    try:
+        user = User.get_or_create_user_by_jwt(g.jwt_oidc_token_info)
+        if not user:
+            raise AuthException()
+
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
+
+        return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.OK
+
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
 
 
 @bp.route("", methods=("POST",))
@@ -436,7 +561,7 @@ def mark_registration_invoice_paid(registration_id, invoice_id):
 
         invoice = strr_pay.update_invoice_payment_status(jwt, registration, invoice)
         if invoice.payment_status_code == PaymentStatus.COMPLETED:
-            approval = ApprovalService.process_approval(token, registration)
+            approval = ApprovalService.process_auto_approval(token, registration)
             ApprovalService.save_approval_record(registration.id, approval)
 
         return jsonify(Invoice.from_db(invoice).model_dump(mode="json")), HTTPStatus.OK
@@ -520,16 +645,16 @@ def get_registration_history(registration_id):
     """
 
     try:
-        user = User.find_by_jwt_token(g.jwt_oidc_token_info)
+        user = User.get_or_create_user_by_jwt(g.jwt_oidc_token_info)
         if not user:
             raise AuthException()
 
-        if not user.is_examiner():
-            registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
-            if not registration:
-                raise AuthException()
+        only_show_visible_to_user = not user.is_examiner()
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            raise AuthException()
 
-        records = EventRecordsService.fetch_event_records_for_registration(registration_id)
+        records = EventRecordsService.fetch_event_records_for_registration(registration_id, only_show_visible_to_user)
         return (
             jsonify([EventRecord.from_db(record).model_dump(mode="json") for record in records]),
             HTTPStatus.OK,
@@ -547,7 +672,7 @@ def get_registration_ltsa(registration_id):
     Get registration ltsa records
     ---
     tags:
-      - registration
+      - examiner
     parameters:
       - in: path
         name: registration_id
@@ -564,14 +689,13 @@ def get_registration_ltsa(registration_id):
     """
 
     try:
-        user = User.find_by_jwt_token(g.jwt_oidc_token_info)
-        if not user:
+        user = User.get_or_create_user_by_jwt(g.jwt_oidc_token_info)
+        if not user or not user.is_examiner():
             raise AuthException()
 
-        if not user.is_examiner():
-            registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
-            if not registration:
-                raise AuthException()
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
 
         records = LtsaService.fetch_ltsa_records_for_registration(registration_id)
         return (
@@ -588,10 +712,10 @@ def get_registration_ltsa(registration_id):
 @jwt.requires_auth
 def get_registration_auto_approval(registration_id):
     """
-    Get registration ltsa records
+    Get registration auto approval records
     ---
     tags:
-      - registration
+      - examiner
     parameters:
       - in: path
         name: registration_id
@@ -608,19 +732,149 @@ def get_registration_auto_approval(registration_id):
     """
 
     try:
-        user = User.find_by_jwt_token(g.jwt_oidc_token_info)
-        if not user:
+        user = User.get_or_create_user_by_jwt(g.jwt_oidc_token_info)
+        if not user or not user.is_examiner():
             raise AuthException()
 
-        if not user.is_examiner():
-            registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
-            if not registration:
-                raise AuthException()
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
 
         records = ApprovalService.fetch_approval_records_for_registration(registration_id)
         return (
             jsonify([AutoApprovalRecord.from_db(record).model_dump(mode="json") for record in records]),
             HTTPStatus.OK,
+        )
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+
+
+@bp.route("/<registration_id>/approve", methods=("POST",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def approve_registration(registration_id):
+    """
+    Manually approve a STRR registration.
+    ---
+    tags:
+      - examiner
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+      404:
+        description:
+    """
+
+    try:
+        user = User.get_or_create_user_by_jwt(g.jwt_oidc_token_info)
+        if not user or not user.is_examiner():
+            raise AuthException()
+
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
+
+        ApprovalService.process_manual_approval(registration)
+        return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.OK
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+
+
+@bp.route("/<registration_id>/issue", methods=("POST",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def issue_registration_certificate(registration_id):
+    """
+    Manually generate and issue a STRR registration certificate.
+    ---
+    tags:
+      - examiner
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+      404:
+        description:
+    """
+
+    try:
+        user = User.get_or_create_user_by_jwt(g.jwt_oidc_token_info)
+        if not user or not user.is_examiner():
+            raise AuthException()
+
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
+
+        ApprovalService.generate_registration_certificate(registration)
+        return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.OK
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+
+
+@bp.route("/<registration_id>/certificate", methods=("GET",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def get_registration_certificate(registration_id):
+    """
+    Get latested certificate PDF for a given registration.
+    ---
+    tags:
+      - registration
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+      404:
+        description:
+    """
+
+    try:
+        # only allow upload for registrations that belong to the user
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            raise AuthException()
+
+        certificate = ApprovalService.get_latest_certificate(registration)
+        if not certificate:
+            return error_response(HTTPStatus.NOT_FOUND, "Certificate not found")
+
+        return send_file(
+            BytesIO(certificate.certificate),
+            as_attachment=True,
+            download_name="Host Registration Certificate.pdf",
+            mimetype="application/pdf",
         )
     except AuthException as auth_exception:
         return exception_response(auth_exception)

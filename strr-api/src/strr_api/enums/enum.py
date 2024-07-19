@@ -72,10 +72,23 @@ class RegistrationStatus(Enum):
 
     PENDING = "pending"
     APPROVED = "approved"
+    ISSUED = "issued"
     UNDER_REVIEW = "under review"
     MORE_INFO_NEEDED = "more info needed"
     PROVISIONAL = "provisional"
     DENIED = "denied"
+
+
+class RegistrationSortBy(Enum):
+    """STRR Registration Sort By Columns."""
+
+    ID = 0
+    USER_ID = 1
+    SBC_ACCOUNT_ID = 2
+    RENTAL_PROPERTY_ID = 3
+    SUBMISSION_DATE = 4
+    UPDATED_DATE = 5
+    STATUS = 6
 
 
 class PropertyType(Enum):
@@ -106,6 +119,8 @@ class EventRecordType(Enum):
     AUTO_APPROVAL_FULL_REVIEW = "automatically marked for full review"
     AUTO_APPROVAL_PROVISIONAL = "automatically marked as provisionally approved"
     AUTO_APPROVAL_APPROVED = "automatically marked as approved"
+    MANUALLY_APPROVED = "marked as approved by examiner"
+    CERTIFICATE_ISSUED = "certificate issued by examiner"
 
 
 class PaymentStatus(Enum):

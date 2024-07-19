@@ -31,9 +31,13 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
+# pylint: disable=R0913
+# pylint: disable=E1102
 """Manages Auth service interactions."""
+from sqlalchemy import func
+
 from strr_api import models, requests
-from strr_api.enums.enum import RegistrationStatus
+from strr_api.enums.enum import RegistrationSortBy, RegistrationStatus
 from strr_api.models import db
 from strr_api.services.gcp_storage_service import GCPStorageService
 
@@ -151,18 +155,60 @@ class RegistrationService:
         return registration
 
     @classmethod
-    def list_registrations(cls, jwt_oidc_token_info):
+    def list_registrations(
+        cls,
+        jwt_oidc_token_info,
+        account_id: int = None,
+        filter_by_status: RegistrationStatus = None,
+        sort_by: RegistrationSortBy = RegistrationSortBy.ID,
+        sort_desc: bool = False,
+        offset: int = 0,
+        limit: int = 100,
+    ):
         """List all registrations for current user."""
-        user = models.User.find_by_jwt_token(jwt_oidc_token_info)
+        user = models.User.get_or_create_user_by_jwt(jwt_oidc_token_info)
         if not user:
-            return []
-        return models.Registration.query.filter_by(user_id=user.id).all()
+            return [], 0
+        query = models.Registration.query
+        if not user.is_examiner():
+            query = query.filter(models.Registration.user_id == user.id)
+            if account_id:
+                query = query.filter(models.Registration.sbc_account_id == account_id)
+        if filter_by_status is not None:
+            query = query.filter(models.Registration.status == filter_by_status)
+
+        count = query.count()
+        sort_column = {
+            RegistrationSortBy.ID: models.Registration.id,
+            RegistrationSortBy.USER_ID: models.Registration.user_id,
+            RegistrationSortBy.SBC_ACCOUNT_ID: models.Registration.sbc_account_id,
+            RegistrationSortBy.RENTAL_PROPERTY_ID: models.Registration.rental_property_id,
+            RegistrationSortBy.SUBMISSION_DATE: models.Registration.submission_date,
+            RegistrationSortBy.UPDATED_DATE: models.Registration.updated_date,
+            RegistrationSortBy.STATUS: models.Registration.status,
+        }
+        query = query.order_by(sort_column[sort_by].desc() if sort_desc else sort_column[sort_by].asc())
+        return query.offset(offset).limit(limit).all(), count
+
+    @classmethod
+    def get_registration_counts_by_status(cls):
+        """Return all registration counts by status type."""
+
+        query = models.Registration.query.with_entities(
+            models.Registration.status.label("status"),
+            func.count().label("count"),
+        ).group_by(models.Registration.status)
+
+        return query.all()
 
     @classmethod
     def get_registration(cls, jwt_oidc_token_info, registration_id):
-        """Get registration by id for current user."""
-        user = models.User.find_by_jwt_token(jwt_oidc_token_info)
-        return models.Registration.query.filter_by(user_id=user.id).filter_by(id=registration_id).one_or_none()
+        """Get registration by id for current user. Examiners are exempted from user_id check."""
+        user = models.User.get_or_create_user_by_jwt(jwt_oidc_token_info)
+        query = models.Registration.query.filter_by(id=registration_id)
+        if not user.is_examiner():
+            query = query.filter_by(user_id=user.id)
+        return query.one_or_none()
 
     @classmethod
     def save_registration_document(cls, eligibility_id, file_name, file_type, file_contents):
