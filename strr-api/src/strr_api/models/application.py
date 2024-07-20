@@ -104,6 +104,11 @@ class Application(BaseModel):
         return cls.query.filter_by(id=application_id).one_or_none()
 
     @classmethod
+    def find_by_invoice_id(cls, invoice_id: int) -> Application | None:
+        """Return the application by invoice id."""
+        return cls.query.filter_by(invoice_id=invoice_id).one_or_none()
+
+    @classmethod
     def find_by_user_and_account(cls, user_id, account_id) -> Application | None:
         """Return the application by user and account."""
         return cls.query.filter_by(submitter_id=user_id).filter_by(payment_account=account_id).all()
