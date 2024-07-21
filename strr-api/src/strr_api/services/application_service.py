@@ -36,6 +36,7 @@ from datetime import datetime, timezone
 from strr_api.enums.enum import ApplicationType
 from strr_api.models import Application, User
 from strr_api.models.application import ApplicationSerializer
+from strr_api.utils.user_context import UserContext, user_context
 
 
 class ApplicationService:
@@ -47,9 +48,11 @@ class ApplicationService:
         return ApplicationSerializer.to_dict(application)
 
     @staticmethod
-    def save_application(jwt_oidc_token_info, account_id, request_json: dict):
+    @user_context
+    def save_application(account_id, request_json: dict, **kwargs):
         """Saves an application to db."""
-        user = User.get_or_create_user_by_jwt(jwt_oidc_token_info)
+        user_context: UserContext = kwargs["user_context"]
+        user = User.get_or_create_user_by_jwt(user_context.token_info)
         if request_json.get("selectedAccount"):
             del request_json["selectedAccount"]
         application = Application()
@@ -61,20 +64,45 @@ class ApplicationService:
         return application
 
     @staticmethod
-    def list_applications(jwt_oidc_token_info, account_id):
-        """List all applications for current user and account."""
-        user = User.find_by_jwt_token(jwt_oidc_token_info)
-        if not user:
-            return []
-        return Application.find_by_user_and_account(user.id, account_id)
+    @user_context
+    def list_applications(account_id, filter_criteria, **kwargs):
+        """List all applications matching the search criteria."""
+        user_context: UserContext = kwargs["user_context"]
+        user = User.get_or_create_user_by_jwt(user_context.token_info)
+        is_examiner = user_context.is_examiner()
+        paginated_result = Application.find_by_user_and_account(user.id, account_id, filter_criteria, is_examiner)
+        search_results = []
+        for item in paginated_result.items:
+            search_results.append(ApplicationService.serialize(item))
+
+        return {
+            "page": filter_criteria.page,
+            "limit": filter_criteria.limit,
+            "items": search_results,
+            "total": paginated_result.total,
+        }
 
     @staticmethod
-    def get_application(jwt, account_id, application_id):
-        """Get the application with the specified application id for the current user and account."""
-        user = User.find_by_jwt_token(jwt)
-        if not user:
-            return None
-        return Application.get_application(user.id, account_id, application_id)
+    @user_context
+    def get_application(account_id, application_id, **kwargs):
+        """Get the application with the specified id."""
+        user_context: UserContext = kwargs["user_context"]
+        user = User.get_or_create_user_by_jwt(user_context.token_info)
+        if ApplicationService.is_user_authorized_for_application(user.id, account_id, application_id):
+            return Application.find_by_id(application_id)
+        return None
+
+    @staticmethod
+    @user_context
+    def is_user_authorized_for_application(user_id: int, account_id: int, application_id: int, **kwargs) -> bool:
+        """Check the user authorization for an application."""
+        user_context: UserContext = kwargs["user_context"]
+        if user_context.is_examiner() or user_context.is_system:
+            return True
+        application = Application.get_application(user_id, account_id, application_id)
+        if application:
+            return True
+        return False
 
     @staticmethod
     def update_application_payment_details_and_status(application: Application, invoice_details: dict) -> Application:

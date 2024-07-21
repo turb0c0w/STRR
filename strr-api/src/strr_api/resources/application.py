@@ -33,7 +33,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 """
-Registration Applications Resource.
+STRR Application Resource.
 """
 
 import logging
@@ -42,6 +42,7 @@ from http import HTTPStatus
 from flasgger import swag_from
 from flask import Blueprint, g, jsonify, request
 from flask_cors import cross_origin
+from strr_api.models.dataclass import ApplicationSearch
 from strr_api.requests import RegistrationRequest
 from strr_api.common.auth import jwt
 from strr_api.exceptions import (
@@ -97,7 +98,7 @@ def create_application():
 
         validate_registration_request(registration_request)
 
-        application = ApplicationService.save_application(g.jwt_oidc_token_info, account_id, json_input)
+        application = ApplicationService.save_application(account_id, json_input)
         invoice_details = strr_pay.create_invoice(jwt, account_id)
         application = ApplicationService.update_application_payment_details_and_status(application, invoice_details)
         return jsonify(ApplicationService.serialize(application)), HTTPStatus.CREATED
@@ -113,7 +114,7 @@ def create_application():
 @jwt.requires_auth
 def get_applications():
     """
-    Gets All applications created by user.
+    Gets All applications matching the search criteria.
     ---
     tags:
       - application
@@ -133,16 +134,12 @@ def get_applications():
 
     try:
         account_id = request.headers.get("Account-Id", None)
-        if not account_id:
-            return error_response(
-                "Account Id is missing.",
-                HTTPStatus.BAD_REQUEST,
-            )
-        application_list = ApplicationService.list_applications(g.jwt_oidc_token_info, account_id)
-        applications = []
-        for application in application_list:
-            applications.append(ApplicationService.serialize(application))
-        return jsonify(applications=applications), HTTPStatus.OK
+        status = request.args.get("status", None)
+        page = request.args.get("page", 1)
+        limit = request.args.get("limit", 50)
+        filter_criteria = ApplicationSearch(status=status, page=int(page), limit=int(limit))
+        application_list = ApplicationService.list_applications(account_id, filter_criteria=filter_criteria)
+        return jsonify(applications=application_list), HTTPStatus.OK
 
     except ExternalServiceException as service_exception:
         return exception_response(service_exception)
@@ -181,14 +178,13 @@ def update_application_payment_details(application_id):
     """
 
     try:
-        token = g.jwt_oidc_token_info
         account_id = request.headers.get("Account-Id", None)
         if not account_id:
             return error_response(
                 "Account Id is missing.",
                 HTTPStatus.BAD_REQUEST,
             )
-        application = ApplicationService.get_application(token, account_id, application_id)
+        application = ApplicationService.get_application(account_id, application_id)
         if not application:
             raise AuthException()
         invoice_details = strr_pay.get_payment_details_by_invoice_id(

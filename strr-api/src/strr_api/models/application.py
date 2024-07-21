@@ -42,6 +42,7 @@ from sqlalchemy.orm import backref
 from strr_api.common.enum import auto
 from strr_api.common.enum import BaseEnum
 from strr_api.models.base_model import BaseModel
+from strr_api.models.data_class import ApplicationSearch
 from .db import db
 
 
@@ -109,9 +110,18 @@ class Application(BaseModel):
         return cls.query.filter_by(invoice_id=invoice_id).one_or_none()
 
     @classmethod
-    def find_by_user_and_account(cls, user_id, account_id) -> Application | None:
-        """Return the application by user and account."""
-        return cls.query.filter_by(submitter_id=user_id).filter_by(payment_account=account_id).all()
+    def find_by_user_and_account(
+        cls, user_id: int, account_id: int, filter_criteria: ApplicationSearch, is_examiner: bool
+    ) -> Application | None:
+        """Return the application by user,account, filter criteria."""
+        query = cls.query
+        if not is_examiner:
+            query = query.filter_by(submitter_id=user_id).filter_by(payment_account=account_id)
+        if filter_criteria.status:
+            query = query.filter_by(status=filter_criteria.status.upper())
+
+        paginated_result = query.paginate(per_page=filter_criteria.limit, page=filter_criteria.page)
+        return paginated_result
 
 
 class ApplicationSerializer:
