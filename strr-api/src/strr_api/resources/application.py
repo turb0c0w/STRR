@@ -40,7 +40,7 @@ import logging
 from http import HTTPStatus
 
 from flasgger import swag_from
-from flask import Blueprint, g, jsonify, request
+from flask import Blueprint, jsonify, request
 from flask_cors import cross_origin
 from strr_api.models.dataclass import ApplicationSearch
 from strr_api.requests import RegistrationRequest
@@ -90,6 +90,8 @@ def create_application():
     try:
         account_id = request.headers.get("Account-Id", None)
         json_input = request.get_json()
+        json_input["selectedAccount"] = {}
+        json_input["selectedAccount"]["sbc_account_id"] = account_id
         [valid, errors] = validate(json_input, "registration")
         if not valid:
             raise ValidationException(message=errors)
@@ -102,8 +104,8 @@ def create_application():
         invoice_details = strr_pay.create_invoice(jwt, account_id)
         application = ApplicationService.update_application_payment_details_and_status(application, invoice_details)
         return jsonify(ApplicationService.serialize(application)), HTTPStatus.CREATED
-    except ValidationException as auth_exception:
-        return exception_response(auth_exception)
+    except ValidationException as validation_exception:
+        return exception_response(validation_exception)
     except ExternalServiceException as service_exception:
         return exception_response(service_exception)
 
@@ -139,7 +141,7 @@ def get_applications():
         limit = request.args.get("limit", 50)
         filter_criteria = ApplicationSearch(status=status, page=int(page), limit=int(limit))
         application_list = ApplicationService.list_applications(account_id, filter_criteria=filter_criteria)
-        return jsonify(applications=application_list), HTTPStatus.OK
+        return jsonify(application_list), HTTPStatus.OK
 
     except ExternalServiceException as service_exception:
         return exception_response(service_exception)

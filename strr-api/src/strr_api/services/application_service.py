@@ -51,13 +51,11 @@ class ApplicationService:
     @user_context
     def save_application(account_id, request_json: dict, **kwargs):
         """Saves an application to db."""
-        user_context: UserContext = kwargs["user_context"]
-        user = User.get_or_create_user_by_jwt(user_context.token_info)
-        if request_json.get("selectedAccount"):
-            del request_json["selectedAccount"]
+        usr_context: UserContext = kwargs["user_context"]
+        user = User.get_or_create_user_by_jwt(usr_context.token_info)
         application = Application()
         application.payment_account = account_id
-        application.submitter = user
+        application.submitter_id = user.id
         application.type = ApplicationType.REGISTRATION.value
         application.application_json = request_json
         application.save()
@@ -67,9 +65,9 @@ class ApplicationService:
     @user_context
     def list_applications(account_id, filter_criteria, **kwargs):
         """List all applications matching the search criteria."""
-        user_context: UserContext = kwargs["user_context"]
-        user = User.get_or_create_user_by_jwt(user_context.token_info)
-        is_examiner = user_context.is_examiner()
+        usr_context: UserContext = kwargs["user_context"]
+        user = User.get_or_create_user_by_jwt(usr_context.token_info)
+        is_examiner = usr_context.is_examiner()
         paginated_result = Application.find_by_user_and_account(user.id, account_id, filter_criteria, is_examiner)
         search_results = []
         for item in paginated_result.items:
@@ -78,7 +76,7 @@ class ApplicationService:
         return {
             "page": filter_criteria.page,
             "limit": filter_criteria.limit,
-            "items": search_results,
+            "applications": search_results,
             "total": paginated_result.total,
         }
 
@@ -86,8 +84,8 @@ class ApplicationService:
     @user_context
     def get_application(account_id, application_id, **kwargs):
         """Get the application with the specified id."""
-        user_context: UserContext = kwargs["user_context"]
-        user = User.get_or_create_user_by_jwt(user_context.token_info)
+        usr_context: UserContext = kwargs["user_context"]
+        user = User.get_or_create_user_by_jwt(usr_context.token_info)
         if ApplicationService.is_user_authorized_for_application(user.id, account_id, application_id):
             return Application.find_by_id(application_id)
         return None
@@ -96,8 +94,8 @@ class ApplicationService:
     @user_context
     def is_user_authorized_for_application(user_id: int, account_id: int, application_id: int, **kwargs) -> bool:
         """Check the user authorization for an application."""
-        user_context: UserContext = kwargs["user_context"]
-        if user_context.is_examiner() or user_context.is_system:
+        usr_context: UserContext = kwargs["user_context"]
+        if usr_context.is_examiner() or usr_context.is_system:
             return True
         application = Application.get_application(user_id, account_id, application_id)
         if application:

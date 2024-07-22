@@ -42,7 +42,7 @@ from sqlalchemy.orm import backref
 from strr_api.common.enum import auto
 from strr_api.common.enum import BaseEnum
 from strr_api.models.base_model import BaseModel
-from strr_api.models.data_class import ApplicationSearch
+from strr_api.models.dataclass import ApplicationSearch
 from .db import db
 
 
