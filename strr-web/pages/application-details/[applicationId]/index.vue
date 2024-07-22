@@ -175,9 +175,16 @@
                 :title="tApplicationDetails('proof')"
               >
                 <div v-for="(supportingDocument) in documents" :key="supportingDocument.file_name">
-                  <div
-                    class="flex flex-row items-center cursor-pointer"
-                    @click="() => getFile(applicationId.toString(), supportingDocument.document_id.toString())"
+                  <a
+                    class="flex flex-row items-center cursor-pointer no-underline text-black" 
+                    role="button"
+                    @click.prevent="
+                      downloadItem(
+                        applicationId.toString(), 
+                        supportingDocument.document_id.toString(),
+                        supportingDocument.file_name
+                      )
+                    "
                   >
                     <img
                       class="mr-[4px] h-[18px] w-[18px]"
@@ -185,7 +192,7 @@
                       alt="Attach icon"
                     >
                     <p>{{ supportingDocument.file_name }}</p>
-                  </div>
+                  </a>
                 </div>
               </BcrosFormSectionReviewItem>
             </div>
@@ -275,8 +282,17 @@ const {
   getRegistration,
   getDocumentsForRegistration,
   getRegistrationHistory,
-  getFile
+  getFile,
 } = useRegistrations()
+
+const downloadItem = async (id: string, fileId: string, fileName: string) => {
+  const file = await getFile(id, fileId)
+  const link = document.createElement('a')
+  link.href = URL.createObjectURL(file)
+  link.download = fileName
+  link.click()
+  URL.revokeObjectURL(link.href)
+}
 
 const application = await getRegistration(applicationId.toString())
 const documents = await getDocumentsForRegistration(applicationId.toString())

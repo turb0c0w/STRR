@@ -68,7 +68,10 @@ export const useRegistrations = () => {
       .then(res => res.data)
 
   const getFile = (id: string, documentId: string): Promise<any> =>
-    axiosInstance.get(`${apiURL}/registrations/${id}/documents/${documentId}/file`)
+    axiosInstance.get(
+      `${apiURL}/registrations/${id}/documents/${documentId}/file`,
+      { responseType: 'blob' }
+    )
       .then(res => res.data)
 
   const getStatusPriority = (status: string) => {
