@@ -128,7 +128,8 @@
   },
   "fee-widget": {
     "summary": "Fee Summary",
-    "registration-fee": "STR Registration Fee",
+    "filing-fee": "STR Registration Fee",
+    "registration-fee": "STR Service Fee",
     "total": "Total Fees",
     "cad": "CAD"
   },
