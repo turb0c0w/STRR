@@ -301,8 +301,13 @@ class ApprovalService:
                 expiry_date = creation_date.replace(year=creation_date.year + 1)
                 data = {
                     "registration_number": f"{registration_number}",
-                    "creation_date": f'{creation_date.strftime("%Y-%m-%d")}',
-                    "expiry_date": f'{expiry_date.strftime("%Y-%m-%d")}',
+                    "creation_date": f'{creation_date.strftime("%B %d, %Y")}',
+                    "expiry_date": f'{expiry_date.strftime("%B %d, %Y")}',
+                    "issued_date": f'{creation_date.strftime("%B %d, %Y")}',
+                    "rental_address": registration.rental_property.address.to_oneline_address(),
+                    "rental_type": registration.rental_property.property_type.value,
+                    "registrant": registration.rental_property.property_manager.primary_contact.full_name(),
+                    "host": registration.rental_property.property_manager.primary_contact.full_name(),
                 }
                 rendered_template = render_template("certificate.html", **data)
                 pdf_binary = (

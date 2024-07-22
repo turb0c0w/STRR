@@ -54,7 +54,10 @@ class Address(db.Model):
 
     def to_oneline_address(self):
         """Convert object to one line address."""
-        return f"{self.street_address}, {self.city}, {self.province}, {self.postal_code}, {self.country}"
+        unit = ""
+        if self.street_address_additional:
+            unit = f"{self.street_address_additional} "
+        return f"{unit}{self.street_address}, {self.city}, {self.province}, {self.country}, {self.postal_code}"
 
 
 class PropertyManager(db.Model):

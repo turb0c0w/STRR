@@ -67,6 +67,10 @@ class Contact(db.Model):
 
     address = relationship("Address", back_populates="contact")
 
+    def full_name(self):
+        """Return the full name of the contact."""
+        return f"{self.firstname} {self.lastname}"
+
 
 class User(db.Model):
     """Used to hold the audit information for a User of this service."""
