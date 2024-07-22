@@ -175,8 +175,8 @@
                 :title="tApplicationDetails('proof')"
               >
                 <div v-for="(supportingDocument) in documents" :key="supportingDocument.file_name">
-                  <div 
-                    class="flex flex-row items-center cursor-pointer" 
+                  <div
+                    class="flex flex-row items-center cursor-pointer"
                     @click="() => getFile(applicationId.toString(), supportingDocument.document_id.toString())"
                   >
                     <img
@@ -275,7 +275,7 @@ const {
   getRegistration,
   getDocumentsForRegistration,
   getRegistrationHistory,
-  getFile,
+  getFile
 } = useRegistrations()
 
 const application = await getRegistration(applicationId.toString())
