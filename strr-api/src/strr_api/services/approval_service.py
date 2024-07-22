@@ -312,12 +312,7 @@ class ApprovalService:
                 rendered_template = render_template("certificate.html", **data)
                 pdf_binary = (
                     HTML(string=rendered_template)
-                    .render(
-                        optimize_size=(
-                            "fonts",
-                            "images",
-                        )
-                    )
+                    .render()
                     .write_pdf()
                 )
 
