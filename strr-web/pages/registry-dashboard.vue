@@ -205,7 +205,15 @@ const navigateToDetails = (id: number) => navigateTo(`/application-details/${id.
 
 const addOrDeleteRefFromObject = (ref: Ref, key: keyof PaginationI, paginationObject: PaginationI) => {
   if (ref.value) {
-    paginationObject[key] = key === 'search' ?  `%${ref.value}%`: ref.value
+    paginationObject[key] = ref.value
+  } else {
+    delete paginationObject[key]
+  }
+}
+
+const addOrDeleteSearchRefFromObject = (ref: Ref, key: keyof PaginationI, paginationObject: PaginationI) => {
+  if (ref.value && ref.value.length >= 3) {
+    paginationObject[key] = `%${ref.value}%`
   } else {
     delete paginationObject[key]
   }
@@ -220,7 +228,7 @@ const updateTableRows = async () => {
   addOrDeleteRefFromObject(statusFilter, 'filter_by_status', paginationObject)
   addOrDeleteRefFromObject(sortBy, 'sort_by', paginationObject)
   addOrDeleteRefFromObject(sortDesc, 'sort_desc', paginationObject)  
-  addOrDeleteRefFromObject(search, 'search', paginationObject)
+  addOrDeleteSearchRefFromObject(search, 'search', paginationObject)
 
   const registrations = await getPaginatedRegistrations(paginationObject)
   if (registrations) {
