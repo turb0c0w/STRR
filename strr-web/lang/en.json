@@ -1,4 +1,30 @@
 {
+  "registry-dashboard": {
+    "applicationNumber": "Application #",
+    "registrationNumber": "Registration #",
+    "status": "Status",
+    "nickname": "Listing Nickname",
+    "address": "Listing Address",
+    "owner": "Owner",
+    "submissionDate": "Submission Date",
+    "columnsToShow": "Columns to Show",
+    "search": "Search",
+    "all": "All",
+    "fullReview": "Full Review",
+    "provisionalApproval": "Provisional Approval",
+    "showing": "Showing",
+    "of": "of",
+    "results": "Results",
+    "location": "Location",
+    "approved": "Approved",
+    "statusChip": {
+      "approved": "APPROVED",
+      "rejected": "REJECTED",
+      "provisional": "PROVISIONAL",
+      "underReview": "UNDER REVIEW",
+      "denied": "DENIED"
+    }
+  },
   "tos": {
     "tos-title": "BC Registry Terms and Conditions",
     "accept": "Accept Terms",
@@ -86,11 +112,13 @@
   },
   "registration-status": {
     "PENDING": "PENDING",
+    "approved": "APPROVED",
+    "denied": "DENIED",
     "APPROVED": "APPROVED",
     "MORE_INFO_NEEDED": "PROVISIONAL",
     "DENIED": "DENIED",
-    "applied": "Applied",
-    "payment-due": "Payment Due",
+    "applied": "APPLIED",
+    "payment-due": "PROVISIONAL",
     "create": "Create New Registration",
     "my-app": "My Registration Application",
     "title": "My STR Registry Dashboard",
@@ -100,7 +128,8 @@
   },
   "fee-widget": {
     "summary": "Fee Summary",
-    "registration-fee": "STR Registration Fee",
+    "filing-fee": "STR Registration Fee",
+    "registration-fee": "STR Service Fee",
     "total": "Total Fees",
     "cad": "CAD"
   },

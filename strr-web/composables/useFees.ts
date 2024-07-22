@@ -6,10 +6,10 @@ export const useFees = () => {
   const config = useRuntimeConfig()
 
   const getFeeAmount =
-    (): Promise<string> =>
-      axiosInstance.get<{ total: number }>(`${config.public.payApiURL}/fees/STRR/RENTAL_FEE`)
+    (): Promise<FeeI> =>
+      axiosInstance.get<FeeI>(`${config.public.payApiURL}/fees/STRR/RENTAL_FEE`)
         .then((res) => {
-          return res.data.total.toString()
+          return res.data
         })
         .finally(() => {
           return '-'

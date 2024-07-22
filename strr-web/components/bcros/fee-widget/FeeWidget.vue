@@ -30,14 +30,18 @@
     <div :class="`transition-all ${folded ? 'h-[0px] overflow-hidden p-[0px]': 'px-[15px] pb-[10px] '}`">
       <div class="py-[10px] border-b-[1px] border-bcGovGray-300 flex flex-row justify-between">
         <p>{{ t("fee-widget.registration-fee") }}</p>
-        <p>{{ fee === '-' ? fee: `$${Number(fee).toFixed(2)}` }}</p>
+        <p>{{ fee?.serviceFees ? `$${fee.serviceFees.toFixed(2)}`: '-' }}</p>
+      </div>
+      <div class="py-[10px] border-b-[1px] border-bcGovGray-300 flex flex-row justify-between">
+        <p>{{ t("fee-widget.filing-fee") }}</p>
+        <p>{{ fee?.filingFees ? `$${fee.filingFees.toFixed(2)}`: '-' }}</p>
       </div>
       <div class="py-[10px] text-[14px] font-bold flex-row flex justify-between items-end" aria-label="null">
         <p>{{ t("fee-widget.total") }}</p>
         <p class="font-normal text-[14px] text-bcGovGray-700 flex items-end">
           {{ t("fee-widget.cad") }}
           <b class="text-black text-[24px] ml-[5px] mb-[-4px] flex items-end">
-            {{ fee === '-' ? fee: `$${Number(fee).toFixed(2)}` }}
+            {{ fee?.total ? `$${fee.total.toFixed(2)}` : '-' }}
           </b>
         </p>
       </div>
@@ -54,7 +58,7 @@ const folded = ref(false)
 const isMobile = ref(false)
 
 const { fee } = defineProps<{
-  fee: string
+  fee: FeeI
 }>()
 
 const toggleFolded = () => {

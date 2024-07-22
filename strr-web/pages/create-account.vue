@@ -71,7 +71,7 @@ const activeStepIndex: Ref<number> = ref(0)
 const activeStep: Ref<FormPageI> = ref(steps[activeStepIndex.value])
 const tPrincipalResidence = (translationKey: string) => t(`create-account.principal-residence.${translationKey}`)
 const contactForm = ref()
-const fee = ref<string>()
+const fee = ref<FeeI>()
 const headerUpdateKey = ref(0)
 
 const { getFeeAmount } = useFees()

@@ -1,14 +1,14 @@
 <template>
   <div>
     <div>
-      <BcrosBanner>
+      <BcrosBanner :hide-buttons="kcUserLoginSource !== 'IDIR'">
         <div class="flex items-center m:mb-[8px] m:justify-between">
           <BcrosTypographyH1
             :text="
               `${
                 application?.unitAddress.nickname
                   ? application?.unitAddress.nickname + ' '
-                  : ''}${tApplicationDetails('registration')} #${applicationId}
+                  : ''}${tApplicationDetails('registration')} #${application?.registration_number ?? '-'}
                 `
             "
             class-name="mobile:text-[24px]"
@@ -44,7 +44,7 @@
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('nickname')"
             >
-              <p>{{ application?.unitAddress.nickname ?? '-' }}</p>
+              <p>{{ application?.unitAddress.nickname.length ? application?.unitAddress.nickname.length : '-' }}</p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('business-license')"
@@ -117,12 +117,12 @@
               <BcrosFormSectionReviewItem
                 :title="tApplicationDetails('email')"
               >
-                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].emailAddress }}</p>
+                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0]['Email Address'] }}</p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
                 :title="tApplicationDetails('phone')"
               >
-                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].phoneNumber }}</p>
+                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0]['Phone Number'] }}</p>
               </BcrosFormSectionReviewItem>
             </div>
           </div>
@@ -152,12 +152,12 @@
               <BcrosFormSectionReviewItem
                 :title="tApplicationDetails('email')"
               >
-                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].emailAddress }}</p>
+                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0]['Email Address'] }}</p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
                 :title="tApplicationDetails('phone')"
               >
-                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].phoneNumber }}</p>
+                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0]['Phone Number'] }}</p>
               </BcrosFormSectionReviewItem>
             </div>
           </div>
@@ -175,14 +175,24 @@
                 :title="tApplicationDetails('proof')"
               >
                 <div v-for="(supportingDocument) in documents" :key="supportingDocument.file_name">
-                  <div class="flex flex-row items-center">
+                  <a
+                    class="flex flex-row items-center cursor-pointer no-underline text-black"
+                    role="button"
+                    @click.prevent="
+                      downloadItem(
+                        applicationId.toString(),
+                        supportingDocument.document_id.toString(),
+                        supportingDocument.file_name
+                      )
+                    "
+                  >
                     <img
                       class="mr-[4px] h-[18px] w-[18px]"
                       src="/icons/create-account/attach_dark.svg"
                       alt="Attach icon"
                     >
                     <p>{{ supportingDocument.file_name }}</p>
-                  </div>
+                  </a>
                 </div>
               </BcrosFormSectionReviewItem>
             </div>
@@ -255,6 +265,7 @@ const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
 const tPropertyForm = (translationKey: string) => t(`create-account.property-form.${translationKey}`)
+const { kcUserLoginSource } = useBcrosKeycloak()
 
 const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
@@ -270,8 +281,18 @@ const formatTime = (date: Date): string => date.toLocaleTimeString('en-US', { ho
 const {
   getRegistration,
   getDocumentsForRegistration,
-  getRegistrationHistory
+  getRegistrationHistory,
+  getFile
 } = useRegistrations()
+
+const downloadItem = async (id: string, fileId: string, fileName: string) => {
+  const file = await getFile(id, fileId)
+  const link = document.createElement('a')
+  link.href = URL.createObjectURL(file)
+  link.download = fileName
+  link.click()
+  URL.revokeObjectURL(link.href)
+}
 
 const application = await getRegistration(applicationId.toString())
 const documents = await getDocumentsForRegistration(applicationId.toString())
@@ -279,6 +300,12 @@ const history = await getRegistrationHistory(applicationId.toString())
 
 const getFlavour = (status: string, invoices: RegistrationI['invoices']):
   { alert: AlertsFlavourE, text: string } | undefined => {
+  if (status === 'DENIED') {
+    return {
+      text: tRegistrationStatus('denied'),
+      alert: AlertsFlavourE.ALERT
+    }
+  }
   if (invoices.length === 0) {
     return {
       text: tRegistrationStatus('applied'),

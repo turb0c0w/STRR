@@ -14,27 +14,42 @@
       <div class="mobile:hidden">
         <BcrosButtonsPrimary
           :text="tBanner('approve')"
-          :action="() => null"
+          :action="() => approveRegistration(applicationId.toString())"
           variant="outline"
           class-name="ml-[16px]"
         />
         <BcrosButtonsPrimary
           :text="tBanner('reject')"
-          :action="() => null"
+          :action="() => denyRegistration(applicationId.toString())"
           variant="outline"
           class-name="ml-[16px]"
         />
         <BcrosButtonsPrimary
           :text="tBanner('issue')"
-          :action="() => null"
+          :action="() => issueRegistration(applicationId.toString())"
           variant="outline"
           class-name="ml-[16px]"
         />
       </div>
       <div class="desktop:hidden flex">
-        <a class="mr-[16px] py-[10px]">{{ tBanner('approve') }}</a>
-        <a class="mr-[16px] py-[10px]">{{ tBanner('reject') }}</a>
-        <a class="mr-[16px] py-[10px]">{{ tBanner('issue') }}</a>
+        <a
+          class="mr-[16px] py-[10px]"
+          :on-click="() => approveRegistration(applicationId.toString())"
+        >
+          {{ tBanner('approve') }}
+        </a>
+        <a
+          class="mr-[16px] py-[10px]"
+          :on-click="() => denyRegistration(applicationId.toString())"
+        >
+          {{ tBanner('reject') }}
+        </a>
+        <a
+          class="mr-[16px] py-[10px]"
+          :on-click="() => issueRegistration(applicationId.toString())"
+        >
+          {{ tBanner('issue') }}
+        </a>
       </div>
     </div>
   </div>
@@ -42,8 +57,15 @@
 
 <script setup lang="ts">
 
-const { hideButtons = false } = defineProps<{ hideButtons?: boolean }>()
+const { hideButtons = true } = defineProps<{ hideButtons?: boolean }>()
 const t = useNuxtApp().$i18n.t
 const tBanner = (text: string) => t(`banner.${text}`)
+const {
+  issueRegistration,
+  approveRegistration,
+  denyRegistration
+} = useRegistrations()
+const route = useRoute()
+const { applicationId } = route.params
 
 </script>

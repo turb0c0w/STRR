@@ -9,12 +9,12 @@ export const useRegistrations = () => {
   const apiURL = useRuntimeConfig().public.strrApiURL
   const axiosInstance = addAxiosInterceptors(axios.create())
 
-  const getRegistrations = () => axiosInstance.get<RegistrationI[]>(`${apiURL}/registrations`)
+  const getRegistrations = () => axiosInstance.get<PaginatedRegistrationsI>(`${apiURL}/registrations`)
     .then((res) => {
-      if (res.data.length === 0) {
+      if (res.data.count === 0) {
         navigateTo('/create-account')
       }
-      return res.data
+      return res.data.results
         .sort(
           (registrationA, registrationB) =>
             getStatusPriority(registrationA.status) - getStatusPriority(registrationB.status)
@@ -31,9 +31,13 @@ export const useRegistrations = () => {
       .then(res => res.data)
   }
 
+  const getCountsByStatus = (): Promise<{ APPROVED: number; UNDER_REVIEW: number; PROVISIONAL: number; } | void> =>
+    axiosInstance.get(`${apiURL}/registrations/counts_by_status`)
+      .then(res => res.data)
+
   const getRegistration = (id: string): Promise<RegistrationI | void> =>
-    axiosInstance.get(`${apiURL}/registrations`)
-      .then(res => res.data.find((registration: any) => registration.id.toString() === id))
+    axiosInstance.get(`${apiURL}/registrations/${id}`)
+      .then(res => res.data)
 
   const getLtsa = (id: string): Promise<LtsaDataI[] | void> =>
     axiosInstance.get(`${apiURL}/registrations/${id}/ltsa`)
@@ -49,6 +53,25 @@ export const useRegistrations = () => {
 
   const getRegistrationHistory = (id: string): Promise<RegistrationHistoryEventI[]> =>
     axiosInstance.get(`${apiURL}/registrations/${id}/history`)
+      .then(res => res.data)
+
+  const approveRegistration = (id: string): Promise<any> =>
+    axiosInstance.post(`${apiURL}/registrations/${id}/approve`)
+      .then(res => res.data)
+
+  const issueRegistration = (id: string): Promise<any> =>
+    axiosInstance.post(`${apiURL}/registrations/${id}/issue`)
+      .then(res => res.data)
+
+  const denyRegistration = (id: string): Promise<any> =>
+    axiosInstance.post(`${apiURL}/registrations/${id}/deny`)
+      .then(res => res.data)
+
+  const getFile = (id: string, documentId: string): Promise<any> =>
+    axiosInstance.get(
+      `${apiURL}/registrations/${id}/documents/${documentId}/file`,
+      { responseType: 'blob' }
+    )
       .then(res => res.data)
 
   const getStatusPriority = (status: string) => {
@@ -93,6 +116,11 @@ export const useRegistrations = () => {
       })
 
   return {
+    getFile,
+    denyRegistration,
+    approveRegistration,
+    issueRegistration,
+    getCountsByStatus,
     createSbcRegistration,
     getDocumentsForRegistration,
     getRegistrations,
