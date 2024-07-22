@@ -10,6 +10,11 @@ export function addAxiosInterceptors (axiosInstance: AxiosInstance, contentType?
       if (contentType) {
         config.headers['Content-Type'] = contentType
       }
+      const currentAccount = sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT)
+      if (currentAccount) {
+        const accountInfo = JSON.parse(currentAccount)
+        config.headers['Account-Id'] = accountInfo.id
+      }
       return config
     },
     err => Promise.reject(err))
