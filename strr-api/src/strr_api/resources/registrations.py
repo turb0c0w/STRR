@@ -87,19 +87,26 @@ def get_registrations():
       - in: header
         name: Account-Id
         type: integer
-        description: Optionally filters results based on SBC Account ID
+        description: Optionally filters results based on SBC Account ID.
       - in: query
         name: filter_by_status
-        enum: [PENDING,APPROVED,UNDER_REVIEW,MORE_INFO_NEEDED,PROVISIONAL,DENIED]
-        description: Filters affect pagination count returned
+        enum: [PENDING,APPROVED,ISSUED,UNDER_REVIEW,MORE_INFO_NEEDED,PROVISIONAL,DENIED]
+        description: Filters affect pagination count returned.
+      - in: query
+        name: search
+        type: string
+        minLength: 3
+        description: >
+          Search for wildcard term: %<search-text>% in Registration#, Location, Address, and Applicant Name.
+          Affects pagination count returned. Minimum length of 3 characters.
       - in: query
         name: sort_by
-        enum: [ID,USER_ID,SBC_ACCOUNT_ID,RENTAL_PROPERTY_ID,SUBMISSION_DATE,UPDATED_DATE,STATUS]
-        description: Filters affect pagination count returned
+        enum: [REGISTRATION_NUMBER,LOCATION,ADDRESS,NAME,STATUS,SUBMISSION_DATE]
+        description: Filters affect pagination count returned.
       - in: query
         name: sort_desc
         type: boolean
-        description: false or omitted for ascending, true for descending order
+        description: false or omitted for ascending, true for descending order.
       - in: query
         name: offset
         type: integer
@@ -117,6 +124,11 @@ def get_registrations():
     account_id = request.headers.get("Account-Id")
     filter_by_status: RegistrationStatus = None
     status_value = request.args.get("filter_by_status", None)
+    search = request.args.get("search", None)
+
+    if search and len(search) < 3:
+        return error_response(HTTPStatus.BAD_REQUEST, "Search term must be at least 3 characters long.")
+
     try:
         if status_value is not None:
             filter_by_status = RegistrationStatus[status_value.upper()]
@@ -136,7 +148,7 @@ def get_registrations():
     limit: int = request.args.get("limit", 100)
 
     registrations, count = RegistrationService.list_registrations(
-        g.jwt_oidc_token_info, account_id, filter_by_status, sort_by_column, sort_desc, offset, limit
+        g.jwt_oidc_token_info, account_id, search, filter_by_status, sort_by_column, sort_desc, offset, limit
     )
 
     pagination = Pagination(count=count, results=[Registration.from_db(registration) for registration in registrations])
@@ -173,6 +185,10 @@ def get_registration_counts_by_status():
         results = {}
         for row in counts:
             results[row.status.name] = row.count
+
+        for status in RegistrationStatus:
+            if results.get(status.name) is None:
+                results[status.name] = 0
 
         return jsonify(results), HTTPStatus.OK
     except AuthException as auth_exception:
@@ -785,6 +801,12 @@ def approve_registration(registration_id):
         if not registration:
             return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
 
+        if registration.status == RegistrationStatus.APPROVED:
+            return error_response(HTTPStatus.BAD_REQUEST, "Registration has already been approved.")
+
+        if registration.status == RegistrationStatus.ISSUED:
+            return error_response(HTTPStatus.BAD_REQUEST, "Registration has already been issued a certificate.")
+
         ApprovalService.process_manual_approval(registration)
         return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.OK
     except AuthException as auth_exception:
@@ -827,7 +849,55 @@ def issue_registration_certificate(registration_id):
         if not registration:
             return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
 
+        if registration.status == RegistrationStatus.ISSUED:
+            return error_response(HTTPStatus.BAD_REQUEST, "Registration has already been issued a certificate.")
+
+        if registration.status != RegistrationStatus.APPROVED:
+            return error_response(HTTPStatus.BAD_REQUEST, "Registration must be approved before issuing a certificate.")
+
         ApprovalService.generate_registration_certificate(registration)
+        return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.OK
+    except AuthException as auth_exception:
+        return exception_response(auth_exception)
+
+
+@bp.route("/<registration_id>/deny", methods=("POST",))
+@swag_from({"security": [{"Bearer": []}]})
+@cross_origin(origin="*")
+@jwt.requires_auth
+def deny_registration(registration_id):
+    """
+    Manually deny a STRR registration.
+    ---
+    tags:
+      - examiner
+    parameters:
+      - in: path
+        name: registration_id
+        type: integer
+        required: true
+        description: ID of the registration
+    responses:
+      200:
+        description:
+      401:
+        description:
+      403:
+        description:
+      404:
+        description:
+    """
+
+    try:
+        user = User.get_or_create_user_by_jwt(g.jwt_oidc_token_info)
+        if not user or not user.is_examiner():
+            raise AuthException()
+
+        registration = RegistrationService.get_registration(g.jwt_oidc_token_info, registration_id)
+        if not registration:
+            return error_response(HTTPStatus.NOT_FOUND, "Registration not found")
+
+        ApprovalService.process_manual_denial(registration)
         return jsonify(Registration.from_db(registration).model_dump(mode="json")), HTTPStatus.OK
     except AuthException as auth_exception:
         return exception_response(auth_exception)

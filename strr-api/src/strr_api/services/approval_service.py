@@ -284,6 +284,19 @@ class ApprovalService:
         )
 
     @classmethod
+    def process_manual_denial(cls, registration: models.Registration):
+        """Manually approve a given registration."""
+        registration.status = RegistrationStatus.DENIED
+        registration.save()
+        EventRecordsService.save_event_record(
+            EventRecordType.MANUALLY_DENIED,
+            EventRecordType.MANUALLY_DENIED.value,
+            False,
+            registration.user_id,
+            registration.id,
+        )
+
+    @classmethod
     def generate_registration_certificate(cls, registration: models.Registration):
         """Generate registration PDF certificate."""
 

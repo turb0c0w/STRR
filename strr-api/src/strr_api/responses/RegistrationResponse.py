@@ -114,6 +114,7 @@ class Registration(BaseModel):
     submissionDate: datetime
     updatedDate: datetime
     status: str
+    registration_number: Optional[str] = None
     primaryContact: Contact
     secondaryContact: Optional[Contact] = None
     unitAddress: UnitAddress
@@ -125,6 +126,13 @@ class Registration(BaseModel):
     @classmethod
     def from_db(cls, source: models.Registration):
         """Return a Registration object from a database model."""
+        latest_certificate = None
+        for certificate in source.certificates:
+            if latest_certificate is None or certificate.creation_date > latest_certificate.creation_date:
+                latest_certificate = certificate
+
+        registration_number = latest_certificate.registration_number if latest_certificate else None
+
         return cls(
             id=source.id,
             user_id=source.user_id,
@@ -132,6 +140,7 @@ class Registration(BaseModel):
             submissionDate=source.submission_date,
             updatedDate=source.updated_date,
             status=source.status.name,
+            registration_number=registration_number,
             primaryContact=Contact(
                 name=ContactName(
                     firstName=source.rental_property.property_manager.primary_contact.firstname,
