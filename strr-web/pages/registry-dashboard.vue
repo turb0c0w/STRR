@@ -227,7 +227,7 @@ const updateTableRows = async () => {
 
   addOrDeleteRefFromObject(statusFilter, 'filter_by_status', paginationObject)
   addOrDeleteRefFromObject(sortBy, 'sort_by', paginationObject)
-  addOrDeleteRefFromObject(sortDesc, 'sort_desc', paginationObject)  
+  addOrDeleteRefFromObject(sortDesc, 'sort_desc', paginationObject)
   addOrDeleteSearchRefFromObject(search, 'search', paginationObject)
 
   const registrations = await getPaginatedRegistrations(paginationObject)

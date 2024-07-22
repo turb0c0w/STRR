@@ -14,7 +14,9 @@
       <BcrosChip :flavour="flavour" class="mobile:hidden mb-[24px]">
         {{ flavour.text }}
       </BcrosChip>
-      <p class="font-bold">{{ registrationNumber }}</p>
+      <p class="font-bold">
+        {{ registrationNumber }}
+      </p>
     </div>
     <div class="flex w-full justify-between">
       <slot />

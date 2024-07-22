@@ -8,7 +8,7 @@
               `${
                 application?.unitAddress.nickname
                   ? application?.unitAddress.nickname + ' '
-                  : ''}${tApplicationDetails('registration')} #${applicationId}
+                  : ''}${tApplicationDetails('registration')} #${application?.registration_number ?? '-'}
                 `
             "
             class-name="mobile:text-[24px]"
@@ -44,7 +44,7 @@
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('nickname')"
             >
-              <p>{{ application?.unitAddress.nickname ?? '-' }}</p>
+              <p>{{ application?.unitAddress.nickname.length ? application?.unitAddress.nickname.length : '-' }}</p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('business-license')"
@@ -117,12 +117,12 @@
               <BcrosFormSectionReviewItem
                 :title="tApplicationDetails('email')"
               >
-                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].emailAddress }}</p>
+                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0]['Email Address'] }}</p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
                 :title="tApplicationDetails('phone')"
               >
-                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0].phoneNumber }}</p>
+                <p>{{ (application ? getContactRows(application?.primaryContact): [])[0]['Phone Number'] }}</p>
               </BcrosFormSectionReviewItem>
             </div>
           </div>
@@ -152,12 +152,12 @@
               <BcrosFormSectionReviewItem
                 :title="tApplicationDetails('email')"
               >
-                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].emailAddress }}</p>
+                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0]['Email Address'] }}</p>
               </BcrosFormSectionReviewItem>
               <BcrosFormSectionReviewItem
                 :title="tApplicationDetails('phone')"
               >
-                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0].phoneNumber }}</p>
+                <p>{{ (application ? getContactRows(application?.secondaryContact): [])[0]['Phone Number'] }}</p>
               </BcrosFormSectionReviewItem>
             </div>
           </div>
