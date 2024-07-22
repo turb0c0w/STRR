@@ -175,7 +175,10 @@
                 :title="tApplicationDetails('proof')"
               >
                 <div v-for="(supportingDocument) in documents" :key="supportingDocument.file_name">
-                  <div class="flex flex-row items-center">
+                  <div 
+                    class="flex flex-row items-center cursor-pointer" 
+                    @click="() => getFile(applicationId.toString(), supportingDocument.document_id.toString())"
+                  >
                     <img
                       class="mr-[4px] h-[18px] w-[18px]"
                       src="/icons/create-account/attach_dark.svg"
@@ -271,7 +274,8 @@ const formatTime = (date: Date): string => date.toLocaleTimeString('en-US', { ho
 const {
   getRegistration,
   getDocumentsForRegistration,
-  getRegistrationHistory
+  getRegistrationHistory,
+  getFile,
 } = useRegistrations()
 
 const application = await getRegistration(applicationId.toString())

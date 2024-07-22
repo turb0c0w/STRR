@@ -67,6 +67,10 @@ export const useRegistrations = () => {
     axiosInstance.post(`${apiURL}/registrations/${id}/deny`)
       .then(res => res.data)
 
+  const getFile = (id: string, documentId: string): Promise<any> =>
+    axiosInstance.get(`${apiURL}/registrations/${id}/documents/${documentId}/file`)
+      .then(res => res.data)
+
   const getStatusPriority = (status: string) => {
     switch (status) {
       case 'DENIED':
@@ -109,6 +113,7 @@ export const useRegistrations = () => {
       })
 
   return {
+    getFile,
     denyRegistration,
     approveRegistration,
     issueRegistration,
