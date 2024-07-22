@@ -176,11 +176,11 @@
               >
                 <div v-for="(supportingDocument) in documents" :key="supportingDocument.file_name">
                   <a
-                    class="flex flex-row items-center cursor-pointer no-underline text-black" 
+                    class="flex flex-row items-center cursor-pointer no-underline text-black"
                     role="button"
                     @click.prevent="
                       downloadItem(
-                        applicationId.toString(), 
+                        applicationId.toString(),
                         supportingDocument.document_id.toString(),
                         supportingDocument.file_name
                       )
@@ -282,7 +282,7 @@ const {
   getRegistration,
   getDocumentsForRegistration,
   getRegistrationHistory,
-  getFile,
+  getFile
 } = useRegistrations()
 
 const downloadItem = async (id: string, fileId: string, fileName: string) => {
