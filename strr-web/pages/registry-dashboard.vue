@@ -11,6 +11,7 @@
       <div class="flex flex-row justify-between px-[16px] py-[14px]">
         <div>
           <UInput
+            v-model="search"
             icon="i-heroicons-magnifying-glass-20-solid"
             size="sm"
             color="white"
@@ -125,6 +126,7 @@ const statusCounts = ref<{
 const sortDesc = ref<boolean>(false)
 const sortBy = ref<string>('')
 const filterOptions = ref()
+const search = ref('')
 
 const sort = ({ column, direction }: { column: string, direction: string }) => {
   sortBy.value = column.replace(' ', '_').toLocaleUpperCase()
@@ -203,7 +205,7 @@ const navigateToDetails = (id: number) => navigateTo(`/application-details/${id.
 
 const addOrDeleteRefFromObject = (ref: Ref, key: keyof PaginationI, paginationObject: PaginationI) => {
   if (ref.value) {
-    paginationObject[key] = ref.value
+    paginationObject[key] = key === 'search' ?  `%${ref.value}%`: ref.value
   } else {
     delete paginationObject[key]
   }
@@ -217,7 +219,8 @@ const updateTableRows = async () => {
 
   addOrDeleteRefFromObject(statusFilter, 'filter_by_status', paginationObject)
   addOrDeleteRefFromObject(sortBy, 'sort_by', paginationObject)
-  addOrDeleteRefFromObject(sortDesc, 'sort_desc', paginationObject)
+  addOrDeleteRefFromObject(sortDesc, 'sort_desc', paginationObject)  
+  addOrDeleteRefFromObject(search, 'search', paginationObject)
 
   const registrations = await getPaginatedRegistrations(paginationObject)
   if (registrations) {
@@ -249,6 +252,7 @@ const registrationsToTableRows = (registrations: PaginatedRegistrationsI): Recor
 
 watch(statusFilter, () => updateTableRows())
 watch(limit, () => updateTableRows())
+watch(search, () => updateTableRows())
 
 const updateMaxPageResults = () => {
   const offsetPlusTen = offset.value + 10
