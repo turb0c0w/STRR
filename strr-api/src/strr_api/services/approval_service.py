@@ -310,11 +310,7 @@ class ApprovalService:
                     "host": registration.rental_property.property_manager.primary_contact.full_name(),
                 }
                 rendered_template = render_template("certificate.html", **data)
-                pdf_binary = (
-                    HTML(string=rendered_template)
-                    .render()
-                    .write_pdf()
-                )
+                pdf_binary = HTML(string=rendered_template).render().write_pdf()
 
                 certificate = models.Certificate(
                     registration_id=registration.id,
