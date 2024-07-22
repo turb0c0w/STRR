@@ -10,6 +10,7 @@ export interface RegistrationAddressI {
 
 export interface RegistrationI {
   id: number,
+  registration_number?: string,
   invoices: {
     'invoice_id': number,
     'payment_account': string,

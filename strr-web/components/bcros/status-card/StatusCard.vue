@@ -10,9 +10,12 @@
       `
     "
   >
-    <BcrosChip :flavour="flavour" class="mobile:hidden mb-[24px]">
-      {{ flavour.text }}
-    </BcrosChip>
+    <div class="flex justify-between">
+      <BcrosChip :flavour="flavour" class="mobile:hidden mb-[24px]">
+        {{ flavour.text }}
+      </BcrosChip>
+      <p class="font-bold">{{ registrationNumber }}</p>
+    </div>
     <div class="flex w-full justify-between">
       <slot />
       <BcrosChip :flavour="flavour" class="desktop:hidden mb-[24px]">
@@ -45,13 +48,15 @@ const tRegistrationStatus = (translationKey: string) => t(`registration-status.$
 const {
   single,
   applicationId,
-  flavour
+  flavour,
+  registrationNumber
 } = defineProps<{
   single: boolean,
   applicationId: string,
   flavour: {
     text: string,
     alert: AlertsFlavourE
-  }
+  },
+  registrationNumber?: string
 }>()
 </script>

@@ -34,6 +34,7 @@
             :flavour="getFlavour(registration.status, registration?.invoices)"
             :status="registration.status"
             :single="!(registrations && registrations?.length > 1)"
+            :registration-number="registration.registration_number ?? ''"
           >
             <div class="mb-[24px]">
               <p class="font-bold">
