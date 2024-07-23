@@ -29,3 +29,8 @@ logs
 # cypress
 **/cypress/screenshots
 **/cypress/downloads
+
+#playwright
+tests/e2e/.auth*
+test-results/
+html-results/
