@@ -310,8 +310,12 @@ const getDownloadAction = (eventType: string, id: string) => {
 const downloadCertificate = async (id: string) => {
   const file = await getCertificate(id)
   const link = document.createElement('a')
-  link.href = URL.createObjectURL(file)
+  const blob = new Blob([file], { type: "text/csv" });
+  const url = window.URL.createObjectURL(blob);
+  link.href = url
+  link.target = '_blank'
   link.download = tRegistrationStatus('strr-certificate')
+  document.body.appendChild(link);
   link.click()
   URL.revokeObjectURL(link.href)
 }
@@ -321,6 +325,7 @@ const downloadItem = async (id: string, fileId: string, fileName: string) => {
   const link = document.createElement('a')
   link.href = URL.createObjectURL(file)
   link.download = fileName
+  link.target = '_blank'
   link.click()
   URL.revokeObjectURL(link.href)
 }

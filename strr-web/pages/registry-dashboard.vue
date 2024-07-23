@@ -170,7 +170,7 @@ const navigateToDetails = (id: number) => navigateTo(`/application-details/${id.
 
 const addOrDeleteRefFromObject = (ref: Ref, key: keyof PaginationI, paginationObject: PaginationI) => {
   if (ref.value) {
-    if (page.value !== 0) { page.value = 0 }
+    if (page.value !== 0) { page.value = 1 }
     paginationObject[key] = ref.value
   } else {
     delete paginationObject[key]
@@ -179,7 +179,7 @@ const addOrDeleteRefFromObject = (ref: Ref, key: keyof PaginationI, paginationOb
 
 const addOrDeleteSearchRefFromObject = (ref: Ref, key: keyof PaginationI, paginationObject: PaginationI) => {
   if (ref.value && ref.value.length >= 3) {
-    if (page.value !== 0) { page.value = 0 }
+    if (page.value !== 0) { page.value = 1 }
     paginationObject[key] = `%${ref.value}%`
   } else {
     delete paginationObject[key]
