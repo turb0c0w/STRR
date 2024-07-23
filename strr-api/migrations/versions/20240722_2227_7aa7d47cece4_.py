@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: d5f96ce5ad98
-Revises: ed33e07431ea
-Create Date: 2024-07-12 06:47:29.922769
+Revision ID: 7aa7d47cece4
+Revises: 2b707ec995f7
+Create Date: 2024-07-22 22:27:36.631552
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = 'd5f96ce5ad98'
-down_revision = '269514c7d861'
+revision = '7aa7d47cece4'
+down_revision = '2b707ec995f7'
 branch_labels = None
 depends_on = None
 
@@ -40,7 +40,6 @@ def upgrade():
     with op.batch_alter_table('application', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_application_status'), ['status'], unique=False)
         batch_op.create_index(batch_op.f('ix_application_type'), ['type'], unique=False)
-
     # ### end Alembic commands ###
 
 

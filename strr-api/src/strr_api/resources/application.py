@@ -94,7 +94,7 @@ def create_application():
         json_input["selectedAccount"]["sbc_account_id"] = account_id
         [valid, errors] = validate(json_input, "registration")
         if not valid:
-            raise ValidationException(message=errors)
+            return error_response(message="Invalid request", http_status=HTTPStatus.BAD_REQUEST, errors=errors)
 
         registration_request = RegistrationRequest(**json_input)
 
