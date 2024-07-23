@@ -22,7 +22,8 @@
       "rejected": "REJECTED",
       "provisional": "PROVISIONAL",
       "underReview": "UNDER REVIEW",
-      "denied": "DENIED"
+      "denied": "DENIED",
+      "issued": "ISSUED"
     }
   },
   "tos": {

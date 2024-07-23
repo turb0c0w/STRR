@@ -14,6 +14,11 @@ export const useChipFlavour = () => {
           alert: AlertsFlavourE.SUCCESS,
           text: tRegistryDashboardStatus('approved')
         }
+      case 'ISSUED':
+        return {
+          alert: AlertsFlavourE.SUCCESS,
+          text: tRegistryDashboardStatus('issued')
+        }
       case 'REJECTED':
         return {
           alert: AlertsFlavourE.ALERT,
