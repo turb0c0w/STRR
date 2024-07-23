@@ -112,16 +112,17 @@ class OwnershipType(Enum):
 class EventRecordType(Enum):
     """STRR Event Record Type."""
 
-    SBC_ACCOUNT_CREATE = "create a new SBC account"
-    SBC_ACCOUNT_ADDED_CONTACT = "added contact info to SBC account"
-    INVOICE_GENERATED = "invoice generated for registration"
-    INVOICE_PAYED = "invoice payed for registration"
-    AUTO_APPROVAL_FULL_REVIEW = "automatically marked for full review"
-    AUTO_APPROVAL_PROVISIONAL = "automatically marked as provisionally approved"
-    AUTO_APPROVAL_APPROVED = "automatically marked as approved"
-    MANUALLY_APPROVED = "marked as approved by examiner"
-    MANUALLY_DENIED = "marked as denied by examiner"
-    CERTIFICATE_ISSUED = "certificate issued by examiner"
+    SBC_ACCOUNT_CREATE = "SBC Account Created"
+    SBC_ACCOUNT_ADDED_CONTACT = "SBC Account Contact Info Changed"
+    INVOICE_GENERATED = "Payment Required"
+    INVOICE_PAYED = "Payment Confirmed"
+    SUBMITTED = "Registration Submitted"
+    AUTO_APPROVAL_FULL_REVIEW = "Full Review Required"
+    AUTO_APPROVAL_PROVISIONAL = "Conditional Approval"
+    AUTO_APPROVAL_APPROVED = "Automatic Approval"
+    MANUALLY_APPROVED = "Manual Approval"
+    MANUALLY_DENIED = "Denied"
+    CERTIFICATE_ISSUED = "Certificate Issued"
 
 
 class PaymentStatus(Enum):
