@@ -273,6 +273,7 @@ const tRegistrationStatus = (translationKey: string) => t(`registration-status.$
 const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
 const tPropertyForm = (translationKey: string) => t(`create-account.property-form.${translationKey}`)
 const { kcUserLoginSource } = useBcrosKeycloak()
+const { getChipFlavour } = useChipFlavour()
 
 const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
@@ -329,41 +330,7 @@ const application = await getRegistration(applicationId.toString())
 const documents = await getDocumentsForRegistration(applicationId.toString())
 const history = await getRegistrationHistory(applicationId.toString())
 
-const getFlavour = (status: string, invoices: RegistrationI['invoices']):
-  { alert: AlertsFlavourE, text: string } | undefined => {
-  if (status === 'APPROVED' || status === 'ISSUED') {
-    return {
-      text: tRegistrationStatus('approved'),
-      alert: AlertsFlavourE.SUCCESS
-    }
-  }
-  if (status === 'DENIED') {
-    return {
-      text: tRegistrationStatus('denied'),
-      alert: AlertsFlavourE.ALERT
-    }
-  }
-  if (invoices.length === 0) {
-    return {
-      text: tRegistrationStatus('applied'),
-      alert: AlertsFlavourE.APPLIED
-    }
-  }
-  if (invoices[0].payment_status_code === 'COMPLETED') {
-    return {
-      text: tRegistrationStatus('applied'),
-      alert: AlertsFlavourE.APPLIED
-    }
-  }
-  if (status === 'PENDING' && invoices[0].payment_status_code !== 'COMPLETED') {
-    return {
-      text: tRegistrationStatus('payment-due'),
-      alert: AlertsFlavourE.WARNING
-    }
-  }
-}
-
-const flavour = application ? getFlavour(application.status, application.invoices) : null
+const flavour = application ? getChipFlavour(application.status) : null
 
 const getContactRows = (contactBlock: ContactI) => [{
   name: `

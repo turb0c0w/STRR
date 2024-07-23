@@ -103,11 +103,11 @@
 <script setup lang="ts">
 import { PaginatedRegistrationsI } from '~/interfaces/paginated-registrations-i'
 import { PaginationI } from '~/interfaces/pagination-i'
-import { StatusChipFlavoursI } from '~/interfaces/status-chip-flavours-i'
 
 const t = useNuxtApp().$i18n.t
 const tRegistryDashboard = (translationKey: string) => t(`registry-dashboard.${translationKey}`)
 const tRegistryDashboardStatus = (translationKey: string) => t(`registry-dashboard.statusChip.${translationKey}`)
+const { getChipFlavour } = useChipFlavour()
 
 const { getPaginatedRegistrations, getCountsByStatus } = useRegistrations()
 const statusFilter = ref<string>('')
@@ -145,41 +145,6 @@ const onTabChange = (index: number) => {
       break
     default:
       statusFilter.value = ''
-  }
-}
-
-const getChipFlavour = (status: string): StatusChipFlavoursI['flavour'] => {
-  switch (status) {
-    case 'DENIED':
-      return {
-        text: tRegistryDashboardStatus('denied'),
-        alert: AlertsFlavourE.ALERT
-      }
-    case 'APPROVED':
-      return {
-        alert: AlertsFlavourE.SUCCESS,
-        text: tRegistryDashboardStatus('approved')
-      }
-    case 'REJECTED':
-      return {
-        alert: AlertsFlavourE.ALERT,
-        text: tRegistryDashboardStatus('rejected')
-      }
-    case 'PENDING':
-      return {
-        alert: AlertsFlavourE.WARNING,
-        text: tRegistryDashboardStatus('provisional')
-      }
-    case 'UNDER_REVIEW':
-      return {
-        alert: AlertsFlavourE.APPLIED,
-        text: tRegistryDashboardStatus('underReview')
-      }
-    default:
-      return {
-        alert: AlertsFlavourE.MESSAGE,
-        text: ''
-      }
   }
 }
 
