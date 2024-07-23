@@ -30,7 +30,7 @@
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('status')"
             >
-              <p>{{ application?.status ?? '-' }}</p>
+              <p>{{ tApplicationDetails(application?.status ?? '-' ) }}</p>
             </BcrosFormSectionReviewItem>
           </div>
         </div>
@@ -230,7 +230,7 @@
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
             <div class="flex flex-col justify-between w-full">
               <div
-                v-for="(event, index) in history"
+                v-for="(event, index) in history.reverse()"
                 :key="event.created_date"
                 :class="`flex flex-row ${index === history.length - 1 ? '': 'mb-[24px]'}`"
               >
@@ -246,6 +246,13 @@
                   <p class="font-bold">
                     {{ event.message }}
                   </p>
+                  <a
+                    v-if="downloadEventTypes.includes(event.event_type)"
+                    class="no-underline"
+                    @click="() => getDownloadAction(event.event_type, applicationId.toString())"
+                  >
+                    {{ getDownloadText(event.event_type) }}
+                  </a>
                 </div>
               </div>
             </div>
@@ -257,7 +264,6 @@
 </template>
 
 <script setup lang="ts">
-import { AlertsFlavourE } from '#imports'
 import { propertyTypeMap } from '~/utils/propertyTypeMap'
 
 const route = useRoute()
@@ -266,10 +272,13 @@ const tRegistrationStatus = (translationKey: string) => t(`registration-status.$
 const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
 const tPropertyForm = (translationKey: string) => t(`create-account.property-form.${translationKey}`)
 const { kcUserLoginSource } = useBcrosKeycloak()
+const { getChipFlavour } = useChipFlavour()
 
 const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
 const { applicationId } = route.params
+
+const downloadEventTypes = ['CERTIFICATE_ISSUED']
 
 const formatDate = (date: Date) => {
   const day = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -282,14 +291,41 @@ const {
   getRegistration,
   getDocumentsForRegistration,
   getRegistrationHistory,
-  getFile
+  getFile,
+  getCertificate
 } = useRegistrations()
+
+const getDownloadText = (eventType: string) => {
+  if (eventType === 'CERTIFICATE_ISSUED') {
+    return tRegistrationStatus('download')
+  }
+}
+
+const getDownloadAction = (eventType: string, id: string) => {
+  if (eventType === 'CERTIFICATE_ISSUED') {
+    downloadCertificate(id)
+  }
+}
+
+const downloadCertificate = async (id: string) => {
+  const file = await getCertificate(id)
+  const link = document.createElement('a')
+  const blob = new Blob([file], { type: 'text/json' })
+  const url = window.URL.createObjectURL(blob)
+  link.href = url
+  link.target = '_blank'
+  link.download = tRegistrationStatus('strr-certificate')
+  document.body.appendChild(link)
+  link.click()
+  URL.revokeObjectURL(link.href)
+}
 
 const downloadItem = async (id: string, fileId: string, fileName: string) => {
   const file = await getFile(id, fileId)
   const link = document.createElement('a')
   link.href = URL.createObjectURL(file)
   link.download = fileName
+  link.target = '_blank'
   link.click()
   URL.revokeObjectURL(link.href)
 }
@@ -298,35 +334,7 @@ const application = await getRegistration(applicationId.toString())
 const documents = await getDocumentsForRegistration(applicationId.toString())
 const history = await getRegistrationHistory(applicationId.toString())
 
-const getFlavour = (status: string, invoices: RegistrationI['invoices']):
-  { alert: AlertsFlavourE, text: string } | undefined => {
-  if (status === 'DENIED') {
-    return {
-      text: tRegistrationStatus('denied'),
-      alert: AlertsFlavourE.ALERT
-    }
-  }
-  if (invoices.length === 0) {
-    return {
-      text: tRegistrationStatus('applied'),
-      alert: AlertsFlavourE.APPLIED
-    }
-  }
-  if (invoices[0].payment_status_code === 'COMPLETED') {
-    return {
-      text: tRegistrationStatus('applied'),
-      alert: AlertsFlavourE.APPLIED
-    }
-  }
-  if (status === 'PENDING' && invoices[0].payment_status_code !== 'COMPLETED') {
-    return {
-      text: tRegistrationStatus('payment-due'),
-      alert: AlertsFlavourE.WARNING
-    }
-  }
-}
-
-const flavour = application ? getFlavour(application.status, application.invoices) : null
+const flavour = application ? getChipFlavour(application.status) : null
 
 const getContactRows = (contactBlock: ContactI) => [{
   name: `

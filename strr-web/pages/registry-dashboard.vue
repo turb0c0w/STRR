@@ -4,7 +4,8 @@
     <BcrosTypographyH2 text="Owners STR Registration Applications" />
     <UTabs
       :items="filterOptions"
-      class="mb-[24px] w-[800px]"
+      class="mb-[24px] w-[800px] tabs"
+      :ui="{ list: { tab: { active: 'bg-bcGovColor-nonClickable text-white' } } }"
       @change="onTabChange"
     />
     <div class="bg-white">
@@ -103,11 +104,10 @@
 <script setup lang="ts">
 import { PaginatedRegistrationsI } from '~/interfaces/paginated-registrations-i'
 import { PaginationI } from '~/interfaces/pagination-i'
-import { StatusChipFlavoursI } from '~/interfaces/status-chip-flavours-i'
 
 const t = useNuxtApp().$i18n.t
 const tRegistryDashboard = (translationKey: string) => t(`registry-dashboard.${translationKey}`)
-const tRegistryDashboardStatus = (translationKey: string) => t(`registry-dashboard.statusChip.${translationKey}`)
+const { getChipFlavour } = useChipFlavour()
 
 const { getPaginatedRegistrations, getCountsByStatus } = useRegistrations()
 const statusFilter = ref<string>('')
@@ -148,41 +148,6 @@ const onTabChange = (index: number) => {
   }
 }
 
-const getChipFlavour = (status: string): StatusChipFlavoursI['flavour'] => {
-  switch (status) {
-    case 'DENIED':
-      return {
-        text: tRegistryDashboardStatus('denied'),
-        alert: AlertsFlavourE.ALERT
-      }
-    case 'APPROVED':
-      return {
-        alert: AlertsFlavourE.SUCCESS,
-        text: tRegistryDashboardStatus('approved')
-      }
-    case 'REJECTED':
-      return {
-        alert: AlertsFlavourE.ALERT,
-        text: tRegistryDashboardStatus('rejected')
-      }
-    case 'PENDING':
-      return {
-        alert: AlertsFlavourE.WARNING,
-        text: tRegistryDashboardStatus('provisional')
-      }
-    case 'UNDER_REVIEW':
-      return {
-        alert: AlertsFlavourE.APPLIED,
-        text: tRegistryDashboardStatus('underReview')
-      }
-    default:
-      return {
-        alert: AlertsFlavourE.MESSAGE,
-        text: ''
-      }
-  }
-}
-
 const updateFilterOptions = () => {
   filterOptions.value = [
     {
@@ -205,6 +170,7 @@ const navigateToDetails = (id: number) => navigateTo(`/application-details/${id.
 
 const addOrDeleteRefFromObject = (ref: Ref, key: keyof PaginationI, paginationObject: PaginationI) => {
   if (ref.value) {
+    if (page.value !== 0) { page.value = 1 }
     paginationObject[key] = ref.value
   } else {
     delete paginationObject[key]
@@ -213,6 +179,7 @@ const addOrDeleteRefFromObject = (ref: Ref, key: keyof PaginationI, paginationOb
 
 const addOrDeleteSearchRefFromObject = (ref: Ref, key: keyof PaginationI, paginationObject: PaginationI) => {
   if (ref.value && ref.value.length >= 3) {
+    if (page.value !== 0) { page.value = 1 }
     paginationObject[key] = `%${ref.value}%`
   } else {
     delete paginationObject[key]
