@@ -80,8 +80,6 @@
 </template>
 
 <script setup lang="ts">
-import { AlertsFlavourE } from '#imports'
-
 definePageMeta({
   layout: 'wide-gutters'
 })
