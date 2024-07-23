@@ -198,7 +198,7 @@
             </div>
           </div>
         </div>
-        <div class="mt-[40px]">
+        <div class="mt-[40px]" v-if="kcUserLoginSource === 'IDIR'">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('ltsa-info') }}
           </p>
@@ -209,7 +209,7 @@
             {{ tApplicationDetails('ltsa-details') }}
           </a>
         </div>
-        <div class="mt-[40px]">
+        <div class="mt-[40px]" v-if="kcUserLoginSource === 'IDIR'">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('aa-logic') }}
           </p>
@@ -314,7 +314,7 @@ const downloadCertificate = async (id: string) => {
   const url = window.URL.createObjectURL(blob)
   link.href = url
   link.target = '_blank'
-  link.download = tRegistrationStatus('strr-certificate')
+  link.download = `${tRegistrationStatus('strr-certificate')}.pdf`
   document.body.appendChild(link)
   link.click()
   URL.revokeObjectURL(link.href)
