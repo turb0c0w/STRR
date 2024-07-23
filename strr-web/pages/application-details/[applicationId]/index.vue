@@ -198,7 +198,7 @@
             </div>
           </div>
         </div>
-        <div class="mt-[40px]" v-if="kcUserLoginSource === 'IDIR'">
+        <div v-if="kcUserLoginSource === 'IDIR'" class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('ltsa-info') }}
           </p>
@@ -209,7 +209,7 @@
             {{ tApplicationDetails('ltsa-details') }}
           </a>
         </div>
-        <div class="mt-[40px]" v-if="kcUserLoginSource === 'IDIR'">
+        <div v-if="kcUserLoginSource === 'IDIR'" class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('aa-logic') }}
           </p>

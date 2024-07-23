@@ -23,7 +23,8 @@
       "provisional": "PROVISIONAL",
       "underReview": "UNDER REVIEW",
       "denied": "DENIED",
-      "issued": "ISSUED"
+      "issued": "ISSUED",
+      "pending": "APPLIED"
     }
   },
   "tos": {
