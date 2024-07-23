@@ -81,7 +81,6 @@ export const useRegistrations = () => {
     )
       .then(res => res.data)
 
-
   const getStatusPriority = (status: string) => {
     switch (status) {
       case 'DENIED':

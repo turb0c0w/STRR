@@ -5,9 +5,9 @@
     <UTabs
       :items="filterOptions"
       class="mb-[24px] w-[800px] tabs"
-      @change="onTabChange"
       :ui="{ list: { tab: { active: 'bg-bcGovColor-nonClickable text-white' } } }"
-    /> 
+      @change="onTabChange"
+    />
     <div class="bg-white">
       <div class="flex flex-row justify-between px-[16px] py-[14px]">
         <div>
@@ -170,7 +170,7 @@ const navigateToDetails = (id: number) => navigateTo(`/application-details/${id.
 
 const addOrDeleteRefFromObject = (ref: Ref, key: keyof PaginationI, paginationObject: PaginationI) => {
   if (ref.value) {
-    paginationObject.offset = '0'
+    if (page.value !== 0) { page.value = 0 }
     paginationObject[key] = ref.value
   } else {
     delete paginationObject[key]
@@ -179,7 +179,7 @@ const addOrDeleteRefFromObject = (ref: Ref, key: keyof PaginationI, paginationOb
 
 const addOrDeleteSearchRefFromObject = (ref: Ref, key: keyof PaginationI, paginationObject: PaginationI) => {
   if (ref.value && ref.value.length >= 3) {
-    paginationObject.offset = '0'
+    if (page.value !== 0) { page.value = 0 }
     paginationObject[key] = `%${ref.value}%`
   } else {
     delete paginationObject[key]

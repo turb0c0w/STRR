@@ -30,7 +30,7 @@
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('status')"
             >
-              <p>{{ tApplicationDetails(application?.status ?? '-' )}}</p>
+              <p>{{ tApplicationDetails(application?.status ?? '-' ) }}</p>
             </BcrosFormSectionReviewItem>
           </div>
         </div>
@@ -246,10 +246,10 @@
                   <p class="font-bold">
                     {{ event.message }}
                   </p>
-                  <a 
+                  <a
                     v-if="downloadEventTypes.includes(event.event_type)"
-                    @click="() => getDownloadAction(event.event_type, applicationId.toString())"
                     class="no-underline"
+                    @click="() => getDownloadAction(event.event_type, applicationId.toString())"
                   >
                     {{ getDownloadText(event.event_type) }}
                   </a>
@@ -264,7 +264,6 @@
 </template>
 
 <script setup lang="ts">
-import { AlertsFlavourE } from '#imports'
 import { propertyTypeMap } from '~/utils/propertyTypeMap'
 
 const route = useRoute()
