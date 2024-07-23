@@ -230,7 +230,7 @@
           <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
             <div class="flex flex-col justify-between w-full">
               <div
-                v-for="(event, index) in history"
+                v-for="(event, index) in history.reverse()"
                 :key="event.created_date"
                 :class="`flex flex-row ${index === history.length - 1 ? '': 'mb-[24px]'}`"
               >
