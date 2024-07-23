@@ -246,6 +246,13 @@
                   <p class="font-bold">
                     {{ event.message }}
                   </p>
+                  <a 
+                    v-if="downloadEventTypes.includes(event.event_type)"
+                    @click="() => getDownloadAction(event.event_type, applicationId.toString())"
+                    class="no-underline"
+                  >
+                    {{ getDownloadText(event.event_type) }}
+                  </a>
                 </div>
               </div>
             </div>
@@ -271,6 +278,8 @@ const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })
 
 const { applicationId } = route.params
 
+const downloadEventTypes = ['CERTIFICATE_ISSUED']
+
 const formatDate = (date: Date) => {
   const day = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
   return day
@@ -282,8 +291,30 @@ const {
   getRegistration,
   getDocumentsForRegistration,
   getRegistrationHistory,
-  getFile
+  getFile,
+  getCertificate
 } = useRegistrations()
+
+const getDownloadText = (eventType: string) => {
+  if (eventType === 'CERTIFICATE_ISSUED') {
+    return tRegistrationStatus('download')
+  }
+}
+
+const getDownloadAction = (eventType: string, id: string) => {
+  if (eventType === 'CERTIFICATE_ISSUED') {
+    downloadCertificate(id)
+  }
+}
+
+const downloadCertificate = async (id: string) => {
+  const file = await getCertificate(id)
+  const link = document.createElement('a')
+  link.href = URL.createObjectURL(file)
+  link.download = tRegistrationStatus('strr-certificate')
+  link.click()
+  URL.revokeObjectURL(link.href)
+}
 
 const downloadItem = async (id: string, fileId: string, fileName: string) => {
   const file = await getFile(id, fileId)
