@@ -70,7 +70,7 @@ class PayService:
         self.svc_url = app.config.get("PAYMENT_SVC_URL")
         self.timeout = app.config.get("PAY_API_TIMEOUT", 20)
 
-    def create_invoice(self, user_jwt: JwtManager, account_id, registration) -> models.Invoice:
+    def create_invoice(self, user_jwt: JwtManager, account_id, registration=None):
         """Create the invoice via the pay-api."""
         payload = deepcopy(self.default_invoice_payload)
 
@@ -87,32 +87,33 @@ class PayService:
             )
 
             if resp.status_code not in [HTTPStatus.OK, HTTPStatus.CREATED] or not (resp.json()).get("id", None):
-                print(f"code: {resp.status_code}")
                 error = f"{resp.status_code} - {str(resp.json())}"
                 self.app.logger.debug("Invalid response from pay-api: %s", error)
                 raise ExternalServiceException(error=error, status_code=HTTPStatus.PAYMENT_REQUIRED)
+            if not registration:
+                return resp.json()
+            else:
+                invoice_id = resp.json()["id"]
+                invoice = models.Invoice(
+                    registration_id=registration.id,
+                    invoice_id=invoice_id,
+                    payment_status_code=PaymentStatus.CREATED,
+                    payment_account=account_id,
+                )
 
-            invoice_id = resp.json()["id"]
-            invoice = models.Invoice(
-                registration_id=registration.id,
-                invoice_id=invoice_id,
-                payment_status_code=PaymentStatus.CREATED,
-                payment_account=account_id,
-            )
+                db.session.add(invoice)
+                db.session.commit()
+                db.session.refresh(invoice)
+                db.session.refresh(registration)
 
-            db.session.add(invoice)
-            db.session.commit()
-            db.session.refresh(invoice)
-            db.session.refresh(registration)
+                EventRecordsService.save_event_record(
+                    EventRecordType.INVOICE_GENERATED,
+                    EventRecordType.INVOICE_GENERATED.value,
+                    True,
+                    registration_id=registration.id,
+                )
 
-            EventRecordsService.save_event_record(
-                EventRecordType.INVOICE_GENERATED,
-                EventRecordType.INVOICE_GENERATED.value,
-                True,
-                registration_id=registration.id,
-            )
-
-            return invoice
+                return invoice
         except ExternalServiceException as exc:
             # pass along
             raise exc
