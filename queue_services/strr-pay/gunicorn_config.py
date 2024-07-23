@@ -31,22 +31,15 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-"""This module wraps helper services used by the API."""
-from .application_service import ApplicationService
-from .auth_service import AuthService
-from .event_records_service import EventRecordsService
-from .gcp_storage_service import GCPStorageService
-from .geocoder_service import GeoCoderService
-from .payment_service import PayService
-from .registration_service import RegistrationService
-from .rest_service import RestService
+"""The configuration for gunicorn, which picks up the
+   runtime options from environment variables
+"""
 
-from .ltsa_service import LtsaService  # isort: skip
-from .approval_service import ApprovalService  # isort: skip
+import os
 
-PAYMENT_REQUEST_TEMPLATE = {
-    "filingInfo": {"filingTypes": [{"filingTypeCode": "RENTAL_FEE"}]},
-    "businessInfo": {"corpType": "STRR"},
-    "paymentInfo": {"methodOfPayment": "DIRECT_PAY"},
-}
-strr_pay = PayService(default_invoice_payload=PAYMENT_REQUEST_TEMPLATE)
+workers = int(os.environ.get("GUNICORN_PROCESSES", "1"))  # pylint: disable=invalid-name
+threads = int(os.environ.get("GUNICORN_THREADS", "1"))  # pylint: disable=invalid-name
+timeout = int(os.environ.get("GUNICORN_TIMEOUT", "600"))  # pylint: disable=invalid-name
+
+forwarded_allow_ips = "*"  # pylint: disable=invalid-name
+secure_scheme_headers = {"X-Forwarded-Proto": "https"}  # pylint: disable=invalid-name

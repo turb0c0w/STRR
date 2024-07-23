@@ -31,22 +31,24 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-"""This module wraps helper services used by the API."""
-from .application_service import ApplicationService
-from .auth_service import AuthService
-from .event_records_service import EventRecordsService
-from .gcp_storage_service import GCPStorageService
-from .geocoder_service import GeoCoderService
-from .payment_service import PayService
-from .registration_service import RegistrationService
-from .rest_service import RestService
+"""Supply version and commit hash info.
 
-from .ltsa_service import LtsaService  # isort: skip
-from .approval_service import ApprovalService  # isort: skip
+When deployed in OKD, it adds the last commit hash onto the version info.
+"""
+import os
+from importlib.metadata import version
 
-PAYMENT_REQUEST_TEMPLATE = {
-    "filingInfo": {"filingTypes": [{"filingTypeCode": "RENTAL_FEE"}]},
-    "businessInfo": {"corpType": "STRR"},
-    "paymentInfo": {"methodOfPayment": "DIRECT_PAY"},
-}
-strr_pay = PayService(default_invoice_payload=PAYMENT_REQUEST_TEMPLATE)
+
+def _get_commit_hash():
+    """Return the containers ref if present."""
+    if (commit_hash := os.getenv("VCS_REF", None)) and commit_hash != "missing":
+        return commit_hash
+    return None
+
+
+def get_run_version():
+    """Return a formatted version string for this service."""
+    ver = version(__name__[: __name__.find(".")])
+    if commit_hash := _get_commit_hash():
+        return f"{ver}-{commit_hash}"
+    return ver

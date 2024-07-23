@@ -34,6 +34,13 @@
 """Auth helper methods."""
 from flask_jwt_oidc import JwtManager
 
+SYSTEM_ROLE = "system"
+STAFF_ROLE = "staff"
+BASIC_USER = "basic"
+COLIN_SVC_ROLE = "colin"
+PUBLIC_USER = "public_user"
+ACCOUNT_IDENTITY = "account_identity"
+
 
 def create_jwt(
     jwt_manager: JwtManager,

@@ -135,3 +135,9 @@ class PaymentStatus(Enum):
     DELETED = "DELETED"
     REFUNDED = "REFUNDED"
     FAILED = "FAILED"
+
+
+class ApplicationType(Enum):
+    """STRR Application Types."""
+
+    REGISTRATION = "registration"

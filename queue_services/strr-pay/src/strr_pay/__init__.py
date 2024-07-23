@@ -31,22 +31,37 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-"""This module wraps helper services used by the API."""
-from .application_service import ApplicationService
-from .auth_service import AuthService
-from .event_records_service import EventRecordsService
-from .gcp_storage_service import GCPStorageService
-from .geocoder_service import GeoCoderService
-from .payment_service import PayService
-from .registration_service import RegistrationService
-from .rest_service import RestService
+"""The STRR Payment service.
 
-from .ltsa_service import LtsaService  # isort: skip
-from .approval_service import ApprovalService  # isort: skip
+This module applied payments against applications and updates the application status to PAID.
+"""
+from __future__ import annotations
 
-PAYMENT_REQUEST_TEMPLATE = {
-    "filingInfo": {"filingTypes": [{"filingTypeCode": "RENTAL_FEE"}]},
-    "businessInfo": {"corpType": "STRR"},
-    "paymentInfo": {"methodOfPayment": "DIRECT_PAY"},
-}
-strr_pay = PayService(default_invoice_payload=PAYMENT_REQUEST_TEMPLATE)
+import sentry_sdk
+from strr_api import db
+from flask import Flask
+from sentry_sdk.integrations.flask import FlaskIntegration
+
+from .config import Config, ProdConfig
+from .resources import register_endpoints
+from .services import gcp_queue
+
+
+def create_app(environment: Config = ProdConfig, **kwargs) -> Flask:
+    """Return a configured Flask App using the Factory method."""
+    app = Flask(__name__)
+    app.config.from_object(environment)
+
+    # Configure Sentry
+    if dsn := app.config.get("SENTRY_DSN", None):
+        sentry_sdk.init(
+            dsn=dsn,
+            integrations=[FlaskIntegration()],
+            send_default_pii=False,
+        )
+
+    db.init_app(app)
+    gcp_queue.init_app(app)
+    register_endpoints(app)
+
+    return app

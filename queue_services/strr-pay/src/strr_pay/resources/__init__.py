@@ -31,22 +31,21 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-"""This module wraps helper services used by the API."""
-from .application_service import ApplicationService
-from .auth_service import AuthService
-from .event_records_service import EventRecordsService
-from .gcp_storage_service import GCPStorageService
-from .geocoder_service import GeoCoderService
-from .payment_service import PayService
-from .registration_service import RegistrationService
-from .rest_service import RestService
+"""STRR Pay module.
 
-from .ltsa_service import LtsaService  # isort: skip
-from .approval_service import ApprovalService  # isort: skip
+Provides the service that applies payments to applications.
+"""
+from flask import Flask
 
-PAYMENT_REQUEST_TEMPLATE = {
-    "filingInfo": {"filingTypes": [{"filingTypeCode": "RENTAL_FEE"}]},
-    "businessInfo": {"corpType": "STRR"},
-    "paymentInfo": {"methodOfPayment": "DIRECT_PAY"},
-}
-strr_pay = PayService(default_invoice_payload=PAYMENT_REQUEST_TEMPLATE)
+from .pay_listener import bp as pay_listener_endpoint
+
+
+def register_endpoints(app: Flask):
+    """Register endpoints with the flask application"""
+    # Allow base route to match with, and without a trailing slash
+    app.url_map.strict_slashes = False
+
+    app.register_blueprint(
+        url_prefix="/",
+        blueprint=pay_listener_endpoint,
+    )

@@ -40,6 +40,7 @@ from flasgger import Swagger
 from flask import Flask
 
 from .account import bp as account_endpoint
+from .application import bp as application_endpoint
 from .base import bp as base_endpoint
 from .ops import bp as ops_endpoint
 from .registrations import bp as registrations_endpoint
@@ -75,6 +76,11 @@ def register_endpoints(app: Flask):
     app.register_blueprint(
         url_prefix="/registrations",
         blueprint=registrations_endpoint,
+    )
+
+    app.register_blueprint(
+        url_prefix="/applications",
+        blueprint=application_endpoint,
     )
 
     app.config["SWAGGER"] = {
