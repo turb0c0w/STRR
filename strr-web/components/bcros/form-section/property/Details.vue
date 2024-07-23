@@ -2,7 +2,7 @@
   <div data-cy="form-section-contact-info">
     <BcrosFormSection :title="t('create-account.property-form.rentalUnitDetails')">
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="parcelIdentifier" class="pr-[16px] flex-grow">
+        <UFormGroup name="parcelIdentifier" class="d:pr-[16px] flex-grow">
           <UInput
             v-model="parcelIdentifier"
             aria-label="parcel identifier"
@@ -11,7 +11,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="businessLicense" class="pr-[16px] flex-grow">
+        <UFormGroup name="businessLicense" class="d:pr-[16px] flex-grow">
           <UInput
             v-model="businessLicense"
             aria-label="business license"
@@ -20,7 +20,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="propertyType" class="pr-[16px] flex-grow" :error="propertyTypeError">
+        <UFormGroup name="propertyType" class="d:pr-[16px] flex-grow" :error="propertyTypeError">
           <USelect
             v-model="propertyType"
             aria-label="property types"
@@ -35,7 +35,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="ownershipType" class="pr-[16px] flex-grow" :error="ownershipTypeError">
+        <UFormGroup name="ownershipType" class="d:pr-[16px] flex-grow" :error="ownershipTypeError">
           <USelect
             v-model="ownershipType"
             aria-label="ownership types"
