@@ -198,7 +198,7 @@
             </div>
           </div>
         </div>
-        <div class="mt-[40px]">
+        <div v-if="kcUserLoginSource === 'IDIR'" class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('ltsa-info') }}
           </p>
@@ -209,7 +209,7 @@
             {{ tApplicationDetails('ltsa-details') }}
           </a>
         </div>
-        <div class="mt-[40px]">
+        <div v-if="kcUserLoginSource === 'IDIR'" class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('aa-logic') }}
           </p>
@@ -310,11 +310,11 @@ const getDownloadAction = (eventType: string, id: string) => {
 const downloadCertificate = async (id: string) => {
   const file = await getCertificate(id)
   const link = document.createElement('a')
-  const blob = new Blob([file], { type: 'text/json' })
+  const blob = new Blob([file], { type: 'application/pdf' })
   const url = window.URL.createObjectURL(blob)
   link.href = url
   link.target = '_blank'
-  link.download = tRegistrationStatus('strr-certificate')
+  link.download = `${tRegistrationStatus('strr-certificate')}.pdf`
   document.body.appendChild(link)
   link.click()
   URL.revokeObjectURL(link.href)

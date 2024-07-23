@@ -23,7 +23,8 @@
       "provisional": "PROVISIONAL",
       "underReview": "UNDER REVIEW",
       "denied": "DENIED",
-      "issued": "ISSUED"
+      "issued": "ISSUED",
+      "pending": "APPLIED"
     }
   },
   "tos": {
@@ -132,7 +133,8 @@
     "title": "My STR Registry Dashboard",
     "view": "View",
     "download": "Download Certificate",
-    "renewal": "Renewal"
+    "renewal": "Renewal",
+    "strr-certificate": "Short Term Rental Registry Certificate"
   },
   "fee-widget": {
     "summary": "Fee Summary",

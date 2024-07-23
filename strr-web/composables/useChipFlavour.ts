@@ -27,7 +27,7 @@ export const useChipFlavour = () => {
       case 'PENDING':
         return {
           alert: AlertsFlavourE.WARNING,
-          text: tRegistryDashboardStatus('provisional')
+          text: tRegistryDashboardStatus('pending')
         }
       case 'UNDER_REVIEW':
         return {

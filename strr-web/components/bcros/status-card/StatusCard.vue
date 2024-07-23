@@ -31,7 +31,10 @@
       >
         {{ tRegistrationStatus('view') }}
       </p>
-      <p class="mr-[22px] cursor-pointer">
+      <p
+        class="mr-[22px] cursor-pointer"
+        @click="() => downloadCertificate(applicationId.toString())"
+      >
         {{ tRegistrationStatus('download') }}
       </p>
       <p class="cursor-pointer">
@@ -46,6 +49,21 @@ import { AlertsFlavourE } from '#imports'
 
 const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
+
+const { getCertificate } = useRegistrations()
+
+const downloadCertificate = async (id: string) => {
+  const file = await getCertificate(id)
+  const link = document.createElement('a')
+  const blob = new Blob([file], { type: 'application/pdf' })
+  const url = window.URL.createObjectURL(blob)
+  link.href = url
+  link.target = '_blank'
+  link.download = `${tRegistrationStatus('strr-certificate')}.pdf`
+  document.body.appendChild(link)
+  link.click()
+  URL.revokeObjectURL(link.href)
+}
 
 const {
   single,
