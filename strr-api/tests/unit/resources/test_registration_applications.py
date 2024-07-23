@@ -3,8 +3,7 @@ import os
 from http import HTTPStatus
 from unittest.mock import patch
 
-from tests.unit.utils.auth_helpers import create_header, PUBLIC_USER
-
+from tests.unit.utils.auth_helpers import PUBLIC_USER, create_header
 
 CREATE_REGISTRATION_REQUEST = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), "../../mocks/json/registration_use_sbc_account.json"

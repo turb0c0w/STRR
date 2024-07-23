@@ -33,6 +33,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 """Service to interact with the applications model."""
 from datetime import datetime, timezone
+
 from strr_api.enums.enum import ApplicationType
 from strr_api.models import Application, User
 from strr_api.models.application import ApplicationSerializer

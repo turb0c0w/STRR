@@ -35,14 +35,15 @@
 from __future__ import annotations
 
 import copy
+
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import backref
 
-from strr_api.common.enum import auto
-from strr_api.common.enum import BaseEnum
+from strr_api.common.enum import BaseEnum, auto
 from strr_api.models.base_model import BaseModel
 from strr_api.models.dataclass import ApplicationSearch
+
 from .db import db
 
 

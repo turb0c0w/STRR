@@ -18,8 +18,7 @@ from typing import Dict
 
 from flask import g, request
 
-from strr_api.enums.enum import LoginSource
-from strr_api.enums.enum import Role
+from strr_api.enums.enum import LoginSource, Role
 
 
 def _get_context():

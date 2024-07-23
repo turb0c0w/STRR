@@ -42,8 +42,7 @@ from http import HTTPStatus
 from flasgger import swag_from
 from flask import Blueprint, jsonify, request
 from flask_cors import cross_origin
-from strr_api.models.dataclass import ApplicationSearch
-from strr_api.requests import RegistrationRequest
+
 from strr_api.common.auth import jwt
 from strr_api.exceptions import (
     AuthException,
@@ -52,9 +51,10 @@ from strr_api.exceptions import (
     error_response,
     exception_response,
 )
+from strr_api.models.dataclass import ApplicationSearch
+from strr_api.requests import RegistrationRequest
 from strr_api.schemas.utils import validate
 from strr_api.services import ApplicationService, strr_pay
-
 from strr_api.validators.RegistrationRequestValidator import validate_registration_request
 
 logger = logging.getLogger("api")
