@@ -57,15 +57,15 @@ export const useRegistrations = () => {
 
   const approveRegistration = (id: string): Promise<any> =>
     axiosInstance.post(`${apiURL}/registrations/${id}/approve`)
-      .then(res => res.data)
+      .then(() => window.location.reload())
 
   const issueRegistration = (id: string): Promise<any> =>
     axiosInstance.post(`${apiURL}/registrations/${id}/issue`)
-      .then(res => res.data)
+      .then(() => window.location.reload())
 
   const denyRegistration = (id: string): Promise<any> =>
     axiosInstance.post(`${apiURL}/registrations/${id}/deny`)
-      .then(res => res.data)
+      .then(() => window.location.reload())
 
   const getFile = (id: string, documentId: string): Promise<any> =>
     axiosInstance.get(
@@ -73,6 +73,14 @@ export const useRegistrations = () => {
       { responseType: 'blob' }
     )
       .then(res => res.data)
+
+  const getCertificate = (id: string): Promise<any> =>
+    axiosInstance.get(
+      `${apiURL}/registrations/${id}/certificate`,
+      { responseType: 'blob' }
+    )
+      .then(res => res.data)
+
 
   const getStatusPriority = (status: string) => {
     switch (status) {
@@ -128,6 +136,7 @@ export const useRegistrations = () => {
     getRegistration,
     getRegistrationHistory,
     getLtsa,
-    getAutoApproval
+    getAutoApproval,
+    getCertificate
   }
 }
