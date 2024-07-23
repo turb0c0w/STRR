@@ -90,7 +90,14 @@
     "ltsa-details": "View LTSA Details",
     "aa-logic": "Auto-Approval Logic",
     "aa-details": "View Auto-Approval Details",
-    "filing": "Filing History"
+    "filing": "Filing History",
+    "PENDING": "Pending",
+    "APPROVED": "Approved",
+    "MORE_INFO_NEEDED": "Provisional",
+    "DENIED": "Denied",
+    "ISSUED": "Issued",
+    "UNDER_REVIEW": "Under Review",
+    "PROVISIONAL": "Provisional"
   },
   "banner": {
     "approve": "Approve",

@@ -30,7 +30,7 @@
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('status')"
             >
-              <p>{{ application?.status ?? '-' }}</p>
+              <p>{{ tApplicationDetails(application?.status ?? '-' )}}</p>
             </BcrosFormSectionReviewItem>
           </div>
         </div>
