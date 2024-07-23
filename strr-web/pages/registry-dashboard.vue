@@ -4,9 +4,10 @@
     <BcrosTypographyH2 text="Owners STR Registration Applications" />
     <UTabs
       :items="filterOptions"
-      class="mb-[24px] w-[800px]"
+      class="mb-[24px] w-[800px] tabs"
       @change="onTabChange"
-    />
+      :ui="{ list: { tab: { active: 'bg-bcGovColor-nonClickable text-white' } } }"
+    /> 
     <div class="bg-white">
       <div class="flex flex-row justify-between px-[16px] py-[14px]">
         <div>
