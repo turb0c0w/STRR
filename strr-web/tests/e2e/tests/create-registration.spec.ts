@@ -123,7 +123,7 @@ test.describe('Create SBC Account and Complete Registration - Check an applicati
     const newUrl = `${baseUrl}/application-details/${regId}`
     await page.goto(newUrl, { waitUntil: 'load'})
     // verify filing history 
-    const paymentLocator = page.locator(`p.font-bold:has-text('Invoice Paid')`)
+    const paymentLocator = page.locator(`p.font-bold:has-text('Payment Confirmed')`)
     await expect(paymentLocator).toHaveCount(1)
     // verify files
     const fileLocator = page.locator(`p:has-text('1.pdf')`)

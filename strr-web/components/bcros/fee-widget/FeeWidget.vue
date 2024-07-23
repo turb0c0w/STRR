@@ -40,7 +40,7 @@
         <p>{{ t("fee-widget.total") }}</p>
         <p class="font-normal text-[14px] text-bcGovGray-700 flex items-end">
           {{ t("fee-widget.cad") }}
-          <b class="text-black text-[24px] ml-[5px] mb-[-4px] flex items-end">
+          <b class="text-black text-[24px] ml-[5px] mb-[-4px] flex items-end" data-cy="fee-amount">
             {{ fee?.total ? `$${fee.total.toFixed(2)}` : '-' }}
           </b>
         </p>
