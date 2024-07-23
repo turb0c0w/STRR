@@ -107,7 +107,7 @@ class PayService:
 
             EventRecordsService.save_event_record(
                 EventRecordType.INVOICE_GENERATED,
-                f"Invoice created for registration_id: {registration.id} invoice_id: {invoice_id}",
+                EventRecordType.INVOICE_GENERATED.value,
                 True,
                 registration_id=registration.id,
             )
@@ -165,7 +165,7 @@ class PayService:
         if invoice_paid:
             EventRecordsService.save_event_record(
                 EventRecordType.INVOICE_PAYED,
-                f"Invoice paid for registration_id: {registration.id} invoice_id: {invoice.invoice_id}",
+                EventRecordType.INVOICE_PAYED.value,
                 True,
                 registration_id=registration.id,
             )

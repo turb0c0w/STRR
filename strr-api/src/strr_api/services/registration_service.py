@@ -37,8 +37,9 @@
 from sqlalchemy import func
 
 from strr_api import models, requests
-from strr_api.enums.enum import RegistrationSortBy, RegistrationStatus
+from strr_api.enums.enum import EventRecordType, RegistrationSortBy, RegistrationStatus
 from strr_api.models import db
+from strr_api.services.event_records_service import EventRecordsService
 from strr_api.services.gcp_storage_service import GCPStorageService
 
 
@@ -152,6 +153,15 @@ class RegistrationService:
         db.session.add(registration)
         db.session.commit()
         db.session.refresh(registration)
+
+        EventRecordsService.save_event_record(
+            EventRecordType.SUBMITTED,
+            EventRecordType.SUBMITTED.value,
+            True,
+            registration.user_id,
+            registration.id,
+        )
+
         return registration
 
     @classmethod
