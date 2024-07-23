@@ -31,7 +31,7 @@
           <BcrosStatusCard
             v-if="registration"
             :application-id="registration.id.toString()"
-            :flavour="getFlavour(registration.status, registration?.invoices)"
+            :flavour="getChipFlavour(registration.status)"
             :status="registration.status"
             :single="!(registrations && registrations?.length > 1)"
             :registration-number="registration.registration_number ?? ''"
@@ -80,8 +80,6 @@
 </template>
 
 <script setup lang="ts">
-import { AlertsFlavourE } from '#imports'
-
 definePageMeta({
   layout: 'wide-gutters'
 })
@@ -90,6 +88,7 @@ const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 
 const { getRegistrations } = useRegistrations()
+const { getChipFlavour } = useChipFlavour()
 const registrations = ref<(RegistrationI | undefined)[]>()
 const fetchedRegistrations = await getRegistrations()
 
@@ -107,43 +106,5 @@ registrations.value =
   fetchedRegistrations.length !== 1
     ? fetchedRegistrations
     : addSpacingToRegistrations()
-
-const getFlavour = (status: string, invoices: RegistrationI['invoices']):
-  { alert: AlertsFlavourE, text: string } | undefined => {
-  if (status === 'DENIED') {
-    return {
-      text: tRegistrationStatus('denied'),
-      alert: AlertsFlavourE.ALERT
-    }
-  }
-  if (status === 'APPROVED') {
-    return {
-      text: tRegistrationStatus('approved'),
-      alert: AlertsFlavourE.SUCCESS
-    }
-  }
-  if (invoices.length === 0) {
-    return {
-      text: tRegistrationStatus('applied'),
-      alert: AlertsFlavourE.APPLIED
-    }
-  }
-  if (invoices[0].payment_status_code === 'COMPLETED') {
-    return {
-      text: tRegistrationStatus('applied'),
-      alert: AlertsFlavourE.APPLIED
-    }
-  }
-  if (status === 'PENDING' && invoices[0].payment_status_code !== 'COMPLETED') {
-    return {
-      text: tRegistrationStatus('payment-due'),
-      alert: AlertsFlavourE.WARNING
-    }
-  }
-  return {
-    text: tRegistrationStatus('payment-due'),
-    alert: AlertsFlavourE.WARNING
-  }
-}
 
 </script>
