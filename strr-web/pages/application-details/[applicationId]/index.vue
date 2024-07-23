@@ -44,7 +44,7 @@
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('nickname')"
             >
-              <p>{{ application?.unitAddress.nickname.length ? application?.unitAddress.nickname.length : '-' }}</p>
+              <p>{{ application?.unitAddress.nickname.length ? application?.unitAddress.nickname : '-' }}</p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('business-license')"
