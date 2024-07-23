@@ -25,7 +25,10 @@
         <p class="font-bold mb-[24px] mobile:mx-[8px]">
           {{ tLtsa('ltsa-general') }}
         </p>
-        <div class="bg-white py-[22px] px-[30px] mobile:px-[8px] flex d:flex-row m:flex-col">
+        <div 
+          class="bg-white py-[22px] px-[30px] mobile:px-[8px] flex d:flex-row m:flex-col"
+          v-if="data.length > 0"
+        >
           <div class="flex flex-col justify-between w-full mobile:flex-col mr-[40px]">
             <BcrosFormSectionReviewItem
               :title="tLtsa('tax')"
@@ -76,7 +79,10 @@
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tLtsa('title-owners') }}
           </p>
-          <div class="bg-white py-[22px] px-[30px] mobile:px-[8px]">
+          <div 
+            class="bg-white py-[22px] px-[30px] mobile:px-[8px]" 
+            v-if="ownerRows.length > 0"
+          >
             <div class="d:hidden">
               <BcrosFormSectionReviewItem
                 :title="tLtsa('given')"
@@ -161,7 +167,7 @@ const flavour = application ? getFlavour(application.status, application.invoice
 
 const data: LtsaDataI[] = await getLtsa(applicationId.toString()) || {} as LtsaDataI[]
 
-const ownerRows = [{
+const ownerRows = data.length > 0 ?[{
   givenName: data[0].record.ownershipGroups[0].titleOwners[0].givenName,
   lastName: data[0].record.ownershipGroups[0].titleOwners[0].lastNameOrCorpName1,
   address: `
@@ -174,6 +180,6 @@ const ownerRows = [{
     ${data[0].record.ownershipGroups[0].titleOwners[0].address.postalCode}
   `,
   occupation: data[0].record.ownershipGroups[0].titleOwners[0].occupationDescription
-}]
+}]: []
 
 </script>
