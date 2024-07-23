@@ -31,8 +31,8 @@
       >
         {{ tRegistrationStatus('view') }}
       </p>
-      <p 
-        class="mr-[22px] cursor-pointer" 
+      <p
+        class="mr-[22px] cursor-pointer"
         @click="() => downloadCertificate(applicationId.toString())"
       >
         {{ tRegistrationStatus('download') }}
