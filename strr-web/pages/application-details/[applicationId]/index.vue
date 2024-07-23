@@ -310,7 +310,7 @@ const getDownloadAction = (eventType: string, id: string) => {
 const downloadCertificate = async (id: string) => {
   const file = await getCertificate(id)
   const link = document.createElement('a')
-  const blob = new Blob([file], { type: 'text/csv' })
+  const blob = new Blob([file], { type: 'text/json' })
   const url = window.URL.createObjectURL(blob)
   link.href = url
   link.target = '_blank'
