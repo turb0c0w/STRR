@@ -2,12 +2,12 @@
   <div data-cy="form-section-contact-info">
     <BcrosFormSection :title="t('create-account.property-form.rentalUnitAddress')">
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="nickname" class="pr-[16px] flex-grow">
+        <UFormGroup name="nickname" class="d:pr-[16px] flex-grow">
           <UInput v-model="nickname" aria-label="nickname" :placeholder="t('create-account.property-form.nickname')" />
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="useMailing" class="pr-[16px] flex-grow mobile:text-[16px]">
+        <UFormGroup name="useMailing" class="d:pr-[16px] flex-grow mobile:text-[16px]">
           <UCheckbox
             v-model="useMailing"
             aria-label="use mailing address"
@@ -16,7 +16,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="country" class="pr-[16px] flex-grow">
+        <UFormGroup name="country" class="d:pr-[16px] flex-grow">
           <USelect
             v-model="country"
             :options="countryItems"
@@ -27,7 +27,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="Address" class="pr-[16px] flex-grow">
+        <UFormGroup name="Address" class="d:pr-[16px] flex-grow">
           <UInput
             :id="id"
             v-model="address"
@@ -39,7 +39,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:mb-[16px]">
-        <UFormGroup name="AddressLineTwo" class="pr-[16px] flex-grow">
+        <UFormGroup name="AddressLineTwo" class="d:pr-[16px] flex-grow">
           <UInput
             v-model="addressLineTwo"
             aria-label="address line two"
@@ -48,12 +48,12 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
-        <UFormGroup name="city" class="pr-[16px] flex-grow mobile:mb-[16px]">
+        <UFormGroup name="city" class="d:pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="city" aria-label="city" :placeholder="t('create-account.contact-form.city')" />
         </UFormGroup>
         <UFormGroup
           name="province"
-          class="pr-[16px] flex-grow mobile:mb-[16px]"
+          class="d:pr-[16px] flex-grow mobile:mb-[16px]"
           :error="addressNotInBC ? 'Address must be in BC' :''"
         >
           <UInput
@@ -63,7 +63,7 @@
             disabled
           />
         </UFormGroup>
-        <UFormGroup name="postalCode" class="pr-[16px] flex-grow mobile:mb-[16px]">
+        <UFormGroup name="postalCode" class="d:pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput
             v-model="postalCode"
             aria-label="postal code"

@@ -246,10 +246,10 @@ watch(page, () => {
 const selectedColumns = ref<{ key: string; label: string; }[]>([])
 
 const columns = [
-  { key: 'registration', label: tRegistryDashboard('registrationNumber') },
-  { key: 'location', label: tRegistryDashboard('location') },
-  { key: 'address', label: tRegistryDashboard('address') },
-  { key: 'owner', label: tRegistryDashboard('owner') },
+  { key: 'registration', label: tRegistryDashboard('registrationNumber'), sortable: true },
+  { key: 'location', label: tRegistryDashboard('location'), sortable: true },
+  { key: 'address', label: tRegistryDashboard('address'), sortable: true },
+  { key: 'owner', label: tRegistryDashboard('owner'), sortable: true },
   { key: 'status', label: tRegistryDashboard('status'), sortable: true },
   { key: 'submission', label: tRegistryDashboard('submissionDate'), sortable: true }
 ]

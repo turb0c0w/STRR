@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <BcrosBanner :hide-buttons="kcUserLoginSource !== 'IDIR'">
+      <BcrosBanner :hide-buttons="!isExaminer">
         <div class="flex items-center m:mb-[8px] m:justify-between">
           <BcrosTypographyH1
             :text="
@@ -44,7 +44,7 @@
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('nickname')"
             >
-              <p>{{ application?.unitAddress.nickname.length ? application?.unitAddress.nickname.length : '-' }}</p>
+              <p>{{ application?.unitAddress.nickname.length ? application?.unitAddress.nickname : '-' }}</p>
             </BcrosFormSectionReviewItem>
             <BcrosFormSectionReviewItem
               :title="tApplicationDetails('business-license')"
@@ -198,7 +198,7 @@
             </div>
           </div>
         </div>
-        <div v-if="kcUserLoginSource === 'IDIR'" class="mt-[40px]">
+        <div v-if="isExaminer" class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('ltsa-info') }}
           </p>
@@ -209,7 +209,7 @@
             {{ tApplicationDetails('ltsa-details') }}
           </a>
         </div>
-        <div v-if="kcUserLoginSource === 'IDIR'" class="mt-[40px]">
+        <div v-if="isExaminer" class="mt-[40px]">
           <p class="font-bold mb-[24px] mobile:mx-[8px]">
             {{ tApplicationDetails('aa-logic') }}
           </p>
@@ -271,7 +271,7 @@ const t = useNuxtApp().$i18n.t
 const tRegistrationStatus = (translationKey: string) => t(`registration-status.${translationKey}`)
 const tApplicationDetails = (translationKey: string) => t(`application-details.${translationKey}`)
 const tPropertyForm = (translationKey: string) => t(`create-account.property-form.${translationKey}`)
-const { kcUserLoginSource } = useBcrosKeycloak()
+const { isExaminer } = useBcrosKeycloak()
 const { getChipFlavour } = useChipFlavour()
 
 const regionNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'region' })

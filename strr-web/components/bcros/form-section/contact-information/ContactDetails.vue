@@ -2,10 +2,10 @@
   <div data-cy="form-section-contact-info">
     <BcrosFormSection :title="t('create-account.contact-form.contactDetails')">
       <div v-if="!isPrimary" class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
-        <UFormGroup name="firstName" class="pr-[16px] flex-grow mobile:mb-[16px]">
+        <UFormGroup name="firstName" class="d:pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="firstName" placeholder="First Name" aria-label="firstName" />
         </UFormGroup>
-        <UFormGroup name="middleName" class="pr-[16px] flex-grow mobile:mb-[16px]">
+        <UFormGroup name="middleName" class="d:pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput v-model="middleName" placeholder="Middle Name" aria-label="middleName" />
         </UFormGroup>
         <UFormGroup name="lastName" class="flex-grow mobile:mb-[16px]">
@@ -27,7 +27,7 @@
         </UFormGroup>
       </div>
       <div class="flex flex-row justify-between w-full mb-[40px] mobile:flex-col mobile:mb-[16px]">
-        <UFormGroup name="phoneNumber" class="desktop:pr-[16px] flex-grow mobile:mb-[16px]">
+        <UFormGroup name="phoneNumber" class="desktop:d:pr-[16px] flex-grow mobile:mb-[16px]">
           <UInput
             v-model="phoneNumber"
             type="tel"

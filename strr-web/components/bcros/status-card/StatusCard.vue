@@ -32,6 +32,7 @@
         {{ tRegistrationStatus('view') }}
       </p>
       <p
+        v-if="status === 'ISSUED'"
         class="mr-[22px] cursor-pointer"
         @click="() => downloadCertificate(applicationId.toString())"
       >
@@ -69,7 +70,8 @@ const {
   single,
   applicationId,
   flavour,
-  registrationNumber
+  registrationNumber,
+  status
 } = defineProps<{
   single: boolean,
   applicationId: string,
@@ -77,6 +79,7 @@ const {
     text: string,
     alert: AlertsFlavourE
   },
+  status: string,
   registrationNumber?: string
 }>()
 </script>
