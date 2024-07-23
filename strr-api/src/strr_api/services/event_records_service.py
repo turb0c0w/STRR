@@ -66,4 +66,4 @@ class EventRecordsService:
         query = models.EventRecord.query.filter(models.EventRecord.registration_id == registration_id)
         if only_show_visible_to_user:
             query = query.filter(models.EventRecord.visible_to_end_user == True)  # noqa
-        return query.all()
+        return query.order_by(models.EventRecord.created_date).all()
