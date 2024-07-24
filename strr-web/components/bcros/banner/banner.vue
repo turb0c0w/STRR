@@ -1,5 +1,6 @@
 <template>
   <div
+    data-cy="banner"
     :class="
       `
         flex d:justify-between bg-white absolute w-full top-0 left-0 h-[104px] shadow-md
