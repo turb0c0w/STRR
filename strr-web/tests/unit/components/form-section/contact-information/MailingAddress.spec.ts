@@ -2,7 +2,8 @@
 import { it, expect } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { createI18n } from 'vue-i18n'
-import { BcrosFormSectionContactInformationCraInfo, UInput } from '#components'
+import { BcrosFormSectionContactInformationMailingAddress, UInput, USelect } from '#components'
+import { mockFn } from '@nuxt/test-utils'
 
 const i18n = createI18n({
   // vue-i18n options here ...
@@ -10,24 +11,32 @@ const i18n = createI18n({
 
 it('can mount primary CRA Details Form Section component', async () => {
   const t = useNuxtApp().$i18n.t
-  const craInfo = await mountSuspended(BcrosFormSectionContactInformationCraInfo,
+  const mailingAddress = await mountSuspended(BcrosFormSectionContactInformationMailingAddress,
     {
       global: { plugins: [i18n] },
-      props: { isPrimary: true },
+      props: {
+        id: '1',
+        defaultCountryIso2: 'CA',
+        enableAddressComplete: mockFn
+      },
     })
-  expect(craInfo.find('[data-cy="form-section-cra-info"]').exists()).toBe(true)
-  expect(craInfo.find(`[placeholder="${t('create-account.contact-form.socialInsuranceNumber')}"]`).exists()).toBe(true)
+  expect(mailingAddress.find('[data-cy="form-section-mailing"]').exists()).toBe(true)
+  expect(mailingAddress.findComponent(USelect).text()).toContain('Canada')
 })
 
 it('can mount secondary CRA Details Form Section component', async () => {
   const t = useNuxtApp().$i18n.t
-  const craInfo = await mountSuspended(BcrosFormSectionContactInformationCraInfo,
+  const mailingAddress = await mountSuspended(BcrosFormSectionContactInformationMailingAddress,
     {
       global: { plugins: [i18n] },
-      props: { isPrimary: false },
+      props: {
+        id: '1',
+        defaultCountryIso2: 'CA',
+        enableAddressComplete: mockFn
+      },
     })
-  expect(craInfo.find('[data-cy="form-section-cra-info"]').exists()).toBe(true)
-  expect(craInfo.find(`[placeholder="${t('create-account.contact-form.socialInsuranceNumberOptional')}"]`).exists()).toBe(true)
+  expect(mailingAddress.find('[data-cy="form-section-mailing"]').exists()).toBe(true)
+  expect(mailingAddress.findComponent(USelect).text()).toContain('Canada')
 })
 
 
