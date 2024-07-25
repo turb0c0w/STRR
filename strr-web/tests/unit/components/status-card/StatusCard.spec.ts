@@ -19,7 +19,7 @@ it('can mount status card component', async () => {
       props: {
         single: true,
         applicationId,
-        flavour: flavour,
+        flavour,
         registrationNumber
       }
     })
@@ -39,7 +39,7 @@ it('can mount one of many status card components', async () => {
       props: {
         single: false,
         applicationId,
-        flavour: flavour,
+        flavour,
         registrationNumber
       }
     })

@@ -11,7 +11,7 @@ const i18n = createI18n({
 it('can mount address section component', async () => {
   const addressSection = await mountSuspended(BcrosFormSectionPropertyAddress,
     {
-      global: { plugins: [i18n] },
+      global: { plugins: [i18n] }
     })
   expect(addressSection.find('[data-cy="form-section-address"]').exists()).toBe(true)
 })

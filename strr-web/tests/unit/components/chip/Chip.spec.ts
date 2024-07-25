@@ -2,8 +2,6 @@
 import { it, expect } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { createI18n } from 'vue-i18n'
-
-import { mockFn } from '@nuxt/test-utils'
 import { BcrosChip } from '#components'
 
 const i18n = createI18n({

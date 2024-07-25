@@ -11,8 +11,7 @@ const i18n = createI18n({
 it('can mount form review component', async () => {
   const addressSection = await mountSuspended(BcrosFormSectionReviewForm,
     {
-      global: { plugins: [i18n] },
+      global: { plugins: [i18n] }
     })
   expect(addressSection.find('[data-cy="review-form"]').exists()).toBe(true)
 })
-

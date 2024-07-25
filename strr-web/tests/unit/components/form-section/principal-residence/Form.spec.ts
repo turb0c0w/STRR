@@ -12,10 +12,7 @@ it('can mount Principal Residence Form Section component', async () => {
   const principalResidence = await mountSuspended(BcrosFormSectionPrincipalResidenceForm,
     {
       global: { plugins: [i18n] },
-      props: { isComplete: true },
+      props: { isComplete: true }
     })
   expect(principalResidence.find('[data-cy="principal-residence-form"]').exists()).toBe(true)
 })
-
-
-

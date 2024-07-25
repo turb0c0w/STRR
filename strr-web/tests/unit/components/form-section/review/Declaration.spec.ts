@@ -11,7 +11,7 @@ const i18n = createI18n({
 it('can mount declaration component', async () => {
   const addressSection = await mountSuspended(BcrosFormSectionReviewDeclaration,
     {
-      global: { plugins: [i18n] },
+      global: { plugins: [i18n] }
     })
   expect(addressSection.find('[data-cy="declaration"]').exists()).toBe(true)
 })

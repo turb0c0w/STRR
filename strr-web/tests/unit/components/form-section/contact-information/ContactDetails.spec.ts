@@ -13,7 +13,7 @@ it('can mount primary Contact Details Form Section component', async () => {
   const contactDetails = await mountSuspended(BcrosFormSectionContactInformationContactDetails,
     {
       global: { plugins: [i18n] },
-      props: { isPrimary: true },
+      props: { isPrimary: true }
     })
   expect(contactDetails.find('[data-cy="form-section-contact-info"]').exists()).toBe(true)
   expect(contactDetails.find('[name="firstName"]').exists()).toBe(false)
@@ -23,10 +23,8 @@ it('can mount secondary Contact Details Form Section component', async () => {
   const contactDetails = await mountSuspended(BcrosFormSectionContactInformationContactDetails,
     {
       global: { plugins: [i18n] },
-      props: { isPrimary: false },
+      props: { isPrimary: false }
     })
   expect(contactDetails.find('[data-cy="form-section-contact-info"]').exists()).toBe(true)
   expect(contactDetails.find('[name="firstName"]').exists()).toBe(true)
 })
-
-

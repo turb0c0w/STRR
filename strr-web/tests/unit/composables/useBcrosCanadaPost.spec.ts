@@ -1,18 +1,9 @@
 // @vitest-environment nuxt
 import { it, expect } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { createI18n } from 'vue-i18n'
-import { BcrosTypographyH1 } from '#components'
 
-const i18n = createI18n({
-  // vue-i18n options here ...
-})
-
-it('begins with empty address', async () => {
+it('begins with empty address', () => {
   const {
-    activeAddressField,
-    address,
-    enableAddressComplete
+    address
   } = useCanadaPostAddress()
 
   expect(address.street).toEqual('')
@@ -24,7 +15,7 @@ it('begins with empty address', async () => {
   expect(address.deliveryInstructions).toEqual('')
 })
 
-it('sets the active address field', async () => {
+it('sets the active address field', () => {
   const {
     activeAddressField,
     enableAddressComplete

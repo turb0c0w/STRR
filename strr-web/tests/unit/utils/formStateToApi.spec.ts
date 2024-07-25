@@ -1,13 +1,8 @@
 // @vitest-environment nuxt
 import { it, expect } from 'vitest'
-import { createI18n } from 'vue-i18n'
 import { CreateAccountFormStateI, formStateToApi } from '#imports'
 
-const i18n = createI18n({
-  // vue-i18n options here ...
-})
-
-it('begins with empty address', async () => {
+it('begins with empty address', () => {
   const firstName = 'first'
   const lastName = 'last'
   const selectedAccountId = '1'
@@ -74,7 +69,7 @@ it('begins with empty address', async () => {
       city: 'city',
       province: 'province',
       postalCode: 'postalCode',
-      listingDetails: [{ url: 'https://www.airbnb.com' }],
+      listingDetails: [{ url: 'https://www.airbnb.com' }]
     },
     selectedAccount: {} as OrgI,
     principal: {} as PrincipalResidenceI,
@@ -100,4 +95,3 @@ it('begins with empty address', async () => {
   expect(apiFormattedState.registration.unitDetails.businessLicense)
     .toEqual(createAccountState.propertyDetails.businessLicense)
 })
-
