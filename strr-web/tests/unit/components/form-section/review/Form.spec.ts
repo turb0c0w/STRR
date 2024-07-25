@@ -15,3 +15,4 @@ it('can mount form review component', async () => {
     })
   expect(addressSection.find('[data-cy="review-form"]').exists()).toBe(true)
 })
+
